@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/messagesend.dart';
+import 'package:mypo/formulaire_alert.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,7 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            OutlinedButton(onPressed: ()=>Navigator.push(context, new MaterialPageRoute(builder: (context) => new MessageScreen()),) , child: const Text("move to message page"))
+            OutlinedButton(onPressed: ()=>Navigator.push(context, new MaterialPageRoute(builder: (context) => new MessageScreen()),) , child: const Text("move to message page")),
+            OutlinedButton(onPressed:()=>Navigator.push(context, new MaterialPageRoute(builder: (context) => new FormScreen()),) , child :const Text("go to alert creation form"))
           ],
         ),
       ),

@@ -16,11 +16,15 @@ class MessageScreen extends StatefulWidget {
 class _MessageState extends State<MessageScreen> {
   String _message = "";
   final telephony = Telephony.instance;
+  List<SmsConversation> msg = new List<SmsConversation>.empty();
+
+
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
+
   }
 
   onMessage(SmsMessage message) async {
@@ -37,6 +41,15 @@ class _MessageState extends State<MessageScreen> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
+    List<SmsConversation> messages = await telephony.getConversations(
+        filter: ConversationFilter.where(ConversationColumn.MSG_COUNT)
+            .equals("4")
+            .and(ConversationColumn.THREAD_ID)
+            .greaterThan("12"),
+        sortOrder: [OrderBy(ConversationColumn.THREAD_ID, sort: Sort.ASC)]
+    );
+    msg= messages;
+    print(msg);
     // Platform messages may fail, so we use a try/catch PlatformException.
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -62,8 +75,8 @@ class _MessageState extends State<MessageScreen> {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(child: Text("Latest received SMS: $_message")),
-              TextButton(
+              Center(child: Text("$msg")),
+              OutlinedButton(
                   onPressed: () async {
                     telephony.sendSms(to: "0695475138", message: "may the force be with you");
                   },

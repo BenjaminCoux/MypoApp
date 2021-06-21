@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypo/alerte.dart';
 import 'package:mypo/formulaire_alert.dart';
 
 import 'package:mypo/messagesend.dart';
@@ -121,7 +122,9 @@ class _AlertesState extends State<Alertes> {
           Column(
             //on utilise pas les crochets pour children car on va generer une liste
             children: alertList.map((alerte) {
-              return Container(
+              return InkWell(onTap:()=>{
+                    Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerte['title'].toString(), content: alerte['message'].toString(), days: [], cibles: []))),),
+              },child:Container(
                 margin: EdgeInsets.all(10),
                 height: 100,
                 width: double.infinity,
@@ -172,7 +175,7 @@ class _AlertesState extends State<Alertes> {
                     */
                   ],
                 ),
-              );
+              ));
             }).toList(),
           )
         ],

@@ -66,91 +66,37 @@ class Logo extends StatelessWidget {
   }
 }
 
+class SwitchButton extends StatefulWidget {
+  @override
+  _StateSwitchButton createState() => _StateSwitchButton();
+}
+
+class _StateSwitchButton extends State<SwitchButton> {
+  bool state = false;
+  @override
+  Widget build(BuildContext context) {
+    return Switch(
+        value: state,
+        activeColor: d_green,
+        onChanged: (bool s) {
+          setState(() {
+            state = s;
+            print(state);
+          });
+        });
+  }
+}
+
 class Alertes extends StatefulWidget {
   @override
   _AlertesState createState() => new _AlertesState();
-}
-
-class ToggleButton extends StatefulWidget {
-  @override
-  _ToggleButtonState createState() => new _ToggleButtonState();
-}
-
-class _ToggleButtonState extends State<ToggleButton> {
-  bool toggleValue = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(18),
-          topRight: Radius.circular(18),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 5,
-            right: 0,
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 1000),
-              height: 35,
-              width: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: toggleValue
-                    ? d_green.withOpacity(0.5)
-                    : Colors.red.withOpacity(0.5),
-              ),
-              child: Stack(
-                children: <Widget>[
-                  AnimatedPositioned(
-                      duration: Duration(milliseconds: 1000),
-                      curve: Curves.easeIn,
-                      top: 0,
-                      left: toggleValue ? 60 : 0,
-                      right: toggleValue ? 0 : 60,
-                      child: InkWell(
-                          onTap: toggleButton,
-                          child: AnimatedSwitcher(
-                              duration: Duration(milliseconds: 1000),
-                              transitionBuilder:
-                                  (Widget child, Animation<double> animation) {
-                                return RotationTransition(
-                                    child: child, turns: animation);
-                              },
-                              child: toggleValue
-                                  ? Icon(Icons.check_circle,
-                                      color: Colors.green,
-                                      size: 35,
-                                      key: UniqueKey())
-                                  : Icon(Icons.remove_circle_outline,
-                                      color: Colors.red,
-                                      size: 35,
-                                      key: UniqueKey()))))
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  toggleButton() {
-    setState(() {
-      toggleValue = !toggleValue;
-    });
-  }
 }
 
 class _AlertesState extends State<Alertes> {
   List alertList = [
     {
       'title': 'WIFI',
-      'message': 'Voici le mot de passe du WIFI: 0000',
+      'message': 'Voici le mot de passe du WIFI: 00000000000000000000000',
     },
     {
       'title': 'Test',
@@ -158,6 +104,7 @@ class _AlertesState extends State<Alertes> {
     }
   ];
   bool toggleValue = false;
+  bool state = true;
 
   //List<bool> _selections = List.generate(2, (_) => false);
 
@@ -176,7 +123,7 @@ class _AlertesState extends State<Alertes> {
             children: alertList.map((alerte) {
               return Container(
                 margin: EdgeInsets.all(10),
-                height: 82,
+                height: 100,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -197,22 +144,32 @@ class _AlertesState extends State<Alertes> {
 
                 child: Column(
                   children: [
-                    ToggleButton(),
                     Container(
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            alerte['title'].toString(),
-                            style: TextStyle(
-                                fontFamily: 'calibri',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ],
-                      ),
+                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              alerte['title'].toString(),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontFamily: 'calibri',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                            SwitchButton(),
+                          ],
+                        )),
+                    /* Contenu du message d'alerte
+                    Text(
+                      alerte['message'].toString(),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontFamily: 'calibri',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800),
                     ),
+                    */
                   ],
                 ),
               );

@@ -52,7 +52,7 @@ class _FormState extends State<FormScreen>{
               Padding(padding:EdgeInsets.all(12) ,child: TextField(controller: alertName,decoration: InputDecoration(border: OutlineInputBorder(),hintText: "Ajoutez un titre à l'alerte"),
               ),),
               Padding(padding: EdgeInsets.all(12),child: TextField(controller: alertContent,decoration: InputDecoration(border: OutlineInputBorder(),hintText: "Contenu du message"),)),
-              Padding(padding:EdgeInsets.all(12),child:Row(children:[Text("Jours")])),
+              Padding(padding:EdgeInsets.all(12),child:Row(children:[Text("Jours",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22,color: Colors.green,))])),
               Padding(padding: EdgeInsets.all(12) ,child:Row(children: [
                 Checkbox(value: week[0], onChanged:(bool? value)=>{
                   setState((){
@@ -101,7 +101,7 @@ class _FormState extends State<FormScreen>{
                   Text("Dimanche"),
                 ],
               ),),
-              Padding(padding: EdgeInsets.all(12),child:Row(children: [Text("Cibles")],)),
+              Padding(padding: EdgeInsets.all(12),child:Row(children: [Text("Cibles",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22,color: Colors.green),)],)),
               Padding(padding: EdgeInsets.all(12),
                 child: Row(children: [
                   Checkbox(value: cibles[0], onChanged: (bool? value) =>{
@@ -138,11 +138,10 @@ class _FormState extends State<FormScreen>{
 class Alert{
   String title;
   String content;
-  String cible="";
-  List<String> days=List.empty();
+  final days;
+  final cibles;
 
-  Alert({required this.title,required this.content});
-
+  Alert({required this.title,required this.content,required this.days,required this.cibles});
 }
 
 

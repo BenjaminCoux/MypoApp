@@ -12,38 +12,38 @@
 12         to allow setting breakpoints, to provide hot reload, etc.
 13    -->
 14    <uses-permission android:name="android.permission.INTERNET" />
-14-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\debug\AndroidManifest.xml:6:5-66
-14-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\debug\AndroidManifest.xml:6:22-64
+14-->D:\stage\mypo\MypoApp\android\app\src\debug\AndroidManifest.xml:6:5-66
+14-->D:\stage\mypo\MypoApp\android\app\src\debug\AndroidManifest.xml:6:22-64
 15    <uses-permission android:name="android.permission.SEND_SMS" />
-15-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:3:5-66
-15-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:3:22-64
+15-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:3:5-66
+15-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:3:22-64
 16    <uses-permission android:name="android.permission.READ_SMS" />
-16-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:4:5-66
-16-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:4:22-64
+16-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:4:5-66
+16-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:4:22-64
 17
 18    <application
-18-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:5:4-42:19
+18-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:6:4-49:19
 19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-19-->[androidx.core:core:1.1.0] C:\Users\iagod\.gradle\caches\transforms-2\files-2.1\2e94107f30f39be366a17347c2bf100b\core-1.1.0\AndroidManifest.xml:24:18-86
+19-->[androidx.core:core:1.1.0] C:\Users\tiplo\.gradle\caches\transforms-2\files-2.1\2e94107f30f39be366a17347c2bf100b\core-1.1.0\AndroidManifest.xml:24:18-86
 20        android:debuggable="true"
 21        android:icon="@mipmap/ic_launcher"
-21-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:7:9-43
+21-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:8:9-43
 22        android:label="mypo" >
-22-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:6:9-29
+22-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:7:9-29
 23        <activity
-23-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:8:9-36:20
+23-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:9:9-37:20
 24            android:name="com.example.mypo.MainActivity"
-24-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:9:13-41
+24-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:10:13-41
 25            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-25-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:12:13-163
+25-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:13:13-163
 26            android:hardwareAccelerated="true"
-26-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:13:13-47
+26-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:14:13-47
 27            android:launchMode="singleTop"
-27-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:10:13-43
+27-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:11:13-43
 28            android:theme="@style/LaunchTheme"
-28-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:11:13-47
+28-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:12:13-47
 29            android:windowSoftInputMode="adjustResize" >
-29-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:14:13-55
+29-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:15:13-55
 30
 31            <!--
 32                 Specifies an Android theme to apply to this Activity as soon as
@@ -52,11 +52,11 @@
 35                 to determine the Window background behind the Flutter UI.
 36            -->
 37            <meta-data
-37-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:19:13-22:17
+37-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:20:13-23:17
 38                android:name="io.flutter.embedding.android.NormalTheme"
-38-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:20:15-70
+38-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:21:15-70
 39                android:resource="@style/NormalTheme" />
-39-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:21:15-52
+39-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:22:15-52
 40            <!--
 41                 Displays an Android View that continues showing the launch screen
 42                 Drawable until Flutter paints its first frame, then this splash
@@ -65,21 +65,21 @@
 45                 Flutter's first frame.
 46            -->
 47            <meta-data
-47-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:28:13-31:17
+47-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:29:13-32:17
 48                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-48-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:29:15-79
+48-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:30:15-79
 49                android:resource="@drawable/launch_background" />
-49-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:30:15-61
+49-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:31:15-61
 50
 51            <intent-filter>
-51-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:32:13-35:29
+51-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:33:13-36:29
 52                <action android:name="android.intent.action.MAIN" />
-52-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:33:17-68
-52-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:33:25-66
+52-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:34:17-68
+52-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:34:25-66
 53
 54                <category android:name="android.intent.category.LAUNCHER" />
-54-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:34:17-76
-54-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:34:27-74
+54-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:35:17-76
+54-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:35:27-74
 55            </intent-filter>
 56        </activity>
 57        <!--
@@ -87,11 +87,27 @@
 59             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
 60        -->
 61        <meta-data
-61-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:39:9-41:33
+61-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:40:9-42:33
 62            android:name="flutterEmbedding"
-62-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:40:13-44
+62-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:41:13-44
 63            android:value="2" />
-63-->C:\Users\iagod\Documents\projects\MypoApp\android\app\src\main\AndroidManifest.xml:41:13-30
-64    </application>
-65
-66</manifest>
+63-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:42:13-30
+64
+65        <receiver
+65-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:43:8-48:19
+66            android:name="com.shounakmulay.telephony.sms.IncomingSmsReceiver"
+66-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:43:18-83
+67            android:exported="true"
+67-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:44:66-89
+68            android:permission="android.permission.BROADCAST_SMS" >
+68-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:44:12-65
+69            <intent-filter>
+69-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:45:12-47:28
+70                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+70-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:46:16-80
+70-->D:\stage\mypo\MypoApp\android\app\src\main\AndroidManifest.xml:46:24-78
+71            </intent-filter>
+72        </receiver>
+73    </application>
+74
+75</manifest>

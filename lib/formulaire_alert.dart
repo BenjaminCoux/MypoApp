@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/main.dart';
+import 'package:mypo/homepage.dart';
 
 
-
+const d_green = Color(0xFFA6C800);
+const d_gray = Color(0xFFBABABA);
+const d_darkgray = Color(0xFF6C6C6C);
+const d_lightgray = Color(0XFFFAFAFA);
 
 
 
@@ -12,7 +15,17 @@ class FormScreen extends StatefulWidget{
   _FormState createState() => _FormState();
 }
 
-
+class TopBarA extends StatelessWidget implements PreferredSizeWidget {
+  Size get preferredSize => new Size.fromHeight(50);
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text('Ajoutez une alerte', style: TextStyle(fontFamily: 'calibri')),
+      centerTitle: true,
+      backgroundColor: d_green,
+    );
+  }
+}
 
 
 
@@ -44,89 +57,139 @@ class _FormState extends State<FormScreen>{
   @override
   Widget build(BuildContext context) {
       return Scaffold(
-        appBar: AppBar(title: Text("alert creation form"),),
+        appBar: TopBarA(),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(padding:EdgeInsets.all(12) ,child: TextField(controller: alertName,decoration: InputDecoration(border: OutlineInputBorder(),hintText: "Ajoutez un titre à l'alerte"),
+             Container(decoration: BoxDecoration(
+                 color: Colors.white,
+                 borderRadius: BorderRadius.all(
+                   Radius.circular(18),
+                 ),boxShadow: [
+               BoxShadow(
+                 color: d_lightgray,
+                 spreadRadius: 4,
+                 blurRadius: 6,
+                 offset: Offset(0, 3),
+               ),
+             ],),margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+               child:Padding(padding:EdgeInsets.all(12) ,child: TextField(controller: alertName,decoration: InputDecoration(hintText: "Ajoutez un titre à l'alerte"),),
               ),),
-              Padding(padding: EdgeInsets.all(12),child: TextField(controller: alertContent,decoration: InputDecoration(border: OutlineInputBorder(),hintText: "Contenu du message"),)),
-              Padding(padding:EdgeInsets.all(12),child:Row(children:[Text("Jours",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22,color: Colors.green,))])),
-              Padding(padding: EdgeInsets.all(12) ,child:Row(children: [
-                Checkbox(value: week[0], onChanged:(bool? value)=>{
+              Container(decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),boxShadow: [
+                BoxShadow(
+                  color: d_lightgray,
+                  spreadRadius: 4,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],),margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child:Padding(padding: EdgeInsets.all(12),child: TextField(controller: alertContent,decoration: InputDecoration(hintText: "Contenu du message"),)),),
+              Container(decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),boxShadow: [
+                BoxShadow(
+                  color: d_lightgray,
+                  spreadRadius: 4,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],),margin: EdgeInsets.fromLTRB(10, 10, 10, 10),child:Column(children: [
+              Container(child:Padding(padding:EdgeInsets.all(12),child:Row(children:[Text("Jours",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22,color: d_green,))]))),
+              Container(
+                child:Padding(padding: EdgeInsets.all(8) ,child:Row(children: [
+                Checkbox(activeColor: d_green,value: week[0], onChanged:(bool? value)=>{
                   setState((){
                     week[0]=value!;
                   })
                 }),
                 Text("lundi"),
-                Checkbox(value: week[1], onChanged:(bool? value)=>{
+                Checkbox(activeColor: d_green,value: week[1], onChanged:(bool? value)=>{
                   setState((){
                     week[1]=value!;
                   })
                 }),
                 Text("Mardi"),
-                Checkbox(value: week[2], onChanged:(bool? value)=>{
+                Checkbox(activeColor: d_green ,value: week[2], onChanged:(bool? value)=>{
                   setState((){
                     week[2]=value!;
                   })
                 }),
                 Text("Mercredi"),
-                Checkbox(value: week[3], onChanged:(bool? value)=>{
+                Checkbox(activeColor: d_green,value: week[3], onChanged:(bool? value)=>{
                   setState((){
                     week[3]=value!;
                   })
                 }),
                 Text("Jeudi"),
-              ],),),
-              Padding(padding: EdgeInsets.all(12),child:Row(
+              ],),),),
+              Container(
+                child:Padding(padding: EdgeInsets.all(11),child:Row(
                 children: [
-                  Checkbox(value: week[4], onChanged:(bool? value)=>{
+                  Checkbox(activeColor: d_green,value: week[4], onChanged:(bool? value)=>{
                     setState((){
                       week[4]=value!;
                     })
                   }),
                   Text("Vendredi"),
-                  Checkbox(value: week[5], onChanged:(bool? value)=>{
+                  Checkbox(activeColor: d_green,value: week[5], onChanged:(bool? value)=>{
                     setState((){
                       week[5]=value!;
                     })
                   }),
                   Text("Samedi"),
-                  Checkbox(value: week[6], onChanged:(bool? value)=>{
+                  Checkbox(activeColor: d_green,value: week[6], onChanged:(bool? value)=>{
                     setState((){
                       week[6]=value!;
                     })
                   }),
                   Text("Dimanche"),
                 ],
-              ),),
-              Padding(padding: EdgeInsets.all(12),child:Row(children: [Text("Cibles",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22,color: Colors.green),)],)),
-              Padding(padding: EdgeInsets.all(12),
+              ),),),])),
+              Container(decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),boxShadow: [
+                BoxShadow(
+                  color: d_lightgray,
+                  spreadRadius: 4,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],),margin: EdgeInsets.fromLTRB(10, 10, 10, 10),child:Column(children: [
+              Container(child:Padding(padding: EdgeInsets.all(12),child:Row(children: [Text("Cibles",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22,color: d_green),)],)),),
+              Container(child:Padding(padding: EdgeInsets.all(12),
                 child: Row(children: [
-                  Checkbox(value: cibles[0], onChanged: (bool? value) =>{
+                  Checkbox(activeColor: d_green,value: cibles[0], onChanged: (bool? value) =>{
                     setState((){
                       cibles[0]=value!;
                     })
                   }),
                   Text("Numéros Enregistrés"),
-                  Checkbox(value: cibles[1], onChanged: (bool? value)=>{
+                  Checkbox(activeColor: d_green,value: cibles[1], onChanged: (bool? value)=>{
                     setState((){
                       cibles[1]=value!;
                     })
                   }),
                   Text("SMS reçu"),
                 ],),
-              ),
-              Padding(padding:EdgeInsets.all(12) ,child: Row(children: [
-                Checkbox(value: cibles[2], onChanged: (bool? value)=>{
+              ),),
+              Container(child:Padding(padding:EdgeInsets.all(12) ,child: Row(children: [
+                Checkbox(activeColor: d_green,value: cibles[2], onChanged: (bool? value)=>{
                   setState((){
                     cibles[2]=value!;
                   })
                 }),
                 Text("Appels Manqués"),
-              ],),),
-              OutlinedButton(onPressed: ()=>Navigator.push(context, new MaterialPageRoute(builder: (context) => new MyHomePage(title: "home")),) , child: const Text("Valider")),
+              ],),),),])),
+              OutlinedButton(onPressed: ()=>Navigator.push(context, new MaterialPageRoute(builder: (context) => new HomePage()),) , child: const Text("Valider",style:TextStyle(color: d_green))),
             ],
           ),
         ),

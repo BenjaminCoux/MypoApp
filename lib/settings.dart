@@ -53,7 +53,7 @@ class SettingsScreenOne extends StatelessWidget {
                     children: <Widget>[
                       ListTile(
                           leading: Icon(Icons.lock, color: d_green),
-                          title: Text("Changer de mot de passe"),
+                          title: Text("Changer le mot de passe"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             //open change password
@@ -62,7 +62,7 @@ class SettingsScreenOne extends StatelessWidget {
                       ListTile(
                           leading:
                               Icon(FontAwesomeIcons.language, color: d_green),
-                          title: Text("Changer de langue"),
+                          title: Text("Changer la langue"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             //open change language
@@ -70,7 +70,7 @@ class SettingsScreenOne extends StatelessWidget {
                       _buildDivider(),
                       ListTile(
                           leading: Icon(Icons.location_on, color: d_green),
-                          title: Text("Changer de theme"),
+                          title: Text("Changer le theme"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             //open change theme

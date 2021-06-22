@@ -4,6 +4,8 @@ import 'package:mypo/formulaire_alert.dart';
 import 'package:mypo/helppage.dart';
 import 'package:mypo/homepage.dart';
 import 'package:mypo/alerte.dart';
+import 'package:mypo/menu_item.dart';
+import 'package:mypo/menu_items.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -34,6 +36,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       title: Text('My Co\'Laverie', style: TextStyle(fontFamily: 'calibri')),
       centerTitle: true,
       backgroundColor: d_green,
@@ -112,7 +115,7 @@ class _AlertesState extends State<Alertes> {
                       },
                   child: Container(
                     margin: EdgeInsets.all(10),
-                    height: 100,
+                    height: 80,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -131,12 +134,13 @@ class _AlertesState extends State<Alertes> {
 
                     //contenu dans chaque container
 
-                    child: Column(
-                      children: [
-                        Container(
+                    child: Card(
+                      elevation: 4,
+                      child: Column(
+                        children: [
+                          Container(
                             margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   alerte['title'].toString(),
@@ -146,10 +150,52 @@ class _AlertesState extends State<Alertes> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.w800),
                                 ),
-                                SwitchButton(),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      SwitchButton(),
+                                      PopupMenuButton<MenuItem>(
+                                          onSelected: (item) => {
+                                                if (item ==
+                                                    MenuItems.itemSettings)
+                                                  {
+                                                    Navigator.push(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                          builder: (context) => new AlertScreen(
+                                                              alerte: new Alert(
+                                                                  title: alerte[
+                                                                          'title']
+                                                                      .toString(),
+                                                                  content: alerte[
+                                                                          'message']
+                                                                      .toString(),
+                                                                  days: [],
+                                                                  cibles: []))),
+                                                    ),
+                                                  },
+                                                if (item ==
+                                                    MenuItems.itemRemove)
+                                                  {
+                                                    /*
+                                                        Remove alert from the list alert['title'],['message']...
+                                                  */
+                                                  },
+                                              },
+                                          itemBuilder: (context) => [
+                                                ...MenuItems.items
+                                                    .map(buildItem)
+                                                    .toList(),
+                                              ]),
+                                    ],
+                                  ),
+                                ),
                               ],
-                            )),
-                      ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ));
             }).toList(),
@@ -241,6 +287,17 @@ class _AlertesState extends State<Alertes> {
       toggleValue = !toggleValue;
     });
   }
+
+  PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem<MenuItem>(
+        value: item,
+        child: Row(
+          children: [
+            Icon(item.icon, color: Colors.black, size: 20),
+            const SizedBox(width: 12),
+            Text(item.text),
+          ],
+        ),
+      );
 }
 
 class BottomNavigationBarSection extends StatelessWidget {
@@ -259,7 +316,10 @@ class BottomNavigationBarSection extends StatelessWidget {
               size: 50,
               color: Colors.white,
             ),
-            onPressed: null,
+            onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new HomePage()),
+            ),
           ),
           label: '',
         ),

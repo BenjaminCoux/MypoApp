@@ -32,6 +32,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       title: Text('My Co\'Laverie', style: TextStyle(fontFamily: 'calibri')),
       centerTitle: true,
       backgroundColor: d_green,

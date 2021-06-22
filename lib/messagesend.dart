@@ -12,6 +12,7 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageState extends State<MessageScreen> {
+  // ignore: unused_field
   String _message = "";
   final telephony = Telephony.instance;
   List<SmsConversation> msg = new List<SmsConversation>.empty();

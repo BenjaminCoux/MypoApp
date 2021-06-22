@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/formulaire_alert.dart';
 import 'package:mypo/helppage.dart';
-//import 'package:mypo/fomulaire_alert.dart';
-//import 'package:mypo/helppage.dart';
-import 'package:mypo/messagesend.dart';
+import 'package:mypo/settings.dart';
 import 'package:mypo/sms_auto.dart';
-//import 'package:mypo/sms_auto.dart';
-//import 'package:mypo/test.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -27,21 +22,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         children: [Logo(), Mode()],
       )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => new MessageScreen()),
-        ),
-        /*
-        
-        Test pour envoyer des messages sur le button bleue
-        
-        */
-        tooltip: 'Add',
-        child: Icon(
-          Icons.add,
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBarSection(),
     );
   }
@@ -190,12 +170,17 @@ class _StateBottomNavigationBarSection
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-              icon: Icon(
-                Icons.settings,
-                color: d_green,
-                size: 50,
-              ),
-              onPressed: null),
+            icon: Icon(
+              Icons.settings,
+              color: d_green,
+              size: 50,
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new SettingsScreenOne()),
+            ),
+          ),
           label: '',
         ),
       ],

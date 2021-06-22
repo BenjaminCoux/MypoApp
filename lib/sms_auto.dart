@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mypo/formulaire_alert.dart';
 import 'package:mypo/helppage.dart';
-import 'package:mypo/messagesend.dart';
 import 'package:mypo/homepage.dart';
 import 'package:mypo/alerte.dart';
 
@@ -24,19 +24,6 @@ class _SmsAutoState extends State<SmsAuto> {
           child: Column(
         children: [Logo(), Alertes()],
       )),
-      floatingActionButton: FloatingActionButton(
-        /*
-        Test pour envoyer des messages sur le button bleue
-        */
-        onPressed: () => Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => new MessageScreen()),
-        ),
-        tooltip: 'Add',
-        child: Icon(
-          Icons.add,
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBarSection(),
     );
   }
@@ -85,16 +72,16 @@ class _AlertesState extends State<Alertes> {
     {
       'title': 'WIFI',
       'message': 'Voici le mot de passe du WIFI: 00000000000000000000000',
+      'device': 'android',
     },
     {
       'title': 'Test',
       'message': 'Voici un message de test',
+      'device': 'ios',
     }
   ];
   bool toggleValue = false;
   bool state = true;
-
-  //List<bool> _selections = List.generate(2, (_) => false);
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +90,7 @@ class _AlertesState extends State<Alertes> {
       child: Column(
         children: [
           Container(
+            margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
             height: 30,
             child: Row(children: [Text('Mes Alertes')]),
           ),
@@ -161,24 +149,91 @@ class _AlertesState extends State<Alertes> {
                                 SwitchButton(),
                               ],
                             )),
-                        /* Contenu du message d'alerte
-                    Text(
-                      alerte['message'].toString(),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontFamily: 'calibri',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800),
-                    ),
-                    */
                       ],
                     ),
                   ));
             }).toList(),
-          )
+          ),
+          SizedBox(height: 50),
+          Center(
+            child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: d_darkgray,
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+                onPressed: _onButtonPressed,
+                child: Text(
+                  "+ Ajouter une alerte",
+                  style: TextStyle(
+                      backgroundColor: d_darkgray,
+                      fontSize: 16,
+                      letterSpacing: 2.2,
+                      color: Colors.white,
+                      fontFamily: 'calibri'),
+                )),
+          ),
         ],
       ),
     );
+  }
+
+  void _onButtonPressed() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.message),
+                title: Text('Messages'),
+                onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => new FormScreen()),
+                ),
+                /* 
+                        fonction to chose a device
+                        */
+              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesomeIcons.whatsapp,
+                ),
+                title: Text('WhatsApp'),
+                onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => new FormScreen()),
+                ),
+              ),
+              ListTile(
+                leading: Icon(FontAwesomeIcons.facebookMessenger),
+                title: Text('Messenger'),
+                onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => new FormScreen()),
+                ),
+              ),
+              ListTile(
+                leading: Icon(FontAwesomeIcons.facebook),
+                title: Text('Facebook'),
+                onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => new FormScreen()),
+                ),
+              ),
+              ListTile(
+                leading: Icon(FontAwesomeIcons.instagram),
+                title: Text('Instagram'),
+                onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => new FormScreen()),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   toggleButton() {
@@ -218,11 +273,6 @@ class BottomNavigationBarSection extends StatelessWidget {
             onPressed: () => Navigator.push(
               context,
               new MaterialPageRoute(builder: (context) => new FormScreen()),
-              /*
-            onPressed: () => {
-              print('test button alerte'),
-            },
-            */
             ),
           ),
           label: '',
@@ -238,12 +288,6 @@ class BottomNavigationBarSection extends StatelessWidget {
               context,
               new MaterialPageRoute(
                   builder: (context) => new HelpScreen(value: value)),
-              /*
-            onPressed: () => {
-              print('test button aide'),
-            },
-          ),
-          */
             ),
           ),
           label: '',

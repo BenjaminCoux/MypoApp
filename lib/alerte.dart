@@ -18,6 +18,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+// ignore: must_be_immutable
 class AlertScreen extends StatelessWidget {
   Alert alerte;
   AlertScreen({required this.alerte});

@@ -2,6 +2,18 @@
   "configVersion": 2,
   "packages": [
     {
+      "name": "archive",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/archive-2.0.13",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "args",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/args-1.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
       "name": "async",
       "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.6.1",
       "packageUri": "lib/",
@@ -38,6 +50,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "convert",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/convert-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "1.17"
+    },
+    {
+      "name": "crypto",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3",
       "packageUri": "lib/",
@@ -56,10 +80,10 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "flutter_lints",
-      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.3",
+      "name": "flutter_launcher_icons",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.8.1",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.3"
     },
     {
       "name": "flutter_multiselect",
@@ -68,16 +92,28 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "flutter_native_splash",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_native_splash-0.2.11",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///C:/Users/iagod/Documents/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
-      "name": "lints",
-      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1",
+      "name": "font_awesome_flutter",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-9.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "image",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/image-2.1.19",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
     },
     {
       "name": "matcher",
@@ -96,6 +132,12 @@
       "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "petitparser",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
     },
     {
       "name": "platform",
@@ -164,13 +206,25 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "xml",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/xml-4.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
+      "name": "yaml",
+      "rootUri": "file:///C:/Users/iagod/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/yaml-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.4"
+    },
+    {
       "name": "mypo",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-06-21T13:47:52.164272Z",
+  "generated": "2021-06-22T08:27:51.115125Z",
   "generator": "pub",
   "generatorVersion": "2.13.3"
 }

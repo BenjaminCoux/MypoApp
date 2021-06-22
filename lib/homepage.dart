@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mypo/alerte.dart';
 import 'package:mypo/formulaire_alert.dart';
 
@@ -94,23 +97,23 @@ class Alertes extends StatefulWidget {
 }
 
 class _AlertesState extends State<Alertes> {
-  List alertList = [
-    {
-      'title': 'WIFI',
-      'message': 'Voici le mot de passe du WIFI: 00000000000000000000000',
-    },
-    {
-      'title': 'Test',
-      'message': 'Voici un message de test',
-    }
-  ];
+  List _items = [];
   bool toggleValue = false;
   bool state = true;
 
   //List<bool> _selections = List.generate(2, (_) => false);
 
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/database.json');
+    final data = await json.decode(response);
+    setState(() {
+      _items = data["items"];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    readJson();
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -121,9 +124,9 @@ class _AlertesState extends State<Alertes> {
           ),
           Column(
             //on utilise pas les crochets pour children car on va generer une liste
-            children: alertList.map((alerte) {
+            children: _items.map((alerte) {
               return InkWell(onTap:()=>{
-                    Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerte['title'].toString(), content: alerte['message'].toString(), days: [], cibles: []))),),
+                    Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerte['title'].toString(), content: alerte['message'].toString(), days: alerte['days'], cibles: []))),),
               },child:Container(
                 margin: EdgeInsets.all(10),
                 height: 100,

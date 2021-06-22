@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mypo/homepage.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
 
+const String pathToDB = "../assets/database.json";
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
@@ -10,7 +14,8 @@ const d_lightgray = Color(0XFFFAFAFA);
 
 
 class FormScreen extends StatefulWidget{
-
+  int nb;
+  FormScreen({required this.nb});
   @override
   _FormState createState() => _FormState();
 }
@@ -35,14 +40,13 @@ class _FormState extends State<FormScreen>{
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final  week = [false,false,false,false,false,false,false];
   final cibles = [false,false,false];
-
+  var db ;
 
 
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    print(alertContent.text);
     alertContent.dispose();
     alertName.dispose();
     super.dispose();
@@ -50,6 +54,15 @@ class _FormState extends State<FormScreen>{
   void _onFormSaved() {
     final FormState? form = _formKey.currentState;
     form!.save();
+  }
+
+  void  saveAlert(String title,String content,var days,var cibles) async{
+    final pref = await SharedPreferences.getInstance();
+    //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
+    String tmp = '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles"}';
+    print("alert"+widget.nb.toString());
+    pref.setString("alert"+widget.nb.toString(), tmp);
+    pref.setInt("nombreAlerte", widget.nb+1);
   }
 
 
@@ -189,7 +202,10 @@ class _FormState extends State<FormScreen>{
                 }),
                 Text("Appels Manqués"),
               ],),),),])),
-              OutlinedButton(onPressed: ()=>Navigator.push(context, new MaterialPageRoute(builder: (context) => new HomePage()),) , child: const Text("Valider",style:TextStyle(color: d_green))),
+              OutlinedButton(onPressed: ()=>{
+                saveAlert(alertName.text,alertContent.text,week,cibles),
+                Navigator.push(context, new MaterialPageRoute(builder: (context) => new HomePage()),)
+              } , child: const Text("Valider",style:TextStyle(color: d_green))),
             ],
           ),
         ),
@@ -205,6 +221,8 @@ class Alert{
   final cibles;
 
   Alert({required this.title,required this.content,required this.days,required this.cibles});
+
+
 }
 
 

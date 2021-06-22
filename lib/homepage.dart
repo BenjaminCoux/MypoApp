@@ -1,11 +1,12 @@
 import 'dart:convert';
-
+import 'dart:ffi';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mypo/alerte.dart';
 import 'package:mypo/formulaire_alert.dart';
-
 import 'package:mypo/messagesend.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -100,20 +101,55 @@ class _AlertesState extends State<Alertes> {
   List _items = [];
   bool toggleValue = false;
   bool state = true;
-
+  String test = "";
+  String all = "-1";
+  int num=-1;
+  List alerts = <dynamic>[];
   //List<bool> _selections = List.generate(2, (_) => false);
 
-  Future<void> readJson() async {
-    final String response = await rootBundle.loadString('assets/database.json');
-    final data = await json.decode(response);
-    setState(() {
-      _items = data["items"];
-    });
+  @override
+  void initState() {
+    initNb();
+    readAlert();
+    super.initState();
   }
+
+    void initNb() async{
+      final prefs = await SharedPreferences.getInstance();
+      int tmp = prefs.getInt("nombreAlerte") ?? -1;
+      if(tmp == -1){
+        prefs.setInt("nombreAlerte", 0);
+      }
+    }
+
+  void readAlert()async {
+    final prefs = await SharedPreferences.getInstance();
+    //prefs.clear();
+    Set<String> keys = prefs.getKeys();
+    Iterator<String> it = keys.iterator;
+    String cc;
+    while(it.moveNext()){
+      cc=it.current;
+      if(cc!="nombreAlerte"){
+        alerts.add(json.decode(prefs.getString(cc) ?? "/"));
+      }
+    }
+  }
+  Alert fromStrtoJson(String input){
+    var res = json.decode(input);
+    return res;
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    readJson();
+    for(int i=0;i<alerts.length;i++){
+      print(alerts[i]);
+    }
+    /*final tmp = alerts[0];
+    final test = tmp;
+    final tst = json.decode(test);
+    print(tst["title"]);*/
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -124,9 +160,9 @@ class _AlertesState extends State<Alertes> {
           ),
           Column(
             //on utilise pas les crochets pour children car on va generer une liste
-            children: _items.map((alerte) {
+            children: alerts.map((alerte) {
               return InkWell(onTap:()=>{
-                    Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerte['title'].toString(), content: alerte['message'].toString(), days: alerte['days'], cibles: []))),),
+                    Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerte["title"], content: alerte["content"], days: jsonDecode(alerte["days"]), cibles:jsonDecode(alerte["cibles"])))),),
               },child:Container(
                 margin: EdgeInsets.all(10),
                 height: 100,
@@ -156,7 +192,7 @@ class _AlertesState extends State<Alertes> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              alerte['title'].toString(),
+                              alerte["title"],
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontFamily: 'calibri',
@@ -194,8 +230,14 @@ class _AlertesState extends State<Alertes> {
 }
 
 class BottomNavigationBarSection extends StatelessWidget {
+  int nb = 0;
+  void getNb() async {
+    final pref = await SharedPreferences.getInstance();
+    nb = pref.getInt("nombreAlerte")! ;
+  }
   @override
   Widget build(BuildContext context) {
+    getNb();
     return BottomNavigationBar(
       selectedItemColor: Colors.white,
       backgroundColor: d_green,
@@ -226,7 +268,7 @@ class BottomNavigationBarSection extends StatelessWidget {
             ),
             onPressed: () => Navigator.push(
               context,
-              new MaterialPageRoute(builder: (context) => new FormScreen()),
+              new MaterialPageRoute(builder: (context) => new FormScreen(nb:nb,)),
               /*
             onPressed: () => {
               print('test button alerte'),

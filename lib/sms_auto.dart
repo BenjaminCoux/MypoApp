@@ -21,14 +21,40 @@ class SmsAuto extends StatefulWidget {
 }
 
 class _SmsAutoState extends State<SmsAuto> {
+  List alerts = <dynamic>[];
+
+
+  Future<List> readAlert() async {
+    final prefs = await SharedPreferences.getInstance();
+    //prefs.clear();
+    List res = <dynamic>[];
+    Set<String> keys = prefs.getKeys();
+    Iterator<String> it = keys.iterator;
+    String cc;
+    while (it.moveNext()) {
+      cc = it.current;
+      if (cc != "nombreAlerte") {
+        res.add(json.decode(prefs.getString(cc) ?? "/"));
+        alerts.add(json.decode(prefs.getString(cc) ?? "/"));
+      }
+    }
+    return res;
+  }
+  @override
+  void initState() {
+    readAlert();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(),
       body: SingleChildScrollView(
           child: Column(
-        children: [Logo(), Alertes()],
-      )),
+        children: [Logo(), Alertes(alerts: alerts)],
+      ),),
       bottomNavigationBar: BottomNavigationBarSection(),
     );
   }
@@ -69,6 +95,8 @@ class _StateSwitchButton extends State<SwitchButton> {
 }
 
 class Alertes extends StatefulWidget {
+  List alerts = <dynamic>[];
+  Alertes({required this.alerts});
   @override
   _AlertesState createState() => new _AlertesState();
 }
@@ -81,7 +109,6 @@ class _AlertesState extends State<Alertes> {
   String test = "";
   String all = "-1";
   int num = -1;
-  List alerts = <dynamic>[];
   List alertList = [
     {
       'title': 'WIFI',
@@ -101,8 +128,25 @@ class _AlertesState extends State<Alertes> {
   @override
   void initState() {
     initNb();
-    readAlert();
     super.initState();
+  }
+  void delete(var alert) async {
+    final pref = await SharedPreferences.getInstance();
+    Set<String> keys = pref.getKeys();
+    Iterator<String> it = keys.iterator;
+    String cc="";
+    int i =0;
+    bool done = false;
+    while(it.moveNext() && !done){
+      cc=it.current;
+      if(cc!="nombreAlerte"){
+        if(alert["title"]==pref.get(cc)){
+          done=true;
+        }
+      }
+      i++;
+    }
+    pref.remove(cc);
   }
 
   void initNb() async {
@@ -113,29 +157,65 @@ class _AlertesState extends State<Alertes> {
     }
   }
 
-  void readAlert() async {
-    final prefs = await SharedPreferences.getInstance();
-    //prefs.clear();
-    Set<String> keys = prefs.getKeys();
-    Iterator<String> it = keys.iterator;
-    String cc;
-    while (it.moveNext()) {
-      cc = it.current;
-      if (cc != "nombreAlerte") {
-        alerts.add(json.decode(prefs.getString(cc) ?? "/"));
-      }
-    }
+   myList(var alerts){
+    return  ListView.builder(shrinkWrap: true,itemCount: alerts.length,itemBuilder: (BuildContext context,int index){
+       return InkWell(onTap:()=>{
+         Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerts[index]["title"], content: alerts[index]["content"], days: jsonDecode(alerts[index]["days"]), cibles:jsonDecode(alerts[index]["cibles"])))),),
+       },child:Container(
+           margin: EdgeInsets.all(10),
+       height: 106,
+       width: double.infinity,
+       decoration: BoxDecoration(
+       color: Colors.white,
+       borderRadius: BorderRadius.all(
+       Radius.circular(18),
+       ),
+       boxShadow: [
+       BoxShadow(
+       color: d_lightgray,
+       spreadRadius: 4,
+       blurRadius: 6,
+       offset: Offset(0, 3),
+       ),
+       ],
+       ),
+
+       //contenu dans chaque container
+
+       child: Column(
+       children: [
+       Container(
+       margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+       child: Row(
+       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+       children: [
+       Text(
+       alerts[index]["title"],
+       overflow: TextOverflow.ellipsis,
+       style: TextStyle(
+       fontFamily: 'calibri',
+       fontSize: 18,
+       fontWeight: FontWeight.w800),
+       ),
+       Column(children:[SwitchButton(),
+       IconButton(
+       icon: const Icon(Icons.delete),
+       onPressed: ()=>{
+       setState((){
+         delete(alerts[index]);
+       alerts.remove(alerts[index]);
+       }),
+       },
+       ),])],))])));});
+
   }
 
-  Alert fromStrtoJson(String input) {
-    var res = json.decode(input);
-    return res;
-  }
-
+  Future<List> callAsyncFetch() => Future.delayed(Duration(seconds: 2), () => widget.alerts);
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < alerts.length; i++) {
-      print(alerts[i]);
+    print("hello");
+    for (int i = 0; i < widget.alerts.length; i++) {
+      print(widget.alerts[i]);
     }
     /*final tmp = alerts[0];
     final test = tmp;
@@ -152,107 +232,18 @@ class _AlertesState extends State<Alertes> {
           ),
           Column(
             //on utilise pas les crochets pour children car on va generer une liste
-            children: alertList.map((alerte) {
-              return InkWell(
-                  onTap: () => {
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new AlertScreen(
-                                  alerte: new Alert(
-                                      title: alerte['title'].toString(),
-                                      content: alerte['message'].toString(),
-                                      days: alerte['days'],
-                                      cibles: alerte['cible']))),
-                        ),
-                      },
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    height: 80,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(18),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: d_lightgray,
-                          spreadRadius: 4,
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
+            children: [FutureBuilder(
+              future: callAsyncFetch(),
+                    builder: (context,AsyncSnapshot<dynamic> snapshot){
+                      if(snapshot.hasData){
+          return Container(child:myList(widget.alerts));
+          }
+          else{
+          return CircularProgressIndicator();
+          }
+          }
 
-                    //contenu dans chaque container
-
-                    child: Card(
-                      elevation: 4,
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Row(
-                              children: [
-                                Text(
-                                  alerte['title'].toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontFamily: 'calibri',
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      SwitchButton(),
-                                      PopupMenuButton<MenuItem>(
-                                          onSelected: (item) => {
-                                                if (item ==
-                                                    MenuItems.itemSettings)
-                                                  {
-                                                    Navigator.push(
-                                                      context,
-                                                      new MaterialPageRoute(
-                                                          builder: (context) => new AlertScreen(
-                                                              alerte: new Alert(
-                                                                  title: alerte[
-                                                                          'title']
-                                                                      .toString(),
-                                                                  content: alerte[
-                                                                          'message']
-                                                                      .toString(),
-                                                                  days: alerte['days'],
-                                                                  cibles: alerte['cible']))),
-                                                    ),
-                                                  },
-                                                if (item ==
-                                                    MenuItems.itemRemove)
-                                                  {
-                                                    /*
-                                                        Remove alert from the list alert['title'],['message']...
-                                                  */
-                                                  },
-                                              },
-                                          itemBuilder: (context) => [
-                                                ...MenuItems.items
-                                                    .map(buildItem)
-                                                    .toList(),
-                                              ]),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ));
-            }).toList(),
-          ),
+          ),]),
           SizedBox(height: 50),
           Center(
             child: OutlinedButton(
@@ -364,6 +355,8 @@ class _AlertesState extends State<Alertes> {
           ],
         ),
       );
+
+
 }
 
 // ignore: must_be_immutable

@@ -87,11 +87,15 @@ class _AlertesState extends State<Alertes> {
       'title': 'WIFI',
       'message': 'Voici le mot de passe du WIFI: 00000000000000000000000',
       'device': 'android',
+      'days':[true,false,true,true,false,true,false],
+      'cible':[true,false,true],
     },
     {
       'title': 'Test',
       'message': 'Voici un message de test',
       'device': 'ios',
+      'days':[true,false,true,true,false,true,false],
+      'cible':[true,false,true],
     }
   ];
   @override
@@ -158,8 +162,8 @@ class _AlertesState extends State<Alertes> {
                                   alerte: new Alert(
                                       title: alerte['title'].toString(),
                                       content: alerte['message'].toString(),
-                                      days: [],
-                                      cibles: []))),
+                                      days: alerte['days'],
+                                      cibles: alerte['cible']))),
                         ),
                       },
                   child: Container(
@@ -220,8 +224,8 @@ class _AlertesState extends State<Alertes> {
                                                                   content: alerte[
                                                                           'message']
                                                                       .toString(),
-                                                                  days: [],
-                                                                  cibles: []))),
+                                                                  days: alerte['days'],
+                                                                  cibles: alerte['cible']))),
                                                     ),
                                                   },
                                                 if (item ==

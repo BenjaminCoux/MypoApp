@@ -1,10 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\stage\\mypo\\MypoApp\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "C:\\Users\\iagod\\Documents\\projects\\MypoApp\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\stage\\mypo\\MypoApp\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\iagod\\Documents\\projects\\MypoApp\\android\\app\\src\\main\\res\\values-night\\colors.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endColumns": "46",
+                        "endOffsets": "99"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "46",
+                        "endOffsets": "97"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\iagod\\Documents\\projects\\MypoApp\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -14,12 +31,12 @@
                         "endOffsets": "471,995"
                     },
                     "to": {
-                        "startLines": "2,7",
+                        "startLines": "3,8",
                         "startColumns": "4,4",
-                        "startOffsets": "55,352",
-                        "endLines": "6,9",
+                        "startOffsets": "102,399",
+                        "endLines": "7,10",
                         "endColumns": "12,12",
-                        "endOffsets": "347,516"
+                        "endOffsets": "394,563"
                     }
                 }
             ]

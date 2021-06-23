@@ -1,4 +1,4 @@
-#Mon Jun 21 14:45:41 GMT+01:00 2021
-base.0=D\:\\stage\\mypo\\MypoApp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Wed Jun 23 11:30:42 CEST 2021
+base.0=C\:\\Users\\iagod\\Documents\\projects\\MypoApp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

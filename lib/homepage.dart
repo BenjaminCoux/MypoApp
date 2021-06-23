@@ -1,12 +1,7 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:mypo/alerte.dart';
-import 'package:mypo/formulaire_alert.dart';
-import 'package:mypo/messagesend.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mypo/helppage.dart';
+import 'package:mypo/settings.dart';
+import 'package:mypo/sms_auto.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -25,23 +20,8 @@ class _HomePageState extends State<HomePage> {
       appBar: TopBar(),
       body: SingleChildScrollView(
           child: Column(
-        children: [Logo(), Alertes()],
+        children: [Logo(), Mode()],
       )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => new MessageScreen()),
-        ),
-        /*
-        
-        Test pour envoyer des messages sur le button bleue
-        
-        */
-        tooltip: 'Add',
-        child: Icon(
-          Icons.add,
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBarSection(),
     );
   }
@@ -52,6 +32,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       title: Text('My Co\'Laverie', style: TextStyle(fontFamily: 'calibri')),
       centerTitle: true,
       backgroundColor: d_green,
@@ -63,7 +44,7 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
+      height: MediaQuery.of(context).size.height * 0.30,
       decoration: BoxDecoration(
           color: Colors.white,
           image: DecorationImage(image: AssetImage('images/logo.png'))),
@@ -71,224 +52,137 @@ class Logo extends StatelessWidget {
   }
 }
 
-class SwitchButton extends StatefulWidget {
+class Mode extends StatefulWidget {
   @override
-  _StateSwitchButton createState() => _StateSwitchButton();
+  _ModeState createState() => new _ModeState();
 }
 
-class _StateSwitchButton extends State<SwitchButton> {
-  bool state = false;
+class _ModeState extends State<Mode> {
   @override
   Widget build(BuildContext context) {
-    return Switch(
-        value: state,
-        activeColor: d_green,
-        onChanged: (bool s) {
-          setState(() {
-            state = s;
-            print(state);
-          });
-        });
-  }
-}
-
-class Alertes extends StatefulWidget {
-  @override
-  _AlertesState createState() => new _AlertesState();
-}
-
-class _AlertesState extends State<Alertes> {
-  List _items = [];
-  bool toggleValue = false;
-  bool state = true;
-  String test = "";
-  String all = "-1";
-  int num=-1;
-  List alerts = <dynamic>[];
-  //List<bool> _selections = List.generate(2, (_) => false);
-
-  @override
-  void initState() {
-    initNb();
-    readAlert();
-    super.initState();
-  }
-
-    void initNb() async{
-      final prefs = await SharedPreferences.getInstance();
-      int tmp = prefs.getInt("nombreAlerte") ?? -1;
-      if(tmp == -1){
-        prefs.setInt("nombreAlerte", 0);
-      }
-    }
-
-  void readAlert()async {
-    final prefs = await SharedPreferences.getInstance();
-    //prefs.clear();
-    Set<String> keys = prefs.getKeys();
-    Iterator<String> it = keys.iterator;
-    String cc;
-    while(it.moveNext()){
-      cc=it.current;
-      if(cc!="nombreAlerte"){
-        alerts.add(json.decode(prefs.getString(cc) ?? "/"));
-      }
-    }
-  }
-  Alert fromStrtoJson(String input){
-    var res = json.decode(input);
-    return res;
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    for(int i=0;i<alerts.length;i++){
-      print(alerts[i]);
-    }
-    /*final tmp = alerts[0];
-    final test = tmp;
-    final tst = json.decode(test);
-    print(tst["title"]);*/
     return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
+      padding: EdgeInsets.all(5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            height: 30,
-            child: Row(children: [Text('Mes Alertes')]),
-          ),
-          Column(
-            //on utilise pas les crochets pour children car on va generer une liste
-            children: alerts.map((alerte) {
-              return InkWell(onTap:()=>{
-                    Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerte["title"], content: alerte["content"], days: jsonDecode(alerte["days"]), cibles:jsonDecode(alerte["cibles"])))),),
-              },child:Container(
-                margin: EdgeInsets.all(10),
-                height: 100,
-                width: double.infinity,
+          InkWell(
+            onTap: () {
+              print("Container clickeed");
+            },
+            child: Container(
+                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                margin: EdgeInsets.all(5),
+                height: MediaQuery.of(context).size.height * 0.30,
+                width: MediaQuery.of(context).size.width * 0.45,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(18),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: d_lightgray,
-                      spreadRadius: 4,
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
                     ),
-                  ],
-                ),
-
-                //contenu dans chaque container
-
-                child: Column(
-                  children: [
-                    Container(
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              alerte["title"],
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontFamily: 'calibri',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                            SwitchButton(),
-                          ],
-                        )),
-                    /* Contenu du message d'alerte
-                    Text(
-                      alerte['message'].toString(),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontFamily: 'calibri',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800),
+                    color: Colors.white,
+                    image: DecorationImage(
+                        image: AssetImage('images/smsprog.png'))),
+                child: Text(
+                  'Messages programmés',
+                  style: TextStyle(fontFamily: 'calibri'),
+                  overflow: TextOverflow.ellipsis,
+                )),
+          ),
+          InkWell(
+            onTap: () => Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new SmsAuto()),
+            ),
+            child: Container(
+                padding: EdgeInsets.all(5),
+                margin: EdgeInsets.all(5),
+                height: MediaQuery.of(context).size.height * 0.30,
+                width: MediaQuery.of(context).size.width * 0.45,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
                     ),
-                    */
-                  ],
-                ),
-              ));
-            }).toList(),
+                    color: Colors.white,
+                    image: DecorationImage(
+                        image: AssetImage('images/smsauto.png'))),
+                child: Text(
+                  'Messages automatiques',
+                  style: TextStyle(fontFamily: 'calibri'),
+                  overflow: TextOverflow.ellipsis,
+                )),
           )
         ],
       ),
     );
   }
-
-  toggleButton() {
-    setState(() {
-      toggleValue = !toggleValue;
-    });
-  }
 }
 
-class BottomNavigationBarSection extends StatelessWidget {
-  int nb = 0;
-  void getNb() async {
-    final pref = await SharedPreferences.getInstance();
-    nb = pref.getInt("nombreAlerte")! ;
-  }
+class BottomNavigationBarSection extends StatefulWidget {
+  @override
+  _StateBottomNavigationBarSection createState() =>
+      _StateBottomNavigationBarSection();
+}
+
+class _StateBottomNavigationBarSection
+    extends State<BottomNavigationBarSection> {
+  final String value = 'test';
+
   @override
   Widget build(BuildContext context) {
-    getNb();
     return BottomNavigationBar(
       selectedItemColor: Colors.white,
-      backgroundColor: d_green,
       items: [
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Icon(
-              Icons.home_rounded,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new HomePage()),
-              /*
-            () => {
-              print('test button accueil'),
-            },
-            ù*/
-            ),
-          ),
-          label: 'Accueil',
+              icon: Icon(
+                Icons.access_time,
+                color: d_green,
+                size: 50,
+              ),
+              onPressed: null),
+          label: '',
         ),
         BottomNavigationBarItem(
+          backgroundColor: d_green,
           icon: IconButton(
             icon: Icon(
-              Icons.add_rounded,
-              color: Colors.white,
+              Icons.stacked_bar_chart_rounded,
+              color: d_green,
+              size: 50,
             ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new FormScreen(nb:nb,)),
-              /*
-            onPressed: () => {
-              print('test button alerte'),
-            },
-            */
-            ),
+            onPressed: null,
           ),
-          label: 'Alertes',
+          label: '',
         ),
         BottomNavigationBarItem(
+          backgroundColor: d_green,
           icon: IconButton(
             icon: Icon(
               Icons.help_outline,
-              color: Colors.white,
+              color: d_green,
+              size: 50,
             ),
-            onPressed: () => {
-              print('test button aide'),
-            },
+            onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new HelpScreen(value: value)),
+            ),
           ),
-          label: 'Aide',
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: d_green,
+              size: 50,
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new SettingsScreenOne()),
+            ),
+          ),
+          label: '',
         ),
       ],
     );

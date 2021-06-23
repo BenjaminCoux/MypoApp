@@ -4,6 +4,7 @@
     <color name="notification_icon_bg_color">#ff9e9e9e</color>
     <color name="ripple_material_light">#1f000000</color>
     <color name="secondary_text_default_material_light">#8a000000</color>
+    <color name="splash_color">#ffffff</color>
     <dimen name="compat_button_inset_horizontal_material">4dp</dimen>
     <dimen name="compat_button_inset_vertical_material">6dp</dimen>
     <dimen name="compat_button_padding_horizontal_material">8dp</dimen>
@@ -80,6 +81,7 @@
         <!-- Show a splash screen on the activity. Automatically removed when
              Flutter draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>

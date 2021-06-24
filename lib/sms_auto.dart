@@ -9,7 +9,6 @@ import 'package:mypo/helppage.dart';
 import 'package:mypo/homepage.dart';
 import 'package:mypo/menu_item.dart';
 
-
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
@@ -22,7 +21,6 @@ class SmsAuto extends StatefulWidget {
 
 class _SmsAutoState extends State<SmsAuto> {
   List alerts = <dynamic>[];
-
 
   Future<List> readAlert() async {
     final prefs = await SharedPreferences.getInstance();
@@ -40,21 +38,21 @@ class _SmsAutoState extends State<SmsAuto> {
     }
     return res;
   }
+
   @override
   void initState() {
     readAlert();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(),
       body: SingleChildScrollView(
-          child: Column(
-        children: [Logo(), Alertes(alerts: alerts)],
-      ),),
+        child: Column(
+          children: [Logo(), Alertes(alerts: alerts)],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBarSection(),
     );
   }
@@ -114,15 +112,15 @@ class _AlertesState extends State<Alertes> {
       'title': 'WIFI',
       'message': 'Voici le mot de passe du WIFI: 00000000000000000000000',
       'device': 'android',
-      'days':[true,false,true,true,false,true,false],
-      'cible':[true,false,true],
+      'days': [true, false, true, true, false, true, false],
+      'cible': [true, false, true],
     },
     {
       'title': 'Test',
       'message': 'Voici un message de test',
       'device': 'ios',
-      'days':[true,false,true,true,false,true,false],
-      'cible':[true,false,true],
+      'days': [true, false, true, true, false, true, false],
+      'cible': [true, false, true],
     }
   ];
   @override
@@ -130,19 +128,20 @@ class _AlertesState extends State<Alertes> {
     initNb();
     super.initState();
   }
+
   void delete(var alert) async {
     final pref = await SharedPreferences.getInstance();
     Set<String> keys = pref.getKeys();
     Iterator<String> it = keys.iterator;
-   // pref.clear();
-    String cc="";
-    int i =0;
+    // pref.clear();
+    String cc = "";
+    int i = 0;
     bool done = false;
-    while(it.moveNext() && !done){
-      if(it.current!="nombreAlerte"){
-        if(alert["title"]==it.current){
+    while (it.moveNext() && !done) {
+      if (it.current != "nombreAlerte") {
+        if (alert["title"] == it.current) {
           pref.remove(it.current);
-          done=true;
+          done = true;
         }
       }
       i++;
@@ -157,60 +156,82 @@ class _AlertesState extends State<Alertes> {
     }
   }
 
-   myList(var alerts,int lenght){
-    return  lenght>0 ?ListView.builder(shrinkWrap: true,itemCount: alerts.length,itemBuilder: (BuildContext context,int index){
-       return InkWell(onTap:()=>{
-         Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerts[index]["title"], content: alerts[index]["content"], days: jsonDecode(alerts[index]["days"]), cibles:jsonDecode(alerts[index]["cibles"])))),),
-       },child:Container(
-           margin: EdgeInsets.all(10),
-       height: 106,
-       width: double.infinity,
-       decoration: BoxDecoration(
-       color: Colors.white,
-       borderRadius: BorderRadius.all(
-       Radius.circular(18),
-       ),
-       boxShadow: [
-       BoxShadow(
-       color: d_lightgray,
-       spreadRadius: 4,
-       blurRadius: 6,
-       offset: Offset(0, 3),
-       ),
-       ],
-       ),
+  myList(var alerts, int lenght) {
+    return lenght > 0
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: alerts.length,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                  onTap: () => {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new AlertScreen(
+                                  alerte: new Alert(
+                                      title: alerts[index]["title"],
+                                      content: alerts[index]["content"],
+                                      days: jsonDecode(alerts[index]["days"]),
+                                      cibles: jsonDecode(
+                                          alerts[index]["cibles"])))),
+                        ),
+                      },
+                  child: Container(
+                      margin: EdgeInsets.all(10),
+                      height: 106,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: d_lightgray,
+                            spreadRadius: 4,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
 
-       //contenu dans chaque container
+                      //contenu dans chaque container
 
-       child: Column(
-       children: [
-       Container(
-       margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-       child: Row(
-       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-       children: [
-       Text(
-       alerts[index]["title"],
-       overflow: TextOverflow.ellipsis,
-       style: TextStyle(
-       fontFamily: 'calibri',
-       fontSize: 18,
-       fontWeight: FontWeight.w800),
-       ),
-       Column(children:[SwitchButton(),
-       IconButton(
-       icon: const Icon(Icons.delete),
-       onPressed: ()=>{
-       setState((){
-         delete(alerts[index]);
-       alerts.remove(alerts[index]);
-       }),
-       },
-       ),])],))])));}) : const Text("Aucune alerte");
-
+                      child: Column(children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  alerts[index]["title"],
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontFamily: 'calibri',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                                Column(children: [
+                                  SwitchButton(),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () => {
+                                      setState(() {
+                                        delete(alerts[index]);
+                                        alerts.remove(alerts[index]);
+                                      }),
+                                    },
+                                  ),
+                                ])
+                              ],
+                            ))
+                      ])));
+            })
+        : const Text("Aucune alerte");
   }
 
-  Future<List> callAsyncFetch() => Future.delayed(Duration(seconds: 2), () => widget.alerts);
+  Future<List> callAsyncFetch() =>
+      Future.delayed(Duration(seconds: 2), () => widget.alerts);
   @override
   Widget build(BuildContext context) {
     print("hello");
@@ -231,19 +252,21 @@ class _AlertesState extends State<Alertes> {
             child: Row(children: [Text('Mes Alertes')]),
           ),
           Column(
-            //on utilise pas les crochets pour children car on va generer une liste
-            children: [FutureBuilder(
-              future: callAsyncFetch(),
-                    builder: (context,AsyncSnapshot<dynamic> snapshot){
-                      if(snapshot.hasData){
-          return Container(child:myList(widget.alerts,widget.alerts.length));
-          }
-          else{
-          return CircularProgressIndicator( color: d_green,);
-          }
-          }
-
-          ),]),
+              //on utilise pas les crochets pour children car on va generer une liste
+              children: [
+                FutureBuilder(
+                    future: callAsyncFetch(),
+                    builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasData) {
+                        return Container(
+                            child: myList(widget.alerts, widget.alerts.length));
+                      } else {
+                        return CircularProgressIndicator(
+                          color: d_green,
+                        );
+                      }
+                    }),
+              ]),
           SizedBox(height: 50),
           Center(
             child: OutlinedButton(
@@ -355,8 +378,6 @@ class _AlertesState extends State<Alertes> {
           ],
         ),
       );
-
-
 }
 
 // ignore: must_be_immutable

@@ -39,12 +39,16 @@ class _AlertScreenState extends State<AlertScreen> {
   @override
   void initState() {
     super.initState();
-    alertName.addListener(() {changed;});
-    alertContent.addListener(() {changed;});
+    alertName.addListener(() {
+      changed;
+    });
+    alertContent.addListener(() {
+      changed;
+    });
   }
 
-  void changed(){
-    this.hasChanged=true;
+  void changed() {
+    this.hasChanged = true;
   }
 
   @override
@@ -55,7 +59,6 @@ class _AlertScreenState extends State<AlertScreen> {
     alertContent.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +79,10 @@ class _AlertScreenState extends State<AlertScreen> {
           },
           child: ListView(
             children: <Widget>[
-              buildTextField('Nom', '${widget.alerte.title}',alertName),
+              buildTextField('Nom', '${widget.alerte.title}', alertName),
               SizedBox(height: 35),
-              buildTextField('Message', '${widget.alerte.content}',alertContent),
+              buildTextField(
+                  'Message', '${widget.alerte.content}', alertContent),
               SizedBox(height: 35),
               Container(
                   decoration: BoxDecoration(
@@ -95,8 +99,8 @@ class _AlertScreenState extends State<AlertScreen> {
                       ),
                     ],
                   ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Column(children: [
+                  margin: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Wrap(children: [
                     Container(
                         child: Padding(
                             padding: EdgeInsets.all(12),
@@ -118,7 +122,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[0],
                                 onChanged: (bool? value) => {
                                       setState(() {
-                                        hasChanged=true;
+                                        hasChanged = true;
                                         widget.alerte.days[0] = value!;
                                       })
                                     }),
@@ -128,7 +132,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[1],
                                 onChanged: (bool? value) => {
                                       setState(() {
-                                        hasChanged=true;
+                                        hasChanged = true;
                                         widget.alerte.days[1] = value!;
                                       })
                                     }),
@@ -138,7 +142,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[2],
                                 onChanged: (bool? value) => {
                                       setState(() {
-                                        hasChanged=true;
+                                        hasChanged = true;
                                         widget.alerte.days[2] = value!;
                                       })
                                     }),
@@ -148,7 +152,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[3],
                                 onChanged: (bool? value) => {
                                       setState(() {
-                                        hasChanged=true;
+                                        hasChanged = true;
                                         widget.alerte.days[3] = value!;
                                       })
                                     }),
@@ -167,7 +171,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[4],
                                 onChanged: (bool? value) => {
                                       setState(() {
-                                        hasChanged=true;
+                                        hasChanged = true;
                                         widget.alerte.days[4] = value!;
                                       })
                                     }),
@@ -177,7 +181,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[5],
                                 onChanged: (bool? value) => {
                                       setState(() {
-                                        hasChanged=true;
+                                        hasChanged = true;
                                         widget.alerte.days[5] = value!;
                                       })
                                     }),
@@ -187,7 +191,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[6],
                                 onChanged: (bool? value) => {
                                       setState(() {
-                                        hasChanged=true;
+                                        hasChanged = true;
                                         widget.alerte.days[6] = value!;
                                       })
                                     }),
@@ -198,74 +202,87 @@ class _AlertScreenState extends State<AlertScreen> {
                     ),
                   ])),
               SizedBox(height: 35),
-              Container(decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(18),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: d_lightgray,
-                    spreadRadius: 4,
-                    blurRadius: 6,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child:Column(children: [
-                    Padding(padding : EdgeInsets.all(12),child:Row(children:[Container(child: Text("Cibles",style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: d_green,
-                    )),)])),
-                    Container(
-                      child:  Padding(padding: EdgeInsets.all(8),child:
-                Row(children: [
-                  Checkbox(
-                      activeColor: d_green,
-                      value: widget.alerte.cibles[0],
-                      onChanged: (bool? value) => {
-                        setState(() {
-                          hasChanged=true;
-                          widget.alerte.cibles[0] = value!;
-                        })
-                      }),
-                  Text("Numéros Enregistrés"),
-                  Checkbox(
-                      activeColor: d_green,
-                      value: widget.alerte.cibles[1],
-                      onChanged: (bool? value) => {
-                        setState(() {
-                          hasChanged=true;
-                          widget.alerte.cibles[1] = value!;
-                        })
-                      }),
-                  Text("SMS reçu"),
-
-                ],)
-                      ),
+              Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
                     ),
-                    Column(children: [
-                      Padding(padding: EdgeInsets.all(8),
-                      child: Row(children: [
-                        Checkbox(
-                            activeColor: d_green,
-                            value: widget.alerte.cibles[2],
-                            onChanged: (bool? value) => {
-                              setState(() {
-                                hasChanged=true;
-                                widget.alerte.cibles[2] = value!;
-                              })
-                            }),
-                        Text("Appels Manqués")
-                      ],),)
-                    ],)
-              ],)),
-              
-
-
-
+                    boxShadow: [
+                      BoxShadow(
+                        color: d_lightgray,
+                        spreadRadius: 4,
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Row(children: [
+                            Container(
+                              child: Text("Cibles",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22,
+                                    color: d_green,
+                                  )),
+                            )
+                          ])),
+                      Container(
+                        child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                    activeColor: d_green,
+                                    value: widget.alerte.cibles[0],
+                                    onChanged: (bool? value) => {
+                                          setState(() {
+                                            hasChanged = true;
+                                            widget.alerte.cibles[0] = value!;
+                                          })
+                                        }),
+                                Text("Numéros Enregistrés"),
+                                Checkbox(
+                                    activeColor: d_green,
+                                    value: widget.alerte.cibles[1],
+                                    onChanged: (bool? value) => {
+                                          setState(() {
+                                            hasChanged = true;
+                                            widget.alerte.cibles[1] = value!;
+                                          })
+                                        }),
+                                Text("SMS reçu"),
+                              ],
+                            )),
+                      ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                    activeColor: d_green,
+                                    value: widget.alerte.cibles[2],
+                                    onChanged: (bool? value) => {
+                                          setState(() {
+                                            hasChanged = true;
+                                            widget.alerte.cibles[2] = value!;
+                                          })
+                                        }),
+                                Text("Appels Manqués")
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -298,9 +315,12 @@ class _AlertScreenState extends State<AlertScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    onPressed: () {save();
-                    Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) =>HomePage()));},
+                    onPressed: () {
+                      save();
+                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    },
                     child: Text(
                       "SAVE",
                       style: TextStyle(
@@ -319,7 +339,8 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
-  TextField buildTextField(String labelText, String placeholder,TextEditingController controller) {
+  TextField buildTextField(
+      String labelText, String placeholder, TextEditingController controller) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
@@ -337,12 +358,12 @@ class _AlertScreenState extends State<AlertScreen> {
   }
 
   void save() async {
-    if(hasChanged){
+    if (hasChanged) {
       final pref = await SharedPreferences.getInstance();
       final keys = pref.getKeys();
       Iterator<String> it = keys.iterator;
-      while(it.moveNext()){
-        if(it.current == widget.alerte.title){
+      while (it.moveNext()) {
+        if (it.current == widget.alerte.title) {
           pref.remove(it.current);
         }
       }
@@ -350,7 +371,8 @@ class _AlertScreenState extends State<AlertScreen> {
       String content = alertContent.text;
       final days = widget.alerte.days;
       final cible = widget.alerte.cibles;
-      String tmp = '{"title":"$title","content":"$content","days":"$days","cibles":"$cible"}';
+      String tmp =
+          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible"}';
       pref.setString(title, tmp);
     }
   }

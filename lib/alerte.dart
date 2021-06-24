@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/formulaire_alert.dart';
+import 'package:mypo/homepage.dart';
 
 import 'package:mypo/sms_auto.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -23,7 +25,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 // ignore: must_be_immutable
 class AlertScreen extends StatefulWidget {
   Alert alerte;
-
   AlertScreen({required this.alerte});
 
   @override
@@ -31,6 +32,31 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
+  final alertName = TextEditingController();
+  final alertContent = TextEditingController();
+  bool hasChanged = false;
+
+  @override
+  void initState() {
+    super.initState();
+    alertName.addListener(() {changed;});
+    alertContent.addListener(() {changed;});
+  }
+
+  void changed(){
+    this.hasChanged=true;
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    alertName.dispose();
+    alertContent.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,62 +76,10 @@ class _AlertScreenState extends State<AlertScreen> {
           },
           child: ListView(
             children: <Widget>[
-              buildTextField('Nom', '${widget.alerte.title}'),
+              buildTextField('Nom', '${widget.alerte.title}',alertName),
               SizedBox(height: 35),
-              buildTextField('Message', '${widget.alerte.content}'),
+              buildTextField('Message', '${widget.alerte.content}',alertContent),
               SizedBox(height: 35),
-              /* Main
-
-              
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(widget.alerte.title),
-                  ),
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Row(children: [Text("Contenu de l'alerte : ")])),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(widget.alerte.content),
-                  ),
-                ),
-              ),
               Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -144,6 +118,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[0],
                                 onChanged: (bool? value) => {
                                       setState(() {
+                                        hasChanged=true;
                                         widget.alerte.days[0] = value!;
                                       })
                                     }),
@@ -153,6 +128,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[1],
                                 onChanged: (bool? value) => {
                                       setState(() {
+                                        hasChanged=true;
                                         widget.alerte.days[1] = value!;
                                       })
                                     }),
@@ -162,6 +138,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[2],
                                 onChanged: (bool? value) => {
                                       setState(() {
+                                        hasChanged=true;
                                         widget.alerte.days[2] = value!;
                                       })
                                     }),
@@ -171,6 +148,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[3],
                                 onChanged: (bool? value) => {
                                       setState(() {
+                                        hasChanged=true;
                                         widget.alerte.days[3] = value!;
                                       })
                                     }),
@@ -189,6 +167,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[4],
                                 onChanged: (bool? value) => {
                                       setState(() {
+                                        hasChanged=true;
                                         widget.alerte.days[4] = value!;
                                       })
                                     }),
@@ -198,6 +177,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[5],
                                 onChanged: (bool? value) => {
                                       setState(() {
+                                        hasChanged=true;
                                         widget.alerte.days[5] = value!;
                                       })
                                     }),
@@ -207,6 +187,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 value: widget.alerte.days[6],
                                 onChanged: (bool? value) => {
                                       setState(() {
+                                        hasChanged=true;
                                         widget.alerte.days[6] = value!;
                                       })
                                     }),
@@ -216,9 +197,74 @@ class _AlertScreenState extends State<AlertScreen> {
                       ),
                     ),
                   ])),
+              SizedBox(height: 35),
+              Container(decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: d_lightgray,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child:Column(children: [
+                    Padding(padding : EdgeInsets.all(12),child:Row(children:[Container(child: Text("Cibles",style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: d_green,
+                    )),)])),
+                    Container(
+                      child:  Padding(padding: EdgeInsets.all(8),child:
+                Row(children: [
+                  Checkbox(
+                      activeColor: d_green,
+                      value: widget.alerte.cibles[0],
+                      onChanged: (bool? value) => {
+                        setState(() {
+                          hasChanged=true;
+                          widget.alerte.cibles[0] = value!;
+                        })
+                      }),
+                  Text("Numéros Enregistrés"),
+                  Checkbox(
+                      activeColor: d_green,
+                      value: widget.alerte.cibles[1],
+                      onChanged: (bool? value) => {
+                        setState(() {
+                          hasChanged=true;
+                          widget.alerte.cibles[1] = value!;
+                        })
+                      }),
+                  Text("SMS reçu"),
+
+                ],)
+                      ),
+                    ),
+                    Column(children: [
+                      Padding(padding: EdgeInsets.all(8),
+                      child: Row(children: [
+                        Checkbox(
+                            activeColor: d_green,
+                            value: widget.alerte.cibles[2],
+                            onChanged: (bool? value) => {
+                              setState(() {
+                                hasChanged=true;
+                                widget.alerte.cibles[2] = value!;
+                              })
+                            }),
+                        Text("Appels Manqués")
+                      ],),)
+                    ],)
+              ],)),
               
 
-              Main */
+
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -252,7 +298,9 @@ class _AlertScreenState extends State<AlertScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {save();
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>HomePage()));},
                     child: Text(
                       "SAVE",
                       style: TextStyle(
@@ -271,8 +319,9 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
-  TextField buildTextField(String labelText, String placeholder) {
+  TextField buildTextField(String labelText, String placeholder,TextEditingController controller) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(8),
         labelText: labelText,
@@ -285,5 +334,24 @@ class _AlertScreenState extends State<AlertScreen> {
         ),
       ),
     );
+  }
+
+  void save() async {
+    if(hasChanged){
+      final pref = await SharedPreferences.getInstance();
+      final keys = pref.getKeys();
+      Iterator<String> it = keys.iterator;
+      while(it.moveNext()){
+        if(it.current == widget.alerte.title){
+          pref.remove(it.current);
+        }
+      }
+      String title = alertName.text;
+      String content = alertContent.text;
+      final days = widget.alerte.days;
+      final cible = widget.alerte.cibles;
+      String tmp = '{"title":"$title","content":"$content","days":"$days","cibles":"$cible"}';
+      pref.setString(title, tmp);
+    }
   }
 }

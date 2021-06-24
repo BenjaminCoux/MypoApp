@@ -55,10 +55,9 @@ class _FormState extends State<FormScreen> {
   void saveAlert(String title, String content, var days, var cibles) async {
     final pref = await SharedPreferences.getInstance();
     //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
-    String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles"}';
+    String tmp = '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles"}';
     print("alert" + widget.nb.toString());
-    pref.setString("alert" + widget.nb.toString(), tmp);
+    pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);
   }
 

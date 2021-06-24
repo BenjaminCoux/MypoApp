@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mypo/helppage.dart';
 import 'package:mypo/homepage.dart';
 import 'package:mypo/menu_item.dart';
-import 'package:mypo/menu_items.dart';
+
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -134,19 +134,19 @@ class _AlertesState extends State<Alertes> {
     final pref = await SharedPreferences.getInstance();
     Set<String> keys = pref.getKeys();
     Iterator<String> it = keys.iterator;
+   // pref.clear();
     String cc="";
     int i =0;
     bool done = false;
     while(it.moveNext() && !done){
-      cc=it.current;
-      if(cc!="nombreAlerte"){
-        if(alert["title"]==pref.get(cc)){
+      if(it.current!="nombreAlerte"){
+        if(alert["title"]==it.current){
+          pref.remove(it.current);
           done=true;
         }
       }
       i++;
     }
-    pref.remove(cc);
   }
 
   void initNb() async {
@@ -157,8 +157,8 @@ class _AlertesState extends State<Alertes> {
     }
   }
 
-   myList(var alerts){
-    return  ListView.builder(shrinkWrap: true,itemCount: alerts.length,itemBuilder: (BuildContext context,int index){
+   myList(var alerts,int lenght){
+    return  lenght>0 ?ListView.builder(shrinkWrap: true,itemCount: alerts.length,itemBuilder: (BuildContext context,int index){
        return InkWell(onTap:()=>{
          Navigator.push(context, new MaterialPageRoute(builder: (context) => new AlertScreen(alerte: new Alert(title: alerts[index]["title"], content: alerts[index]["content"], days: jsonDecode(alerts[index]["days"]), cibles:jsonDecode(alerts[index]["cibles"])))),),
        },child:Container(
@@ -206,7 +206,7 @@ class _AlertesState extends State<Alertes> {
        alerts.remove(alerts[index]);
        }),
        },
-       ),])],))])));});
+       ),])],))])));}) : const Text("Aucune alerte");
 
   }
 
@@ -236,10 +236,10 @@ class _AlertesState extends State<Alertes> {
               future: callAsyncFetch(),
                     builder: (context,AsyncSnapshot<dynamic> snapshot){
                       if(snapshot.hasData){
-          return Container(child:myList(widget.alerts));
+          return Container(child:myList(widget.alerts,widget.alerts.length));
           }
           else{
-          return CircularProgressIndicator();
+          return CircularProgressIndicator( color: d_green,);
           }
           }
 

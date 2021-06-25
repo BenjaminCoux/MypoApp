@@ -156,7 +156,46 @@ class _AlertesState extends State<Alertes> {
     }
   }
 
-  myList(var alerts, int lenght) {
+  /*setState(() {
+                                        delete(alerts[index]);
+                                        alerts.remove(alerts[index]);
+                                      })*/
+
+  buildPopupDialog(dynamic alerte){
+    String title = "";
+    title = alerte["title"];
+    return new AlertDialog(
+      title: Text("voulez vous supprimer $title ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+            setState(() {
+              delete(alerte);
+              widget.alerts.remove(alerte);
+            });
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Oui'),
+        ),
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Non'),
+        ),
+      ],
+    );
+  }
+
+  myList(var alerts, int lenght,BuildContext context) {
     return lenght > 0
         ? ListView.builder(
             shrinkWrap: true,
@@ -216,11 +255,8 @@ class _AlertesState extends State<Alertes> {
                                   IconButton(
                                     icon: const Icon(Icons.delete),
                                     onPressed: () => {
-                                      setState(() {
-                                        delete(alerts[index]);
-                                        alerts.remove(alerts[index]);
-                                      }),
-                                    },
+                                      showDialog(context: context, builder: (BuildContext context) => buildPopupDialog(alerts[index])),
+                                      },
                                   ),
                                 ])
                               ],
@@ -259,7 +295,7 @@ class _AlertesState extends State<Alertes> {
                     builder: (context, AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.hasData) {
                         return Container(
-                            child: myList(widget.alerts, widget.alerts.length));
+                            child: myList(widget.alerts, widget.alerts.length,context));
                       } else {
                         return CircularProgressIndicator(
                           color: d_green,

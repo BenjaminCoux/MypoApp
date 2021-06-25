@@ -23,12 +23,14 @@ class _AlertScreenState extends State<AlertScreen> {
   late final alertName;
   late final alertContent;
   bool hasChanged = false;
+  bool titlechanged = false;
+  bool contentchanged = false;
 
   @override
   void initState() {
     super.initState();
-    alertName = new TextEditingController(text: widget.alerte.title);
-    alertContent = new TextEditingController(text: widget.alerte.content);
+    alertName = TextEditingController(text: widget.alerte.title);
+    alertContent = TextEditingController(text: widget.alerte.content);
     alertName.addListener(() {
       changed;
     });
@@ -308,8 +310,10 @@ class _AlertScreenState extends State<AlertScreen> {
                     onPressed: () {
                       save();
                       Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => new HomePage()));
                     },
                     child: Text(
                       "SAVE",
@@ -338,6 +342,13 @@ class _AlertScreenState extends State<AlertScreen> {
       String labelText, String placeholder, TextEditingController controller) {
     return TextField(
       controller: controller,
+      onChanged: (String value) => {
+        setState(() {
+          this.contentchanged = true;
+          this.titlechanged = true;
+          this.hasChanged = true;
+        })
+      },
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(8),
         labelText: labelText,
@@ -365,12 +376,21 @@ class _AlertScreenState extends State<AlertScreen> {
           pref.remove(it.current);
         }
       }
-      String title = alertName.text;
-      String content = alertContent.text;
+      String title = widget.alerte.title;
+      print(titlechanged);
+      print(contentchanged);
+      if (titlechanged) {
+        title = alertName.text;
+      }
+      String content = widget.alerte.content;
+      if (contentchanged) {
+        content = alertContent.text;
+      }
       final days = widget.alerte.days;
       final cible = widget.alerte.cibles;
+      bool active = widget.alerte.active;
       String tmp =
-          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible"}';
+          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active}';
       pref.setString(title, tmp);
     }
   }

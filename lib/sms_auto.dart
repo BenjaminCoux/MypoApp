@@ -22,7 +22,6 @@ class _SmsAutoState extends State<SmsAuto> {
 
   Future<List> readAlert() async {
     final prefs = await SharedPreferences.getInstance();
-    //prefs.clear();
     List res = <dynamic>[];
     Set<String> keys = prefs.getKeys();
     Iterator<String> it = keys.iterator;
@@ -100,13 +99,14 @@ class _StateSwitchButton extends State<SwitchButton> {
           changeActive(widget.alerte);
           setState(() {
             state = s;
-            widget.alerte["active"]=s;
+            widget.alerte["active"] = s;
             print(state);
           });
         });
   }
-  changeActive(dynamic alerte) async{
-    final prefs =  await SharedPreferences.getInstance();
+
+  changeActive(dynamic alerte) async {
+    final prefs = await SharedPreferences.getInstance();
     final keys = prefs.getKeys();
     Iterator<String> it = keys.iterator;
     while (it.moveNext()) {
@@ -306,7 +306,9 @@ class _AlertesState extends State<Alertes> {
                                   ],
                                 ),
                                 Row(children: [
-                                  SwitchButton(alerte: alerts[index],),
+                                  SwitchButton(
+                                    alerte: alerts[index],
+                                  ),
                                   IconButton(
                                     icon: const Icon(Icons.delete),
                                     onPressed: () => {

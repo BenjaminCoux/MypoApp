@@ -32,13 +32,15 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
-  final alertName = TextEditingController();
-  final alertContent = TextEditingController();
+  late final  alertName ;
+  late final  alertContent ;
   bool hasChanged = false;
 
   @override
   void initState() {
     super.initState();
+    alertName = new TextEditingController(text: widget.alerte.title);
+    alertContent = new TextEditingController(text: widget.alerte.content);
     alertName.addListener(() {
       changed;
     });

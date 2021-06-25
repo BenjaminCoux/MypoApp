@@ -83,6 +83,8 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 */
 
 class SwitchButton extends StatefulWidget {
+  dynamic alerte;
+  SwitchButton({required this.alerte});
   @override
   _StateSwitchButton createState() => _StateSwitchButton();
 }
@@ -92,14 +94,34 @@ class _StateSwitchButton extends State<SwitchButton> {
   @override
   Widget build(BuildContext context) {
     return Switch(
-        value: state,
+        value: widget.alerte["active"],
         activeColor: d_green,
         onChanged: (bool s) {
+          changeActive(widget.alerte);
           setState(() {
             state = s;
+            widget.alerte["active"]=s;
             print(state);
           });
         });
+  }
+  changeActive(dynamic alerte) async{
+    final prefs =  await SharedPreferences.getInstance();
+    final keys = prefs.getKeys();
+    Iterator<String> it = keys.iterator;
+    while (it.moveNext()) {
+      if (it.current == widget.alerte["title"]) {
+        prefs.remove(it.current);
+      }
+    }
+    String title = alerte["title"];
+    String content = alerte["content"];
+    final days = alerte["days"];
+    final cible = alerte["cibles"];
+    final active = alerte["active"];
+    String tmp =
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active}';
+    prefs.setString(title, tmp);
   }
 }
 
@@ -284,7 +306,7 @@ class _AlertesState extends State<Alertes> {
                                   ],
                                 ),
                                 Row(children: [
-                                  SwitchButton(),
+                                  SwitchButton(alerte: alerts[index],),
                                   IconButton(
                                     icon: const Icon(Icons.delete),
                                     onPressed: () => {

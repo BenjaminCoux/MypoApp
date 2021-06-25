@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mypo/alerte.dart';
 import 'package:mypo/formulaire_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mypo/helppage.dart';
 import 'package:mypo/homepage.dart';
-import 'package:mypo/menu_item.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -109,6 +107,7 @@ class _StateSwitchButton extends State<SwitchButton> {
   -That class handles the whole alert screen
 */
 
+// ignore: must_be_immutable
 class Alertes extends StatefulWidget {
   List alerts = <dynamic>[];
   Alertes({required this.alerts});
@@ -153,7 +152,9 @@ class _AlertesState extends State<Alertes> {
     final pref = await SharedPreferences.getInstance();
     Set<String> keys = pref.getKeys();
     Iterator<String> it = keys.iterator;
+    // ignore: unused_local_variable
     String cc = "";
+    // ignore: unused_local_variable
     int i = 0;
     bool done = false;
     while (it.moveNext() && !done) {
@@ -213,10 +214,10 @@ class _AlertesState extends State<Alertes> {
       ],
     );
   }
+
   /*
     -Function that creates the list of alerts on the screen
   */
-
   myList(var alerts, int lenght, BuildContext context) {
     return lenght > 0
         ? ListView.builder(

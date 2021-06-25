@@ -1,7 +1,4 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:mypo/homepage.dart';
 import 'package:mypo/sms_auto.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,14 +9,9 @@ const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
 
-// ignore: must_be_immutable
-class FormScreen extends StatefulWidget {
-  int nb;
-  FormScreen({required this.nb});
-  @override
-  _FormState createState() => _FormState();
-}
-
+/*
+  -This class create the top app bar widget
+*/
 class TopBarA extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => new Size.fromHeight(50);
   @override
@@ -31,6 +23,17 @@ class TopBarA extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: d_green,
     );
   }
+}
+
+/*
+  -This class creates the screeen to crate a new alor with all the options 
+*/
+// ignore: must_be_immutable
+class FormScreen extends StatefulWidget {
+  int nb;
+  FormScreen({required this.nb});
+  @override
+  _FormState createState() => _FormState();
 }
 
 class _FormState extends State<FormScreen> {
@@ -55,10 +58,15 @@ class _FormState extends State<FormScreen> {
     form!.save();
   }
 
+  /*
+    -Function wich saves the alerts with Shared Preferences
+  */
+
   void saveAlert(String title, String content, var days, var cibles) async {
     final pref = await SharedPreferences.getInstance();
     //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
-    String tmp = '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles"}';
+    String tmp =
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles"}';
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);
@@ -314,7 +322,7 @@ class _FormState extends State<FormScreen> {
                   onPressed: () => {
                         saveAlert(
                             alertName.text, alertContent.text, week, cibles),
-                            Navigator.pop(context),
+                        Navigator.pop(context),
                         Navigator.push(
                           context,
                           new MaterialPageRoute(
@@ -330,6 +338,10 @@ class _FormState extends State<FormScreen> {
     );
   }
 }
+
+/*
+  -alerts are elements of the class Alert
+*/
 
 class Alert {
   String title;

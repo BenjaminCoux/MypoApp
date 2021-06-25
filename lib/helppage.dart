@@ -33,35 +33,35 @@ class HelpScreen extends StatelessWidget {
                             title: Text("Question 1"),
                             trailing: Icon(Icons.keyboard_arrow_right),
                             onTap: () {
-                              //open change password
+                              //open
                             }),
                         _buildDivider(),
                         ListTile(
                             title: Text("Question 2"),
                             trailing: Icon(Icons.keyboard_arrow_right),
                             onTap: () {
-                              //open change language
+                              //open
                             }),
                         _buildDivider(),
                         ListTile(
                             title: Text("Question 3"),
                             trailing: Icon(Icons.keyboard_arrow_right),
                             onTap: () {
-                              //open change theme
+                              //open
                             }),
                         _buildDivider(),
                         ListTile(
                             title: Text("Question 4"),
                             trailing: Icon(Icons.keyboard_arrow_right),
                             onTap: () {
-                              //open change language
+                              //open
                             }),
                         _buildDivider(),
                         ListTile(
                             title: Text("Question 5"),
                             trailing: Icon(Icons.keyboard_arrow_right),
                             onTap: () {
-                              //open change language
+                              //open
                             }),
                         _buildDivider(),
                       ],
@@ -99,6 +99,9 @@ class HelpScreen extends StatelessWidget {
         ));
   }
 
+/*
+  - this function creates a little divider between the questions on the help page
+*/
   Container _buildDivider() {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 8),

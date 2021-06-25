@@ -10,18 +10,6 @@ const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
 
-class TopBar extends StatelessWidget implements PreferredSizeWidget {
-  Size get preferredSize => new Size.fromHeight(50);
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Text('My Co\'Laverie', style: TextStyle(fontFamily: 'calibri')),
-      centerTitle: true,
-      backgroundColor: d_green,
-    );
-  }
-}
-
 // ignore: must_be_immutable
 class AlertScreen extends StatefulWidget {
   Alert alerte;
@@ -32,8 +20,8 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
-  late final  alertName ;
-  late final  alertContent ;
+  late final alertName;
+  late final alertContent;
   bool hasChanged = false;
 
   @override
@@ -341,6 +329,11 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
+  /*
+  function that crates a text field
+
+  */
+
   TextField buildTextField(
       String labelText, String placeholder, TextEditingController controller) {
     return TextField(
@@ -359,6 +352,9 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
+  /*
+    -Function that saves the modifications of alerts in shared preferences
+  */
   void save() async {
     if (hasChanged) {
       final pref = await SharedPreferences.getInstance();

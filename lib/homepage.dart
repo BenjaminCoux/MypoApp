@@ -4,10 +4,18 @@ import 'package:mypo/settings.dart';
 import 'package:mypo/sms_auto.dart';
 import 'package:mypo/test.dart';
 
+/*
+  -colors used in the app
+*/
+
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
+
+/*
+  -That class creates the home page
+*/
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,6 +35,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+/*
+  -that class creates the top app bad widget
+*/
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => new Size.fromHeight(50);
@@ -41,6 +52,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+/*
+    -that class creates the logo in the middle
+*/
+
 class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -53,6 +68,10 @@ class Logo extends StatelessWidget {
   }
 }
 
+/*
+    -That class creates icons to navigate to : programmed-msg or auto-message
+
+*/
 class Mode extends StatefulWidget {
   @override
   _ModeState createState() => new _ModeState();
@@ -117,6 +136,10 @@ class _ModeState extends State<Mode> {
     );
   }
 }
+
+/*
+  -This class creates the widget responsible of the bottom navigation bar
+*/
 
 class BottomNavigationBarSection extends StatefulWidget {
   @override

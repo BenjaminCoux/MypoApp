@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/helppage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:telephony/telephony.dart';
+
+/*
+  This Function gets incomming messages in the back ground
+  Check if it contains any of the keys of activated alerts
+  Send back the alert message to the person
+*/
 
 onBackgroundMessage(SmsMessage message) async {
   final pref = await SharedPreferences.getInstance();
@@ -11,30 +16,31 @@ onBackgroundMessage(SmsMessage message) async {
   Iterator<String> it = keys.iterator;
 
   bool done = false;
+  // go through all the alerts and check if the message contains any of the keys
+  // if yes send back message with current alert message
+  // if no do nothing
   while (it.moveNext() && !done) {
     if (it.current != "nombreAlerte") {
+      // ignore: todo
+      //TODO
       print(it.current);
-
-      String clef = "WIFI";
-      clef = it.current;
-      String contenu = "Voici le mdp : 0000";
-      String? test = pref.getString(it.current);
-      print(test);
-
-      debugPrint("onBackgroundMessage called");
-
-      //si le message reçu contient
-      if (message.body!.contains(clef)) {
-        print(message.address.toString() +
-            " : ce numero contient la clef (" +
-            clef +
-            ") , nous avons envoyer le message suivant [" +
-            contenu +
-            "]");
-        Telephony.backgroundInstance
-            .sendSms(to: message.address.toString(), message: contenu);
-      }
     }
+  }
+  String clef = "WIFI";
+  String contenu = "Message de test (ON BACKGROUND)";
+
+  debugPrint("onBackgroundMessage called");
+
+  //si le message reçu contient
+  if (message.body!.contains(clef)) {
+    print(message.address.toString() +
+        " : ce numero contient la clef (" +
+        clef +
+        ") , nous avons envoyer le message suivant [" +
+        contenu +
+        "]");
+    Telephony.backgroundInstance
+        .sendSms(to: message.address.toString(), message: contenu);
   }
 }
 
@@ -46,17 +52,27 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   String value = 'teteet';
 
+  // ignore: unused_field
   String _message = "";
   final telephony = Telephony.instance;
 
+  /*
+    -This function initiate the process of auto messaging
+  */
   @override
   void initState() {
     super.initState();
     initPlatformState();
   }
 
+  /*
+    -This function do things when we recieve a message on the foreground
+    it gets incomming messages in the back ground
+    Check if it contains any of the keys of activated alerts
+    Send back the alert message to the person
+  */
   onMessage(SmsMessage message) async {
-    String contenu = " Message de test ";
+    String contenu = " Message de test (ON MESSAGE)";
     setState(() {
       _message = message.body ?? "Error reading message body.";
       print("vous avez reçu une nouvelle message");
@@ -65,11 +81,19 @@ class _TestPageState extends State<TestPage> {
     });
   }
 
+  /*
+     This function return the status of the message after sending it
+  */
+
   onSendStatus(SendStatus status) {
     setState(() {
       _message = status == SendStatus.SENT ? "sent" : "delivered";
     });
   }
+
+  /*
+    -This function ask for permissions and initiate the process to send messages
+  */
 
   Future<void> initPlatformState() async {
     final bool? result = await telephony.requestPhoneAndSmsPermissions;
@@ -82,25 +106,6 @@ class _TestPageState extends State<TestPage> {
     }
 
     if (!mounted) return;
-  }
-
-  ReponseWifi(String clef, String contenu) async {
-    List<SmsMessage> messages = await telephony.getInboxSms();
-
-    for (SmsMessage msg in messages) {
-      //debugPrint(msg.body.toString());
-      if (msg.body!.contains(clef)) {
-        print(msg.address.toString() +
-            " : ce numero contient la clef (" +
-            clef +
-            ") , nous avons envoyer le message suivant [" +
-            contenu +
-            "]");
-        if (msg.address != null) {
-          await telephony.sendSms(to: msg.address.toString(), message: contenu);
-        }
-      }
-    }
   }
 
   @override

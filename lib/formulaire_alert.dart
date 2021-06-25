@@ -1,5 +1,8 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:mypo/homepage.dart';
+import 'package:mypo/sms_auto.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -311,10 +314,11 @@ class _FormState extends State<FormScreen> {
                   onPressed: () => {
                         saveAlert(
                             alertName.text, alertContent.text, week, cibles),
+                            Navigator.pop(context),
                         Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => new HomePage()),
+                              builder: (context) => new SmsAuto()),
                         )
                       },
                   child:

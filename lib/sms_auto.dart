@@ -48,9 +48,14 @@ class _SmsAutoState extends State<SmsAuto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [Logo(), Alertes(alerts: alerts)],
+      body: Scrollbar(
+        thickness: 20,
+        hoverThickness: 20,
+        isAlwaysShown: true,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [Alertes(alerts: alerts)],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBarSection(),
@@ -58,6 +63,9 @@ class _SmsAutoState extends State<SmsAuto> {
   }
 }
 
+/*
+  -Function that handle the top bar of the app
+*/
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => new Size.fromHeight(50);
   @override
@@ -70,6 +78,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
+
+/*
+  -Function that handle the switch button of an alert
+*/
 
 class SwitchButton extends StatefulWidget {
   @override
@@ -91,6 +103,10 @@ class _StateSwitchButton extends State<SwitchButton> {
         });
   }
 }
+
+/*  
+  -That class handles the whole alert screen
+*/
 
 class Alertes extends StatefulWidget {
   List alerts = <dynamic>[];
@@ -129,11 +145,13 @@ class _AlertesState extends State<Alertes> {
     super.initState();
   }
 
+  /*
+    -Function to delete an alert of the list
+  */
   void delete(var alert) async {
     final pref = await SharedPreferences.getInstance();
     Set<String> keys = pref.getKeys();
     Iterator<String> it = keys.iterator;
-    // pref.clear();
     String cc = "";
     int i = 0;
     bool done = false;
@@ -148,6 +166,9 @@ class _AlertesState extends State<Alertes> {
     }
   }
 
+  /*
+    - Function that get the number of alerts saved, 0 by default
+  */
   void initNb() async {
     final prefs = await SharedPreferences.getInstance();
     int tmp = prefs.getInt("nombreAlerte") ?? -1;
@@ -156,12 +177,10 @@ class _AlertesState extends State<Alertes> {
     }
   }
 
-  /*setState(() {
-                                        delete(alerts[index]);
-                                        alerts.remove(alerts[index]);
-                                      })*/
-
-  buildPopupDialog(dynamic alerte){
+  /*
+    -Function that creates a pop up for asking a yes no question
+  */
+  buildPopupDialog(dynamic alerte) {
     String title = "";
     title = alerte["title"];
     return new AlertDialog(
@@ -169,8 +188,7 @@ class _AlertesState extends State<Alertes> {
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-        ],
+        children: <Widget>[],
       ),
       actions: <Widget>[
         new FlatButton(
@@ -194,8 +212,11 @@ class _AlertesState extends State<Alertes> {
       ],
     );
   }
+  /*
+    -Function that creates the list of alerts on the screen
+  */
 
-  myList(var alerts, int lenght,BuildContext context) {
+  myList(var alerts, int lenght, BuildContext context) {
     return lenght > 0
         ? ListView.builder(
             shrinkWrap: true,
@@ -216,7 +237,7 @@ class _AlertesState extends State<Alertes> {
                         ),
                       },
                   child: Container(
-                      margin: EdgeInsets.all(10),
+                      margin: EdgeInsets.all(20),
                       height: 106,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -233,30 +254,43 @@ class _AlertesState extends State<Alertes> {
                           ),
                         ],
                       ),
-
-                      //contenu dans chaque container
-
                       child: Column(children: [
                         Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  alerts[index]["title"],
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontFamily: 'calibri',
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800),
+                                Column(
+                                  children: [
+                                    Text(
+                                      alerts[index]["title"],
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontFamily: 'calibri',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                    Text(
+                                      alerts[index]["content"],
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontFamily: 'calibri',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
                                 ),
-                                Column(children: [
+                                Row(children: [
                                   SwitchButton(),
                                   IconButton(
                                     icon: const Icon(Icons.delete),
                                     onPressed: () => {
-                                      showDialog(context: context, builder: (BuildContext context) => buildPopupDialog(alerts[index])),
-                                      },
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              buildPopupDialog(alerts[index])),
+                                    },
                                   ),
                                 ])
                               ],
@@ -266,67 +300,76 @@ class _AlertesState extends State<Alertes> {
         : const Text("Aucune alerte");
   }
 
+  /*
+    -Function that creates a loading circle delay for the duration needed
+  */
   Future<List> callAsyncFetch() =>
       Future.delayed(Duration(milliseconds: 1), () => widget.alerts);
+
+  /*
+    -build the actual page
+  */
   @override
   Widget build(BuildContext context) {
     print("hello");
     for (int i = 0; i < widget.alerts.length; i++) {
       print(widget.alerts[i]);
     }
-    /*final tmp = alerts[0];
-    final test = tmp;
-    final tst = json.decode(test);
-    print(tst["title"]);*/
     return Container(
       padding: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
-            height: 30,
-            child: Row(children: [Text('Mes Alertes')]),
-          ),
-          Column(
-              //on utilise pas les crochets pour children car on va generer une liste
-              children: [
-                FutureBuilder(
-                    future: callAsyncFetch(),
-                    builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.hasData) {
-                        return Container(
-                            child: myList(widget.alerts, widget.alerts.length,context));
-                      } else {
-                        return CircularProgressIndicator(
-                          color: d_green,
-                        );
-                      }
-                    }),
-              ]),
-          SizedBox(height: 50),
-          Center(
-            child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: d_darkgray,
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                onPressed: _onButtonPressed,
-                child: Text(
-                  "+ Ajouter une alerte",
-                  style: TextStyle(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
+              height: 30,
+              child: Row(children: [Text('Mes Alertes')]),
+            ),
+            FutureBuilder(
+                future: callAsyncFetch(),
+                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                      child: Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          child: myList(
+                              widget.alerts, widget.alerts.length, context)),
+                    );
+                  } else {
+                    return CircularProgressIndicator(
+                      color: d_green,
+                    );
+                  }
+                }),
+            SizedBox(height: 50),
+            Center(
+              child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
                       backgroundColor: d_darkgray,
-                      fontSize: 16,
-                      letterSpacing: 2.2,
-                      color: Colors.white,
-                      fontFamily: 'calibri'),
-                )),
-          ),
-        ],
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                  onPressed: _onButtonPressed,
+                  child: Text(
+                    "+ Ajouter une alerte",
+                    style: TextStyle(
+                        backgroundColor: d_darkgray,
+                        fontSize: 16,
+                        letterSpacing: 2.2,
+                        color: Colors.white,
+                        fontFamily: 'calibri'),
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  /*
+    -Function that show the available aplications to send auto messages with
+
+  */
   void _onButtonPressed() {
     int nb = 0;
     void getNb() async {
@@ -335,7 +378,6 @@ class _AlertesState extends State<Alertes> {
     }
 
     getNb();
-
     showModalBottomSheet(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         context: context,
@@ -351,9 +393,6 @@ class _AlertesState extends State<Alertes> {
                   new MaterialPageRoute(
                       builder: (context) => new FormScreen(nb: nb)),
                 ),
-                /* 
-                        fonction to chose a device
-                        */
               ),
               ListTile(
                 leading: Icon(
@@ -397,25 +436,11 @@ class _AlertesState extends State<Alertes> {
           );
         });
   }
-
-  toggleButton() {
-    setState(() {
-      toggleValue = !toggleValue;
-    });
-  }
-
-  PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem<MenuItem>(
-        value: item,
-        child: Row(
-          children: [
-            Icon(item.icon, color: Colors.black, size: 20),
-            const SizedBox(width: 12),
-            Text(item.text),
-          ],
-        ),
-      );
 }
 
+/*
+    -this class is responsible of the bottom nav bar
+*/
 // ignore: must_be_immutable
 class BottomNavigationBarSection extends StatelessWidget {
   final String value = 'test';
@@ -425,6 +450,9 @@ class BottomNavigationBarSection extends StatelessWidget {
     nb = pref.getInt("nombreAlerte")!;
   }
 
+  /*
+    - Building the bottom navigation bar
+  */
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(

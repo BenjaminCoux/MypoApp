@@ -49,9 +49,10 @@ class _SmsAutoState extends State<SmsAuto> {
     return Scaffold(
       appBar: TopBar(),
       body: Scrollbar(
-        thickness: 20,
-        hoverThickness: 20,
+        thickness: 15,
+        interactive: true,
         isAlwaysShown: true,
+        showTrackOnHover: true,
         child: SingleChildScrollView(
           child: Column(
             children: [Alertes(alerts: alerts)],

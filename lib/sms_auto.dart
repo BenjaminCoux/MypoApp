@@ -231,7 +231,7 @@ class _AlertesState extends State<Alertes> {
   }
 
   Future<List> callAsyncFetch() =>
-      Future.delayed(Duration(seconds: 2), () => widget.alerts);
+      Future.delayed(Duration(milliseconds: 1), () => widget.alerts);
   @override
   Widget build(BuildContext context) {
     print("hello");

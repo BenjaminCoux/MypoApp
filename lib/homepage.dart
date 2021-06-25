@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mypo/helppage.dart';
 import 'package:mypo/settings.dart';
 import 'package:mypo/sms_auto.dart';
+import 'package:mypo/test.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -66,9 +67,10 @@ class _ModeState extends State<Mode> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
-            onTap: () {
-              print("Container clickeed");
-            },
+            onTap: () => Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new TestPage()),
+            ),
             child: Container(
                 padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                 margin: EdgeInsets.all(5),

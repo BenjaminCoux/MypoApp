@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mypo/alerte.dart';
 import 'package:mypo/formulaire_alert.dart';
+import 'package:mypo/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mypo/helppage.dart';
@@ -45,6 +46,7 @@ class _SmsAutoState extends State<SmsAuto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(),
+      drawer: HamburgerMenu(),
       body: Scrollbar(
         thickness: 15,
         interactive: true,
@@ -58,6 +60,77 @@ class _SmsAutoState extends State<SmsAuto> {
       ),
       bottomNavigationBar: BottomNavigationBarSection(),
     );
+  }
+}
+
+/*
+
+    - Function that handles the hamburger menu
+*/
+Container _buildDivider() {
+  return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      width: double.infinity,
+      height: 1,
+      color: Colors.white70);
+}
+
+class HamburgerMenu extends StatefulWidget {
+  @override
+  _HamburgerMenuState createState() => _HamburgerMenuState();
+}
+
+class _HamburgerMenuState extends State<HamburgerMenu> {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+        child: Container(
+      color: d_green,
+      child: ListView(children: <Widget>[
+        new ListTile(
+          leading: Icon(Icons.account_box, color: Colors.white),
+          title: new Text("Compte", style: TextStyle(color: Colors.white)),
+          trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        new SettingsScreenOne()));
+          },
+        ),
+        _buildDivider(),
+        new ListTile(
+          leading: Icon(Icons.settings, color: Colors.white),
+          title: new Text("Settings", style: TextStyle(color: Colors.white)),
+          trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        new SettingsScreenOne()));
+          },
+        ),
+        _buildDivider(),
+        new ListTile(
+          leading: Icon(Icons.help_outline, color: Colors.white),
+          title: new Text("Aide", style: TextStyle(color: Colors.white)),
+          trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        new HelpScreen(value: "TEST")));
+          },
+        ),
+        _buildDivider(),
+      ]),
+    ));
   }
 }
 

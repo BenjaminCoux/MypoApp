@@ -359,6 +359,7 @@ class _AlertesState extends State<Alertes> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     alerts[index]["title"],
@@ -368,13 +369,16 @@ class _AlertesState extends State<Alertes> {
                                         fontSize: 18,
                                         fontWeight: FontWeight.w800),
                                   ),
-                                  Text(
-                                    alerts[index]["content"],
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontFamily: 'calibri',
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      alerts[index]["content"],
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontFamily: 'calibri',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                 ],
                               ),

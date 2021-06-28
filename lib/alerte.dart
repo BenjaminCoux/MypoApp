@@ -349,14 +349,26 @@ class _AlertScreenState extends State<AlertScreen> {
           this.hasChanged = true;
         })
       },
+      maxLines: 2,
       decoration: InputDecoration(
+        labelStyle: TextStyle(color: Colors.black),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: d_green)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.black)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.black)),
         contentPadding: EdgeInsets.all(8),
         labelText: labelText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
         hintText: placeholder,
         hintStyle: TextStyle(
           fontSize: 16,
-          fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w300,
           color: Colors.black,
         ),
       ),

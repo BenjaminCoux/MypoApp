@@ -65,7 +65,8 @@ class _FormState extends State<FormScreen> {
   void saveAlert(String title, String content, var days, var cibles) async {
     final pref = await SharedPreferences.getInstance();
     //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
-    String tmp = '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false}';
+    String tmp =
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false}';
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);
@@ -101,7 +102,24 @@ class _FormState extends State<FormScreen> {
                   child: TextField(
                     controller: alertName,
                     decoration: InputDecoration(
-                        hintText: "Ajoutez un titre à l'alerte"),
+                      labelStyle: TextStyle(color: Colors.black),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: d_green)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.black)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.black)),
+                      hintText: "Ajoutez un titre à l'alerte",
+                      hintStyle: TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -125,8 +143,25 @@ class _FormState extends State<FormScreen> {
                     padding: EdgeInsets.all(12),
                     child: TextField(
                       controller: alertContent,
-                      decoration:
-                          InputDecoration(hintText: "Contenu du message"),
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(color: Colors.black),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: d_green)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.black)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.black)),
+                        hintText: "Contenu du message",
+                        hintStyle: TextStyle(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black,
+                        ),
+                      ),
                     )),
               ),
               Container(

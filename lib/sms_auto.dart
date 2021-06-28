@@ -93,7 +93,7 @@ class _StateSwitchButton extends State<SwitchButton> {
   @override
   Widget build(BuildContext context) {
     return Switch(
-        value: widget.alerte["active"],
+        value: widget.alerte["active"] ?? false,
         activeColor: d_green,
         onChanged: (bool s) {
           changeActive(widget.alerte);
@@ -247,81 +247,84 @@ class _AlertesState extends State<Alertes> {
             itemCount: alerts.length,
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
-                  onTap: () => {
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new AlertScreen(
-                                  alerte: new Alert(
-                                      title: alerts[index]["title"],
-                                      content: alerts[index]["content"],
-                                      days: jsonDecode(alerts[index]["days"]),
-                                      cibles: jsonDecode(
-                                          alerts[index]["cibles"])))),
-                        ),
-                      },
-                  child: Container(
-                      margin: EdgeInsets.all(20),
-                      height: 106,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(18),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: d_lightgray,
-                            spreadRadius: 4,
-                            blurRadius: 6,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+                onTap: () => {
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new AlertScreen(
+                            alerte: new Alert(
+                                title: alerts[index]["title"],
+                                content: alerts[index]["content"],
+                                days: jsonDecode(alerts[index]["days"]),
+                                cibles: jsonDecode(alerts[index]["cibles"])))),
+                  ),
+                },
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  height: 106,
+                  width: 290,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: d_lightgray,
+                        spreadRadius: 4,
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
                       ),
-                      child: Column(children: [
-                        Container(
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      alerts[index]["title"],
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontFamily: 'calibri',
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800),
-                                    ),
-                                    Text(
-                                      alerts[index]["content"],
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontFamily: 'calibri',
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    alerts[index]["title"],
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontFamily: 'calibri',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                  Text(
+                                    alerts[index]["content"],
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontFamily: 'calibri',
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                              Row(children: [
+                                SwitchButton(
+                                  alerte: alerts[index],
                                 ),
-                                Row(children: [
-                                  SwitchButton(
-                                    alerte: alerts[index],
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () => {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              buildPopupDialog(alerts[index])),
-                                    },
-                                  ),
-                                ])
-                              ],
-                            ))
-                      ])));
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () => {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            buildPopupDialog(alerts[index])),
+                                  },
+                                ),
+                              ])
+                            ],
+                          ))
+                    ],
+                  ),
+                ),
+              );
             })
         : const Text("Aucune alerte");
   }
@@ -355,12 +358,10 @@ class _AlertesState extends State<Alertes> {
                 future: callAsyncFetch(),
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasData) {
-                    return SingleChildScrollView(
-                      child: Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                          child: myList(
-                              widget.alerts, widget.alerts.length, context)),
-                    );
+                    return Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        child: myList(
+                            widget.alerts, widget.alerts.length, context));
                   } else {
                     return CircularProgressIndicator(
                       color: d_green,

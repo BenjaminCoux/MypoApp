@@ -401,6 +401,8 @@ class Alert {
       required this.content,
       required this.days,
       required this.cibles});
+
+
 }
 
 enum Week { Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche }

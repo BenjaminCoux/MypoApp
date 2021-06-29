@@ -166,20 +166,21 @@ class _StateSwitchButton extends State<SwitchButton> {
   @override
   Widget build(BuildContext context) {
     return Switch(
-        value: widget.alerte["active"] ?? false,
+        value: widget.alerte["active"],
         activeColor: d_green,
         onChanged: (bool s) {
-          changeActive(widget.alerte);
           setState(() {
             state = s;
             widget.alerte["active"] = s;
             print(state);
           });
+          changeActive(widget.alerte);
         });
   }
 
   changeActive(dynamic alerte) async {
     final prefs = await SharedPreferences.getInstance();
+    //print(prefs.get(alerte["title"]));
     final keys = prefs.getKeys();
     Iterator<String> it = keys.iterator;
     while (it.moveNext()) {
@@ -191,13 +192,13 @@ class _StateSwitchButton extends State<SwitchButton> {
     String content = alerte["content"];
     final days = alerte["days"];
     final cible = alerte["cibles"];
-    final active = alerte["active"];
+    final active = state;
     String tmp =
         '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active}';
     prefs.setString(title, tmp);
+    //  print(prefs.get(alerte["title"]));
   }
 }
-
 /*  
   -That class handles the whole alert screen
 */
@@ -309,7 +310,11 @@ class _AlertesState extends State<Alertes> {
       ],
     );
   }
-
+  Alert createInstance(Alert a,bool actived){
+    Alert res = new Alert(title: a.title,content: a.content,days: a.days,cibles: a.cibles);
+    res.active=actived;
+    return res;
+  }
   /*
     -Function that creates the list of alerts on the screen
   */
@@ -325,11 +330,11 @@ class _AlertesState extends State<Alertes> {
                     context,
                     new MaterialPageRoute(
                         builder: (context) => new AlertScreen(
-                            alerte: new Alert(
+                            alerte: createInstance(new Alert(
                                 title: alerts[index]["title"],
                                 content: alerts[index]["content"],
                                 days: jsonDecode(alerts[index]["days"]),
-                                cibles: jsonDecode(alerts[index]["cibles"])))),
+                                cibles: jsonDecode(alerts[index]["cibles"])), alerts[index]["active"]))),
                   ),
                 },
                 child: Container(

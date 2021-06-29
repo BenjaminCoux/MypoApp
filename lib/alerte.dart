@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/formulaire_alert.dart';
 import 'package:mypo/homepage.dart';
-
+import 'dart:convert';
 import 'package:mypo/sms_auto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,6 +42,7 @@ class _AlertScreenState extends State<AlertScreen> {
   void changed() {
     this.hasChanged = true;
   }
+
 
   @override
   void dispose() {
@@ -391,7 +392,9 @@ class _AlertScreenState extends State<AlertScreen> {
   void save() async {
     if (hasChanged) {
       final pref = await SharedPreferences.getInstance();
+      print(pref.getString(widget.alerte.title));
       final keys = pref.getKeys();
+      //dd
       Iterator<String> it = keys.iterator;
       while (it.moveNext()) {
         if (it.current == widget.alerte.title) {
@@ -410,9 +413,9 @@ class _AlertScreenState extends State<AlertScreen> {
       }
       final days = widget.alerte.days;
       final cible = widget.alerte.cibles;
-      bool active = widget.alerte.active;
+      final b = widget.alerte.active;
       String tmp =
-          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active}';
+          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$b}';
       pref.setString(title, tmp);
     }
   }

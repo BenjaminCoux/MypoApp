@@ -43,9 +43,14 @@ onBackgroundMessage(SmsMessage message) async {
     if (message.body!.contains(keys[i]) && contents[i]["active"]) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
+      return;
     }
     i++;
   }
+  Telephony.backgroundInstance.sendSms(
+      to: message.address.toString(),
+      message:
+          "vôtre message ne contenait aucune clées.\n Veuillez recommencer");
 }
 
 class TestPage extends StatefulWidget {
@@ -92,11 +97,16 @@ class _TestPageState extends State<TestPage> {
     //si le message reçu contient
     while (i < keys.length) {
       if (message.body!.contains(keys[i]) && contents[i]["active"]) {
-        Telephony.backgroundInstance.sendSms(
+        Telephony.instance.sendSms(
             to: message.address.toString(), message: contents[i]["content"]);
+        return;
       }
       i++;
     }
+    Telephony.instance.sendSms(
+        to: message.address.toString(),
+        message:
+            "vôtre message ne contenait aucune clées.\n Veuillez recommencer");
   }
 
   /*

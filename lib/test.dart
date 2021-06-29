@@ -40,7 +40,7 @@ onBackgroundMessage(SmsMessage message) async {
   int i = 0;
   //si le message reçu contient
   while (i < keys.length) {
-    if (message.body!.contains(keys[i])) {
+    if (message.body!.contains(keys[i]) && contents[i]["active"]) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
     }
@@ -76,13 +76,27 @@ class _TestPageState extends State<TestPage> {
     Send back the alert message to the person
   */
   onMessage(SmsMessage message) async {
-    String contenu = " Message de test (ON MESSAGE)";
-    setState(() {
-      _message = message.body ?? "Error reading message body.";
-      print("vous avez reçu une nouvelle message");
-      Telephony.instance
-          .sendSms(to: message.address.toString(), message: contenu);
-    });
+    List<String> keys = <String>[];
+    List contents = <dynamic>[];
+    final prefs = await SharedPreferences.getInstance();
+    final tmp = prefs.getKeys();
+    Iterator<String> it = tmp.iterator;
+    while (it.moveNext()) {
+      if (it.current != "nombreAlerte") {
+        keys.add(it.current);
+      }
+    }
+    contents = await getContents();
+    debugPrint("onBackgroundMessage called");
+    int i = 0;
+    //si le message reçu contient
+    while (i < keys.length) {
+      if (message.body!.contains(keys[i]) && contents[i]["active"]) {
+        Telephony.backgroundInstance.sendSms(
+            to: message.address.toString(), message: contents[i]["content"]);
+      }
+      i++;
+    }
   }
 
   /*

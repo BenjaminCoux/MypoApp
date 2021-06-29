@@ -27,55 +27,93 @@ class HelpScreen extends StatelessWidget {
                     margin: EdgeInsets.fromLTRB(32, 8, 32, 16),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      children: <Widget>[
-                        ListTile(
-                            title: Text("Question 1"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              //open
-                            }),
-                        _buildDivider(),
-                        ListTile(
-                            title: Text("Question 2"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              //open
-                            }),
-                        _buildDivider(),
-                        ListTile(
-                            title: Text("Question 3"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              //open
-                            }),
-                        _buildDivider(),
-                        ListTile(
-                            title: Text("Question 4"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              //open
-                            }),
-                        _buildDivider(),
-                        ListTile(
-                            title: Text("Question 5"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              //open
-                            }),
-                        _buildDivider(),
-                      ],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          children: <Widget>[
+                            Theme(
+                              data: Theme.of(context)
+                                  .copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                textColor: d_green,
+                                childrenPadding: EdgeInsets.all(16),
+                                title: Text(
+                                    "Question 1 : Ceci est une questions qui peut être modifier par la suite"),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                                children: [
+                                  Text(
+                                      "Voici la reponse a la question 1 qui peut être modifier par la suite")
+                                ],
+                              ),
+                            ),
+                            _buildDivider(),
+                            Theme(
+                              data: Theme.of(context)
+                                  .copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                textColor: d_green,
+                                childrenPadding: EdgeInsets.all(16),
+                                title: Text(
+                                    "Question 2 : Ceci est une questions qui peut être modifier par la suite"),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                                children: [
+                                  Text(
+                                      "Voici la reponse a la question 2 qui peut être modifier par la suite")
+                                ],
+                              ),
+                            ),
+                            _buildDivider(),
+                            Theme(
+                              data: Theme.of(context)
+                                  .copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                textColor: d_green,
+                                childrenPadding: EdgeInsets.all(16),
+                                title: Text(
+                                    "Question 3 : Ceci est une questions qui peut être modifier par la suite"),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                                children: [
+                                  Text(
+                                      "Voici la reponse a la question 3 qui peut être modifier par la suite")
+                                ],
+                              ),
+                            ),
+                            _buildDivider(),
+                            Theme(
+                              data: Theme.of(context)
+                                  .copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                textColor: d_green,
+                                childrenPadding: EdgeInsets.all(16),
+                                title: Text(
+                                    "Question 4 : Ceci est une questions qui peut être modifier par la suite"),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                                children: [
+                                  Text(
+                                      "Voici la reponse a la question 4 qui peut être modifier par la suite")
+                                ],
+                              ),
+                            ),
+                            _buildDivider(),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Nous contacter',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: d_darkgray,
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Text(
+                      'Nous contacter',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: d_darkgray,
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 16),
                   Text(
                     'Numero :',
                     style: TextStyle(
@@ -84,6 +122,7 @@ class HelpScreen extends StatelessWidget {
                       color: d_darkgray,
                     ),
                   ),
+                  const SizedBox(height: 16),
                   Text(
                     'Email :',
                     style: TextStyle(

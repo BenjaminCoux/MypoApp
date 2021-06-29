@@ -195,9 +195,13 @@ class _FormState extends State<FormScreen> {
                     Container(
                       child: Padding(
                         padding: EdgeInsets.all(8),
-                        child: Row(
+                        child: Column(
                           children: [
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Lundi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: week[0],
                                 onChanged: (bool? value) => {
@@ -205,8 +209,11 @@ class _FormState extends State<FormScreen> {
                                         week[0] = value!;
                                       })
                                     }),
-                            Text("lundi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Mardi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: week[1],
                                 onChanged: (bool? value) => {
@@ -214,8 +221,11 @@ class _FormState extends State<FormScreen> {
                                         week[1] = value!;
                                       })
                                     }),
-                            Text("Mardi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Mercredi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: week[2],
                                 onChanged: (bool? value) => {
@@ -223,8 +233,11 @@ class _FormState extends State<FormScreen> {
                                         week[2] = value!;
                                       })
                                     }),
-                            Text("Mercredi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Jeudi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: week[3],
                                 onChanged: (bool? value) => {
@@ -232,17 +245,11 @@ class _FormState extends State<FormScreen> {
                                         week[3] = value!;
                                       })
                                     }),
-                            Text("Jeudi"),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(11),
-                        child: Row(
-                          children: [
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Vendredi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: week[4],
                                 onChanged: (bool? value) => {
@@ -250,8 +257,11 @@ class _FormState extends State<FormScreen> {
                                         week[4] = value!;
                                       })
                                     }),
-                            Text("Vendredi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                secondary: Icon(Icons.calendar_today),
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Samedi"),
                                 activeColor: d_green,
                                 value: week[5],
                                 onChanged: (bool? value) => {
@@ -259,8 +269,11 @@ class _FormState extends State<FormScreen> {
                                         week[5] = value!;
                                       })
                                     }),
-                            Text("Samedi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Dimanche"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: week[6],
                                 onChanged: (bool? value) => {
@@ -268,7 +281,6 @@ class _FormState extends State<FormScreen> {
                                         week[6] = value!;
                                       })
                                     }),
-                            Text("Dimanche"),
                           ],
                         ),
                       ),
@@ -309,9 +321,13 @@ class _FormState extends State<FormScreen> {
                     Container(
                       child: Padding(
                         padding: EdgeInsets.all(12),
-                        child: Row(
+                        child: Column(
                           children: [
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                secondary: Icon(Icons.contact_page),
+                                title: Text("Numéros Enregistrés"),
                                 activeColor: d_green,
                                 value: cibles[0],
                                 onChanged: (bool? value) => {
@@ -319,8 +335,11 @@ class _FormState extends State<FormScreen> {
                                         cibles[0] = value!;
                                       })
                                     }),
-                            Text("Numéros Enregistrés"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                secondary: Icon(Icons.sms_rounded),
+                                title: Text("SMS reçu"),
                                 activeColor: d_green,
                                 value: cibles[1],
                                 onChanged: (bool? value) => {
@@ -328,17 +347,11 @@ class _FormState extends State<FormScreen> {
                                         cibles[1] = value!;
                                       })
                                     }),
-                            Text("SMS reçu"),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Row(
-                          children: [
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                secondary: Icon(Icons.call),
+                                title: Text("Appels Manqués"),
                                 activeColor: d_green,
                                 value: cibles[2],
                                 onChanged: (bool? value) => {
@@ -346,7 +359,6 @@ class _FormState extends State<FormScreen> {
                                         cibles[2] = value!;
                                       })
                                     }),
-                            Text("Appels Manqués"),
                           ],
                         ),
                       ),

@@ -107,9 +107,13 @@ class _AlertScreenState extends State<AlertScreen> {
                     Container(
                       child: Padding(
                         padding: EdgeInsets.all(8),
-                        child: Row(
+                        child: Column(
                           children: [
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Lundi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: widget.alerte.days[0],
                                 onChanged: (bool? value) => {
@@ -118,8 +122,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                         widget.alerte.days[0] = value!;
                                       })
                                     }),
-                            Text("lundi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Mardi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: widget.alerte.days[1],
                                 onChanged: (bool? value) => {
@@ -128,8 +135,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                         widget.alerte.days[1] = value!;
                                       })
                                     }),
-                            Text("Mardi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Mercredi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: widget.alerte.days[2],
                                 onChanged: (bool? value) => {
@@ -138,8 +148,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                         widget.alerte.days[2] = value!;
                                       })
                                     }),
-                            Text("Mercredi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Jeudi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: widget.alerte.days[3],
                                 onChanged: (bool? value) => {
@@ -148,17 +161,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                         widget.alerte.days[3] = value!;
                                       })
                                     }),
-                            Text("Jeudi"),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(11),
-                        child: Row(
-                          children: [
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Vendredi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: widget.alerte.days[4],
                                 onChanged: (bool? value) => {
@@ -167,8 +174,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                         widget.alerte.days[4] = value!;
                                       })
                                     }),
-                            Text("Vendredi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Samedi"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: widget.alerte.days[5],
                                 onChanged: (bool? value) => {
@@ -177,8 +187,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                         widget.alerte.days[5] = value!;
                                       })
                                     }),
-                            Text("Samedi"),
-                            Checkbox(
+                            CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text("Dimanche"),
+                                secondary: Icon(Icons.calendar_today),
                                 activeColor: d_green,
                                 value: widget.alerte.days[6],
                                 onChanged: (bool? value) => {
@@ -187,7 +200,6 @@ class _AlertScreenState extends State<AlertScreen> {
                                         widget.alerte.days[6] = value!;
                                       })
                                     }),
-                            Text("Dimanche"),
                           ],
                         ),
                       ),
@@ -227,9 +239,13 @@ class _AlertScreenState extends State<AlertScreen> {
                       Container(
                         child: Padding(
                             padding: EdgeInsets.all(8),
-                            child: Row(
+                            child: Column(
                               children: [
-                                Checkbox(
+                                CheckboxListTile(
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    secondary: Icon(Icons.contact_page),
+                                    title: Text("Numéros Enregistrés"),
                                     activeColor: d_green,
                                     value: widget.alerte.cibles[0],
                                     onChanged: (bool? value) => {
@@ -238,8 +254,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                             widget.alerte.cibles[0] = value!;
                                           })
                                         }),
-                                Text("Numéros Enregistrés"),
-                                Checkbox(
+                                CheckboxListTile(
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    secondary: Icon(Icons.sms_rounded),
+                                    title: Text("SMS reçu"),
                                     activeColor: d_green,
                                     value: widget.alerte.cibles[1],
                                     onChanged: (bool? value) => {
@@ -248,17 +267,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                             widget.alerte.cibles[1] = value!;
                                           })
                                         }),
-                                Text("SMS reçu"),
-                              ],
-                            )),
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Row(
-                              children: [
-                                Checkbox(
+                                CheckboxListTile(
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    secondary: Icon(Icons.call),
+                                    title: Text("Appels Manqués"),
                                     activeColor: d_green,
                                     value: widget.alerte.cibles[2],
                                     onChanged: (bool? value) => {
@@ -267,12 +280,9 @@ class _AlertScreenState extends State<AlertScreen> {
                                             widget.alerte.cibles[2] = value!;
                                           })
                                         }),
-                                Text("Appels Manqués")
                               ],
-                            ),
-                          )
-                        ],
-                      )
+                            )),
+                      ),
                     ],
                   )),
               Row(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -9,38 +11,40 @@ import 'package:telephony/telephony.dart';
   Send back the alert message to the person
 */
 
-onBackgroundMessage(SmsMessage message) async {
+Future<List> getContents() async {
   final pref = await SharedPreferences.getInstance();
-  Set<String> keys = pref.getKeys();
-
-  Iterator<String> it = keys.iterator;
-
-  bool done = false;
-  // go through all the alerts and check if the message contains any of the keys
-  // if yes send back message with current alert message
-  // if no do nothing
-  while (it.moveNext() && !done) {
+  final tmp = pref.getKeys();
+  List contents = <dynamic>[];
+  Iterator<String> it = tmp.iterator;
+  while (it.moveNext()) {
     if (it.current != "nombreAlerte") {
-      // ignore: todo
-      //TODO
-      print(it.current);
+      contents.add(json.decode(pref.getString(it.current) ?? ""));
     }
   }
-  String clef = "WIFI";
-  String contenu = "Message de test (ON BACKGROUND)";
+  return contents;
+}
 
+onBackgroundMessage(SmsMessage message) async {
+  List<String> keys = <String>[];
+  List contents = <dynamic>[];
+  final prefs = await SharedPreferences.getInstance();
+  final tmp = prefs.getKeys();
+  Iterator<String> it = tmp.iterator;
+  while (it.moveNext()) {
+    if (it.current != "nombreAlerte") {
+      keys.add(it.current);
+    }
+  }
+  contents = await getContents();
   debugPrint("onBackgroundMessage called");
-
+  int i = 0;
   //si le message reçu contient
-  if (message.body!.contains(clef)) {
-    print(message.address.toString() +
-        " : ce numero contient la clef (" +
-        clef +
-        ") , nous avons envoyer le message suivant [" +
-        contenu +
-        "]");
-    Telephony.backgroundInstance
-        .sendSms(to: message.address.toString(), message: contenu);
+  while (i < keys.length) {
+    if (message.body!.contains(keys[i])) {
+      Telephony.backgroundInstance.sendSms(
+          to: message.address.toString(), message: contents[i]["content"]);
+    }
+    i++;
   }
 }
 

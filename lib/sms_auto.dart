@@ -7,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mypo/helppage.dart';
 import 'package:mypo/homepage.dart';
+/*
+  -colors used in the app
+*/
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -310,11 +313,14 @@ class _AlertesState extends State<Alertes> {
       ],
     );
   }
-  Alert createInstance(Alert a,bool actived){
-    Alert res = new Alert(title: a.title,content: a.content,days: a.days,cibles: a.cibles);
-    res.active=actived;
+
+  Alert createInstance(Alert a, bool actived) {
+    Alert res = new Alert(
+        title: a.title, content: a.content, days: a.days, cibles: a.cibles);
+    res.active = actived;
     return res;
   }
+
   /*
     -Function that creates the list of alerts on the screen
   */
@@ -330,11 +336,14 @@ class _AlertesState extends State<Alertes> {
                     context,
                     new MaterialPageRoute(
                         builder: (context) => new AlertScreen(
-                            alerte: createInstance(new Alert(
-                                title: alerts[index]["title"],
-                                content: alerts[index]["content"],
-                                days: jsonDecode(alerts[index]["days"]),
-                                cibles: jsonDecode(alerts[index]["cibles"])), alerts[index]["active"]))),
+                            alerte: createInstance(
+                                new Alert(
+                                    title: alerts[index]["title"],
+                                    content: alerts[index]["content"],
+                                    days: jsonDecode(alerts[index]["days"]),
+                                    cibles:
+                                        jsonDecode(alerts[index]["cibles"])),
+                                alerts[index]["active"]))),
                   ),
                 },
                 child: Container(

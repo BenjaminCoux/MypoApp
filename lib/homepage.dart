@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mypo/helppage.dart';
 import 'package:mypo/settings.dart';
 import 'package:mypo/sms_auto.dart';
+import 'package:mypo/sms_prog.dart';
 import 'package:mypo/test.dart';
 
 /*
@@ -80,59 +81,85 @@ class Mode extends StatefulWidget {
 class _ModeState extends State<Mode> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new TestPage()),
-            ),
-            child: Container(
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                margin: EdgeInsets.all(5),
-                height: MediaQuery.of(context).size.height * 0.30,
-                width: MediaQuery.of(context).size.width * 0.45,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    color: Colors.white,
-                    image: DecorationImage(
-                        image: AssetImage('images/smsprog.png'))),
-                child: Text(
-                  'Messages programmés',
-                  style: TextStyle(fontFamily: 'calibri'),
-                  overflow: TextOverflow.ellipsis,
-                )),
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => new SmsProg()),
+                ),
+                child: Container(
+                    padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    margin: EdgeInsets.all(5),
+                    height: MediaQuery.of(context).size.height * 0.30,
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                        color: Colors.white,
+                        image: DecorationImage(
+                            image: AssetImage('images/smsprog.png'))),
+                    child: Text(
+                      'Messages programmés',
+                      style: TextStyle(fontFamily: 'calibri'),
+                      overflow: TextOverflow.ellipsis,
+                    )),
+              ),
+              InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => new SmsAuto()),
+                ),
+                child: Container(
+                    padding: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(5),
+                    height: MediaQuery.of(context).size.height * 0.30,
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                        color: Colors.white,
+                        image: DecorationImage(
+                            image: AssetImage('images/smsauto.png'))),
+                    child: Text(
+                      'Messages automatiques',
+                      style: TextStyle(fontFamily: 'calibri'),
+                      overflow: TextOverflow.ellipsis,
+                    )),
+              ),
+            ],
           ),
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new SmsAuto()),
+        ),
+        ElevatedButton(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: d_green,
+            padding: EdgeInsets.symmetric(horizontal: 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: Container(
-                padding: EdgeInsets.all(5),
-                margin: EdgeInsets.all(5),
-                height: MediaQuery.of(context).size.height * 0.30,
-                width: MediaQuery.of(context).size.width * 0.45,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    color: Colors.white,
-                    image: DecorationImage(
-                        image: AssetImage('images/smsauto.png'))),
-                child: Text(
-                  'Messages automatiques',
-                  style: TextStyle(fontFamily: 'calibri'),
-                  overflow: TextOverflow.ellipsis,
-                )),
-          )
-        ],
-      ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => new TestPage()));
+          },
+          child: Text(
+            "Test msg auto",
+            style: TextStyle(
+              fontSize: 14,
+              letterSpacing: 2.2,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

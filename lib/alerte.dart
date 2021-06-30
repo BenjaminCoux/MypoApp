@@ -43,7 +43,6 @@ class _AlertScreenState extends State<AlertScreen> {
     this.hasChanged = true;
   }
 
-
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the widget tree.

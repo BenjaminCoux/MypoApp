@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mypo/alerte.dart';
+import 'package:mypo/edit_profile_page.dart';
 import 'package:mypo/formulaire_alert.dart';
+import 'package:mypo/profilepage.dart';
 import 'package:mypo/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -101,8 +103,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        new SettingsScreenOne()));
+                    builder: (BuildContext context) => new EditProfilePage()));
           },
         ),
         _buildDivider(),

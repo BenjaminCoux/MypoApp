@@ -33,6 +33,7 @@ class _ProgState extends State<ProgForm> {
   bool repeat = false;
   final week = [false, false, false, false, false, false, false];
   final cibles = [false, false, false];
+  bool SMS = false;
 
   @override
   void dispose() {
@@ -40,6 +41,13 @@ class _ProgState extends State<ProgForm> {
     alertContent.dispose();
     number.dispose();
     super.dispose();
+  }
+
+  Color getColor() {
+    if (SMS) {
+      return d_green;
+    }
+    return d_darkgray;
   }
 
   void saveAlert(String title, String content, var days, var cibles) async {
@@ -156,6 +164,7 @@ class _ProgState extends State<ProgForm> {
                 ],
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: EdgeInsets.all(12),
@@ -176,10 +185,18 @@ class _ProgState extends State<ProgForm> {
                         ],
                       ),
                       child: InkWell(
-                        onTap: () => {},
+                        onTap: () => {
+                          setState(() {
+                            if (!SMS) {
+                              this.SMS = true;
+                            } else {
+                              this.SMS = false;
+                            }
+                          })
+                        },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: d_green,
+                              color: getColor(),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           child: Text("SMS"),
@@ -263,9 +280,14 @@ class _ProgState extends State<ProgForm> {
                 ],
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Repeter"),
+                  Container(
+                    child: Text("Repeter"),
+                    margin: EdgeInsets.fromLTRB(5, 0, 250, 0),
+                  ),
                   Switch(
+                      activeColor: d_green,
                       value: repeat,
                       onChanged: (bool val) => {
                             setState(() {

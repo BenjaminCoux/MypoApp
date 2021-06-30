@@ -5,12 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:telephony/telephony.dart';
 
-/*
-  This Function gets incomming messages in the back ground
-  Check if it contains any of the keys of activated alerts
-  Send back the alert message to the person
-*/
-
 Future<List> getContents() async {
   final pref = await SharedPreferences.getInstance();
   final tmp = pref.getKeys();
@@ -24,6 +18,11 @@ Future<List> getContents() async {
   return contents;
 }
 
+/*
+  This Function gets incomming messages in the back ground
+  Check if it contains any of the keys of activated alerts
+  Send back the alert message to the person
+*/
 onBackgroundMessage(SmsMessage message) async {
   List<String> keys = <String>[];
   List contents = <dynamic>[];
@@ -76,7 +75,7 @@ class _TestPageState extends State<TestPage> {
 
   /*
     -This function do things when we recieve a message on the foreground
-    it gets incomming messages in the back ground
+    it gets incomming messages 
     Check if it contains any of the keys of activated alerts
     Send back the alert message to the person
   */
@@ -140,23 +139,20 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            'screen test',
+          title: Center(
+            child: Text(
+              'Test',
+            ),
           ),
         ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              TextField(
-                autofocus: false,
-                keyboardType: TextInputType.emailAddress,
-                onChanged: (text) {
-                  value = text;
-                },
-              ),
-              ElevatedButton(
-                onPressed: () => {initPlatformState()},
-                child: Text("Test"),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () => {initPlatformState()},
+                  child: Text("Activer les msg autos"),
+                ),
               )
             ]));
   }

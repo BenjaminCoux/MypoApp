@@ -63,7 +63,7 @@ class Logo extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height * 0.30,
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: d_lightgray,
           image: DecorationImage(image: AssetImage('images/logo.png'))),
     );
   }

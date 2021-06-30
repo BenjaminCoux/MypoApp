@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mypo/sms_auto.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:telephony/telephony.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -27,13 +28,254 @@ class ProgForm extends StatefulWidget {
 }
 
 class _ProgState extends State<ProgForm> {
+  final number = TextEditingController();
+  final alertContent = TextEditingController();
+  bool repeat = false;
+  final week = [false, false, false, false, false, false, false];
+  final cibles = [false, false, false];
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    alertContent.dispose();
+    number.dispose();
+    super.dispose();
+  }
+
+  void saveAlert(String title, String content, var days, var cibles) async {
+    final pref = await SharedPreferences.getInstance();
+    //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
+    String tmp =
+        '{"number":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false}';
+    pref.setString("PROG_" + title, tmp);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBarA(),
       body: Center(
         child: Column(
-          children: [Text("CEci est le formulaire")],
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: d_lightgray,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              child: Padding(
+                padding: EdgeInsets.all(12),
+                child: TextField(
+                  controller: number,
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: d_green)),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.black)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.black)),
+                    hintText: "Ajoutez un numero de telephone",
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: d_lightgray,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              child: Padding(
+                  padding: EdgeInsets.all(12),
+                  child: TextField(
+                    controller: alertContent,
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.black),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: d_green)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.black)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.black)),
+                      hintText: "Contenu du message",
+                      hintStyle: TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black,
+                      ),
+                    ),
+                  )),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: d_lightgray,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: d_lightgray,
+                            spreadRadius: 4,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: InkWell(
+                        onTap: () => {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: d_green,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Text("SMS"),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: d_lightgray,
+                            spreadRadius: 4,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: d_green,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Text("TEL"),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: d_lightgray,
+                            spreadRadius: 4,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: d_green,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Text("MMS"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: d_lightgray,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Text("Repeter"),
+                  Switch(
+                      value: repeat,
+                      onChanged: (bool val) => {
+                            setState(() {
+                              repeat = val;
+                            })
+                          })
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

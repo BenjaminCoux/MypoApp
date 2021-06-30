@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mypo/formulaire_alerte_prog.dart';
 import 'package:mypo/helppage.dart';
 import 'package:mypo/settings.dart';
 import 'package:mypo/sms_auto.dart';
 import 'package:mypo/test.dart';
+
+const d_green = Color(0xFFA6C800);
+const d_gray = Color(0xFFBABABA);
+const d_darkgray = Color(0xFF6C6C6C);
+const d_lightgray = Color(0XFFFAFAFA);
 
 class SmsProg extends StatefulWidget {
   @override
@@ -82,7 +88,13 @@ class _AlertesProgState extends State<AlertesProg> {
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20))),
-                  onPressed: null,
+                  onPressed: () => {
+                        Navigator.pop(context),
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new ProgForm()))
+                      },
                   child: Text(
                     "+ Ajouter une alerte",
                     style: TextStyle(

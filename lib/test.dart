@@ -18,6 +18,29 @@ Future<List> getContents() async {
   return contents;
 }
 
+bool isActive(dynamic alert) {
+  if (!alert["active"]) {
+    return false;
+  }
+  var weeks = [
+    "Monday",
+    "Thuesday",
+    "Wednesday",
+    "Tuesday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ];
+  DateTime now = DateTime.now();
+  String day = DateFormat('EEEE').format(now);
+  for (int i = 0; i < weeks.length; i++) {
+    if (day == weeks[i] && alert["days"][i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /*
   This Function gets incomming messages in the back ground
   Check if it contains any of the keys of activated alerts
@@ -39,7 +62,7 @@ onBackgroundMessage(SmsMessage message) async {
   int i = 0;
   //si le message reçu contient
   while (i < keys.length) {
-    if (message.body!.contains(keys[i]) && contents[i]["active"]) {
+    if (message.body!.contains(keys[i]) && isActive(contents[i])) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
       return;

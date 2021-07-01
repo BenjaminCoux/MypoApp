@@ -215,7 +215,7 @@ class _StateSwitchButton extends State<SwitchButton> {
     Telephony.instance.sendSms(
         to: message.address.toString(),
         message:
-            "vôtre message ne contenait aucune clées.\n Veuillez recommencer");
+            "Votre message ne contenait aucune clé.\n Veuillez recommencer");
   }
 
   /*
@@ -751,6 +751,5 @@ onBackgroundMessage(SmsMessage message) async {
   }
   Telephony.backgroundInstance.sendSms(
       to: message.address.toString(),
-      message:
-          "vôtre message ne contenait aucune clées.\n Veuillez recommencer");
+      message: "Votre message ne contenait aucune clé.\n Veuillez recommencer");
 }

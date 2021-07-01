@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/sms_auto.dart';
+import 'package:mypo/sms_prog.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
@@ -31,9 +32,13 @@ class _ProgState extends State<ProgForm> {
   final number = TextEditingController();
   final alertContent = TextEditingController();
   bool repeat = false;
+  bool rebours = false;
+  bool confirm = false;
   final week = [false, false, false, false, false, false, false];
   final cibles = [false, false, false];
   bool SMS = false;
+  bool Tel = false;
+  bool MMS = false;
 
   @override
   void dispose() {
@@ -43,8 +48,8 @@ class _ProgState extends State<ProgForm> {
     super.dispose();
   }
 
-  Color getColor() {
-    if (SMS) {
+  Color getColor(bool b) {
+    if (b) {
       return d_green;
     }
     return d_darkgray;
@@ -196,7 +201,7 @@ class _ProgState extends State<ProgForm> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: getColor(),
+                              color: getColor(SMS),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           child: Text("SMS"),
@@ -222,9 +227,18 @@ class _ProgState extends State<ProgForm> {
                         ],
                       ),
                       child: InkWell(
+                        onTap: () => {
+                          setState(() {
+                            if (!Tel) {
+                              this.Tel = true;
+                            } else {
+                              this.Tel = false;
+                            }
+                          })
+                        },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: d_green,
+                              color: getColor(Tel),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           child: Text("TEL"),
@@ -250,9 +264,18 @@ class _ProgState extends State<ProgForm> {
                         ],
                       ),
                       child: InkWell(
+                        onTap: () => {
+                          setState(() {
+                            if (!MMS) {
+                              this.MMS = true;
+                            } else {
+                              this.MMS = false;
+                            }
+                          })
+                        },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: d_green,
+                              color: getColor(MMS),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           child: Text("MMS"),
@@ -284,7 +307,7 @@ class _ProgState extends State<ProgForm> {
                 children: [
                   Container(
                     child: Text("Repeter"),
-                    margin: EdgeInsets.fromLTRB(5, 0, 250, 0),
+                    margin: EdgeInsets.fromLTRB(5, 0, 280 - 1.6, 0),
                   ),
                   Switch(
                       activeColor: d_green,
@@ -293,10 +316,122 @@ class _ProgState extends State<ProgForm> {
                             setState(() {
                               repeat = val;
                             })
-                          })
+                          }),
                 ],
               ),
-            )
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: d_lightgray,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    child: Text("Compte à rebours"),
+                    margin: EdgeInsets.fromLTRB(5, 0, 220 - 4.6, 0),
+                  ),
+                  Switch(
+                      activeColor: d_green,
+                      value: rebours,
+                      onChanged: (bool val) => {
+                            setState(() {
+                              rebours = val;
+                            })
+                          }),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: d_lightgray,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    child: Text("Confirmer avant envoi"),
+                    margin: EdgeInsets.fromLTRB(5, 0, 220 - 29.6, 0),
+                  ),
+                  Switch(
+                      activeColor: d_green,
+                      value: confirm,
+                      onChanged: (bool val) => {
+                            setState(() {
+                              confirm = val;
+                            })
+                          }),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: d_lightgray,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    child: Text("Notification"),
+                    margin: EdgeInsets.fromLTRB(5, 0, 254, 0),
+                  ),
+                  Switch(
+                      activeColor: d_green,
+                      value: confirm,
+                      onChanged: (bool val) => {
+                            setState(() {
+                              confirm = val;
+                            })
+                          }),
+                ],
+              ),
+            ),
+            OutlinedButton(
+                onPressed: () => {
+                      Navigator.pop(context),
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new SmsProg()),
+                      )
+                    },
+                child: const Text("Valider", style: TextStyle(color: d_green)))
           ],
         ),
       ),

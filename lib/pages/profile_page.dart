@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/edit_profile_page.dart';
 import 'package:mypo/model/user.dart';
 import 'package:mypo/utils/user_preferences.dart';
+import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/button_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 
-import 'homepage.dart';
+import 'edit_profile_page.dart';
+import 'home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -18,17 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final user = UserPreferences.myUser;
 
     return Scaffold(
-        appBar: AppBar(
-          leading: BackButton(),
-          backgroundColor: d_green,
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {},
-            ),
-          ],
-        ),
+        appBar: TopBar(title: "Profile"),
         body: ListView(
           physics: BouncingScrollPhysics(),
           children: [

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mypo/homepage.dart';
+import 'package:mypo/widget/appbar_widget.dart';
+
+import 'home_page.dart';
 
 // ignore: must_be_immutable
 class SettingsScreenOne extends StatelessWidget {
@@ -9,12 +11,7 @@ class SettingsScreenOne extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-          elevation: 0,
-          brightness: Brightness.light,
-          title: Text('Parametres', style: TextStyle(fontFamily: 'calibri')),
-          centerTitle: true,
-          backgroundColor: d_green),
+      appBar: TopBar(title: 'Parametres'),
       body: Stack(
         fit: StackFit.expand,
         children: [

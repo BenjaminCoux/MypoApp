@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../homepage.dart';
+import 'package:mypo/pages/home_page.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String text;

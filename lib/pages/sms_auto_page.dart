@@ -1,24 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:mypo/alerte.dart';
-import 'package:mypo/edit_profile_page.dart';
-import 'package:mypo/formulaire_alert.dart';
-import 'package:mypo/profilepage.dart';
-import 'package:mypo/settings.dart';
+import 'package:mypo/model/alert.dart';
+import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/hamburgermenu_widget.dart';
+import 'package:mypo/widget/navbar_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mypo/helppage.dart';
-import 'package:mypo/homepage.dart';
-import 'package:mypo/test.dart';
 import 'package:telephony/telephony.dart';
-/*
-  -colors used in the app
-*/
 
-const d_green = Color(0xFFA6C800);
-const d_gray = Color(0xFFBABABA);
-const d_darkgray = Color(0xFF6C6C6C);
-const d_lightgray = Color(0XFFFAFAFA);
+import 'edit_alertes_page.dart';
+import 'formulaire_alerte_auto_page.dart';
 
 class SmsAuto extends StatefulWidget {
   @override
@@ -47,12 +38,13 @@ class _SmsAutoState extends State<SmsAuto> {
   @override
   void initState() {
     readAlert();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(),
+      appBar: TopBar(title: "My Co'Laverie"),
       drawer: HamburgerMenu(),
       body: Scrollbar(
         thickness: 15,
@@ -65,93 +57,7 @@ class _SmsAutoState extends State<SmsAuto> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarSection(),
-    );
-  }
-}
-
-/*
-
-    - Function that handles the hamburger menu
-*/
-Container _buildDivider() {
-  return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      width: double.infinity,
-      height: 1,
-      color: Colors.white70);
-}
-
-class HamburgerMenu extends StatefulWidget {
-  @override
-  _HamburgerMenuState createState() => _HamburgerMenuState();
-}
-
-class _HamburgerMenuState extends State<HamburgerMenu> {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-        child: Container(
-      color: d_green,
-      child: ListView(children: <Widget>[
-        new ListTile(
-          leading: Icon(Icons.account_box, color: Colors.white),
-          title: new Text("Compte", style: TextStyle(color: Colors.white)),
-          trailing: Icon(Icons.keyboard_arrow_right_rounded),
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (BuildContext context) => new ProfilePage()));
-          },
-        ),
-        _buildDivider(),
-        new ListTile(
-          leading: Icon(Icons.settings, color: Colors.white),
-          title: new Text("Settings", style: TextStyle(color: Colors.white)),
-          trailing: Icon(Icons.keyboard_arrow_right_rounded),
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        new SettingsScreenOne()));
-          },
-        ),
-        _buildDivider(),
-        new ListTile(
-          leading: Icon(Icons.help_outline, color: Colors.white),
-          title: new Text("Aide", style: TextStyle(color: Colors.white)),
-          trailing: Icon(Icons.keyboard_arrow_right_rounded),
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        new HelpScreen(value: "TEST")));
-          },
-        ),
-        _buildDivider(),
-      ]),
-    ));
-  }
-}
-
-/*
-  -Function that handle the top bar of the app
-*/
-class TopBar extends StatelessWidget implements PreferredSizeWidget {
-  Size get preferredSize => new Size.fromHeight(50);
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      title: Text('My Co\'Laverie', style: TextStyle(fontFamily: 'calibri')),
-      centerTitle: true,
-      backgroundColor: d_green,
+      bottomNavigationBar: BottomNavigationBarSmsAuto(),
     );
   }
 }
@@ -160,6 +66,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   -Function that handle the switch button of an alert
 */
 
+// ignore: must_be_immutable
 class SwitchButton extends StatefulWidget {
   dynamic alerte;
   SwitchButton({required this.alerte});
@@ -170,6 +77,7 @@ class SwitchButton extends StatefulWidget {
 class _StateSwitchButton extends State<SwitchButton> {
   bool state = false;
 
+  // ignore: unused_field
   String _message = "";
 
   final telephony = Telephony.instance;
@@ -636,76 +544,6 @@ class _AlertesState extends State<Alertes> {
             ],
           );
         });
-  }
-}
-
-/*
-    -this class is responsible of the bottom nav bar
-*/
-// ignore: must_be_immutable
-class BottomNavigationBarSection extends StatelessWidget {
-  final String value = 'test';
-  int nb = 0;
-  void getNb() async {
-    final pref = await SharedPreferences.getInstance();
-    nb = pref.getInt("nombreAlerte")!;
-  }
-
-  /*
-    - Building the bottom navigation bar
-  */
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      selectedItemColor: Colors.white,
-      backgroundColor: d_green,
-      items: [
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Icon(
-              Icons.access_time,
-              size: 50,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new HomePage()),
-            ),
-          ),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Icon(
-              Icons.add,
-              size: 50,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new FormScreen(nb: nb)),
-            ),
-          ),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Icon(
-              Icons.help_outline,
-              size: 50,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new HelpScreen(value: value)),
-            ),
-          ),
-          label: '',
-        ),
-      ],
-    );
   }
 }
 

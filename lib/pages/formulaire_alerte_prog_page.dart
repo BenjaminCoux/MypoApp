@@ -1,27 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/sms_auto.dart';
-import 'package:mypo/sms_prog.dart';
+import 'package:mypo/widget/appbar_widget.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:telephony/telephony.dart';
-
-const d_green = Color(0xFFA6C800);
-const d_gray = Color(0xFFBABABA);
-const d_darkgray = Color(0xFF6C6C6C);
-const d_lightgray = Color(0XFFFAFAFA);
-
-class TopBarA extends StatelessWidget implements PreferredSizeWidget {
-  Size get preferredSize => new Size.fromHeight(50);
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title:
-          Text('Ajoutez une alerte', style: TextStyle(fontFamily: 'calibri')),
-      centerTitle: true,
-      backgroundColor: d_green,
-    );
-  }
-}
+import 'sms_prog_page.dart';
 
 class ProgForm extends StatefulWidget {
   @override
@@ -55,18 +35,10 @@ class _ProgState extends State<ProgForm> {
     return d_darkgray;
   }
 
-  void saveAlert(String title, String content, var days, var cibles) async {
-    final pref = await SharedPreferences.getInstance();
-    //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
-    String tmp =
-        '{"number":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false}';
-    pref.setString("PROG_" + title, tmp);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBarA(),
+      appBar: TopBar(title: 'Ajoutez une alerte'),
       body: Center(
         child: Column(
           children: <Widget>[

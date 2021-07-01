@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/alerte.dart';
+import 'package:mypo/pages/home_page.dart';
 
 class ProfileWidget extends StatelessWidget {
   final String imagePath;

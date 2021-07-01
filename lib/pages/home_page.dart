@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/helppage.dart';
-import 'package:mypo/settings.dart';
-import 'package:mypo/sms_auto.dart';
-import 'package:mypo/sms_prog.dart';
 import 'package:mypo/test.dart';
+import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/logo_widget.dart';
+import 'package:mypo/widget/navbar_widget.dart';
+
+import 'sms_auto_page.dart';
+import 'sms_prog_page.dart';
 
 /*
   -colors used in the app
@@ -27,44 +29,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(),
+      appBar: TopBar(title: "My Co'Laverie"),
       body: SingleChildScrollView(
           child: Column(
         children: [Logo(), Mode()],
       )),
       bottomNavigationBar: BottomNavigationBarSection(),
-    );
-  }
-}
-/*
-  -that class creates the top app bad widget
-*/
-
-class TopBar extends StatelessWidget implements PreferredSizeWidget {
-  Size get preferredSize => new Size.fromHeight(50);
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      title: Text('My Co\'Laverie', style: TextStyle(fontFamily: 'calibri')),
-      centerTitle: true,
-      backgroundColor: d_green,
-    );
-  }
-}
-
-/*
-    -that class creates the logo in the middle
-*/
-
-class Logo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.30,
-      decoration: BoxDecoration(
-          color: d_lightgray,
-          image: DecorationImage(image: AssetImage('images/logo.png'))),
     );
   }
 }
@@ -158,83 +128,6 @@ class _ModeState extends State<Mode> {
               color: Colors.white,
             ),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-/*
-  -This class creates the widget responsible of the bottom navigation bar
-*/
-
-class BottomNavigationBarSection extends StatefulWidget {
-  @override
-  _StateBottomNavigationBarSection createState() =>
-      _StateBottomNavigationBarSection();
-}
-
-class _StateBottomNavigationBarSection
-    extends State<BottomNavigationBarSection> {
-  final String value = 'test';
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      selectedItemColor: Colors.white,
-      items: [
-        BottomNavigationBarItem(
-          icon: IconButton(
-              icon: Icon(
-                Icons.access_time,
-                color: d_green,
-                size: 50,
-              ),
-              onPressed: null),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          backgroundColor: d_green,
-          icon: IconButton(
-            icon: Icon(
-              Icons.stacked_bar_chart_rounded,
-              color: d_green,
-              size: 50,
-            ),
-            onPressed: null,
-          ),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          backgroundColor: d_green,
-          icon: IconButton(
-            icon: Icon(
-              Icons.help_outline,
-              color: d_green,
-              size: 50,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new HelpScreen(value: value)),
-            ),
-          ),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: d_green,
-              size: 50,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new SettingsScreenOne()),
-            ),
-          ),
-          label: '',
         ),
       ],
     );

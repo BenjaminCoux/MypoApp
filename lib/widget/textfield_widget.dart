@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../homepage.dart';
+import 'package:mypo/pages/home_page.dart';
 
 class TextFieldWidget extends StatefulWidget {
   final int maxLines;
@@ -24,6 +23,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
   late final controller = TextEditingController(text: widget.text);
 
   @override
+  // ignore: override_on_non_overriding_member
   void initSate() {
     super.initState();
   }

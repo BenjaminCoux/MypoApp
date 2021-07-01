@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mypo/widget/appbar_widget.dart';
 
-import 'homepage.dart';
+import 'home_page.dart';
 
 class HelpScreen extends StatelessWidget {
   final String value;
@@ -8,12 +9,7 @@ class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            elevation: 0,
-            brightness: Brightness.light,
-            title: Text('Aide', style: TextStyle(fontFamily: 'calibri')),
-            centerTitle: true,
-            backgroundColor: d_green),
+        appBar: TopBar(title: "Aide"),
         body: Stack(
           fit: StackFit.expand,
           children: [

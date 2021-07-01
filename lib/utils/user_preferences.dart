@@ -1,11 +1,11 @@
-import 'dart:convert';
-
 import 'package:mypo/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {
+  // ignore: unused_field
   static late SharedPreferences _preferences;
 
+  // ignore: unused_field
   static const _keyUser = 'user';
 
   static User myUser = User(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/formulaire_alerte_prog.dart';
-import 'package:mypo/helppage.dart';
-import 'package:mypo/settings.dart';
-import 'package:mypo/sms_auto.dart';
-import 'package:mypo/test.dart';
+import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/logo_widget.dart';
+import 'package:mypo/widget/navbar_widget.dart';
+
+import 'formulaire_alerte_prog_page.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -19,27 +19,12 @@ class _SmsProgState extends State<SmsProg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(),
+      appBar: TopBar(title: "My Co'Laverie"),
       body: SingleChildScrollView(
           child: Column(
         children: [Logo(), AlertesProg()],
       )),
-      bottomNavigationBar: BottomNavigationBarSection(),
-    );
-  }
-}
-/*
-    -that class creates the logo in the middle
-*/
-
-class Logo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.30,
-      decoration: BoxDecoration(
-          color: d_lightgray,
-          image: DecorationImage(image: AssetImage('images/logo.png'))),
+      bottomNavigationBar: BottomNavigationBarSmsProg(),
     );
   }
 }

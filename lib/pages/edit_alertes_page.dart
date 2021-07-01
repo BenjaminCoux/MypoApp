@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/formulaire_alert.dart';
-import 'package:mypo/homepage.dart';
-import 'dart:convert';
-import 'package:mypo/sms_auto.dart';
+import 'package:mypo/model/alert.dart';
+import 'package:mypo/widget/appbar_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'home_page.dart';
+import 'sms_auto_page.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -56,13 +57,7 @@ class _AlertScreenState extends State<AlertScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-          elevation: 0,
-          brightness: Brightness.light,
-          title: Text('Alerte ${widget.alerte.title}',
-              style: TextStyle(fontFamily: 'calibri')),
-          centerTitle: true,
-          backgroundColor: d_green),
+      appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
       body: Container(
         padding: EdgeInsets.all(18),
         child: GestureDetector(

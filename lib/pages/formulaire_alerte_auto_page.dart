@@ -1,29 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/sms_auto.dart';
+import 'package:mypo/widget/appbar_widget.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String pathToDB = "../assets/database.json";
-const d_green = Color(0xFFA6C800);
-const d_gray = Color(0xFFBABABA);
-const d_darkgray = Color(0xFF6C6C6C);
-const d_lightgray = Color(0XFFFAFAFA);
+import 'home_page.dart';
+import 'sms_auto_page.dart';
 
-/*
-  -This class create the top app bar widget
-*/
-class TopBarA extends StatelessWidget implements PreferredSizeWidget {
-  Size get preferredSize => new Size.fromHeight(50);
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title:
-          Text('Ajoutez une alerte', style: TextStyle(fontFamily: 'calibri')),
-      centerTitle: true,
-      backgroundColor: d_green,
-    );
-  }
-}
+const String pathToDB = "../assets/database.json";
 
 /*
   -This class creates the screeen to crate a new alor with all the options 
@@ -58,10 +41,6 @@ class _FormState extends State<FormScreen> {
     form!.save();
   }
 
-  /*
-    -Function wich saves the alerts with Shared Preferences
-  */
-
   void saveAlert(String title, String content, var days, var cibles) async {
     final pref = await SharedPreferences.getInstance();
     //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
@@ -75,7 +54,7 @@ class _FormState extends State<FormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBarA(),
+      appBar: TopBar(title: 'Ajoutez une alerte'),
       body: SingleChildScrollView(
         child: GestureDetector(
           onTap: () {
@@ -393,19 +372,5 @@ class _FormState extends State<FormScreen> {
 /*
   -alerts are elements of the class Alert
 */
-
-class Alert {
-  String title;
-  String content;
-  final days;
-  final cibles;
-  bool active = false;
-
-  Alert(
-      {required this.title,
-      required this.content,
-      required this.days,
-      required this.cibles});
-}
 
 enum Week { Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche }

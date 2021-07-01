@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/model/user.dart';
-import 'package:mypo/profilepage.dart';
 import 'package:mypo/utils/user_preferences.dart';
-import 'package:mypo/widget/button_widget.dart';
+import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 import 'package:mypo/widget/textfield_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'homepage.dart';
+import 'home_page.dart';
+import 'profile_page.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -21,17 +20,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     User user = UserPreferences.myUser;
 
     return Scaffold(
-        appBar: AppBar(
-          leading: BackButton(),
-          backgroundColor: d_green,
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {},
-            ),
-          ],
-        ),
+        appBar: TopBar(title: "Edit profile"),
         body: GestureDetector(
           onTap: () {
             //FocusScope.of(context).unfocus();

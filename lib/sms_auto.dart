@@ -103,7 +103,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (BuildContext context) => new EditProfilePage()));
+                    builder: (BuildContext context) => new ProfilePage()));
           },
         ),
         _buildDivider(),
@@ -574,6 +574,7 @@ class _AlertesState extends State<Alertes> {
     int nb = 0;
     void getNb() async {
       final pref = await SharedPreferences.getInstance();
+      //pref.clear();
       nb = pref.getInt("nombreAlerte")!;
     }
 

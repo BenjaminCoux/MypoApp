@@ -367,10 +367,10 @@ class _AlertScreenState extends State<AlertScreen> {
             borderSide: BorderSide(color: d_green)),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.black)),
+            borderSide: BorderSide(color: d_darkgray)),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.black)),
+            borderSide: BorderSide(color: d_darkgray)),
         contentPadding: EdgeInsets.all(8),
         labelText: labelText,
         floatingLabelBehavior: FloatingLabelBehavior.always,

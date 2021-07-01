@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypo/edit_profile_page.dart';
 import 'package:mypo/model/user.dart';
 import 'package:mypo/utils/user_preferences.dart';
 import 'package:mypo/widget/button_widget.dart';
@@ -15,6 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final user = UserPreferences.myUser;
+
     return Scaffold(
         appBar: AppBar(
           leading: BackButton(),
@@ -32,7 +34,12 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             ProfileWidget(
               imagePath: user.imagePath,
-              onClicked: () async {},
+              onClicked: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => EditProfilePage()),
+                );
+                setState(() {});
+              },
             ),
             const SizedBox(
               height: 24,

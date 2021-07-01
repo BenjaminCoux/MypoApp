@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../homepage.dart';
+
 class TextFieldWidget extends StatefulWidget {
+  final int maxLines;
   final String label;
   final String text;
   final ValueChanged<String> onChanged;
 
   const TextFieldWidget({
     Key? key,
+    this.maxLines = 1,
     required this.label,
     required this.text,
     required this.onChanged,
@@ -44,7 +48,23 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             const SizedBox(
               height: 8,
             ),
-            TextField(controller: controller),
+            TextField(
+              controller: controller,
+              onChanged: widget.onChanged,
+              maxLines: widget.maxLines,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: d_green)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: d_darkgray)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: d_darkgray)),
+              ),
+            ),
           ],
         ),
       );

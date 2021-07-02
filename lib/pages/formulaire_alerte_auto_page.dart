@@ -25,6 +25,8 @@ class _FormState extends State<FormScreen> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final week = [false, false, false, false, false, false, false];
   final cibles = [false, false, false];
+  int _value=1;
+  int _value2=1;
   var db;
 
   @override
@@ -49,6 +51,90 @@ class _FormState extends State<FormScreen> {
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);
+  }
+
+
+  Widget alertKeys(){
+    return Container(
+      child:Column(children:[
+        Row(mainAxisAlignment:MainAxisAlignment.center,children: [
+          Container(margin:EdgeInsets.fromLTRB(0,0, 50, 0),child:DropdownButton(
+              value: _value,
+              items: [
+                DropdownMenuItem(
+                  child: Text("Contient"),
+                  value: 1,
+                ),
+                DropdownMenuItem(
+                  child: Text("Ne Contient pas"),
+                  value: 2,
+                ),
+                DropdownMenuItem(
+                  child : Text("Est au debut"),
+                  value:3,
+                ),
+                DropdownMenuItem(
+                  child:Text("Est à la fin"),
+                  value:4,
+                )
+
+              ],
+
+              onChanged: (int? value) {
+                setState(() {
+                  _value = value!;
+                });
+              },
+              hint:Text("Select item")
+          ),),
+          Container(child:DropdownButton(
+              value: _value2,
+              items: [
+                DropdownMenuItem(
+                  child: Text("Accepte"),
+                  value: 1,
+                ),
+                DropdownMenuItem(
+                  child: Text("N'accepte pas"),
+                  value: 2,
+                )
+              ],
+
+              onChanged: (int? value) {
+                setState(() {
+                  _value2 = value!;
+                });
+              },
+              hint:Text("Select item")
+          ),),
+        ],),
+        Padding(
+          padding: EdgeInsets.all(12),
+          child: TextField(
+            controller: alertName,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: d_green)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.black)),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.black)),
+              hintText: "Ajoutez une clé à l'alerte ",
+              hintStyle: TextStyle(
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w300,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        )
+      ]),
+    );
   }
 
   @override
@@ -147,6 +233,21 @@ class _FormState extends State<FormScreen> {
                         ),
                       )),
                 ),
+                Container(decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(18),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: d_lightgray,
+                      spreadRadius: 4,
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: alertKeys()),
                 Container(
                     decoration: BoxDecoration(
                       color: Colors.white,

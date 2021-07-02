@@ -120,10 +120,6 @@ class _StateSwitchButton extends State<SwitchButton> {
       }
       i++;
     }
-    Telephony.instance.sendSms(
-        to: message.address.toString(),
-        message:
-            "Votre message ne contenait aucune clé.\n Veuillez recommencer");
   }
 
   /*
@@ -588,7 +584,4 @@ onBackgroundMessage(SmsMessage message) async {
     }
     i++;
   }
-  Telephony.backgroundInstance.sendSms(
-      to: message.address.toString(),
-      message: "Votre message ne contenait aucune clé.\n Veuillez recommencer");
 }

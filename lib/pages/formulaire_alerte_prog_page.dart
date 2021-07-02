@@ -16,11 +16,21 @@ class _ProgState extends State<ProgForm> {
   bool repeat = false;
   bool rebours = false;
   bool confirm = false;
+  bool notif = false;
   final week = [false, false, false, false, false, false, false];
   final cibles = [false, false, false];
   bool SMS = false;
   bool Tel = false;
   bool MMS = false;
+  final repeatOptions = [
+    'Evenement ponctuel',
+    'Toutes les heures',
+    'Tous les jours',
+    'Toutes les semaines',
+    'Tous les mois',
+    'Tous les ans'
+  ];
+  final _isRepeatOptionActive = [false, false, false, false, false, false];
 
   @override
   void dispose() {
@@ -330,38 +340,46 @@ class _ProgState extends State<ProgForm> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
+                InkWell(
+                  onTap: () {
+                    /*
+                    pop up menu with options
+                    */
+                    _showSingleChoiceDialog(context, _isRepeatOptionActive);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: d_lightgray,
+                          spreadRadius: 4,
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        child: Text("Repeter"),
-                        margin: EdgeInsets.fromLTRB(5, 0, 280 - 1.6, 0),
-                      ),
-                      Switch(
-                          activeColor: d_green,
-                          value: repeat,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  repeat = val;
-                                })
-                              }),
-                    ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          child: Text("Repeter"),
+                          margin: EdgeInsets.fromLTRB(5, 0, 280 - 1.6, 0),
+                        ),
+                        Switch(
+                            activeColor: d_green,
+                            value: repeat,
+                            onChanged: (bool val) => {
+                                  setState(() {
+                                    repeat = val;
+                                  })
+                                }),
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -457,10 +475,10 @@ class _ProgState extends State<ProgForm> {
                       ),
                       Switch(
                           activeColor: d_green,
-                          value: confirm,
+                          value: notif,
                           onChanged: (bool val) => {
                                 setState(() {
-                                  confirm = val;
+                                  notif = val;
                                 })
                               }),
                     ],
@@ -484,4 +502,35 @@ class _ProgState extends State<ProgForm> {
       ),
     );
   }
+
+  _showSingleChoiceDialog(BuildContext context, var _isRepeatOptionActive) =>
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+                title: Text('Repeter'),
+                content: SingleChildScrollView(
+                    child: Container(
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: repeatOptions
+                              .map((option) => CheckboxListTile(
+                                    title: Text(option),
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    activeColor: d_green,
+                                    value: _isRepeatOptionActive[
+                                        repeatOptions.indexOf(option)],
+                                    onChanged: (bool? value) => {
+                                      setState(() {
+                                        _isRepeatOptionActive[repeatOptions
+                                            .indexOf(option)] = value!;
+                                      }),
+                                      Navigator.of(context).pop(),
+                                    },
+                                  ))
+                              .toList(),
+                        ))));
+          });
 }

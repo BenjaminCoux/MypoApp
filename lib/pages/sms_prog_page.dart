@@ -60,9 +60,7 @@ class _AlertesProgState extends State<AlertesProg> {
                           */
                             ));
                   } else {
-                    return CircularProgressIndicator(
-                      color: d_green,
-                    );
+                    return Text('Aucune alerte');
                   }
                 }),
             SizedBox(height: 50),

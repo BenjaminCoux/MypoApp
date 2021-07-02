@@ -6,11 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'home_page.dart';
 import 'sms_auto_page.dart';
 
-const d_green = Color(0xFFA6C800);
-const d_gray = Color(0xFFBABABA);
-const d_darkgray = Color(0xFF6C6C6C);
-const d_lightgray = Color(0XFFFAFAFA);
-
 // ignore: must_be_immutable
 class AlertScreen extends StatefulWidget {
   Alert alerte;

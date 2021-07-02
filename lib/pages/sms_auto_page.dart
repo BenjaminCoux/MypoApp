@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mypo/model/alert.dart';
+import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
@@ -278,7 +279,7 @@ class _AlertesState extends State<Alertes> {
         children: <Widget>[],
       ),
       actions: <Widget>[
-        new FlatButton(
+        new TextButton(
           onPressed: () {
             setState(() {
               delete(alerte);
@@ -286,15 +287,13 @@ class _AlertesState extends State<Alertes> {
             });
             Navigator.of(context).pop();
           },
-          textColor: Theme.of(context).primaryColor,
-          child: const Text('Oui'),
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
         ),
-        new FlatButton(
+        new TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          textColor: Theme.of(context).primaryColor,
-          child: const Text('Non'),
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
         ),
       ],
     );

@@ -5,11 +5,13 @@ class TextFieldWidget extends StatefulWidget {
   final int maxLines;
   final String label;
   final String text;
+  final String hint;
   final ValueChanged<String> onChanged;
 
   const TextFieldWidget({
     Key? key,
     this.maxLines = 1,
+    required this.hint,
     required this.label,
     required this.text,
     required this.onChanged,
@@ -53,6 +55,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               onChanged: widget.onChanged,
               maxLines: widget.maxLines,
               decoration: InputDecoration(
+                hintText: widget.hint,
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),

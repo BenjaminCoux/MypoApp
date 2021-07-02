@@ -41,6 +41,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               TextFieldWidget(
                 label: 'Nom',
+                hint: 'Username',
                 text: user.name,
                 onChanged: (name) => user = user.copy(name: name),
               ),
@@ -49,6 +50,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               TextFieldWidget(
                 label: 'Email',
+                hint: 'username@example.com',
                 text: user.email,
                 onChanged: (email) => user = user.copy(email: email),
               ),
@@ -57,6 +59,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               TextFieldWidget(
                 label: 'Numero',
+                hint: 'Number',
                 text: user.phoneNumber,
                 onChanged: (phoneNumber) =>
                     user = user.copy(phoneNumber: phoneNumber),
@@ -66,6 +69,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               TextFieldWidget(
                 label: 'About',
+                hint: 'Partagez vos ambitions',
                 maxLines: 4,
                 text: user.about,
                 onChanged: (about) => user = user.copy(about: about),

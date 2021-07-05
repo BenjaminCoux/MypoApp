@@ -156,6 +156,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                   setState(() {
                                     widget.alerte.keys
                                         .remove(widget.alerte.keys[index]);
+                                    this.hasChanged = true;
                                   })
                                 },
                             child: Container(

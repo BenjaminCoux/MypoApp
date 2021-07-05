@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/pages/home_page.dart';
 
 /*
     -that class creates the logo in the middle

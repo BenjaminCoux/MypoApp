@@ -446,49 +446,56 @@ class _AlertScreenState extends State<AlertScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  Container(
+                    margin: EdgeInsets.all(12),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
-                    ),
-                    onPressed: () => Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new SmsAuto()),
-                    ),
-                    child: Text(
-                      "CANCEL",
-                      style: TextStyle(
-                        fontSize: 14,
-                        letterSpacing: 2.2,
-                        color: Colors.black,
+                      onPressed: () => Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new SmsAuto()),
+                      ),
+                      child: Text(
+                        "CANCEL",
+                        style: TextStyle(
+                          fontSize: 14,
+                          letterSpacing: 2.2,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                  ElevatedButton(
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: d_green,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  Container(
+                    margin: EdgeInsets.all(12),
+                    child: ElevatedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: d_green,
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      save();
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => new SmsAuto()));
-                    },
-                    child: Text(
-                      "SAVE",
-                      style: TextStyle(
-                        fontSize: 14,
-                        letterSpacing: 2.2,
-                        color: Colors.white,
+                      onPressed: () {
+                        save();
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => new SmsAuto()));
+                      },
+                      child: Text(
+                        "SAVE",
+                        style: TextStyle(
+                          fontSize: 14,
+                          letterSpacing: 2.2,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

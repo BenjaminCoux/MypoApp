@@ -5,6 +5,7 @@ import 'package:mypo/widget/appbar_widget.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 import 'home_page.dart';
 import 'sms_auto_page.dart';
 
@@ -72,8 +73,16 @@ class _FormState extends State<FormScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+              ),
+              padding: EdgeInsets.all(12),
               margin: EdgeInsets.fromLTRB(0, 0, 50, 0),
               child: DropdownButton(
+                  underline: SizedBox(),
                   value: _value,
                   items: [
                     DropdownMenuItem(
@@ -101,7 +110,15 @@ class _FormState extends State<FormScreen> {
                   hint: Text("Select item")),
             ),
             Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+              ),
               child: DropdownButton(
+                  underline: SizedBox(),
                   value: _value2,
                   items: [
                     DropdownMenuItem(
@@ -122,34 +139,43 @@ class _FormState extends State<FormScreen> {
             ),
           ],
         ),
-        Padding(
-          padding: EdgeInsets.all(12),
-          child: TextField(
-            onSubmitted: (String? txt) => {
-              setState(() {
-                keys.add(new AlertKey(
-                    name: keyName.text, contient: _value, allow: _value2));
-                keyName.text = "";
-              })
-            },
-            controller: keyName,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.black),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: d_green)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.black)),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.black)),
-              hintText: "Ajoutez une clé à l'alerte ",
-              hintStyle: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.w300,
-                color: Colors.black,
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(18),
+            ),
+          ),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: TextField(
+              onSubmitted: (String? txt) => {
+                setState(() {
+                  keys.add(new AlertKey(
+                      name: keyName.text, contient: _value, allow: _value2));
+                  keyName.text = "";
+                })
+              },
+              controller: keyName,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                hintText: "Ajoutez une clé à l'alerte ",
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
@@ -195,7 +221,10 @@ class _FormState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // temporary for weekdayselector
+    final values = List.filled(7, true);
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Ajoutez une alerte'),
       body: SingleChildScrollView(
         child: GestureDetector(
@@ -206,105 +235,13 @@ class _FormState extends State<FormScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Padding(
-                    padding: EdgeInsets.all(12),
-                    child: TextField(
-                      controller: alertName,
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(color: Colors.black),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: d_green)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.black)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.black)),
-                        hintText: "Ajoutez un titre à l'alerte",
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
+                buildTextField(
+                    'Titre', "Ajoutez un titre à l'alerte", alertName),
+                buildTextField('Contenu', "Contenu du message", alertContent),
+                SizedBox(
+                  height: 20,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Padding(
-                      padding: EdgeInsets.all(12),
-                      child: TextField(
-                        controller: alertContent,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color: Colors.black),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: d_green)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.black)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.black)),
-                          hintText: "Contenu du message",
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black,
-                          ),
-                        ),
-                      )),
-                ),
-                Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(18),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: d_lightgray,
-                          spreadRadius: 4,
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: alertKeys(context)),
+                alertKeys(context),
                 Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -338,6 +275,23 @@ class _FormState extends State<FormScreen> {
                           padding: EdgeInsets.all(8),
                           child: Column(
                             children: [
+                              WeekdaySelector(
+                                onChanged: (int day) {
+                                  setState(() {
+                                    // Use module % 7 as Sunday's index in the array is 0 and
+                                    // DateTime.sunday constant integer value is 7.
+                                    final index = day % 7;
+                                    // We "flip" the value in this example, but you may also
+                                    // perform validation, a DB write, an HTTP call or anything
+                                    // else before you actually flip the value,
+                                    // it's up to your app's needs.
+
+                                    // remember to changes values
+                                    values[index] = !values[index];
+                                  });
+                                },
+                                values: values,
+                              ),
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
@@ -505,19 +459,36 @@ class _FormState extends State<FormScreen> {
                         ),
                       ),
                     ])),
-                OutlinedButton(
-                    onPressed: () => {
-                          saveAlert(alertName.text, alertContent.text, week,
-                              cibles, keys),
-                          Navigator.pop(context),
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => new SmsAuto()),
-                          )
-                        },
-                    child: const Text("Valider",
-                        style: TextStyle(color: d_green))),
+                ElevatedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: d_green,
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: () => {
+                    if (alertName.text != '')
+                      {
+                        saveAlert(alertName.text, alertContent.text, week,
+                            cibles, keys),
+                      },
+                    Navigator.pop(context),
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new SmsAuto()),
+                    )
+                  },
+                  child: Text(
+                    "Valider",
+                    style: TextStyle(
+                      fontSize: 14,
+                      letterSpacing: 2.2,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -525,10 +496,56 @@ class _FormState extends State<FormScreen> {
       ),
     );
   }
-}
 
-/*
-  -alerts are elements of the class Alert
-*/
+  Container buildTextField(
+      String labelText, String placeholder, TextEditingController controller) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              // set new state
+              // this.contentchanged = true;
+              // this.titlechanged = true;
+              // this.hasChanged = true;
+            })
+          },
+          maxLines: 2,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 enum Week { Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche }

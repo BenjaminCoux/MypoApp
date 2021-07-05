@@ -136,6 +136,7 @@ class _StateSwitchButton extends State<SwitchButton> {
     if (!dayIsRight(alert, day)) {
       return false;
     }
+    // ignore: unused_local_variable
     var where = {
       1: "Contient",
       2: "Ne Contient pas",

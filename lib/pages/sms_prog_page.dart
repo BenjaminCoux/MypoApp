@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
-import 'package:mypo/widget/logo_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 
 import 'formulaire_alerte_prog_page.dart';

@@ -12,9 +12,13 @@ A new Flutter app project.
 
 
 
-##Getting Started
-
-
+## Getting Started
+  
+  *install flutter SDK
+  *install flutter/dart plugins in your IDE
+  *run the command "flutter clean"
+  *run the command "flutter pub get"
+  *run the app
 ## Flutter
 
 For help with Flutter, view the

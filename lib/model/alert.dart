@@ -6,7 +6,7 @@ class Alert {
   final days;
   final cibles;
   bool active = false;
-  final keys;
+  List<AlertKey> keys;
 
   Alert(
       {required this.title,

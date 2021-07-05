@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mypo/model/alert.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:mypo/model/alertkey.dart';
 import 'home_page.dart';
 import 'sms_auto_page.dart';
 
@@ -21,6 +23,9 @@ class _AlertScreenState extends State<AlertScreen> {
   bool hasChanged = false;
   bool titlechanged = false;
   bool contentchanged = false;
+  int _value = 1;
+  bool _value2 = true;
+  final keyName = TextEditingController();
 
   @override
   void initState() {
@@ -45,7 +50,137 @@ class _AlertScreenState extends State<AlertScreen> {
     // This also removes the _printLatestValue listener.
     alertName.dispose();
     alertContent.dispose();
+    keyName.dispose();
     super.dispose();
+  }
+
+  Widget alertKeys(BuildContext context) {
+    return Container(
+      child: Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 50, 0),
+              child: DropdownButton(
+                  value: _value,
+                  items: [
+                    DropdownMenuItem(
+                      child: Text("Contient"),
+                      value: 1,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Ne Contient pas"),
+                      value: 2,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Est au debut"),
+                      value: 3,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Est à la fin"),
+                      value: 4,
+                    )
+                  ],
+                  onChanged: (int? value) {
+                    setState(() {
+                      _value = value!;
+                    });
+                  },
+                  hint: Text("Select item")),
+            ),
+            Container(
+              child: DropdownButton(
+                  value: _value2,
+                  items: [
+                    DropdownMenuItem(
+                      child: Text("Accepte"),
+                      value: true,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("N'accepte pas"),
+                      value: false,
+                    )
+                  ],
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _value2 = value!;
+                    });
+                  },
+                  hint: Text("Select item")),
+            ),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.all(12),
+          child: TextField(
+            onSubmitted: (String? txt) => {
+              setState(() {
+                widget.alerte.keys.add(new AlertKey(
+                    name: keyName.text, contient: _value, allow: _value2));
+                keyName.text = "";
+              })
+            },
+            controller: keyName,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: d_green)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.black)),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.black)),
+              hintText: "Ajoutez une clé à l'alerte ",
+              hintStyle: TextStyle(
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w300,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+        widget.alerte.keys.length > 0
+            ? ListView.builder(
+                shrinkWrap: true,
+                itemCount: widget.alerte.keys.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                            onTap: () => {
+                                  setState(() {
+                                    widget.alerte.keys
+                                        .remove(widget.alerte.keys[index]);
+                                  })
+                                },
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(18),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: d_lightgray,
+                                    spreadRadius: 4,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Text(widget.alerte.keys[index].name),
+                            ))
+                      ]);
+                })
+            : Text("Pas encore de clés pour cette alerte"),
+      ]),
+    );
   }
 
   @override
@@ -66,6 +201,7 @@ class _AlertScreenState extends State<AlertScreen> {
               buildTextField(
                   'Message', '${widget.alerte.content}', alertContent),
               SizedBox(height: 35),
+              alertKeys(context),
               Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -403,8 +539,14 @@ class _AlertScreenState extends State<AlertScreen> {
       final days = widget.alerte.days;
       final cible = widget.alerte.cibles;
       final b = widget.alerte.active;
+      List<AlertKey> a = widget.alerte.keys;
+      List<String> aStr = <String>[];
+      for (int i = 0; i < a.length; i++) {
+        aStr.add(a[i].toString());
+      }
+      String str = json.encode(aStr);
       String tmp =
-          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$b}';
+          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$b,"keys":$str}';
       pref.setString(title, tmp);
     }
   }

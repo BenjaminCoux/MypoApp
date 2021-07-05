@@ -23,6 +23,7 @@ class _SmsAutoState extends State<SmsAuto> {
 
   Future<List> readAlert() async {
     final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
     List res = <dynamic>[];
     Set<String> keys = prefs.getKeys();
     Iterator<String> it = keys.iterator;
@@ -308,8 +309,21 @@ class _AlertesState extends State<Alertes> {
         content: a.content,
         days: a.days,
         cibles: a.cibles,
-        keys: new List.empty());
+        keys: a.keys);
     res.active = actived;
+    return res;
+  }
+
+  List<AlertKey> buildKeys(dynamic input) {
+    dynamic tmp;
+    List<AlertKey> res = <AlertKey>[];
+    for (int i = 0; i < input.length; i++) {
+      tmp = json.decode(input[i]);
+      res.add(new AlertKey(
+          name: tmp["name"],
+          contient: tmp["contient"],
+          allow: tmp["allow"] == "true"));
+    }
     return res;
   }
 
@@ -334,7 +348,7 @@ class _AlertesState extends State<Alertes> {
                                   content: alerts[index]["content"],
                                   days: jsonDecode(alerts[index]["days"]),
                                   cibles: jsonDecode(alerts[index]["cibles"]),
-                                  keys: alerts[index]["keys"]),
+                                  keys: buildKeys(alerts[index]["keys"])),
                               alerts[index]["active"],
                             ))),
                   ),

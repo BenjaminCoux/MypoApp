@@ -7,6 +7,6 @@ class AlertKey {
 
   @override
   String toString() {
-    return '{"name:"$name,"contient":$contient,"allow:"$allow}';
+    return '{"name":"$name","contient":$contient,"allow":"$allow"}';
   }
 }

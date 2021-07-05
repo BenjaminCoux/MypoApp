@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/test.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/logo_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 
@@ -29,12 +29,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: "My Co'Laverie"),
+      drawer: HamburgerMenu(),
       body: SingleChildScrollView(
           child: Column(
         children: [Logo(), Mode()],
       )),
-      bottomNavigationBar: BottomNavigationBarSection(),
+      bottomNavigationBar: BottomNavigationBarTwo(),
     );
   }
 }
@@ -107,28 +109,28 @@ class _ModeState extends State<Mode> {
             ],
           ),
         ),
-        ElevatedButton(
-          style: OutlinedButton.styleFrom(
-            backgroundColor: d_green,
-            padding: EdgeInsets.symmetric(horizontal: 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => new TestPage()));
-          },
-          child: Text(
-            "Test msg auto",
-            style: TextStyle(
-              fontSize: 14,
-              letterSpacing: 2.2,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        // ElevatedButton(
+        //   style: OutlinedButton.styleFrom(
+        //     backgroundColor: d_green,
+        //     padding: EdgeInsets.symmetric(horizontal: 50),
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(20),
+        //     ),
+        //   ),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //     Navigator.push(context,
+        //         new MaterialPageRoute(builder: (context) => new TestPage()));
+        //   },
+        //   child: Text(
+        //     "Test msg auto",
+        //     style: TextStyle(
+        //       fontSize: 14,
+        //       letterSpacing: 2.2,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

@@ -8,6 +8,7 @@ import 'package:mypo/model/alertkey.dart';
 import 'home_page.dart';
 import 'sms_auto_page.dart';
 
+const d_green = Color(0xFFA6C800);
 const String pathToDB = "../assets/database.json";
 
 /*

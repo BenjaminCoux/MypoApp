@@ -1,7 +1,9 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/textfield_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:quiver/core.dart';
 
 import 'sms_prog_page.dart';
@@ -46,10 +48,10 @@ class _ProgState extends State<ProgForm> {
       // We didn't ask for permission yet or the permission has been denied before but not permanently.
     }
 
-    // You can can also directly ask the permission about its status.
     if (await Permission.location.isRestricted) {
       // The OS restricts access, for example because of parental controls.
     }
+
     if (await Permission.contacts.request().isGranted) {
       // Get all contacts without thumbnail (faster)
       List<Contact> _contacts =
@@ -79,7 +81,8 @@ class _ProgState extends State<ProgForm> {
   Widget build(BuildContext context) {
     // initState();
     return Scaffold(
-      appBar: TopBar(title: 'Ajoutez une alertee'),
+      backgroundColor: Colors.grey.shade200,
+      appBar: TopBar(title: 'Ajoutez une alerte'),
       body: SingleChildScrollView(
         child: GestureDetector(
           onTap: () {
@@ -94,14 +97,6 @@ class _ProgState extends State<ProgForm> {
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Padding(
@@ -121,13 +116,13 @@ class _ProgState extends State<ProgForm> {
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: d_green)),
+                            borderSide: BorderSide(color: Colors.transparent)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.black)),
+                            borderSide: BorderSide(color: Colors.transparent)),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.black)),
+                            borderSide: BorderSide(color: Colors.transparent)),
                         hintText: "Ajoutez un numero de telephone",
                         hintStyle: TextStyle(
                           fontSize: 16,
@@ -140,62 +135,29 @@ class _ProgState extends State<ProgForm> {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
                       ),
-                    ],
-                  ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Padding(
-                      padding: EdgeInsets.all(12),
-                      child: TextField(
-                        controller: alertContent,
-                        decoration: InputDecoration(
-                          labelText: 'Contenu',
-                          labelStyle: TextStyle(color: Colors.black),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: d_green)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.black)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.black)),
+                    ),
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Padding(
+                        padding: EdgeInsets.all(12),
+                        child: textFieldWidget(
+                          controller: alertContent,
                           hintText: "Contenu du message",
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black,
-                          ),
-                        ),
-                      )),
-                ),
+                          labelText: 'Message',
+                          typeOfInputText: TextInputType.text,
+                        ))),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
                       Row(
@@ -210,14 +172,6 @@ class _ProgState extends State<ProgForm> {
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(5),
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: d_lightgray,
-                                    spreadRadius: 4,
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
                               ),
                               child: InkWell(
                                 onTap: () => {
@@ -251,14 +205,6 @@ class _ProgState extends State<ProgForm> {
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(18),
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: d_lightgray,
-                                    spreadRadius: 4,
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
                               ),
                               child: InkWell(
                                 onTap: () => {
@@ -292,14 +238,6 @@ class _ProgState extends State<ProgForm> {
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(18),
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: d_lightgray,
-                                    spreadRadius: 4,
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
                               ),
                               child: InkWell(
                                 onTap: () => {
@@ -336,17 +274,14 @@ class _ProgState extends State<ProgForm> {
                             borderRadius: BorderRadius.all(
                               Radius.circular(5),
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: d_lightgray,
-                                spreadRadius: 4,
-                                blurRadius: 6,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
                           ),
                           child: OutlinedButton(
-                            onPressed: () {},
+                            // onPressed: null,
+                            onPressed: () async {
+                              final pref =
+                                  await SharedPreferences.getInstance();
+                              pref.clear();
+                            },
                             // => Navigator.push(
                             //   context,
                             //   new MaterialPageRoute(
@@ -386,14 +321,6 @@ class _ProgState extends State<ProgForm> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(18),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: d_lightgray,
-                          spreadRadius: 4,
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -421,14 +348,6 @@ class _ProgState extends State<ProgForm> {
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -455,14 +374,6 @@ class _ProgState extends State<ProgForm> {
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -489,14 +400,6 @@ class _ProgState extends State<ProgForm> {
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -516,17 +419,31 @@ class _ProgState extends State<ProgForm> {
                     ],
                   ),
                 ),
-                OutlinedButton(
-                    onPressed: () => {
-                          Navigator.pop(context),
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => new SmsProg()),
-                          )
-                        },
-                    child:
-                        const Text("Valider", style: TextStyle(color: d_green)))
+                ElevatedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: d_green,
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new SmsProg()),
+                    )
+                  },
+                  child: Text(
+                    "Valider",
+                    style: TextStyle(
+                      fontSize: 14,
+                      letterSpacing: 2.2,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -600,6 +517,7 @@ class _ProgState extends State<ProgForm> {
                               // selected contact
                               // print('contact ' + index.toString());
                               Navigator.of(context).pop();
+                              // we set the text of the controller to the number of the contact chosen
                               number.text =
                                   contact.phones?.elementAt(0).value! ?? '';
                             },

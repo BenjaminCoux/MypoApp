@@ -8,9 +8,9 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.25,
+      height: MediaQuery.of(context).size.height * 0.23,
       decoration: BoxDecoration(
-          color: d_lightgray,
+          color: Colors.grey.shade200,
           image: DecorationImage(image: AssetImage('images/logo.png'))),
     );
   }

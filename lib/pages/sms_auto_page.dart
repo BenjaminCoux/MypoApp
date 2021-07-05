@@ -13,6 +13,8 @@ import 'package:intl/intl.dart';
 import 'edit_alertes_page.dart';
 import 'formulaire_alerte_auto_page.dart';
 
+const d_green = Color(0xFFA6C800);
+
 class SmsAuto extends StatefulWidget {
   @override
   _SmsAutoState createState() => _SmsAutoState();
@@ -566,7 +568,10 @@ class _AlertesState extends State<Alertes> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.message),
+                leading: Icon(
+                  Icons.message,
+                  color: Colors.blue,
+                ),
                 title: Text('Messages'),
                 onTap: () => Navigator.push(
                   context,
@@ -574,10 +579,9 @@ class _AlertesState extends State<Alertes> {
                       builder: (context) => new FormScreen(nb: nb)),
                 ),
               ),
+              _buildDivider(),
               ListTile(
-                leading: Icon(
-                  FontAwesomeIcons.whatsapp,
-                ),
+                leading: Icon(FontAwesomeIcons.whatsapp, color: Colors.green),
                 title: Text('WhatsApp'),
                 onTap: () => Navigator.push(
                   context,
@@ -585,27 +589,11 @@ class _AlertesState extends State<Alertes> {
                       builder: (context) => new FormScreen(nb: nb)),
                 ),
               ),
+              _buildDivider(),
               ListTile(
-                leading: Icon(FontAwesomeIcons.facebookMessenger),
+                leading: Icon(FontAwesomeIcons.facebookMessenger,
+                    color: Colors.blue),
                 title: Text('Messenger'),
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new FormScreen(nb: nb)),
-                ),
-              ),
-              ListTile(
-                leading: Icon(FontAwesomeIcons.facebook),
-                title: Text('Facebook'),
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new FormScreen(nb: nb)),
-                ),
-              ),
-              ListTile(
-                leading: Icon(FontAwesomeIcons.instagram),
-                title: Text('Instagram'),
                 onTap: () => Navigator.push(
                   context,
                   new MaterialPageRoute(
@@ -618,8 +606,17 @@ class _AlertesState extends State<Alertes> {
   }
 }
 
+Container _buildDivider() {
+  return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      width: double.infinity,
+      height: 1,
+      color: Colors.grey.shade400);
+}
+
 Future<List> getContents() async {
   final pref = await SharedPreferences.getInstance();
+  //pref.clear();
   final tmp = pref.getKeys();
   List contents = <dynamic>[];
   Iterator<String> it = tmp.iterator;

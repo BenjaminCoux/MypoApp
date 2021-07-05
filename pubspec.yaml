@@ -37,6 +37,7 @@ dependencies:
   contacts_service: ^0.6.1
   permission_handler: ^8.1.2
   quiver: ^3.0.0
+  weekday_selector: ^1.0.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

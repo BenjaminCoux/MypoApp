@@ -72,3 +72,52 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
         ),
       );
 }
+
+class textFieldWidget extends StatefulWidget {
+  final String labelText;
+  final String hintText;
+  final TextEditingController controller;
+  final TextInputType typeOfInputText;
+
+  const textFieldWidget({
+    Key? key,
+    required this.labelText,
+    required this.hintText,
+    required this.controller,
+    required this.typeOfInputText,
+  }) : super(key: key);
+
+  @override
+  _textFieldWidgetState createState() => _textFieldWidgetState();
+}
+
+class _textFieldWidgetState extends State<textFieldWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: (value) => widget.controller.text = value,
+      keyboardType: widget.typeOfInputText,
+      controller: widget.controller,
+      decoration: InputDecoration(
+        labelText: widget.labelText,
+        labelStyle: TextStyle(color: Colors.black),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.transparent)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.transparent)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.transparent)),
+        hintText: widget.hintText,
+        hintStyle: TextStyle(
+          fontSize: 16,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w300,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+}

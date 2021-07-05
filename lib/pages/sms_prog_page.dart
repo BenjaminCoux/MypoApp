@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/logo_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 
@@ -19,10 +20,12 @@ class _SmsProgState extends State<SmsProg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: "My Co'Laverie"),
+      drawer: HamburgerMenu(),
       body: SingleChildScrollView(
           child: Column(
-        children: [Logo(), AlertesProg()],
+        children: [AlertesProg()],
       )),
       bottomNavigationBar: BottomNavigationBarSmsProg(),
     );

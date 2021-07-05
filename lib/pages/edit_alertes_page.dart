@@ -5,8 +5,11 @@ import 'package:mypo/model/alert.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 import 'home_page.dart';
 import 'sms_auto_page.dart';
+
+const d_green = Color(0xFFA6C800);
 
 // ignore: must_be_immutable
 class AlertScreen extends StatefulWidget {
@@ -61,8 +64,16 @@ class _AlertScreenState extends State<AlertScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+              ),
+              padding: EdgeInsets.all(12),
               margin: EdgeInsets.fromLTRB(0, 0, 50, 0),
               child: DropdownButton(
+                  underline: SizedBox(),
                   value: _value,
                   items: [
                     DropdownMenuItem(
@@ -90,7 +101,15 @@ class _AlertScreenState extends State<AlertScreen> {
                   hint: Text("Select item")),
             ),
             Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+              ),
+              padding: EdgeInsets.all(12),
               child: DropdownButton(
+                  underline: SizedBox(),
                   value: _value2,
                   items: [
                     DropdownMenuItem(
@@ -111,34 +130,43 @@ class _AlertScreenState extends State<AlertScreen> {
             ),
           ],
         ),
-        Padding(
-          padding: EdgeInsets.all(12),
-          child: TextField(
-            onSubmitted: (String? txt) => {
-              setState(() {
-                widget.alerte.keys.add(new AlertKey(
-                    name: keyName.text, contient: _value, allow: _value2));
-                keyName.text = "";
-              })
-            },
-            controller: keyName,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.black),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: d_green)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.black)),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.black)),
-              hintText: "Ajoutez une clé à l'alerte ",
-              hintStyle: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.w300,
-                color: Colors.black,
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(18),
+            ),
+          ),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: TextField(
+              onSubmitted: (String? txt) => {
+                setState(() {
+                  widget.alerte.keys.add(new AlertKey(
+                      name: keyName.text, contient: _value, allow: _value2));
+                  keyName.text = "";
+                })
+              },
+              controller: keyName,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                hintText: "Ajoutez une clé à l'alerte ",
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
@@ -186,11 +214,12 @@ class _AlertScreenState extends State<AlertScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // temporary for weekdayselector
+    final values = List.filled(7, true);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
       body: Container(
-        padding: EdgeInsets.all(18),
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -198,10 +227,11 @@ class _AlertScreenState extends State<AlertScreen> {
           child: ListView(
             children: <Widget>[
               buildTextField('Nom', '${widget.alerte.title}', alertName),
-              SizedBox(height: 35),
               buildTextField(
                   'Message', '${widget.alerte.content}', alertContent),
-              SizedBox(height: 35),
+              SizedBox(
+                height: 20,
+              ),
               alertKeys(context),
               Container(
                   decoration: BoxDecoration(
@@ -209,14 +239,6 @@ class _AlertScreenState extends State<AlertScreen> {
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                   margin: EdgeInsets.fromLTRB(10, 10, 0, 10),
                   child: Wrap(children: [
@@ -236,6 +258,23 @@ class _AlertScreenState extends State<AlertScreen> {
                         padding: EdgeInsets.all(8),
                         child: Column(
                           children: [
+                            WeekdaySelector(
+                              onChanged: (int day) {
+                                setState(() {
+                                  // Use module % 7 as Sunday's index in the array is 0 and
+                                  // DateTime.sunday constant integer value is 7.
+                                  final index = day % 7;
+                                  // We "flip" the value in this example, but you may also
+                                  // perform validation, a DB write, an HTTP call or anything
+                                  // else before you actually flip the value,
+                                  // it's up to your app's needs.
+
+                                  // remember to changes values
+                                  values[index] = !values[index];
+                                });
+                              },
+                              values: values,
+                            ),
                             CheckboxListTile(
                                 controlAffinity:
                                     ListTileControlAffinity.leading,
@@ -339,14 +378,6 @@ class _AlertScreenState extends State<AlertScreen> {
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
@@ -450,7 +481,7 @@ class _AlertScreenState extends State<AlertScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => new HomePage()));
+                              builder: (context) => new SmsAuto()));
                     },
                     child: Text(
                       "SAVE",
@@ -475,38 +506,50 @@ class _AlertScreenState extends State<AlertScreen> {
 
   */
 
-  TextField buildTextField(
+  Container buildTextField(
       String labelText, String placeholder, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      onChanged: (String value) => {
-        setState(() {
-          this.contentchanged = true;
-          this.titlechanged = true;
-          this.hasChanged = true;
-        })
-      },
-      maxLines: 2,
-      decoration: InputDecoration(
-        labelStyle: TextStyle(color: Colors.black),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: d_green)),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: d_darkgray)),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: d_darkgray)),
-        contentPadding: EdgeInsets.all(8),
-        labelText: labelText,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        hintText: placeholder,
-        hintStyle: TextStyle(
-          fontSize: 16,
-          fontStyle: FontStyle.italic,
-          fontWeight: FontWeight.w300,
-          color: Colors.black,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.contentchanged = true;
+              this.titlechanged = true;
+              this.hasChanged = true;
+            })
+          },
+          maxLines: 2,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
         ),
       ),
     );

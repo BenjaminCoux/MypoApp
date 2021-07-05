@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mypo/model/alert.dart';
+import 'package:mypo/model/alertkey.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
@@ -33,6 +34,7 @@ class _SmsAutoState extends State<SmsAuto> {
         alerts.add(json.decode(prefs.getString(cc) ?? "/"));
       }
     }
+
     return res;
   }
 
@@ -183,8 +185,9 @@ class _StateSwitchButton extends State<SwitchButton> {
     final days = alerte["days"];
     final cible = alerte["cibles"];
     final active = state;
+    final key = alerte["keys"];
     String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active}';
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active,"keys:"$key}';
     prefs.setString(title, tmp);
     //  print(prefs.get(alerte["title"]));
   }
@@ -301,7 +304,11 @@ class _AlertesState extends State<Alertes> {
 
   Alert createAlert(Alert a, bool actived) {
     Alert res = new Alert(
-        title: a.title, content: a.content, days: a.days, cibles: a.cibles);
+        title: a.title,
+        content: a.content,
+        days: a.days,
+        cibles: a.cibles,
+        keys: new List.empty());
     res.active = actived;
     return res;
   }
@@ -321,14 +328,15 @@ class _AlertesState extends State<Alertes> {
                     context,
                     new MaterialPageRoute(
                         builder: (context) => new AlertScreen(
-                            alerte: createAlert(
-                                new Alert(
-                                    title: alerts[index]["title"],
-                                    content: alerts[index]["content"],
-                                    days: jsonDecode(alerts[index]["days"]),
-                                    cibles:
-                                        jsonDecode(alerts[index]["cibles"])),
-                                alerts[index]["active"]))),
+                                alerte: createAlert(
+                              new Alert(
+                                  title: alerts[index]["title"],
+                                  content: alerts[index]["content"],
+                                  days: jsonDecode(alerts[index]["days"]),
+                                  cibles: jsonDecode(alerts[index]["cibles"]),
+                                  keys: alerts[index]["keys"]),
+                              alerts[index]["active"],
+                            ))),
                   ),
                 },
                 child: Container(

@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:mypo/model/alertkey.dart';
 import 'home_page.dart';
 import 'sms_auto_page.dart';
 
@@ -27,9 +29,9 @@ class _FormState extends State<FormScreen> {
   final week = [false, false, false, false, false, false, false];
   final cibles = [false, false, false];
   int _value = 1;
-  int _value2 = 1;
+  bool _value2 = true;
   var db;
-  List<String> keys = <String>[];
+  List<AlertKey> keys = <AlertKey>[];
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -46,11 +48,17 @@ class _FormState extends State<FormScreen> {
     form!.save();
   }
 
-  void saveAlert(String title, String content, var days, var cibles) async {
+  void saveAlert(String title, String content, var days, var cibles,
+      List<AlertKey> keys) async {
     final pref = await SharedPreferences.getInstance();
     //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
+    List<String> listK = <String>[];
+    for (int i = 0; i < keys.length; i++) {
+      listK.add(keys[i].toString());
+    }
+    String kstr = json.encode(listK);
     String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false}';
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false,"keys":$kstr}';
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);
@@ -97,14 +105,14 @@ class _FormState extends State<FormScreen> {
                   items: [
                     DropdownMenuItem(
                       child: Text("Accepte"),
-                      value: 1,
+                      value: true,
                     ),
                     DropdownMenuItem(
                       child: Text("N'accepte pas"),
-                      value: 2,
+                      value: false,
                     )
                   ],
-                  onChanged: (int? value) {
+                  onChanged: (bool? value) {
                     setState(() {
                       _value2 = value!;
                     });
@@ -113,46 +121,13 @@ class _FormState extends State<FormScreen> {
             ),
           ],
         ),
-        keys.length > 0
-            ? ListView.builder(
-                shrinkWrap: true,
-                itemCount: keys.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                            onTap: () => {
-                                  setState(() {
-                                    this.keys.remove(keys[index]);
-                                  })
-                                },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(18),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: d_lightgray,
-                                    spreadRadius: 4,
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Text(keys[index]),
-                            ))
-                      ]);
-                })
-            : Text("Pas encore de clés pour cette alerte"),
         Padding(
           padding: EdgeInsets.all(12),
           child: TextField(
             onSubmitted: (String? txt) => {
               setState(() {
-                keys.add(keyName.text);
+                keys.add(new AlertKey(
+                    name: keyName.text, contient: _value, allow: _value2));
                 keyName.text = "";
               })
             },
@@ -177,7 +152,42 @@ class _FormState extends State<FormScreen> {
               ),
             ),
           ),
-        )
+        ),
+        keys.length > 0
+            ? ListView.builder(
+                shrinkWrap: true,
+                itemCount: keys.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                            onTap: () => {
+                                  setState(() {
+                                    this.keys.remove(keys[index]);
+                                  })
+                                },
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(18),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: d_lightgray,
+                                    spreadRadius: 4,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Text(keys[index].name),
+                            ))
+                      ]);
+                })
+            : Text("Pas encore de clés pour cette alerte"),
       ]),
     );
   }
@@ -496,8 +506,8 @@ class _FormState extends State<FormScreen> {
                     ])),
                 OutlinedButton(
                     onPressed: () => {
-                          saveAlert(
-                              alertName.text, alertContent.text, week, cibles),
+                          saveAlert(alertName.text, alertContent.text, week,
+                              cibles, keys),
                           Navigator.pop(context),
                           Navigator.push(
                             context,

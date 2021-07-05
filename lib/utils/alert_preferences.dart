@@ -9,11 +9,11 @@ class AlertPreferences {
   static const _keyAlert = 'alert';
 
   static Alert myAlert = Alert(
-    title: 'title',
-    content: 'content',
-    days: [false, false, false, false, false, false, false],
-    cibles: [false, false, false],
-  );
+      title: 'title',
+      content: 'content',
+      days: [false, false, false, false, false, false, false],
+      cibles: [false, false, false],
+      keys: List.empty());
 
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();

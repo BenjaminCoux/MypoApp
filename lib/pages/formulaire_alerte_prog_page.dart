@@ -1,7 +1,8 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
+//import 'package:quiver/core.dart';
 
 import 'sms_prog_page.dart';
 
@@ -31,6 +32,33 @@ class _ProgState extends State<ProgForm> {
     'Tous les ans'
   ];
   final _isRepeatOptionActive = [false, false, false, false, false, false];
+  List<Contact> contacts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getAllContacts();
+  }
+
+  getAllContacts() async {
+    var status = await Permission.contacts.status;
+    if (status.isDenied) {
+      // We didn't ask for permission yet or the permission has been denied before but not permanently.
+    }
+
+    // You can can also directly ask the permission about its status.
+    if (await Permission.location.isRestricted) {
+      // The OS restricts access, for example because of parental controls.
+    }
+    if (await Permission.contacts.request().isGranted) {
+      // Get all contacts without thumbnail (faster)
+      List<Contact> _contacts =
+          (await ContactsService.getContacts(withThumbnails: false)).toList();
+      setState(() {
+        contacts = _contacts;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -49,8 +77,9 @@ class _ProgState extends State<ProgForm> {
 
   @override
   Widget build(BuildContext context) {
+    // initState();
     return Scaffold(
-      appBar: TopBar(title: 'Ajoutez une alerte'),
+      appBar: TopBar(title: 'Ajoutez une alertee'),
       body: SingleChildScrollView(
         child: GestureDetector(
           onTap: () {
@@ -83,12 +112,12 @@ class _ProgState extends State<ProgForm> {
                       decoration: InputDecoration(
                         labelText: 'Contact',
                         suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.contact_page,
-                            size: 35,
-                          ),
-                          onPressed: () => print('test'),
-                        ),
+                            icon: Icon(
+                              Icons.contact_page,
+                              size: 35,
+                            ),
+                            onPressed: () =>
+                                _buildContactSelection(context, contacts)),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -317,9 +346,12 @@ class _ProgState extends State<ProgForm> {
                             ],
                           ),
                           child: OutlinedButton(
-                            onPressed: () => {
-                              // personaliser
-                            },
+                            onPressed: () {},
+                            // => Navigator.push(
+                            //   context,
+                            //   new MaterialPageRoute(
+                            //       builder: (context) => new Teest()),
+                            // ),
                             style: OutlinedButton.styleFrom(
                               padding: EdgeInsets.symmetric(horizontal: 50),
                               shape: RoundedRectangleBorder(
@@ -533,4 +565,49 @@ class _ProgState extends State<ProgForm> {
                               .toList(),
                         ))));
           });
+
+  _buildContactSelection(BuildContext context, var contacts) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Text('Contacts'),
+              content: SingleChildScrollView(
+                  child: Container(
+                height: MediaQuery.of(context).size.height * 0.9,
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: Column(
+                  children: <Widget>[
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: contacts.length,
+                        itemBuilder: (context, index) {
+                          Contact contact = contacts[index];
+                          return ListTile(
+                            title: Text(contact.displayName ?? ' '),
+                            subtitle:
+                                Text(contact.phones?.elementAt(0).value! ?? ''),
+                            leading: (contact.avatar != null &&
+                                    contact.avatar!.length > 0)
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        MemoryImage(contact.avatar!))
+                                : CircleAvatar(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: d_green,
+                                    child: Text(contact.initials())),
+                            onTap: () {
+                              // selected contact
+                              // print('contact ' + index.toString());
+                              Navigator.of(context).pop();
+                              number.text =
+                                  contact.phones?.elementAt(0).value! ?? '';
+                            },
+                          );
+                        })
+                  ],
+                ),
+              )));
+        });
+  }
 }

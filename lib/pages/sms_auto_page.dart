@@ -113,7 +113,7 @@ class _StateSwitchButton extends State<SwitchButton> {
       }
     }
     contents = await getContents();
-    debugPrint("onBackgroundMessage called");
+    debugPrint("onMessage called (Foreground)");
     int i = 0;
     //si le message reçu contient
     while (i < keys.length) {

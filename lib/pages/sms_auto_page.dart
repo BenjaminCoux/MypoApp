@@ -9,7 +9,7 @@ import 'package:mypo/widget/navbar_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:telephony/telephony.dart';
-
+import 'package:intl/intl.dart';
 import 'edit_alertes_page.dart';
 import 'formulaire_alerte_auto_page.dart';
 
@@ -23,7 +23,6 @@ class _SmsAutoState extends State<SmsAuto> {
 
   Future<List> readAlert() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
     List res = <dynamic>[];
     Set<String> keys = prefs.getKeys();
     Iterator<String> it = keys.iterator;
@@ -95,6 +94,55 @@ class _StateSwitchButton extends State<SwitchButton> {
     initPlatformState();
   }
 
+  bool dayIsRight(Alert alert, String day) {
+    var weeks = [
+      "Monday",
+      "Thuesday",
+      "Wednesday",
+      "Tuesday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ];
+    for (int i = 0; i < alert.days.lenght; i++) {
+      if (day == weeks[i] && alert.days[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  List<AlertKey> buildKeys(dynamic input) {
+    dynamic tmp;
+    List<AlertKey> res = <AlertKey>[];
+    for (int i = 0; i < input.length; i++) {
+      tmp = json.decode(input[i]);
+      res.add(new AlertKey(
+          name: tmp["name"],
+          contient: tmp["contient"],
+          allow: tmp["allow"] == "true"));
+    }
+    return res;
+  }
+
+  bool isActive(Alert alert) {
+    if (!alert.active) {
+      return false;
+    }
+    DateTime now = DateTime.now();
+    String day = DateFormat('EEEE').format(now);
+    if (!dayIsRight(alert, day)) {
+      return false;
+    }
+    var where = {
+      1: "Contient",
+      2: "Ne Contient pas",
+      3: "Est au debut",
+      4: "Est à la fin"
+    };
+    return true;
+  }
+
   /*
     -This function do things when we recieve a message on the foreground
     it gets incomming messages 
@@ -117,7 +165,13 @@ class _StateSwitchButton extends State<SwitchButton> {
     int i = 0;
     //si le message reçu contient
     while (i < keys.length) {
-      if (message.body!.contains(keys[i]) && contents[i]["active"]) {
+      if (message.body!.contains(keys[i]) &&
+          isActive(new Alert(
+              title: widget.alerte["title"],
+              content: widget.alerte["content"],
+              days: json.decode(widget.alerte["days"]),
+              cibles: json.decode(widget.alerte["cibles"]),
+              keys: buildKeys(widget.alerte["keys"])))) {
         Telephony.instance.sendSms(
             to: message.address.toString(), message: contents[i]["content"]);
         return;

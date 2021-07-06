@@ -48,14 +48,14 @@ class SettingsScreenOne extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     children: <Widget>[
-                      ListTile(
-                          leading: Icon(Icons.lock, color: d_green),
-                          title: Text("Changer le mot de passe"),
-                          trailing: Icon(Icons.keyboard_arrow_right),
-                          onTap: () {
-                            //open change password
-                          }),
-                      _buildDivider(),
+                      // ListTile(
+                      //     leading: Icon(Icons.lock, color: d_green),
+                      //     title: Text("Changer le mot de passe"),
+                      //     trailing: Icon(Icons.keyboard_arrow_right),
+                      //     onTap: () {
+                      //       //open change password
+                      //     }),
+                      // _buildDivider(),
                       ListTile(
                           leading:
                               Icon(FontAwesomeIcons.language, color: d_green),
@@ -108,27 +108,27 @@ class SettingsScreenOne extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-              bottom: -20,
-              left: -20,
-              child: Container(
-                width: 100,
-                height: 100,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: d_green,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: Icon(FontAwesomeIcons.powerOff),
-                  color: Colors.white,
-                  onPressed: () {
-                    /* 
-                    Deconnexion
-                    */
-                  },
-                ),
-              )),
+          // Positioned(
+          //     bottom: -20,
+          //     left: -20,
+          //     child: Container(
+          //       width: 100,
+          //       height: 100,
+          //       alignment: Alignment.center,
+          //       decoration: BoxDecoration(
+          //         color: d_green,
+          //         shape: BoxShape.circle,
+          //       ),
+          //       child: IconButton(
+          //         icon: Icon(FontAwesomeIcons.powerOff),
+          //         color: Colors.white,
+          //         onPressed: () {
+          //           /*
+          //           Deconnexion
+          //           */
+          //         },
+          //       ),
+          //     )),
         ],
       ),
     );

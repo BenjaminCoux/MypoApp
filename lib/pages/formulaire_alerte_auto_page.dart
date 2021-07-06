@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/dayselector_widget.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
@@ -264,14 +265,6 @@ class _FormState extends State<FormScreen> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(18),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: d_lightgray,
-                          spreadRadius: 4,
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
                     ),
                     margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     child: Column(children: [
@@ -291,23 +284,7 @@ class _FormState extends State<FormScreen> {
                           padding: EdgeInsets.all(8),
                           child: Column(
                             children: [
-                              WeekdaySelector(
-                                onChanged: (int day) {
-                                  setState(() {
-                                    // Use module % 7 as Sunday's index in the array is 0 and
-                                    // DateTime.sunday constant integer value is 7.
-                                    final index = day % 7;
-                                    // We "flip" the value in this example, but you may also
-                                    // perform validation, a DB write, an HTTP call or anything
-                                    // else before you actually flip the value,
-                                    // it's up to your app's needs.
-
-                                    // remember to changes values
-                                    values[index] = !values[index];
-                                  });
-                                },
-                                values: values,
-                              ),
+                              daySelectorWidget(),
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
@@ -437,7 +414,10 @@ class _FormState extends State<FormScreen> {
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  secondary: Icon(Icons.contact_page),
+                                  secondary: Icon(Icons.contact_page,
+                                      color: cibles[0]
+                                          ? Colors.blue
+                                          : Colors.grey.shade500),
                                   title: Text("Numéros Enregistrés"),
                                   activeColor: d_green,
                                   value: cibles[0],
@@ -449,7 +429,10 @@ class _FormState extends State<FormScreen> {
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  secondary: Icon(Icons.sms_rounded),
+                                  secondary: Icon(Icons.sms_rounded,
+                                      color: cibles[1]
+                                          ? Colors.blue
+                                          : Colors.grey.shade500),
                                   title: Text("SMS reçu"),
                                   activeColor: d_green,
                                   value: cibles[1],
@@ -461,7 +444,10 @@ class _FormState extends State<FormScreen> {
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  secondary: Icon(Icons.call),
+                                  secondary: Icon(Icons.call,
+                                      color: cibles[2]
+                                          ? Colors.blue
+                                          : Colors.grey.shade500),
                                   title: Text("Appels Manqués"),
                                   activeColor: d_green,
                                   value: cibles[2],
@@ -530,6 +516,7 @@ class _FormState extends State<FormScreen> {
           onChanged: (String value) => {
             setState(() {
               // set new state
+
               // this.contentchanged = true;
               // this.titlechanged = true;
               // this.hasChanged = true;

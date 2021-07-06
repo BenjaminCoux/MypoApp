@@ -186,7 +186,7 @@ class _ProgState extends State<ProgForm> {
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                      color: SMS ? d_green : d_darkgray,
+                                      color: SMS ? d_green : Colors.grey,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
                                   child: Text(
@@ -219,7 +219,7 @@ class _ProgState extends State<ProgForm> {
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                      color: Tel ? d_green : d_darkgray,
+                                      color: Tel ? d_green : Colors.grey,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
                                   child: Text(
@@ -252,7 +252,7 @@ class _ProgState extends State<ProgForm> {
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                      color: MMS ? d_green : d_darkgray,
+                                      color: MMS ? d_green : Colors.grey,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
                                   child: Text(
@@ -288,6 +288,7 @@ class _ProgState extends State<ProgForm> {
                             //       builder: (context) => new Teest()),
                             // ),
                             style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: d_green, width: 2),
                               padding: EdgeInsets.symmetric(horizontal: 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),

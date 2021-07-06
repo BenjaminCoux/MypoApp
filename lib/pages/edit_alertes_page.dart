@@ -146,6 +146,7 @@ class _AlertScreenState extends State<AlertScreen> {
                   widget.alerte.keys.add(new AlertKey(
                       name: keyName.text, contient: _value, allow: _value2));
                   keyName.text = "";
+                  hasChanged = true;
                 })
               },
               controller: keyName,
@@ -176,35 +177,50 @@ class _AlertScreenState extends State<AlertScreen> {
                 shrinkWrap: true,
                 itemCount: widget.alerte.keys.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Row(
+                  return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                            onTap: () => {
-                                  setState(() {
-                                    widget.alerte.keys
-                                        .remove(widget.alerte.keys[index]);
-                                    this.hasChanged = true;
-                                  })
-                                },
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(18),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: d_lightgray,
-                                    spreadRadius: 4,
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Text(widget.alerte.keys[index].name),
-                            ))
+                        Container(
+                            height: 50,
+                            child: InkWell(
+                                onTap: () => {},
+                                child: Container(
+                                    width: double.infinity,
+                                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(3),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: d_lightgray,
+                                          spreadRadius: 4,
+                                          blurRadius: 6,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(widget.alerte.keys[index].name,
+                                              textAlign: TextAlign.justify,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          IconButton(
+                                              alignment: Alignment.topLeft,
+                                              onPressed: () => {
+                                                    setState(() {
+                                                      widget.alerte.keys.remove(
+                                                          widget.alerte
+                                                              .keys[index]);
+                                                      hasChanged = true;
+                                                    })
+                                                  },
+                                              icon: const Icon(Icons.delete))
+                                        ]))))
                       ]);
                 })
             : Text("Pas encore de clés pour cette alerte"),

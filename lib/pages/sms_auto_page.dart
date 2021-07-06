@@ -96,20 +96,6 @@ class _StateSwitchButton extends State<SwitchButton> {
     initPlatformState();
   }
 
-  List<AlertKey> buildKeys(dynamic input) {
-    dynamic tmp;
-    List<AlertKey> res = <AlertKey>[];
-    for (int i = 0; i < input.length; i++) {
-      tmp = input[i];
-      res.add(new AlertKey(
-          name: tmp["name"],
-          contient: tmp["contient"],
-          allow: tmp["allow"] == "true"));
-    }
-    return res;
-  }
-
-
   /*
     -This function do things when we recieve a message on the foreground
     it gets incomming messages 
@@ -134,12 +120,14 @@ class _StateSwitchButton extends State<SwitchButton> {
     while (i < keys.length) {
       bool tmp = isActive(
           message.body,
-          createAlert(new Alert(
-              title: contents[i]["title"],
-              content: contents[i]["content"],
-              days: json.decode(contents[i]["days"]),
-              cibles: json.decode(contents[i]["cibles"]),
-              keys: buildKeys(contents[i]["keys"])),contents[i]["active"]));
+          createAlert(
+              new Alert(
+                  title: contents[i]["title"],
+                  content: contents[i]["content"],
+                  days: json.decode(contents[i]["days"]),
+                  cibles: json.decode(contents[i]["cibles"]),
+                  keys: buildKeys(contents[i]["keys"])),
+              contents[i]["active"]));
       debugPrint(tmp.toString());
       if (tmp) {
         Telephony.instance.sendSms(
@@ -335,18 +323,6 @@ class _AlertesState extends State<Alertes> {
         cibles: a.cibles,
         keys: a.keys);
     res.active = actived;
-    return res;
-  }
-
-  List<AlertKey> buildKeys(dynamic input) {
-    dynamic tmp;
-    List<AlertKey> res = <AlertKey>[];
-    for (int i = 0; i < input.length; i++) {
-      res.add(new AlertKey(
-          name: input[i]["name"],
-          contient: input[i]["contient"],
-          allow: input[i]["allow"] == "true"));
-    }
     return res;
   }
 
@@ -619,12 +595,14 @@ onBackgroundMessage(SmsMessage message) async {
   while (i < keys.length) {
     if (isActive(
         message.body,
-        createAlert(new Alert(
-            title: contents[i]["title"],
-            content: contents[i]["content"],
-            days: json.decode(contents[i]["days"]),
-            cibles: json.decode(contents[i]["cibles"]),
-            keys: buildKeys(contents[i]["keys"])),contents[i]["active"]))) {
+        createAlert(
+            new Alert(
+                title: contents[i]["title"],
+                content: contents[i]["content"],
+                days: json.decode(contents[i]["days"]),
+                cibles: json.decode(contents[i]["cibles"]),
+                keys: buildKeys(contents[i]["keys"])),
+            contents[i]["active"]))) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
       return;
@@ -645,8 +623,15 @@ String getLastWord(String str) {
       stop = true;
     }
   }
-  return res;
+  String tmp = "";
+  int j = 0;
+  for (int k = res.length - 1; k >= 0; k--) {
+    tmp = tmp + res[k];
+    j++;
+  }
+  return tmp;
 }
+
 Alert createAlert(Alert a, bool actived) {
   Alert res = new Alert(
       title: a.title,
@@ -657,6 +642,7 @@ Alert createAlert(Alert a, bool actived) {
   res.active = actived;
   return res;
 }
+
 String getFirstWord(String str) {
   String res = "";
   int i = 0;
@@ -729,14 +715,14 @@ bool dayIsRight(Alert alert, String day) {
 }
 
 List<AlertKey> buildKeys(dynamic input) {
-  dynamic tmp;
   List<AlertKey> res = <AlertKey>[];
+
   for (int i = 0; i < input.length; i++) {
-    tmp =input[i];
     res.add(new AlertKey(
-        name: tmp["name"],
-        contient: tmp["contient"],
-        allow: tmp["allow"] == "true"));
+        name: json.decode(input[i])["name"],
+        contient: json.decode(input[i])["contient"],
+        allow: json.decode(input[i])["allow"] == "true"));
   }
+
   return res;
 }

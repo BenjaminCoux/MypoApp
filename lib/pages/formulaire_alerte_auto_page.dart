@@ -1,10 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/date_symbols.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/widget/dayselector_widget.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
@@ -188,33 +185,49 @@ class _FormState extends State<FormScreen> {
                 shrinkWrap: true,
                 itemCount: keys.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Row(
+                  return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                            onTap: () => {
-                                  setState(() {
-                                    this.keys.remove(keys[index]);
-                                  })
-                                },
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(18),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: d_lightgray,
-                                    spreadRadius: 4,
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Text(keys[index].name),
-                            ))
+                        Container(
+                            height: 50,
+                            child: InkWell(
+                                onTap: () => {},
+                                child: Container(
+                                    width: double.infinity,
+                                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(3),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: d_lightgray,
+                                          spreadRadius: 4,
+                                          blurRadius: 6,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(keys[index].name,
+                                              textAlign: TextAlign.justify,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          IconButton(
+                                              alignment: Alignment.topLeft,
+                                              onPressed: () => {
+                                                    setState(() {
+                                                      this
+                                                          .keys
+                                                          .remove(keys[index]);
+                                                    })
+                                                  },
+                                              icon: const Icon(Icons.delete))
+                                        ]))))
                       ]);
                 })
             : Text("Pas encore de clés pour cette alerte"),
@@ -224,8 +237,8 @@ class _FormState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final DateSymbols fr = dateTimeSymbolMap()['fr'];
-
+    // temporary for weekdayselector
+    final values = List.filled(7, true);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Ajoutez une alerte'),
@@ -278,7 +291,23 @@ class _FormState extends State<FormScreen> {
                           padding: EdgeInsets.all(8),
                           child: Column(
                             children: [
-                              daySelectorWidget(),
+                              WeekdaySelector(
+                                onChanged: (int day) {
+                                  setState(() {
+                                    // Use module % 7 as Sunday's index in the array is 0 and
+                                    // DateTime.sunday constant integer value is 7.
+                                    final index = day % 7;
+                                    // We "flip" the value in this example, but you may also
+                                    // perform validation, a DB write, an HTTP call or anything
+                                    // else before you actually flip the value,
+                                    // it's up to your app's needs.
+
+                                    // remember to changes values
+                                    values[index] = !values[index];
+                                  });
+                                },
+                                values: values,
+                              ),
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
@@ -408,8 +437,7 @@ class _FormState extends State<FormScreen> {
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  secondary: Icon(Icons.contact_page,
-                                      color: Colors.blue),
+                                  secondary: Icon(Icons.contact_page),
                                   title: Text("Numéros Enregistrés"),
                                   activeColor: d_green,
                                   value: cibles[0],
@@ -421,8 +449,7 @@ class _FormState extends State<FormScreen> {
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  secondary: Icon(Icons.sms_rounded,
-                                      color: Colors.blue),
+                                  secondary: Icon(Icons.sms_rounded),
                                   title: Text("SMS reçu"),
                                   activeColor: d_green,
                                   value: cibles[1],
@@ -434,8 +461,7 @@ class _FormState extends State<FormScreen> {
                               CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  secondary:
-                                      Icon(Icons.call, color: Colors.blue),
+                                  secondary: Icon(Icons.call),
                                   title: Text("Appels Manqués"),
                                   activeColor: d_green,
                                   value: cibles[2],

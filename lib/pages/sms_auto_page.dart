@@ -96,29 +96,11 @@ class _StateSwitchButton extends State<SwitchButton> {
     initPlatformState();
   }
 
-  bool dayIsRight(Alert alert, String day) {
-    var weeks = [
-      "Monday",
-      "Thuesday",
-      "Wednesday",
-      "Tuesday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ];
-    for (int i = 0; i < alert.days.lenght; i++) {
-      if (day == weeks[i] && alert.days[i]) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   List<AlertKey> buildKeys(dynamic input) {
     dynamic tmp;
     List<AlertKey> res = <AlertKey>[];
     for (int i = 0; i < input.length; i++) {
-      tmp = json.decode(input[i]);
+      tmp = input[i];
       res.add(new AlertKey(
           name: tmp["name"],
           contient: tmp["contient"],
@@ -127,24 +109,6 @@ class _StateSwitchButton extends State<SwitchButton> {
     return res;
   }
 
-  bool isActive(Alert alert) {
-    if (!alert.active) {
-      return false;
-    }
-    DateTime now = DateTime.now();
-    String day = DateFormat('EEEE').format(now);
-    if (!dayIsRight(alert, day)) {
-      return false;
-    }
-    // ignore: unused_local_variable
-    var where = {
-      1: "Contient",
-      2: "Ne Contient pas",
-      3: "Est au debut",
-      4: "Est à la fin"
-    };
-    return true;
-  }
 
   /*
     -This function do things when we recieve a message on the foreground
@@ -168,13 +132,16 @@ class _StateSwitchButton extends State<SwitchButton> {
     int i = 0;
     //si le message reçu contient
     while (i < keys.length) {
-      if (message.body!.contains(keys[i]) &&
-          isActive(new Alert(
-              title: widget.alerte["title"],
-              content: widget.alerte["content"],
-              days: json.decode(widget.alerte["days"]),
-              cibles: json.decode(widget.alerte["cibles"]),
-              keys: buildKeys(widget.alerte["keys"])))) {
+      bool tmp = isActive(
+          message.body,
+          createAlert(new Alert(
+              title: contents[i]["title"],
+              content: contents[i]["content"],
+              days: json.decode(contents[i]["days"]),
+              cibles: json.decode(contents[i]["cibles"]),
+              keys: buildKeys(contents[i]["keys"])),contents[i]["active"]));
+      debugPrint(tmp.toString());
+      if (tmp) {
         Telephony.instance.sendSms(
             to: message.address.toString(), message: contents[i]["content"]);
         return;
@@ -245,7 +212,7 @@ class _StateSwitchButton extends State<SwitchButton> {
     final active = state;
     final key = alerte["keys"];
     String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active,"keys:"$key}';
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active,"keys":$key}';
     prefs.setString(title, tmp);
     //  print(prefs.get(alerte["title"]));
   }
@@ -375,11 +342,10 @@ class _AlertesState extends State<Alertes> {
     dynamic tmp;
     List<AlertKey> res = <AlertKey>[];
     for (int i = 0; i < input.length; i++) {
-      tmp = json.decode(input[i]);
       res.add(new AlertKey(
-          name: tmp["name"],
-          contient: tmp["contient"],
-          allow: tmp["allow"] == "true"));
+          name: input[i]["name"],
+          contient: input[i]["contient"],
+          allow: input[i]["allow"] == "true"));
     }
     return res;
   }
@@ -634,6 +600,7 @@ Future<List> getContents() async {
   Check if it contains any of the keys of activated alerts
   Send back the alert message to the person
 */
+
 onBackgroundMessage(SmsMessage message) async {
   List<String> keys = <String>[];
   List contents = <dynamic>[];
@@ -650,11 +617,126 @@ onBackgroundMessage(SmsMessage message) async {
   int i = 0;
   //si le message reçu contient
   while (i < keys.length) {
-    if (message.body!.contains(keys[i]) && contents[i]["active"]) {
+    if (isActive(
+        message.body,
+        createAlert(new Alert(
+            title: contents[i]["title"],
+            content: contents[i]["content"],
+            days: json.decode(contents[i]["days"]),
+            cibles: json.decode(contents[i]["cibles"]),
+            keys: buildKeys(contents[i]["keys"])),contents[i]["active"]))) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
       return;
     }
     i++;
   }
+}
+
+String getLastWord(String str) {
+  String res = "";
+  int i = str.length - 1;
+  bool stop = false;
+  while (!stop && i >= 0) {
+    if (str[i] != " ") {
+      res = res + str[i];
+      i--;
+    } else {
+      stop = true;
+    }
+  }
+  return res;
+}
+Alert createAlert(Alert a, bool actived) {
+  Alert res = new Alert(
+      title: a.title,
+      content: a.content,
+      days: a.days,
+      cibles: a.cibles,
+      keys: a.keys);
+  res.active = actived;
+  return res;
+}
+String getFirstWord(String str) {
+  String res = "";
+  int i = 0;
+  bool stop = false;
+  while (!stop && i < str.length) {
+    if (str[i] != " ") {
+      res = res + str[i];
+      i++;
+    } else {
+      stop = true;
+    }
+  }
+  return res;
+}
+
+bool isActive(String? body, Alert alert) {
+  if (!alert.active) {
+    return false;
+  }
+  DateTime now = DateTime.now();
+  String day = DateFormat('EEEE').format(now);
+  if (!dayIsRight(alert, day)) {
+    return false;
+  }
+  // ignore: unused_local_variable
+  var where = {
+    1: "Contient",
+    2: "Ne Contient pas",
+    3: "Est au debut",
+    4: "Est à la fin"
+  };
+  for (int i = 0; i < alert.keys.length; i++) {
+    if (body!.contains(alert.keys[i].name) &&
+        (alert.keys[i].contient == 1) &&
+        alert.keys[i].allow) {
+      return true;
+    } else if (!body.contains(alert.keys[i].name) &&
+        (alert.keys[i].contient == 2) &&
+        alert.keys[i].allow) {
+      return true;
+    } else if (getFirstWord(body) == alert.keys[i].name &&
+        (alert.keys[i].contient == 3) &&
+        alert.keys[i].allow) {
+      return true;
+    } else if (getLastWord(body) == alert.keys[i].name &&
+        (alert.keys[i].contient == 4) &&
+        alert.keys[i].allow) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool dayIsRight(Alert alert, String day) {
+  List<String> weeks = <String>[
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ];
+  for (int i = 0; i < weeks.length; i++) {
+    if (day == weeks[i] && alert.days[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+List<AlertKey> buildKeys(dynamic input) {
+  dynamic tmp;
+  List<AlertKey> res = <AlertKey>[];
+  for (int i = 0; i < input.length; i++) {
+    tmp =input[i];
+    res.add(new AlertKey(
+        name: tmp["name"],
+        contient: tmp["contient"],
+        allow: tmp["allow"] == "true"));
+  }
+  return res;
 }

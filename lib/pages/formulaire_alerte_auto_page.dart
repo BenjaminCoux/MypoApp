@@ -1,6 +1,8 @@
-import 'dart:convert';
+ import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/date_symbols.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -221,6 +223,7 @@ class _FormState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final DateSymbols fr = dateTimeSymbolMap()['fr'];
     // temporary for weekdayselector
     final values = List.filled(7, true);
     return Scaffold(
@@ -276,6 +279,29 @@ class _FormState extends State<FormScreen> {
                           child: Column(
                             children: [
                               WeekdaySelector(
+                                weekdays: fr.STANDALONEWEEKDAYS,
+                                shortWeekdays: fr.STANDALONENARROWWEEKDAYS,
+                                firstDayOfWeek: fr.FIRSTDAYOFWEEK + 1,
+                                onChanged: (int day) {
+                                  setState(() {
+                                    // Use module % 7 as Sunday's index in the array is 0 and
+                                    // DateTime.sunday constant integer value is 7.
+                                    final index = day % 7;
+                                    // We "flip" the value in this example, but you may also
+                                    // perform validation, a DB write, an HTTP call or anything
+                                    // else before you actually flip the value,
+                                    // it's up to your app's needs.
+
+                                    // remember to changes values
+                                    values[index] = !values[index];
+                                  });
+                                },
+                                values: values,
+                              ),
+                              WeekdaySelector(
+                                weekdays: fr.STANDALONEWEEKDAYS,
+                                shortWeekdays: fr.STANDALONESHORTWEEKDAYS,
+                                firstDayOfWeek: fr.FIRSTDAYOFWEEK + 1,
                                 onChanged: (int day) {
                                   setState(() {
                                     // Use module % 7 as Sunday's index in the array is 0 and

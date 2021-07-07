@@ -18,10 +18,10 @@ class daySelectorWidget extends StatefulWidget {
 
 class _daySelectorWidgetState extends State<daySelectorWidget> {
   final DateSymbols fr = dateTimeSymbolMap()['fr'];
-  final values = List.filled(7, false);
 
   @override
   Widget build(BuildContext context) {
+    var valuesToBool = List<bool>.from(widget.values);
     return WeekdaySelector(
       weekdays: fr.STANDALONEWEEKDAYS,
       // shortWeekdays: fr.STANDALONENARROWWEEKDAYS,
@@ -31,10 +31,13 @@ class _daySelectorWidgetState extends State<daySelectorWidget> {
       fillColor: Colors.grey.shade100,
       onChanged: (v) {
         setState(() {
-          values[v % 7] = !values[v % 7];
+          valuesToBool[v % 7] = !valuesToBool[v % 7];
+          widget.values = List<dynamic>.from(valuesToBool);
+          //print(valuesToBool);
+          //print(widget.values);
         });
       },
-      values: values,
+      values: valuesToBool,
     );
   }
 }

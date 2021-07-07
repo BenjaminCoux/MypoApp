@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/date_symbols.dart';
 import 'package:mypo/model/alert.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/dayselector_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 import 'sms_auto_page.dart';
 
 const d_green = Color(0xFFA6C800);
@@ -238,6 +241,8 @@ class _AlertScreenState extends State<AlertScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final DateSymbols fr = dateTimeSymbolMap()['fr'];
+    print(widget.alerte.days);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
@@ -266,7 +271,7 @@ class _AlertScreenState extends State<AlertScreen> {
                         Radius.circular(18),
                       ),
                     ),
-                    margin: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     child: Wrap(children: [
                       Container(
                           child: Padding(
@@ -281,10 +286,25 @@ class _AlertScreenState extends State<AlertScreen> {
                               ]))),
                       Container(
                         child: Padding(
-                          padding: EdgeInsets.all(8),
+                          padding: EdgeInsets.all(5),
                           child: Column(
                             children: [
-                              daySelectorWidget(values: widget.alerte.days),
+                              WeekdaySelector(
+                                weekdays: fr.STANDALONEWEEKDAYS,
+                                // shortWeekdays: fr.STANDALONENARROWWEEKDAYS,
+                                shortWeekdays: fr.STANDALONESHORTWEEKDAYS,
+                                firstDayOfWeek: fr.FIRSTDAYOFWEEK + 1,
+                                selectedFillColor: d_green,
+                                fillColor: Colors.grey.shade100,
+                                onChanged: (v) {
+                                  setState(() {
+                                    widget.alerte.days[v % 7] =
+                                        !widget.alerte.days[v % 7];
+                                  });
+                                },
+                                values: List<bool>.from(widget.alerte.days),
+                              ),
+                              //daySelectorWidget(values: widget.alerte.days),
                             ],
                           ),
                         ),
@@ -402,6 +422,7 @@ class _AlertScreenState extends State<AlertScreen> {
                         ),
                         onPressed: () {
                           save();
+                          print(widget.alerte.days);
                           Navigator.pop(context);
                           Navigator.push(
                               context,

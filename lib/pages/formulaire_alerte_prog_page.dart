@@ -295,7 +295,7 @@ class _ProgState extends State<ProgForm> {
                               ),
                             ),
                             child: Text(
-                              "Personaliser",
+                              "Personnaliser",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
@@ -327,7 +327,7 @@ class _ProgState extends State<ProgForm> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                          child: Text("Repeter"),
+                          child: Text("Répéter"),
                           margin: EdgeInsets.fromLTRB(5, 0, 280 - 1.6, 0),
                         ),
                         Switch(

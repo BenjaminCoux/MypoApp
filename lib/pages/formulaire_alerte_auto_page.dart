@@ -51,6 +51,17 @@ class _FormState extends State<FormScreen> {
     form!.save();
   }
 
+  String getContient(AlertKey a) {
+    List<String> contient = [
+      "",
+      "Contient",
+      "Ne contient pas",
+      "est au debut",
+      "est à la fin",
+    ];
+    return contient[a.contient];
+  }
+
   void saveAlert(String title, String content, var days, var cibles,
       List<AlertKey> keys) async {
     final pref = await SharedPreferences.getInstance();
@@ -65,6 +76,14 @@ class _FormState extends State<FormScreen> {
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);
+  }
+
+  Color getColorDropDown(AlertKey a) {
+    if (a.allow) {
+      return d_green;
+    } else {
+      return d_lightgray;
+    }
   }
 
   Widget alertKeys(BuildContext context) {
@@ -197,7 +216,7 @@ class _FormState extends State<FormScreen> {
                                     width: double.infinity,
                                     margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                     decoration: BoxDecoration(
-                                      color: Colors.grey,
+                                      color: getColorDropDown(keys[index]),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(3),
                                       ),
@@ -218,6 +237,7 @@ class _FormState extends State<FormScreen> {
                                               textAlign: TextAlign.justify,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
+                                          Text(getContient(keys[index])),
                                           IconButton(
                                               alignment: Alignment.topLeft,
                                               onPressed: () => {

@@ -26,7 +26,7 @@ class _SmsProgState extends State<SmsProg> {
           child: Column(
         children: [AlertesProg()],
       )),
-      bottomNavigationBar: BottomNavigationBarSmsProg(),
+      bottomNavigationBar: BottomNavigationBarSmsProgTwo(),
     );
   }
 }

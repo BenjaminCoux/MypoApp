@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   telephony: ^0.1.4
   flutter_multiselect: ^1.0.0
   path_provider: ^2.0.2
@@ -38,6 +40,7 @@ dependencies:
   permission_handler: ^8.1.2
   quiver: ^3.0.0
   weekday_selector: ^1.0.0
+  flutter_rounded_date_picker: ^2.0.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -87,6 +90,8 @@ flutter:
     - assets/database.json
     - images/smsprog.png
     - images/smsauto.png
+    - assets/images/smsprog_disabled.png
+    - assets/images/smsauto_disabled.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

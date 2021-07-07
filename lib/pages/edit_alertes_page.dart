@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mypo/model/alert.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/dayselector_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
-import 'package:weekday_selector/weekday_selector.dart';
-import 'home_page.dart';
 import 'sms_auto_page.dart';
 
 const d_green = Color(0xFFA6C800);
@@ -141,16 +140,27 @@ class _AlertScreenState extends State<AlertScreen> {
           child: Padding(
             padding: EdgeInsets.all(12),
             child: TextField(
-              onSubmitted: (String? txt) => {
-                setState(() {
-                  widget.alerte.keys.add(new AlertKey(
-                      name: keyName.text, contient: _value, allow: _value2));
-                  keyName.text = "";
-                  hasChanged = true;
-                })
-              },
+              onSubmitted: (String? txt) => {},
               controller: keyName,
               decoration: InputDecoration(
+                suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.add,
+                      size: 35,
+                      color: d_green,
+                    ),
+                    onPressed: () {
+                      if (keyName.text != '') {
+                        setState(() {
+                          widget.alerte.keys.add(new AlertKey(
+                              name: keyName.text,
+                              contient: _value,
+                              allow: _value2));
+                          keyName.text = "";
+                          hasChanged = true;
+                        });
+                      }
+                    }),
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -192,14 +202,6 @@ class _AlertScreenState extends State<AlertScreen> {
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(3),
                                       ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: d_lightgray,
-                                          spreadRadius: 4,
-                                          blurRadius: 6,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
                                     ),
                                     child: Row(
                                         mainAxisAlignment:
@@ -230,8 +232,6 @@ class _AlertScreenState extends State<AlertScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // temporary for weekdayselector
-    final values = List.filled(7, true);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
@@ -274,23 +274,7 @@ class _AlertScreenState extends State<AlertScreen> {
                         padding: EdgeInsets.all(8),
                         child: Column(
                           children: [
-                            WeekdaySelector(
-                              onChanged: (int day) {
-                                setState(() {
-                                  // Use module % 7 as Sunday's index in the array is 0 and
-                                  // DateTime.sunday constant integer value is 7.
-                                  final index = day % 7;
-                                  // We "flip" the value in this example, but you may also
-                                  // perform validation, a DB write, an HTTP call or anything
-                                  // else before you actually flip the value,
-                                  // it's up to your app's needs.
-
-                                  // remember to changes values
-                                  values[index] = !values[index];
-                                });
-                              },
-                              values: values,
-                            ),
+                            daySelectorWidget(),
                             CheckboxListTile(
                                 controlAffinity:
                                     ListTileControlAffinity.leading,

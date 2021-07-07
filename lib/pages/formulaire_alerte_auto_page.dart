@@ -6,7 +6,6 @@ import 'package:mypo/widget/dayselector_widget.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
-import 'package:weekday_selector/weekday_selector.dart';
 import 'home_page.dart';
 import 'sms_auto_page.dart';
 
@@ -151,15 +150,26 @@ class _FormState extends State<FormScreen> {
           child: Padding(
             padding: EdgeInsets.all(12),
             child: TextField(
-              onSubmitted: (String? txt) => {
-                setState(() {
-                  keys.add(new AlertKey(
-                      name: keyName.text, contient: _value, allow: _value2));
-                  keyName.text = "";
-                })
-              },
+              onSubmitted: (String? txt) => {setState(() {})},
               controller: keyName,
               decoration: InputDecoration(
+                suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.add,
+                      size: 35,
+                      color: d_green,
+                    ),
+                    onPressed: () {
+                      if (keyName.text != '') {
+                        setState(() {
+                          keys.add(new AlertKey(
+                              name: keyName.text,
+                              contient: _value,
+                              allow: _value2));
+                          keyName.text = "";
+                        });
+                      }
+                    }),
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -238,8 +248,6 @@ class _FormState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // temporary for weekdayselector
-    final values = List.filled(7, true);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Ajoutez une alerte'),

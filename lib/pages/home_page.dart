@@ -34,9 +34,11 @@ class _HomePageState extends State<HomePage> {
       drawer: HamburgerMenu(),
       body: SingleChildScrollView(
           child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [Logo(), Mode()],
       )),
-      bottomNavigationBar: BottomNavigationBarTwo(),
+      bottomNavigationBar: BottomNavigationBarSection(),
     );
   }
 }
@@ -66,22 +68,63 @@ class _ModeState extends State<Mode> {
                   new MaterialPageRoute(builder: (context) => new SmsProg()),
                 ),
                 child: Container(
-                    padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                    margin: EdgeInsets.all(5),
-                    height: MediaQuery.of(context).size.height * 0.30,
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(18),
+                  padding: EdgeInsets.all(5),
+                  margin: EdgeInsets.all(5),
+                  height: MediaQuery.of(context).size.height * 0.23,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.all(5),
+                        height: MediaQuery.of(context).size.height * 0.14,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(18),
+                            ),
+                            color: Colors.white,
+                            image: DecorationImage(
+                                image: AssetImage('images/smsprog.png'))),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Message \nProgrammé',
+                        style: TextStyle(
+                          fontFamily: 'calibri',
                         ),
-                        color: Colors.white,
-                        image: DecorationImage(
-                            image: AssetImage('images/smsprog.png'))),
-                    child: Text(
-                      'Messages programmés',
-                      style: TextStyle(fontFamily: 'calibri'),
-                      overflow: TextOverflow.ellipsis,
-                    )),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
+                  ),
+                ),
+                // Container(
+                //     padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                //     margin: EdgeInsets.all(5),
+                //     height: MediaQuery.of(context).size.height * 0.30,
+                //     width: MediaQuery.of(context).size.width * 0.45,
+                //     decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.all(
+                //           Radius.circular(18),
+                //         ),
+                //         color: Colors.white,
+                //         image: DecorationImage(
+                //             image: AssetImage('images/smsprog.png'))),
+                //     child: Text(
+                //       'Messages programmés',
+                //       style: TextStyle(fontFamily: 'calibri'),
+                //       overflow: TextOverflow.ellipsis,
+                //     )),
               ),
               InkWell(
                 onTap: () => Navigator.push(
@@ -89,22 +132,46 @@ class _ModeState extends State<Mode> {
                   new MaterialPageRoute(builder: (context) => new SmsAuto()),
                 ),
                 child: Container(
-                    padding: EdgeInsets.all(5),
-                    margin: EdgeInsets.all(5),
-                    height: MediaQuery.of(context).size.height * 0.30,
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(18),
+                  padding: EdgeInsets.all(5),
+                  margin: EdgeInsets.all(5),
+                  height: MediaQuery.of(context).size.height * 0.23,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.all(5),
+                        height: MediaQuery.of(context).size.height * 0.14,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(18),
+                            ),
+                            color: Colors.white,
+                            image: DecorationImage(
+                                image: AssetImage('images/smsauto.png'))),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Message \nAutomatique',
+                        style: TextStyle(
+                          fontFamily: 'calibri',
                         ),
-                        color: Colors.white,
-                        image: DecorationImage(
-                            image: AssetImage('images/smsauto.png'))),
-                    child: Text(
-                      'Messages automatiques',
-                      style: TextStyle(fontFamily: 'calibri'),
-                      overflow: TextOverflow.ellipsis,
-                    )),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

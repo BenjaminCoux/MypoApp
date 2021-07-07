@@ -111,6 +111,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_multiselect:
     dependency: "direct main"
     description:
@@ -129,6 +134,13 @@ packages:
     dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  flutter_rounded_date_picker:
+    dependency: "direct main"
+    description:
+      name: flutter_rounded_date_picker
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"

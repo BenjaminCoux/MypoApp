@@ -62,7 +62,7 @@ class _SmsAutoState extends State<SmsAuto> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarSmsAuto(),
+      bottomNavigationBar: BottomNavigationBarSmsAutoTwo(),
     );
   }
 }
@@ -624,6 +624,7 @@ String getLastWord(String str) {
     }
   }
   String tmp = "";
+  // ignore: unused_local_variable
   int j = 0;
   for (int k = res.length - 1; k >= 0; k--) {
     tmp = tmp + res[k];

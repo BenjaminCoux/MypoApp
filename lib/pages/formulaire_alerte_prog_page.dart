@@ -26,7 +26,6 @@ class _ProgState extends State<ProgForm> {
   bool Tel = false;
   bool MMS = false;
   final repeatOptions = [
-    'Evenement ponctuel',
     'Toutes les heures',
     'Tous les jours',
     'Toutes les semaines',
@@ -35,6 +34,8 @@ class _ProgState extends State<ProgForm> {
   ];
   final _isRepeatOptionActive = [false, false, false, false, false, false];
   List<Contact> contacts = [];
+  TimeOfDay _time = TimeOfDay.now();
+  late TimeOfDay picked;
 
   @override
   void initState() {
@@ -77,6 +78,18 @@ class _ProgState extends State<ProgForm> {
     return d_darkgray;
   }
 
+  Future<Null> selectTime(BuildContext context) async {
+    picked = (await showTimePicker(
+          context: context,
+          initialTime: _time,
+        )) ??
+        _time;
+    setState(() {
+      _time = picked;
+      print(_time);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // initState();
@@ -107,10 +120,8 @@ class _ProgState extends State<ProgForm> {
                       decoration: InputDecoration(
                         labelText: 'Contact',
                         suffixIcon: IconButton(
-                            icon: Icon(
-                              Icons.contact_page,
-                              size: 35,
-                            ),
+                            icon: Icon(Icons.contact_page,
+                                size: 35, color: Colors.blue),
                             onPressed: () =>
                                 _buildContactSelection(context, contacts)),
                         labelStyle: TextStyle(color: Colors.black),
@@ -160,6 +171,11 @@ class _ProgState extends State<ProgForm> {
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
+                      IconButton(
+                          icon: Icon(Icons.alarm),
+                          onPressed: () {
+                            selectTime(context);
+                          }),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -295,7 +311,7 @@ class _ProgState extends State<ProgForm> {
                               ),
                             ),
                             child: Text(
-                              "Personaliser",
+                              "Personnaliser",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
@@ -327,7 +343,7 @@ class _ProgState extends State<ProgForm> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                          child: Text("Repeter"),
+                          child: Text("Répéter"),
                           margin: EdgeInsets.fromLTRB(5, 0, 280 - 1.6, 0),
                         ),
                         Switch(
@@ -465,20 +481,21 @@ class _ProgState extends State<ProgForm> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: repeatOptions
-                              .map((option) => CheckboxListTile(
+                              .map((option) => RadioListTile(
                                     title: Text(option),
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
                                     activeColor: d_green,
                                     value: _isRepeatOptionActive[
                                         repeatOptions.indexOf(option)],
-                                    onChanged: (bool? value) => {
+                                    onChanged: (dynamic value) => {
                                       setState(() {
                                         _isRepeatOptionActive[repeatOptions
                                             .indexOf(option)] = value!;
                                       }),
                                       Navigator.of(context).pop(),
                                     },
+                                    groupValue: null,
                                   ))
                               .toList(),
                         ))));

@@ -4,17 +4,15 @@ import 'package:mypo/pages/formulaire_alerte_prog_page.dart';
 import 'package:mypo/pages/help_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/pages/settings_page.dart';
-import 'package:mypo/pages/sms_auto_page.dart';
-import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const d_green = Color(0xFFA6C800);
 
 /*
-    -this class is responsible of the bottom nav bar of 2 elements for the sms auto page
+    -this class is responsible of the bottom nav bar of 2 elements for the sms auto page with images as icon
 */
 // ignore: must_be_immutable
-class BottomNavigationBarTwo extends StatelessWidget {
+class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
   /*
     - Building the bottom navigation bar
   */
@@ -25,54 +23,73 @@ class BottomNavigationBarTwo extends StatelessWidget {
       backgroundColor: d_green,
       items: [
         BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Icon(
-              Icons.schedule_send,
-              size: 50,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new SmsProg()),
-            ),
+          icon: Image.asset(
+            'images/smsauto.png',
+            width: 80,
+            height: 50,
           ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Icon(
-              Icons.sms,
-              size: 50,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new SmsAuto()),
-            ),
-          ),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Icon(
-              Icons.notes_rounded,
-              size: 50,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new HomePage()),
-            ),
+          icon: Image.asset(
+            'assets/images/smsprog_disabled.png',
+            width: 80,
+            height: 50,
           ),
           label: '',
         ),
       ],
+      onTap: (index) {
+        //print(index);
+        if (index == 0) {}
+        if (index == 1) {}
+      },
     );
   }
 }
 
 /*
-    -this class is responsible of the bottom nav bar of 3 elements for the sms auto page
+    -this class is responsible of the bottom nav bar of 2 elements for the sms prog page with images as icon
+*/
+// ignore: must_be_immutable
+class BottomNavigationBarSmsProgTwo extends StatelessWidget {
+  /*
+    - Building the bottom navigation bar
+  */
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      selectedItemColor: Colors.white,
+      backgroundColor: d_green,
+      items: [
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'images/smsprog.png',
+            width: 80,
+            height: 50,
+          ),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/smsauto_disabled.png',
+            width: 80,
+            height: 50,
+          ),
+          label: '',
+        ),
+      ],
+      onTap: (index) {
+        //print(index);
+        if (index == 0) {}
+        if (index == 1) {}
+      },
+    );
+  }
+}
+
+/*
+    -this class is responsible of the bottom nav bar of 2 elements for the sms auto page
 */
 // ignore: must_be_immutable
 class BottomNavigationBarSmsAuto extends StatelessWidget {
@@ -198,24 +215,25 @@ class _StateBottomNavigationBarSection
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: d_green,
       selectedItemColor: Colors.white,
       items: [
         BottomNavigationBarItem(
           icon: IconButton(
               icon: Icon(
                 Icons.access_time,
-                color: d_green,
+                color: Colors.white,
                 size: 50,
               ),
               onPressed: null),
           label: '',
         ),
         BottomNavigationBarItem(
-          backgroundColor: d_green,
           icon: IconButton(
             icon: Icon(
-              Icons.stacked_bar_chart_rounded,
-              color: d_green,
+              Icons.my_library_books_rounded,
+              color: Colors.white,
               size: 50,
             ),
             onPressed: null,
@@ -223,11 +241,10 @@ class _StateBottomNavigationBarSection
           label: '',
         ),
         BottomNavigationBarItem(
-          backgroundColor: d_green,
           icon: IconButton(
             icon: Icon(
               Icons.help_outline,
-              color: d_green,
+              color: Colors.white,
               size: 50,
             ),
             onPressed: () => Navigator.push(
@@ -241,8 +258,8 @@ class _StateBottomNavigationBarSection
         BottomNavigationBarItem(
           icon: IconButton(
             icon: Icon(
-              Icons.settings,
-              color: d_green,
+              Icons.settings_outlined,
+              color: Colors.white,
               size: 50,
             ),
             onPressed: () => Navigator.push(

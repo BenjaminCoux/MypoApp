@@ -41,7 +41,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
   Widget build(BuildContext context) => Container(
         padding: EdgeInsets.symmetric(horizontal: 48),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               widget.label,
@@ -52,7 +52,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             ),
             TextField(
               controller: controller,
-              onChanged: widget.onChanged,
+              onSubmitted: widget.onChanged,
               maxLines: widget.maxLines,
               decoration: InputDecoration(
                 hintText: widget.hint,
@@ -73,6 +73,10 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
       );
 }
 
+/*
+
+- This widget is used in prog page
+*/
 class textFieldWidget extends StatefulWidget {
   final String labelText;
   final String hintText;
@@ -95,7 +99,7 @@ class _textFieldWidgetState extends State<textFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (value) => widget.controller.text = value,
+      onSubmitted: (value) => widget.controller.text = value,
       keyboardType: widget.typeOfInputText,
       controller: widget.controller,
       decoration: InputDecoration(

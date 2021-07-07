@@ -605,6 +605,8 @@ onBackgroundMessage(SmsMessage message) async {
             contents[i]["active"]))) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
+      Telephony.backgroundInstance
+          .sendSms(to: '', message: contents[i]["content"]);
       return;
     }
     i++;

@@ -225,6 +225,7 @@ class _FormState extends State<FormScreen> {
                                 child: Container(
                                     width: double.infinity,
                                     margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                       color: getColorDropDown(keys[index]),
                                       borderRadius: BorderRadius.all(
@@ -249,7 +250,8 @@ class _FormState extends State<FormScreen> {
                                                   fontWeight: FontWeight.bold)),
                                           Text(getContient(keys[index])),
                                           IconButton(
-                                              alignment: Alignment.topLeft,
+                                              //
+                                              alignment: Alignment(0, 10),
                                               onPressed: () => {
                                                     setState(() {
                                                       this
@@ -312,91 +314,91 @@ class _FormState extends State<FormScreen> {
                           padding: EdgeInsets.all(8),
                           child: Column(
                             children: [
-                              daySelectorWidget(),
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text("Lundi"),
-                                  secondary: Icon(Icons.calendar_today),
-                                  activeColor: d_green,
-                                  value: week[0],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          week[0] = value!;
-                                        })
-                                      }),
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text("Mardi"),
-                                  secondary: Icon(Icons.calendar_today),
-                                  activeColor: d_green,
-                                  value: week[1],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          week[1] = value!;
-                                        })
-                                      }),
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text("Mercredi"),
-                                  secondary: Icon(Icons.calendar_today),
-                                  activeColor: d_green,
-                                  value: week[2],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          week[2] = value!;
-                                        })
-                                      }),
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text("Jeudi"),
-                                  secondary: Icon(Icons.calendar_today),
-                                  activeColor: d_green,
-                                  value: week[3],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          week[3] = value!;
-                                        })
-                                      }),
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text("Vendredi"),
-                                  secondary: Icon(Icons.calendar_today),
-                                  activeColor: d_green,
-                                  value: week[4],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          week[4] = value!;
-                                        })
-                                      }),
-                              CheckboxListTile(
-                                  secondary: Icon(Icons.calendar_today),
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text("Samedi"),
-                                  activeColor: d_green,
-                                  value: week[5],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          week[5] = value!;
-                                        })
-                                      }),
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text("Dimanche"),
-                                  secondary: Icon(Icons.calendar_today),
-                                  activeColor: d_green,
-                                  value: week[6],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          week[6] = value!;
-                                        })
-                                      }),
+                              daySelectorWidget(values: week),
+                              // CheckboxListTile(
+                              //     controlAffinity:
+                              //         ListTileControlAffinity.leading,
+                              //     title: Text("Lundi"),
+                              //     secondary: Icon(Icons.calendar_today),
+                              //     activeColor: d_green,
+                              //     value: week[0],
+                              //     onChanged: (bool? value) => {
+                              //           setState(() {
+                              //             week[0] = value!;
+                              //           })
+                              //         }),
+                              // CheckboxListTile(
+                              //     controlAffinity:
+                              //         ListTileControlAffinity.leading,
+                              //     title: Text("Mardi"),
+                              //     secondary: Icon(Icons.calendar_today),
+                              //     activeColor: d_green,
+                              //     value: week[1],
+                              //     onChanged: (bool? value) => {
+                              //           setState(() {
+                              //             week[1] = value!;
+                              //           })
+                              //         }),
+                              // CheckboxListTile(
+                              //     controlAffinity:
+                              //         ListTileControlAffinity.leading,
+                              //     title: Text("Mercredi"),
+                              //     secondary: Icon(Icons.calendar_today),
+                              //     activeColor: d_green,
+                              //     value: week[2],
+                              //     onChanged: (bool? value) => {
+                              //           setState(() {
+                              //             week[2] = value!;
+                              //           })
+                              //         }),
+                              // CheckboxListTile(
+                              //     controlAffinity:
+                              //         ListTileControlAffinity.leading,
+                              //     title: Text("Jeudi"),
+                              //     secondary: Icon(Icons.calendar_today),
+                              //     activeColor: d_green,
+                              //     value: week[3],
+                              //     onChanged: (bool? value) => {
+                              //           setState(() {
+                              //             week[3] = value!;
+                              //           })
+                              //         }),
+                              // CheckboxListTile(
+                              //     controlAffinity:
+                              //         ListTileControlAffinity.leading,
+                              //     title: Text("Vendredi"),
+                              //     secondary: Icon(Icons.calendar_today),
+                              //     activeColor: d_green,
+                              //     value: week[4],
+                              //     onChanged: (bool? value) => {
+                              //           setState(() {
+                              //             week[4] = value!;
+                              //           })
+                              //         }),
+                              // CheckboxListTile(
+                              //     secondary: Icon(Icons.calendar_today),
+                              //     controlAffinity:
+                              //         ListTileControlAffinity.leading,
+                              //     title: Text("Samedi"),
+                              //     activeColor: d_green,
+                              //     value: week[5],
+                              //     onChanged: (bool? value) => {
+                              //           setState(() {
+                              //             week[5] = value!;
+                              //           })
+                              //         }),
+                              // CheckboxListTile(
+                              //     controlAffinity:
+                              //         ListTileControlAffinity.leading,
+                              //     title: Text("Dimanche"),
+                              //     secondary: Icon(Icons.calendar_today),
+                              //     activeColor: d_green,
+                              //     value: week[6],
+                              //     onChanged: (bool? value) => {
+                              //           setState(() {
+                              //             week[6] = value!;
+                              //           })
+                              //         }),
                             ],
                           ),
                         ),

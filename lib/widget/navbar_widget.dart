@@ -24,9 +24,23 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: Image.asset(
-            'images/smsauto.png',
+            'assets/images/smsauto_activated.png',
             width: 80,
             height: 50,
+          ),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: IconButton(
+            icon: Icon(
+              Icons.home,
+              size: 50,
+              color: Colors.white,
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new HomePage()),
+            ),
           ),
           label: '',
         ),
@@ -64,9 +78,23 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: Image.asset(
-            'images/smsprog.png',
+            'assets/images/smsprog_activated.png',
             width: 80,
             height: 50,
+          ),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: IconButton(
+            icon: Icon(
+              Icons.home,
+              size: 50,
+              color: Colors.white,
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new HomePage()),
+            ),
           ),
           label: '',
         ),
@@ -220,6 +248,7 @@ class _StateBottomNavigationBarSection
       selectedItemColor: Colors.white,
       items: [
         BottomNavigationBarItem(
+          tooltip: 'test',
           icon: IconButton(
               icon: Icon(
                 Icons.access_time,

@@ -63,20 +63,24 @@ class _AlertScreenState extends State<AlertScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.45,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(
                   Radius.circular(18),
                 ),
               ),
-              padding: EdgeInsets.all(12),
-              margin: EdgeInsets.fromLTRB(0, 0, 50, 0),
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.fromLTRB(0, 0, 12, 0),
               child: DropdownButton(
                   underline: SizedBox(),
                   value: _value,
                   items: [
                     DropdownMenuItem(
-                      child: Text("Contient"),
+                      child: Text(
+                        "Contient",
+                      ),
                       value: 1,
                     ),
                     DropdownMenuItem(
@@ -100,13 +104,15 @@ class _AlertScreenState extends State<AlertScreen> {
                   hint: Text("Select item")),
             ),
             Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.45,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(
                   Radius.circular(18),
                 ),
               ),
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.all(5),
               child: DropdownButton(
                   underline: SizedBox(),
                   value: _value2,
@@ -235,273 +241,187 @@ class _AlertScreenState extends State<AlertScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
-      body: Container(
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            children: <Widget>[
-              buildTextField('Nom', '${widget.alerte.title}', alertName),
-              buildTextField(
-                  'Message', '${widget.alerte.content}', alertContent),
-              SizedBox(
-                height: 20,
-              ),
-              alertKeys(context),
-              Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                  ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Wrap(children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Row(children: [
-                              Text("Jours",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22,
-                                    color: d_green,
-                                  ))
-                            ]))),
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Column(
-                          children: [
-                            daySelectorWidget(),
-                            CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text("Lundi"),
-                                secondary: Icon(Icons.calendar_today),
-                                activeColor: d_green,
-                                value: widget.alerte.days[0],
-                                onChanged: (bool? value) => {
-                                      setState(() {
-                                        hasChanged = true;
-                                        widget.alerte.days[0] = value!;
-                                      })
-                                    }),
-                            CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text("Mardi"),
-                                secondary: Icon(Icons.calendar_today),
-                                activeColor: d_green,
-                                value: widget.alerte.days[1],
-                                onChanged: (bool? value) => {
-                                      setState(() {
-                                        hasChanged = true;
-                                        widget.alerte.days[1] = value!;
-                                      })
-                                    }),
-                            CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text("Mercredi"),
-                                secondary: Icon(Icons.calendar_today),
-                                activeColor: d_green,
-                                value: widget.alerte.days[2],
-                                onChanged: (bool? value) => {
-                                      setState(() {
-                                        hasChanged = true;
-                                        widget.alerte.days[2] = value!;
-                                      })
-                                    }),
-                            CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text("Jeudi"),
-                                secondary: Icon(Icons.calendar_today),
-                                activeColor: d_green,
-                                value: widget.alerte.days[3],
-                                onChanged: (bool? value) => {
-                                      setState(() {
-                                        hasChanged = true;
-                                        widget.alerte.days[3] = value!;
-                                      })
-                                    }),
-                            CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text("Vendredi"),
-                                secondary: Icon(Icons.calendar_today),
-                                activeColor: d_green,
-                                value: widget.alerte.days[4],
-                                onChanged: (bool? value) => {
-                                      setState(() {
-                                        hasChanged = true;
-                                        widget.alerte.days[4] = value!;
-                                      })
-                                    }),
-                            CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text("Samedi"),
-                                secondary: Icon(Icons.calendar_today),
-                                activeColor: d_green,
-                                value: widget.alerte.days[5],
-                                onChanged: (bool? value) => {
-                                      setState(() {
-                                        hasChanged = true;
-                                        widget.alerte.days[5] = value!;
-                                      })
-                                    }),
-                            CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text("Dimanche"),
-                                secondary: Icon(Icons.calendar_today),
-                                activeColor: d_green,
-                                value: widget.alerte.days[6],
-                                onChanged: (bool? value) => {
-                                      setState(() {
-                                        hasChanged = true;
-                                        widget.alerte.days[6] = value!;
-                                      })
-                                    }),
-                          ],
-                        ),
+      body: Scrollbar(
+        thickness: 15,
+        interactive: true,
+        showTrackOnHover: true,
+        child: Container(
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: ListView(
+              children: <Widget>[
+                buildTextField('Nom', '${widget.alerte.title}', alertName, 1),
+                buildTextField(
+                    'Message', '${widget.alerte.content}', alertContent, 3),
+                SizedBox(
+                  height: 20,
+                ),
+                alertKeys(context),
+                Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
                       ),
                     ),
-                  ])),
-              SizedBox(height: 35),
-              Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                  ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Column(
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Row(children: [
-                            Container(
-                              child: Text("Cibles",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22,
-                                    color: d_green,
-                                  )),
-                            )
-                          ])),
+                    margin: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                    child: Wrap(children: [
+                      Container(
+                          child: Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Row(children: [
+                                Text("Jours",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22,
+                                      color: d_green,
+                                    ))
+                              ]))),
                       Container(
                         child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Column(
-                              children: [
-                                CheckboxListTile(
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    secondary: Icon(Icons.contact_page),
-                                    title: Text("Numéros Enregistrés"),
-                                    activeColor: d_green,
-                                    value: widget.alerte.cibles[0],
-                                    onChanged: (bool? value) => {
-                                          setState(() {
-                                            hasChanged = true;
-                                            widget.alerte.cibles[0] = value!;
-                                          })
-                                        }),
-                                CheckboxListTile(
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    secondary: Icon(Icons.sms_rounded),
-                                    title: Text("SMS reçu"),
-                                    activeColor: d_green,
-                                    value: widget.alerte.cibles[1],
-                                    onChanged: (bool? value) => {
-                                          setState(() {
-                                            hasChanged = true;
-                                            widget.alerte.cibles[1] = value!;
-                                          })
-                                        }),
-                                CheckboxListTile(
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    secondary: Icon(Icons.call),
-                                    title: Text("Appels Manqués"),
-                                    activeColor: d_green,
-                                    value: widget.alerte.cibles[2],
-                                    onChanged: (bool? value) => {
-                                          setState(() {
-                                            hasChanged = true;
-                                            widget.alerte.cibles[2] = value!;
-                                          })
-                                        }),
-                              ],
-                            )),
-                      ),
-                    ],
-                  )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(12),
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          padding: EdgeInsets.all(8),
+                          child: Column(
+                            children: [
+                              daySelectorWidget(values: widget.alerte.days),
+                            ],
+                          ),
                         ),
                       ),
-                      onPressed: () => Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new SmsAuto()),
+                    ])),
+                SizedBox(height: 35),
+                Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
                       ),
-                      child: Text(
-                        "CANCEL",
-                        style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.black,
+                    ),
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Column(
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Row(children: [
+                              Container(
+                                child: Text("Cibles",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22,
+                                      color: d_green,
+                                    )),
+                              )
+                            ])),
+                        Container(
+                          child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Column(
+                                children: [
+                                  CheckboxListTile(
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      secondary: Icon(Icons.contact_page),
+                                      title: Text("Numéros Enregistrés"),
+                                      activeColor: d_green,
+                                      value: widget.alerte.cibles[0],
+                                      onChanged: (bool? value) => {
+                                            setState(() {
+                                              hasChanged = true;
+                                              widget.alerte.cibles[0] = value!;
+                                            })
+                                          }),
+                                  CheckboxListTile(
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      secondary: Icon(Icons.sms_rounded),
+                                      title: Text("SMS reçu"),
+                                      activeColor: d_green,
+                                      value: widget.alerte.cibles[1],
+                                      onChanged: (bool? value) => {
+                                            setState(() {
+                                              hasChanged = true;
+                                              widget.alerte.cibles[1] = value!;
+                                            })
+                                          }),
+                                  CheckboxListTile(
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      secondary: Icon(Icons.call),
+                                      title: Text("Appels Manqués"),
+                                      activeColor: d_green,
+                                      value: widget.alerte.cibles[2],
+                                      onChanged: (bool? value) => {
+                                            setState(() {
+                                              hasChanged = true;
+                                              widget.alerte.cibles[2] = value!;
+                                            })
+                                          }),
+                                ],
+                              )),
+                        ),
+                      ],
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(12),
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () => Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new SmsAuto()),
+                        ),
+                        child: Text(
+                          "CANCEL",
+                          style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(12),
-                    child: ElevatedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: d_green,
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                    Container(
+                      margin: EdgeInsets.all(12),
+                      child: ElevatedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: d_green,
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        save();
-                        Navigator.pop(context);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => new SmsAuto()));
-                      },
-                      child: Text(
-                        "SAVE",
-                        style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.white,
+                        onPressed: () {
+                          save();
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new SmsAuto()));
+                        },
+                        child: Text(
+                          "SAVE",
+                          style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -513,8 +433,8 @@ class _AlertScreenState extends State<AlertScreen> {
 
   */
 
-  Container buildTextField(
-      String labelText, String placeholder, TextEditingController controller) {
+  Container buildTextField(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -524,7 +444,7 @@ class _AlertScreenState extends State<AlertScreen> {
       ),
       margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(0),
         child: TextField(
           controller: controller,
           onChanged: (String value) => {
@@ -534,7 +454,7 @@ class _AlertScreenState extends State<AlertScreen> {
               this.hasChanged = true;
             })
           },
-          maxLines: 2,
+          maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             labelText: labelText,

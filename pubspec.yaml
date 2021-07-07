@@ -90,6 +90,9 @@ flutter:
     - assets/database.json
     - images/smsprog.png
     - images/smsauto.png
+    - assets/images/smsauto_activated.png
+
+    - assets/images/smsprog_activated.png
     - assets/images/smsprog_disabled.png
     - assets/images/smsauto_disabled.png
 

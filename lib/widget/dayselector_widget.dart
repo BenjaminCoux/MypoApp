@@ -4,7 +4,14 @@ import 'package:intl/date_symbols.dart';
 import 'package:mypo/main.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
+// ignore: must_be_immutable
 class daySelectorWidget extends StatefulWidget {
+  late List<dynamic> values = [];
+
+  daySelectorWidget({
+    Key? key,
+    required this.values,
+  }) : super(key: key);
   @override
   _daySelectorWidgetState createState() => _daySelectorWidgetState();
 }

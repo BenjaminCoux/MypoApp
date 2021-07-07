@@ -16,6 +16,7 @@ A new Flutter app project.
   
   * install flutter SDK
   * install flutter/dart plugins in your IDE
+  * Clone the project
   * run the command "flutter clean"
   * run the command "flutter pub get"
   * run the app

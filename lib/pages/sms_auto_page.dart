@@ -326,6 +326,30 @@ class _AlertesState extends State<Alertes> {
     return res;
   }
 
+  String getNbAlerte(String title) {
+    if (title.contains("-")) {
+      String tmp = "";
+      bool stop = false;
+      int i = 0;
+      while (!stop && i < title.length) {
+        if (title[i] == "-") {
+          stop = true;
+        } else {
+          tmp = tmp + title[i];
+        }
+        i++;
+      }
+      title = tmp;
+    }
+    int count = 0;
+    for (int i = 0; i < widget.alerts.length; i++) {
+      if (widget.alerts[i]["title"].contains(title)) {
+        count++;
+      }
+    }
+    return title + "-" + count.toString();
+  }
+
   /*
     -Function that creates the list of alerts on the screen
   */
@@ -424,14 +448,15 @@ class _AlertesState extends State<Alertes> {
                                       icon: Icon(Icons.copy),
                                       onPressed: () => {
                                         setState(() {
+                                          String title = getNbAlerte(
+                                              alerts[index]["title"]);
                                           widget.alerts.add({
-                                            "title":
-                                                alerts[index]["title"] + "-01",
+                                            "title": title,
                                             "content": alerts[index]["content"],
                                             "days": alerts[index]["days"],
-                                            "cible": alerts[index]["cibles"],
+                                            "cibles": alerts[index]["cibles"],
                                             "active": alerts[index]["active"],
-                                            "keys": alerts[index]["cibles"],
+                                            "keys": alerts[index]["keys"]
                                           });
                                         })
                                       },

@@ -662,13 +662,14 @@ String getFirstWord(String str) {
 }
 
 bool isActive(String? body, Alert alert) {
+  bool res = false;
   if (!alert.active) {
-    return false;
+    return res;
   }
   DateTime now = DateTime.now();
   String day = DateFormat('EEEE').format(now);
   if (!dayIsRight(alert, day)) {
-    return false;
+    return res;
   }
   // ignore: unused_local_variable
   var where = {
@@ -678,22 +679,47 @@ bool isActive(String? body, Alert alert) {
     4: "Est à la fin"
   };
   for (int i = 0; i < alert.keys.length; i++) {
-    if (body!.contains(alert.keys[i].name) &&
+    if (dontAllow(body, alert)) {
+      return false;
+    } else if (body!.contains(alert.keys[i].name) &&
         (alert.keys[i].contient == 1) &&
         alert.keys[i].allow) {
-      return true;
+      res = true;
     } else if (!body.contains(alert.keys[i].name) &&
         (alert.keys[i].contient == 2) &&
         alert.keys[i].allow) {
-      return true;
+      res = true;
     } else if (getFirstWord(body) == alert.keys[i].name &&
         (alert.keys[i].contient == 3) &&
         alert.keys[i].allow) {
-      return true;
+      res = true;
     } else if (getLastWord(body) == alert.keys[i].name &&
         (alert.keys[i].contient == 4) &&
         alert.keys[i].allow) {
+      res = true;
+    }
+  }
+  return res;
+}
+
+bool dontAllow(String? body, Alert a) {
+  for (int i = 0; i < a.keys.length; i++) {
+    if (body!.contains(a.keys[i].name) &&
+        a.keys[i].contient == 1 &&
+        !a.keys[i].allow) {
       return true;
+    } else if (!body.contains(a.keys[i].name) &&
+        a.keys[i].contient == 2 &&
+        !a.keys[i].allow) {
+      return true;
+    } else if (getFirstWord(body) == a.keys[i].name &&
+        a.keys[i].contient == 3 &&
+        !a.keys[i].allow) {
+      return true;
+    } else if (getLastWord(body) == a.keys[i].name &&
+        a.keys[i].contient == 4 &&
+        !a.keys[i].allow) {
+      return false;
     }
   }
   return false;

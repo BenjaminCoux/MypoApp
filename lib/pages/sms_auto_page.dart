@@ -354,7 +354,7 @@ class _AlertesState extends State<Alertes> {
                 },
                 child: Container(
                   margin: EdgeInsets.all(20),
-                  height: 106,
+                  height: 116,
                   width: 290,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -373,8 +373,8 @@ class _AlertesState extends State<Alertes> {
                   child: Column(
                     children: [
                       Container(
-                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -403,19 +403,42 @@ class _AlertesState extends State<Alertes> {
                                 ],
                               ),
                               Row(children: [
-                                SwitchButton(
-                                  alerte: alerts[index],
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: () => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            buildPopupDialog(alerts[index])),
-                                  },
-                                ),
-                              ])
+                                Column(
+                                  children: [
+                                    Row(children: [
+                                      SwitchButton(
+                                        alerte: alerts[index],
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () => {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  buildPopupDialog(
+                                                      alerts[index])),
+                                        },
+                                      ),
+                                    ]),
+                                    IconButton(
+                                      icon: Icon(Icons.copy),
+                                      onPressed: () => {
+                                        setState(() {
+                                          widget.alerts.add({
+                                            "title":
+                                                alerts[index]["title"] + "-01",
+                                            "content": alerts[index]["content"],
+                                            "days": alerts[index]["days"],
+                                            "cible": alerts[index]["cibles"],
+                                            "active": alerts[index]["active"],
+                                            "keys": alerts[index]["cibles"],
+                                          });
+                                        })
+                                      },
+                                    ),
+                                  ],
+                                )
+                              ]),
                             ],
                           ))
                     ],

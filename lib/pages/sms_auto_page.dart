@@ -385,14 +385,6 @@ class _AlertesState extends State<Alertes> {
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: d_lightgray,
-                        spreadRadius: 4,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                   child: Column(
                     children: [

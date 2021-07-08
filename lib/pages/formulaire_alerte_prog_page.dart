@@ -1,5 +1,7 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:mypo/database/scheduledmsg_database.dart';
+import 'package:mypo/model/scheduledmsg.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/textfield_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -32,11 +34,12 @@ class _ProgState extends State<ProgForm> {
     'Tous les mois',
     'Tous les ans'
   ];
+  var repeatinput = 'Toutes les heures';
   final _isRepeatOptionActive = [false, false, false, false, false, false];
   List<Contact> contacts = [];
   TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
-
+  DateTime date = DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -90,9 +93,25 @@ class _ProgState extends State<ProgForm> {
     });
   }
 
+  save() {
+    if (number.text != '' && alertContent.text != '' && repeatinput != '') {
+      Scheduledmsg msg = Scheduledmsg(
+        phoneNumber: number.text,
+        message: alertContent.text,
+        date: date,
+        repeat: repeatinput,
+        countdown: rebours,
+        confirm: confirm,
+        notification: notif,
+      );
+      ScheduledMessagesDataBase.instance.create(msg);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // initState();
+    Scheduledmsg msg;
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Ajoutez une alerte'),
@@ -444,7 +463,17 @@ class _ProgState extends State<ProgForm> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  onPressed: () => {
+                  onPressed: () async => {
+                    // msg = Scheduledmsg(
+                    //     phoneNumber: '06656565',
+                    //     message: 'test',
+                    //     date: DateTime.now(),
+                    //     repeat: 'test',
+                    //     confirm: true,
+                    //     countdown: true,
+                    //     notification: true),
+                    // ScheduledMessagesDataBase.instance.create(msg),
+                    save(),
                     Navigator.pop(context),
                     Navigator.push(
                       context,

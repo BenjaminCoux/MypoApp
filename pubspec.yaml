@@ -31,6 +31,10 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+  #to store data in database
+  sqflite: ^2.0.0+3
+
   telephony: ^0.1.4
   flutter_multiselect: ^1.0.0
   path_provider: ^2.0.2
@@ -55,9 +59,9 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#ffffff"
-  image: images/icon.png
+  image: assets/images/icon.png
   color_dark: "#1a1a1a"
-  image_dark: images/icon.png
+  image_dark: assets/images/icon.png
   android: true
   ios: true
 
@@ -69,7 +73,7 @@ flutter_native_splash:
   flutter_lints: ^1.0.0
 
 flutter_icons:
-  image_path: "images/icon.png"
+  image_path: "assets/images/icon.png"
   android: true
   ios: true
 
@@ -83,15 +87,15 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - images/logo.jpg
-    - images/icon.png
-    - images/icon.png
-    - images/logo.png
+    - assets/images/logo.jpg
+    - assets/images/icon.png
+    - assets/images/icon.png
+    - assets/images/logo.png
     - assets/database.json
-    - images/smsprog.png
-    - images/smsauto.png
+    - assets/scheduledmsg.db
+    - assets/images/smsprog.png
+    - assets/images/smsauto.png
     - assets/images/smsauto_activated.png
-
     - assets/images/smsprog_activated.png
     - assets/images/smsprog_disabled.png
     - assets/images/smsauto_disabled.png
@@ -115,8 +119,8 @@ flutter:
   fonts:
     - family: calibri
       fonts:
-        - asset: fonts/Calibri Bold.ttf
-        - asset: fonts/Calibri Regular.ttf
+        - asset: assets/fonts/Calibri Bold.ttf
+        - asset: assets/fonts/Calibri Regular.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

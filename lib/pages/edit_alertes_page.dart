@@ -31,6 +31,7 @@ class _AlertScreenState extends State<AlertScreen> {
   int _value = 1;
   bool _value2 = true;
   final keyName = TextEditingController();
+  List<bool> boolWeek = <bool>[];
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _AlertScreenState extends State<AlertScreen> {
     alertContent.addListener(() {
       changed;
     });
+    boolWeek = List<bool>.from(widget.alerte.days);
   }
 
   void changed() {
@@ -300,6 +302,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                   setState(() {
                                     widget.alerte.days[v % 7] =
                                         !widget.alerte.days[v % 7];
+                                    hasChanged = true;
                                   });
                                 },
                                 values: List<bool>.from(widget.alerte.days),

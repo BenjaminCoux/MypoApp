@@ -1,13 +1,14 @@
 import 'dart:convert';
-
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/date_symbols.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/dayselector_widget.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
 import 'home_page.dart';
 import 'sms_auto_page.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 
 const d_green = Color(0xFFA6C800);
 const String pathToDB = "../assets/database.json";
@@ -83,6 +84,24 @@ class _FormState extends State<FormScreen> {
     } else {
       return d_lightgray;
     }
+  }
+
+  Widget weekSelector(BuildContext context) {
+    final DateSymbols fr = dateTimeSymbolMap()['fr'];
+    return WeekdaySelector(
+      weekdays: fr.STANDALONEWEEKDAYS,
+      // shortWeekdays: fr.STANDALONENARROWWEEKDAYS,
+      shortWeekdays: fr.STANDALONESHORTWEEKDAYS,
+      firstDayOfWeek: fr.FIRSTDAYOFWEEK + 1,
+      selectedFillColor: d_green,
+      fillColor: Colors.grey.shade100,
+      onChanged: (v) {
+        setState(() {
+          week[v % 7] = !week[v % 7];
+        });
+      },
+      values: week,
+    );
   }
 
   Widget alertKeys(BuildContext context) {
@@ -314,7 +333,7 @@ class _FormState extends State<FormScreen> {
                           padding: EdgeInsets.all(8),
                           child: Column(
                             children: [
-                              daySelectorWidget(values: week),
+                              weekSelector(context),
                               // CheckboxListTile(
                               //     controlAffinity:
                               //         ListTileControlAffinity.leading,

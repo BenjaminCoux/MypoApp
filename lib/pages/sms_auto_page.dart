@@ -727,13 +727,13 @@ bool dontAllow(String? body, Alert a) {
 
 bool dayIsRight(Alert alert, String day) {
   List<String> weeks = <String>[
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday"
   ];
   for (int i = 0; i < weeks.length; i++) {
     if (day == weeks[i] && alert.days[i]) {

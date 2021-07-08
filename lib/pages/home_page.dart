@@ -92,7 +92,8 @@ class _ModeState extends State<Mode> {
                             ),
                             color: Colors.white,
                             image: DecorationImage(
-                                image: AssetImage('images/smsprog.png'))),
+                                image:
+                                    AssetImage('assets/images/smsprog.png'))),
                       ),
                       SizedBox(
                         height: 10,
@@ -156,7 +157,8 @@ class _ModeState extends State<Mode> {
                             ),
                             color: Colors.white,
                             image: DecorationImage(
-                                image: AssetImage('images/smsauto.png'))),
+                                image:
+                                    AssetImage('assets/images/smsauto.png'))),
                       ),
                       SizedBox(
                         height: 10,

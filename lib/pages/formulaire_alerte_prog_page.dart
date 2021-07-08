@@ -111,7 +111,6 @@ class _ProgState extends State<ProgForm> {
   @override
   Widget build(BuildContext context) {
     // initState();
-    Scheduledmsg msg;
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Ajoutez une alerte'),

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/database/scheduledmsg_database.dart';
 import 'package:mypo/model/scheduledmsg.dart';
-import 'package:mypo/pages/scheduledmsg_detail_page.dart';
-import 'package:mypo/pages/sms_auto_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
-import 'package:mypo/widget/scheduledmsg_widget.dart';
 
 import 'formulaire_alerte_prog_page.dart';
 
@@ -85,7 +82,7 @@ class _SmsProgState extends State<SmsProg> {
             final msg = allMessages[index];
             return InkWell(
               onTap: () {
-                print(index);
+                print('index:$index , msgId:${msg.id}');
               },
               child: Container(
                 ///////////////////////////

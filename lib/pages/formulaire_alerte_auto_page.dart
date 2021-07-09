@@ -63,6 +63,9 @@ class _FormState extends State<FormScreen> {
     return contient[a.contient];
   }
 
+  /**
+   * save the alert in the shared prefrences
+   */
   void saveAlert(String title, String content, var days, var cibles,
       List<AlertKey> keys) async {
     final pref = await SharedPreferences.getInstance();
@@ -79,6 +82,9 @@ class _FormState extends State<FormScreen> {
     pref.setInt("nombreAlerte", widget.nb + 1);
   }
 
+  /**
+   * change the color of the container of a key depending on the allow value 
+   */
   Color getColorDropDown(AlertKey a) {
     if (a.allow) {
       return d_green;
@@ -105,6 +111,10 @@ class _FormState extends State<FormScreen> {
     );
   }
 
+  /**
+   * build the list and the dropdown for the alert key
+   * 
+   */
   Widget alertKeys(BuildContext context) {
     return Container(
       decoration: BoxDecoration(

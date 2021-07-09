@@ -185,6 +185,9 @@ class _StateSwitchButton extends State<SwitchButton> {
         });
   }
 
+  /**
+   * change the active value of an alert both in the alert list and in the sharedPreferences
+   */
   changeActive(dynamic alerte) async {
     final prefs = await SharedPreferences.getInstance();
     //print(prefs.get(alerte["title"]));
@@ -305,6 +308,9 @@ class _AlertesState extends State<Alertes> {
     return res;
   }
 
+  /**
+   * store the duplicated alert in the sharedPreferences
+   */
   void addToDB(dynamic alert) async {
     final prefs = await SharedPreferences.getInstance();
     String title = getNbAlerte(alert["title"]);
@@ -323,6 +329,9 @@ class _AlertesState extends State<Alertes> {
     prefs.setString(title, tmp);
   }
 
+  /**
+   * fucntion that return a title for the alert duplication
+   */
   String getNbAlerte(String title) {
     if (title.contains("-")) {
       String tmp = "";
@@ -656,6 +665,9 @@ onBackgroundMessage(SmsMessage message) async {
   }
 }
 
+/**
+ * return the last word in the message body
+ */
 String getLastWord(String str) {
   String res = "";
   int i = str.length - 1;
@@ -678,6 +690,9 @@ String getLastWord(String str) {
   return tmp;
 }
 
+/**
+ * return an alerte from an original alert and the activated value
+ */
 Alert createAlert(Alert a, bool actived) {
   Alert res = new Alert(
       title: a.title,
@@ -689,6 +704,9 @@ Alert createAlert(Alert a, bool actived) {
   return res;
 }
 
+/**
+ * return the first word in the message body
+ */
 String getFirstWord(String str) {
   String res = "";
   int i = 0;
@@ -704,6 +722,9 @@ String getFirstWord(String str) {
   return res;
 }
 
+/**
+ * function that check if an alert should respond to a received message on the phone
+ */
 bool isActive(String? body, Alert alert) {
   bool res = false;
   if (!alert.active) {
@@ -745,6 +766,9 @@ bool isActive(String? body, Alert alert) {
   return res;
 }
 
+/**
+ * function that check if a not allowed word is present in the body of the message
+ */
 bool dontAllow(String? body, Alert a) {
   for (int i = 0; i < a.keys.length; i++) {
     if (body!.contains(a.keys[i].name) &&
@@ -786,6 +810,10 @@ bool dayIsRight(Alert alert, String day) {
   return false;
 }
 
+/***
+ * function that transform the keys of an alerte from json to AlertKey object
+ * 
+ */
 List<AlertKey> buildKeys(dynamic input) {
   List<AlertKey> res = <AlertKey>[];
 

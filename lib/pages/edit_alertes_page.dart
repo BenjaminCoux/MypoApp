@@ -98,7 +98,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 ),
               ),
               padding: EdgeInsets.all(5),
-              margin: EdgeInsets.fromLTRB(0, 0, 12, 0),
+              margin: EdgeInsets.fromLTRB(0, 0, 18, 0),
               child: DropdownButton(
                   underline: SizedBox(),
                   value: _value,
@@ -139,25 +139,27 @@ class _AlertScreenState extends State<AlertScreen> {
                 ),
               ),
               padding: EdgeInsets.all(5),
-              child: DropdownButton(
-                  underline: SizedBox(),
-                  value: _value2,
-                  items: [
-                    DropdownMenuItem(
-                      child: Text("Accepte"),
-                      value: true,
-                    ),
-                    DropdownMenuItem(
-                      child: Text("N'accepte pas"),
-                      value: false,
-                    )
-                  ],
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _value2 = value!;
-                    });
-                  },
-                  hint: Text("Select item")),
+              child: Expanded(
+                child: DropdownButton(
+                    underline: SizedBox(),
+                    value: _value2,
+                    items: [
+                      DropdownMenuItem(
+                        child: Text("Accepte"),
+                        value: true,
+                      ),
+                      DropdownMenuItem(
+                        child: Text("N'accepte pas"),
+                        value: false,
+                      )
+                    ],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _value2 = value!;
+                      });
+                    },
+                    hint: Text("Select item")),
+              ),
             ),
           ],
         ),

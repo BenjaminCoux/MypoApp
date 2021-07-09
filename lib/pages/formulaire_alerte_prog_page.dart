@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:mypo/database/scheduledmsg_database.dart';
 import 'package:mypo/model/scheduledmsg.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/boxes.dart';
 import 'package:mypo/widget/textfield_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:mypo/model/scheduledmsg_hive.dart';
 
 import 'sms_prog_page.dart';
 
@@ -106,6 +108,24 @@ class _ProgState extends State<ProgForm> {
         notification: notif,
       );
       ScheduledMessagesDataBase.instance.create(msg);
+    }
+  }
+
+  saveToHive() {
+    if (number.text != '' && alertContent.text != '' && repeatinput != '') {
+      final msg = Scheduledmsg_hive()
+        ..name = number.text
+        ..phoneNumber = number.text
+        ..message = alertContent.text
+        ..date = date
+        ..repeat = repeatinput
+        ..countdown = rebours
+        ..confirm = confirm
+        ..notification = notif;
+
+      final box = Boxes.getScheduledmsg();
+      box.add(msg);
+      //box.put('mykey',msg);
     }
   }
 
@@ -322,12 +342,9 @@ class _ProgState extends State<ProgForm> {
                               final pref =
                                   await SharedPreferences.getInstance();
                               pref.clear();
+                              // deleteDB();
                             },
-                            // => Navigator.push(
-                            //   context,
-                            //   new MaterialPageRoute(
-                            //       builder: (context) => new Teest()),
-                            // ),
+
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(color: d_green, width: 2),
                               padding: EdgeInsets.symmetric(horizontal: 50),
@@ -470,7 +487,8 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                   onPressed: () async => {
-                    save(),
+                    // save(),
+                    saveToHive(),
                     // deleteDB(),
                     Navigator.pop(context),
                     Navigator.push(

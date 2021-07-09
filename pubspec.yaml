@@ -32,8 +32,12 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  #to store data in database
+  #to store data in sqlite database
   sqflite: ^2.0.0+3
+  #hive data base (faster) NoSQL
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+  hive_generator: ^1.1.0
 
   telephony: ^0.1.4
   flutter_multiselect: ^1.0.0
@@ -56,6 +60,8 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.9.0
   flutter_native_splash: ^1.1.8+4
+  #hive data base
+  build_runner: ^2.0.5
 
 flutter_native_splash:
   color: "#ffffff"

@@ -53,6 +53,10 @@ class ScheduledMessagesDataBase {
     ${ScheduledmsgFields.notification} $boolType
   )
     ''');
+
+    /*
+    Create another table if needed
+    */
   }
 
   // CRUD = Create Read Update Delete

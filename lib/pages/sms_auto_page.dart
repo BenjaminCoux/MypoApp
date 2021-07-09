@@ -303,6 +303,24 @@ class _AlertesState extends State<Alertes> {
     return res;
   }
 
+  void addToDB(dynamic alert) async {
+    final prefs = await SharedPreferences.getInstance();
+    String title = alert["title"];
+    String content = alert["content"];
+    final days = alert["days"];
+    final cibles = alert["cibles"];
+    final active = alert["active"];
+    List<AlertKey> keys = buildKeys(alert["keys"]);
+    List<String> aStr = <String>[];
+    for (int i = 0; i < keys.length; i++) {
+      aStr.add(keys[i].toString());
+    }
+    String str = json.encode(aStr);
+    String tmp =
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":$active,"keys":$str}';
+    prefs.setString(title, tmp);
+  }
+
   String getNbAlerte(String title) {
     if (title.contains("-")) {
       String tmp = "";
@@ -427,7 +445,8 @@ class _AlertesState extends State<Alertes> {
                                             "active": alerts[index]["active"],
                                             "keys": alerts[index]["keys"]
                                           });
-                                        })
+                                        }),
+                                        addToDB(alerts[index]),
                                       },
                                     ),
                                   ],
@@ -509,13 +528,11 @@ class _AlertesState extends State<Alertes> {
 
   /*
     -Function that show the available aplications to send auto messages with
-
   */
   void _onButtonPressed() {
     int nb = 0;
     void getNb() async {
       final pref = await SharedPreferences.getInstance();
-      //pref.clear();
       nb = pref.getInt("nombreAlerte")!;
     }
 
@@ -576,7 +593,6 @@ Container _buildDivider() {
 
 Future<List> getContents() async {
   final pref = await SharedPreferences.getInstance();
-  //pref.clear();
   final tmp = pref.getKeys();
   List contents = <dynamic>[];
   Iterator<String> it = tmp.iterator;

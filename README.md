@@ -1,25 +1,26 @@
 # My Co'Laverie
 
 A new Flutter app project.
+
 > Status : Developping ⚠️
 
 ## App functionalities
 
-* Sending messages automatically
-* Sending scheduled messages
-* Help page & ChatBot
-* User profile
-
-
+- Sending messages automatically
+- Sending scheduled messages
+- Help page & ChatBot
+- User profile
 
 ## Getting Started
-  
-  * install flutter SDK
-  * install flutter/dart plugins in your IDE
-  * Clone the project
-  * run the command "flutter clean"
-  * run the command "flutter pub get"
-  * run the app
+
+- install flutter SDK
+- install flutter/dart plugins in your IDE
+- Clone the project
+- run the command "flutter clean"
+- run the command "flutter pub get"
+- run the command "flutter run"
+- run the app
+
 ## Flutter
 
 For help with Flutter, view the

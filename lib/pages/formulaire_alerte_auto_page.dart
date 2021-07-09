@@ -83,7 +83,7 @@ class _FormState extends State<FormScreen> {
     if (a.allow) {
       return d_green;
     } else {
-      return d_lightgray;
+      return Colors.grey.shade300;
     }
   }
 
@@ -107,19 +107,38 @@ class _FormState extends State<FormScreen> {
 
   Widget alertKeys(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.all(12),
       child: Column(children: [
+        Container(
+            child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Row(children: [
+                  Text("Clés",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: d_green,
+                      ))
+                ]))),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.45,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(
                   Radius.circular(18),
                 ),
               ),
-              padding: EdgeInsets.all(12),
-              margin: EdgeInsets.fromLTRB(0, 0, 50, 0),
               child: DropdownButton(
                   underline: SizedBox(),
                   value: _value,
@@ -149,7 +168,9 @@ class _FormState extends State<FormScreen> {
                   hint: Text("Select item")),
             ),
             Container(
-              padding: EdgeInsets.all(12),
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.45,
+              padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(
@@ -185,10 +206,10 @@ class _FormState extends State<FormScreen> {
               Radius.circular(18),
             ),
           ),
-          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Padding(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(0),
             child: TextField(
+              maxLines: 1,
               onSubmitted: (String? txt) => {setState(() {})},
               controller: keyName,
               decoration: InputDecoration(
@@ -212,7 +233,7 @@ class _FormState extends State<FormScreen> {
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.transparent)),
+                    borderSide: BorderSide(color: Colors.grey.shade300)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
@@ -230,6 +251,7 @@ class _FormState extends State<FormScreen> {
             ),
           ),
         ),
+        // Showing added keys under the field
         keys.length > 0
             ? ListView.builder(
                 shrinkWrap: true,
@@ -239,36 +261,37 @@ class _FormState extends State<FormScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                            height: 50,
+                            height: 55,
                             child: InkWell(
                                 onTap: () => {},
                                 child: Container(
                                     width: double.infinity,
                                     margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                       color: getColorDropDown(keys[index]),
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(3),
+                                        Radius.circular(12),
                                       ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: d_lightgray,
-                                          spreadRadius: 4,
-                                          blurRadius: 6,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
                                     ),
                                     child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(keys[index].name,
-                                              textAlign: TextAlign.justify,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-                                          Text(getContient(keys[index])),
+                                          Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                10, 0, 0, 0),
+                                            child: Text(keys[index].name,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ),
+                                          Text(
+                                            getContient(keys[index]),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.justify,
+                                          ),
                                           IconButton(
                                               //
                                               alignment: Alignment(0, 10),
@@ -293,255 +316,179 @@ class _FormState extends State<FormScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Ajoutez une alerte'),
-      body: SingleChildScrollView(
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildTextField(
-                    'Titre', "Ajoutez un titre à l'alerte", alertName),
-                buildTextField('Contenu', "Contenu du message", alertContent),
-                SizedBox(
-                  height: 20,
-                ),
-                alertKeys(context),
-                Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(18),
+      body: Scrollbar(
+        thickness: 10,
+        interactive: true,
+        showTrackOnHover: true,
+        child: SingleChildScrollView(
+          child: GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  buildTextField(
+                      'Titre', "Ajoutez un titre à l'alerte", alertName, 1),
+                  buildTextField(
+                      'Contenu', "Contenu du message", alertContent, 3),
+                  alertKeys(context),
+                  Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
                       ),
-                    ),
-                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Column(children: [
-                      Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: Column(children: [
+                        Container(
+                            child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Row(children: [
+                                  Text("Jours",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: d_green,
+                                      ))
+                                ]))),
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Column(
+                              children: [
+                                weekSelector(context),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ])),
+                  Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                      ),
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: Column(children: [
+                        Container(
                           child: Padding(
                               padding: EdgeInsets.all(12),
-                              child: Row(children: [
-                                Text("Jours",
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Cibles",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
-                                      color: d_green,
-                                    ))
-                              ]))),
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Column(
-                            children: [
-                              weekSelector(context),
-                              // CheckboxListTile(
-                              //     controlAffinity:
-                              //         ListTileControlAffinity.leading,
-                              //     title: Text("Lundi"),
-                              //     secondary: Icon(Icons.calendar_today),
-                              //     activeColor: d_green,
-                              //     value: week[0],
-                              //     onChanged: (bool? value) => {
-                              //           setState(() {
-                              //             week[0] = value!;
-                              //           })
-                              //         }),
-                              // CheckboxListTile(
-                              //     controlAffinity:
-                              //         ListTileControlAffinity.leading,
-                              //     title: Text("Mardi"),
-                              //     secondary: Icon(Icons.calendar_today),
-                              //     activeColor: d_green,
-                              //     value: week[1],
-                              //     onChanged: (bool? value) => {
-                              //           setState(() {
-                              //             week[1] = value!;
-                              //           })
-                              //         }),
-                              // CheckboxListTile(
-                              //     controlAffinity:
-                              //         ListTileControlAffinity.leading,
-                              //     title: Text("Mercredi"),
-                              //     secondary: Icon(Icons.calendar_today),
-                              //     activeColor: d_green,
-                              //     value: week[2],
-                              //     onChanged: (bool? value) => {
-                              //           setState(() {
-                              //             week[2] = value!;
-                              //           })
-                              //         }),
-                              // CheckboxListTile(
-                              //     controlAffinity:
-                              //         ListTileControlAffinity.leading,
-                              //     title: Text("Jeudi"),
-                              //     secondary: Icon(Icons.calendar_today),
-                              //     activeColor: d_green,
-                              //     value: week[3],
-                              //     onChanged: (bool? value) => {
-                              //           setState(() {
-                              //             week[3] = value!;
-                              //           })
-                              //         }),
-                              // CheckboxListTile(
-                              //     controlAffinity:
-                              //         ListTileControlAffinity.leading,
-                              //     title: Text("Vendredi"),
-                              //     secondary: Icon(Icons.calendar_today),
-                              //     activeColor: d_green,
-                              //     value: week[4],
-                              //     onChanged: (bool? value) => {
-                              //           setState(() {
-                              //             week[4] = value!;
-                              //           })
-                              //         }),
-                              // CheckboxListTile(
-                              //     secondary: Icon(Icons.calendar_today),
-                              //     controlAffinity:
-                              //         ListTileControlAffinity.leading,
-                              //     title: Text("Samedi"),
-                              //     activeColor: d_green,
-                              //     value: week[5],
-                              //     onChanged: (bool? value) => {
-                              //           setState(() {
-                              //             week[5] = value!;
-                              //           })
-                              //         }),
-                              // CheckboxListTile(
-                              //     controlAffinity:
-                              //         ListTileControlAffinity.leading,
-                              //     title: Text("Dimanche"),
-                              //     secondary: Icon(Icons.calendar_today),
-                              //     activeColor: d_green,
-                              //     value: week[6],
-                              //     onChanged: (bool? value) => {
-                              //           setState(() {
-                              //             week[6] = value!;
-                              //           })
-                              //         }),
-                            ],
-                          ),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: d_green),
+                                  )
+                                ],
+                              )),
                         ),
-                      ),
-                    ])),
-                Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(18),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: d_lightgray,
-                          spreadRadius: 4,
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Column(children: [
-                      Container(
-                        child: Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Row(
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Column(
                               children: [
-                                Text(
-                                  "Cibles",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
-                                      color: d_green),
-                                )
+                                CheckboxListTile(
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    secondary: Icon(Icons.contact_page,
+                                        color: cibles[0]
+                                            ? Colors.blue
+                                            : Colors.grey.shade500),
+                                    title: Text(
+                                      "Numéros Enregistrés",
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    activeColor: d_green,
+                                    value: cibles[0],
+                                    onChanged: (bool? value) => {
+                                          setState(() {
+                                            cibles[0] = value!;
+                                          })
+                                        }),
+                                CheckboxListTile(
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    secondary: Icon(Icons.sms_rounded,
+                                        color: cibles[1]
+                                            ? Colors.blue
+                                            : Colors.grey.shade500),
+                                    title: Text(
+                                      "SMS reçu",
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    activeColor: d_green,
+                                    value: cibles[1],
+                                    onChanged: (bool? value) => {
+                                          setState(() {
+                                            cibles[1] = value!;
+                                          })
+                                        }),
+                                CheckboxListTile(
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    secondary: Icon(Icons.call,
+                                        color: cibles[2]
+                                            ? Colors.blue
+                                            : Colors.grey.shade500),
+                                    title: Text(
+                                      "Appels Manqués",
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    activeColor: d_green,
+                                    value: cibles[2],
+                                    onChanged: (bool? value) => {
+                                          setState(() {
+                                            cibles[2] = value!;
+                                          })
+                                        }),
                               ],
-                            )),
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Column(
-                            children: [
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  secondary: Icon(Icons.contact_page,
-                                      color: cibles[0]
-                                          ? Colors.blue
-                                          : Colors.grey.shade500),
-                                  title: Text("Numéros Enregistrés"),
-                                  activeColor: d_green,
-                                  value: cibles[0],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          cibles[0] = value!;
-                                        })
-                                      }),
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  secondary: Icon(Icons.sms_rounded,
-                                      color: cibles[1]
-                                          ? Colors.blue
-                                          : Colors.grey.shade500),
-                                  title: Text("SMS reçu"),
-                                  activeColor: d_green,
-                                  value: cibles[1],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          cibles[1] = value!;
-                                        })
-                                      }),
-                              CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  secondary: Icon(Icons.call,
-                                      color: cibles[2]
-                                          ? Colors.blue
-                                          : Colors.grey.shade500),
-                                  title: Text("Appels Manqués"),
-                                  activeColor: d_green,
-                                  value: cibles[2],
-                                  onChanged: (bool? value) => {
-                                        setState(() {
-                                          cibles[2] = value!;
-                                        })
-                                      }),
-                            ],
+                            ),
                           ),
                         ),
+                      ])),
+                  ElevatedButton(
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: d_green,
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ])),
-                ElevatedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: d_green,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    onPressed: () => {
+                      if (alertName.text != '')
+                        {
+                          saveAlert(alertName.text, alertContent.text, week,
+                              cibles, keys),
+                        },
+                      Navigator.pop(context),
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new SmsAuto()),
+                      )
+                    },
+                    child: Text(
+                      "Valider",
+                      style: TextStyle(
+                        fontSize: 14,
+                        letterSpacing: 2.2,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  onPressed: () => {
-                    if (alertName.text != '')
-                      {
-                        saveAlert(alertName.text, alertContent.text, week,
-                            cibles, keys),
-                      },
-                    Navigator.pop(context),
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new SmsAuto()),
-                    )
-                  },
-                  child: Text(
-                    "Valider",
-                    style: TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 2.2,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -549,8 +496,8 @@ class _FormState extends State<FormScreen> {
     );
   }
 
-  Container buildTextField(
-      String labelText, String placeholder, TextEditingController controller) {
+  Container buildTextField(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -560,7 +507,7 @@ class _FormState extends State<FormScreen> {
       ),
       margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(0),
         child: TextField(
           controller: controller,
           onChanged: (String value) => {
@@ -572,7 +519,7 @@ class _FormState extends State<FormScreen> {
               // this.hasChanged = true;
             })
           },
-          maxLines: 2,
+          maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             labelText: labelText,

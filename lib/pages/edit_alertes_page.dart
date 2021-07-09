@@ -78,13 +78,32 @@ class _AlertScreenState extends State<AlertScreen> {
     if (a.allow) {
       return d_green;
     } else {
-      return d_lightgray;
+      return Colors.grey.shade300;
     }
   }
 
   Widget alertKeys(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.all(12),
       child: Column(children: [
+        Container(
+            child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Row(children: [
+                  Text("Clés",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: d_green,
+                      ))
+                ]))),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -97,8 +116,6 @@ class _AlertScreenState extends State<AlertScreen> {
                   Radius.circular(18),
                 ),
               ),
-              padding: EdgeInsets.all(5),
-              margin: EdgeInsets.fromLTRB(0, 0, 18, 0),
               child: DropdownButton(
                   underline: SizedBox(),
                   value: _value,
@@ -132,34 +149,32 @@ class _AlertScreenState extends State<AlertScreen> {
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.45,
+              padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(
                   Radius.circular(18),
                 ),
               ),
-              padding: EdgeInsets.all(5),
-              child: Expanded(
-                child: DropdownButton(
-                    underline: SizedBox(),
-                    value: _value2,
-                    items: [
-                      DropdownMenuItem(
-                        child: Text("Accepte"),
-                        value: true,
-                      ),
-                      DropdownMenuItem(
-                        child: Text("N'accepte pas"),
-                        value: false,
-                      )
-                    ],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _value2 = value!;
-                      });
-                    },
-                    hint: Text("Select item")),
-              ),
+              child: DropdownButton(
+                  underline: SizedBox(),
+                  value: _value2,
+                  items: [
+                    DropdownMenuItem(
+                      child: Text("Accepte"),
+                      value: true,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("N'accepte pas"),
+                      value: false,
+                    )
+                  ],
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _value2 = value!;
+                    });
+                  },
+                  hint: Text("Select item")),
             ),
           ],
         ),
@@ -170,10 +185,11 @@ class _AlertScreenState extends State<AlertScreen> {
               Radius.circular(18),
             ),
           ),
-          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          //margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Padding(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(0),
             child: TextField(
+              maxLines: 1,
               onSubmitted: (String? txt) => {},
               controller: keyName,
               decoration: InputDecoration(
@@ -198,7 +214,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.transparent)),
+                    borderSide: BorderSide(color: Colors.grey.shade300)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
@@ -216,6 +232,7 @@ class _AlertScreenState extends State<AlertScreen> {
             ),
           ),
         ),
+        //showing added keys
         widget.alerte.keys.length > 0
             ? ListView.builder(
                 shrinkWrap: true,
@@ -225,7 +242,7 @@ class _AlertScreenState extends State<AlertScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                            height: 50,
+                            height: 55,
                             child: InkWell(
                                 onTap: () => {},
                                 child: Container(
@@ -235,17 +252,23 @@ class _AlertScreenState extends State<AlertScreen> {
                                       color: getColorDropDown(
                                           widget.alerte.keys[index]),
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(3),
+                                        Radius.circular(12),
                                       ),
                                     ),
                                     child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(widget.alerte.keys[index].name,
+                                          Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                10, 0, 0, 0),
+                                            child: Text(
+                                              widget.alerte.keys[index].name,
                                               textAlign: TextAlign.justify,
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           Text(getContient(
                                               widget.alerte.keys[index])),
                                           IconButton(
@@ -275,22 +298,23 @@ class _AlertScreenState extends State<AlertScreen> {
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
       body: Scrollbar(
-        thickness: 15,
+        thickness: 10,
         interactive: true,
         showTrackOnHover: true,
         child: Container(
           child: GestureDetector(
             onTap: () {
-              FocusScope.of(context).unfocus();
+              FocusScopeNode currentFocus = FocusScope.of(context);
+
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
             },
             child: ListView(
               children: <Widget>[
                 buildTextField('Nom', '${widget.alerte.title}', alertName, 1),
                 buildTextField(
                     'Message', '${widget.alerte.content}', alertContent, 3),
-                SizedBox(
-                  height: 20,
-                ),
                 alertKeys(context),
                 Container(
                     decoration: BoxDecoration(
@@ -333,7 +357,6 @@ class _AlertScreenState extends State<AlertScreen> {
                                 },
                                 values: List<bool>.from(widget.alerte.days),
                               ),
-                              //daySelectorWidget(values: widget.alerte.days),
                             ],
                           ),
                         ),
@@ -370,7 +393,10 @@ class _AlertScreenState extends State<AlertScreen> {
                                   CheckboxListTile(
                                       controlAffinity:
                                           ListTileControlAffinity.leading,
-                                      secondary: Icon(Icons.contact_page),
+                                      secondary: Icon(Icons.contact_page,
+                                          color: widget.alerte.cibles[0]
+                                              ? Colors.blue
+                                              : Colors.grey.shade500),
                                       title: Text("Numéros Enregistrés"),
                                       activeColor: d_green,
                                       value: widget.alerte.cibles[0],
@@ -383,7 +409,10 @@ class _AlertScreenState extends State<AlertScreen> {
                                   CheckboxListTile(
                                       controlAffinity:
                                           ListTileControlAffinity.leading,
-                                      secondary: Icon(Icons.sms_rounded),
+                                      secondary: Icon(Icons.sms_rounded,
+                                          color: widget.alerte.cibles[1]
+                                              ? Colors.blue
+                                              : Colors.grey.shade500),
                                       title: Text("SMS reçu"),
                                       activeColor: d_green,
                                       value: widget.alerte.cibles[1],
@@ -396,7 +425,10 @@ class _AlertScreenState extends State<AlertScreen> {
                                   CheckboxListTile(
                                       controlAffinity:
                                           ListTileControlAffinity.leading,
-                                      secondary: Icon(Icons.call),
+                                      secondary: Icon(Icons.call,
+                                          color: widget.alerte.cibles[2]
+                                              ? Colors.blue
+                                              : Colors.grey.shade500),
                                       title: Text("Appels Manqués"),
                                       activeColor: d_green,
                                       value: widget.alerte.cibles[2],

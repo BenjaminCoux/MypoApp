@@ -11,6 +11,9 @@ import 'package:weekday_selector/weekday_selector.dart';
 import 'sms_auto_page.dart';
 
 const d_green = Color(0xFFA6C800);
+const d_gray = Color(0xFFBABABA);
+const d_darkgray = Color(0xFF6C6C6C);
+const d_lightgray = Color(0XFFFAFAFA);
 
 // ignore: must_be_immutable
 class AlertScreen extends StatefulWidget {
@@ -58,6 +61,25 @@ class _AlertScreenState extends State<AlertScreen> {
     alertContent.dispose();
     keyName.dispose();
     super.dispose();
+  }
+
+  String getContient(AlertKey a) {
+    List<String> contient = [
+      "",
+      "Contient",
+      "Ne contient pas",
+      "est au debut",
+      "est à la fin",
+    ];
+    return contient[a.contient];
+  }
+
+  Color getColorDropDown(AlertKey a) {
+    if (a.allow) {
+      return d_green;
+    } else {
+      return d_lightgray;
+    }
   }
 
   Widget alertKeys(BuildContext context) {
@@ -208,7 +230,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                     width: double.infinity,
                                     margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                     decoration: BoxDecoration(
-                                      color: Colors.grey,
+                                      color: getColorDropDown(
+                                          widget.alerte.keys[index]),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(3),
                                       ),
@@ -221,6 +244,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                               textAlign: TextAlign.justify,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
+                                          Text(getContient(
+                                              widget.alerte.keys[index])),
                                           IconButton(
                                               alignment: Alignment.topLeft,
                                               onPressed: () => {
@@ -397,11 +422,14 @@ class _AlertScreenState extends State<AlertScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed: () => Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new SmsAuto()),
-                        ),
+                        onPressed: () => {
+                          Navigator.pop(context),
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new SmsAuto()),
+                          ),
+                        },
                         child: Text(
                           "CANCEL",
                           style: TextStyle(

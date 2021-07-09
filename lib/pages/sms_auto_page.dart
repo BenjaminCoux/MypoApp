@@ -14,6 +14,9 @@ import 'edit_alertes_page.dart';
 import 'formulaire_alerte_auto_page.dart';
 
 const d_green = Color(0xFFA6C800);
+const d_gray = Color(0xFFBABABA);
+const d_darkgray = Color(0xFF6C6C6C);
+const d_lightgray = Color(0XFFFAFAFA);
 
 class SmsAuto extends StatefulWidget {
   @override
@@ -356,6 +359,7 @@ class _AlertesState extends State<Alertes> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () => {
+                  Navigator.pop(context),
                   Navigator.push(
                     context,
                     new MaterialPageRoute(
@@ -545,37 +549,44 @@ class _AlertesState extends State<Alertes> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(
-                  Icons.message,
-                  color: Colors.blue,
-                ),
-                title: Text('Messages'),
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new FormScreen(nb: nb)),
-                ),
-              ),
+                  leading: Icon(
+                    Icons.message,
+                    color: Colors.blue,
+                  ),
+                  title: Text('Messages'),
+                  onTap: () => {
+                        Navigator.pop(context),
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new FormScreen(nb: nb)),
+                        ),
+                      }),
               _buildDivider(),
               ListTile(
-                leading: Icon(FontAwesomeIcons.whatsapp, color: Colors.green),
-                title: Text('WhatsApp'),
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new FormScreen(nb: nb)),
-                ),
-              ),
+                  leading: Icon(FontAwesomeIcons.whatsapp, color: Colors.green),
+                  title: Text('WhatsApp'),
+                  onTap: () => {
+                        Navigator.pop(context),
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new FormScreen(nb: nb)),
+                        ),
+                      }),
               _buildDivider(),
               ListTile(
                 leading: Icon(FontAwesomeIcons.facebookMessenger,
                     color: Colors.blue),
                 title: Text('Messenger'),
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new FormScreen(nb: nb)),
-                ),
+                onTap: () => {
+                  Navigator.pop(context),
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new FormScreen(nb: nb)),
+                  ),
+                },
               ),
             ],
           );

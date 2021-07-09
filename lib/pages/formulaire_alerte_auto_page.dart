@@ -9,6 +9,9 @@ import 'home_page.dart';
 import 'sms_auto_page.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
+const d_gray = Color(0xFFBABABA);
+const d_darkgray = Color(0xFF6C6C6C);
+const d_lightgray = Color(0XFFFAFAFA);
 const d_green = Color(0xFFA6C800);
 const String pathToDB = "../assets/database.json";
 

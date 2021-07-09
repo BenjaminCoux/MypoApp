@@ -20,7 +20,7 @@ class ScheduledMessagesDataBase {
     if (_database != null) return _database;
 
     //otherwise init db
-    _database = await _initDB('scheduledmsg.db');
+    _database = await _initDB('database.db');
     return _database!;
   }
 
@@ -113,16 +113,6 @@ class ScheduledMessagesDataBase {
 
   Future<List<Scheduledmsg>> readAllScheduledmsg() async {
     final db = await instance.database;
-    // Scheduledmsg msg = Scheduledmsg(
-    //     phoneNumber: '001',
-    //     message: 'test',
-    //     date: DateTime.now(),
-    //     repeat: 'test',
-    //     confirm: true,
-    //     countdown: true,
-    //     notification: true);
-    // //create(msg);
-
     final orderBy = '${ScheduledmsgFields.date} ASC';
     final result = await db!.query(tableScheduledmsg, orderBy: orderBy);
 

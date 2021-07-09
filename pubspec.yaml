@@ -91,8 +91,6 @@ flutter:
     - assets/images/icon.png
     - assets/images/icon.png
     - assets/images/logo.png
-    - assets/database.json
-    - assets/scheduledmsg.db
     - assets/images/smsprog.png
     - assets/images/smsauto.png
     - assets/images/smsauto_activated.png

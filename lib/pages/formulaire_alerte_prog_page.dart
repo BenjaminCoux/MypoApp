@@ -6,7 +6,8 @@ import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/textfield_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:quiver/core.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 import 'sms_prog_page.dart';
 
@@ -106,6 +107,12 @@ class _ProgState extends State<ProgForm> {
       );
       ScheduledMessagesDataBase.instance.create(msg);
     }
+  }
+
+  deleteDB() async {
+    var dbPath = await getDatabasesPath();
+    String path = join(dbPath, 'scheduledmsg.db');
+    await deleteDatabase(path);
   }
 
   @override
@@ -463,16 +470,8 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                   onPressed: () async => {
-                    // msg = Scheduledmsg(
-                    //     phoneNumber: '06656565',
-                    //     message: 'test',
-                    //     date: DateTime.now(),
-                    //     repeat: 'test',
-                    //     confirm: true,
-                    //     countdown: true,
-                    //     notification: true),
-                    // ScheduledMessagesDataBase.instance.create(msg),
                     save(),
+                    // deleteDB(),
                     Navigator.pop(context),
                     Navigator.push(
                       context,

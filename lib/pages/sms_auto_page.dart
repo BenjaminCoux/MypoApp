@@ -219,28 +219,7 @@ class Alertes extends StatefulWidget {
 
 class _AlertesState extends State<Alertes> {
   // ignore: unused_field
-  List _items = [];
-  bool toggleValue = false;
-  bool state = true;
-  String test = "";
-  String all = "-1";
-  int num = -1;
-  List alertList = [
-    {
-      'title': 'WIFI',
-      'message': 'Voici le mot de passe du WIFI: 00000000000000000000000',
-      'device': 'android',
-      'days': [true, false, true, true, false, true, false],
-      'cible': [true, false, true],
-    },
-    {
-      'title': 'Test',
-      'message': 'Voici un message de test',
-      'device': 'ios',
-      'days': [true, false, true, true, false, true, false],
-      'cible': [true, false, true],
-    }
-  ];
+
   @override
   void initState() {
     initNb();
@@ -254,8 +233,6 @@ class _AlertesState extends State<Alertes> {
     final pref = await SharedPreferences.getInstance();
     Set<String> keys = pref.getKeys();
     Iterator<String> it = keys.iterator;
-    // ignore: unused_local_variable
-    String cc = "";
     // ignore: unused_local_variable
     int i = 0;
     bool done = false;

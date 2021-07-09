@@ -307,7 +307,7 @@ class _AlertesState extends State<Alertes> {
 
   void addToDB(dynamic alert) async {
     final prefs = await SharedPreferences.getInstance();
-    String title = alert["title"];
+    String title = getNbAlerte(alert["title"]);
     String content = alert["content"];
     final days = alert["days"];
     final cibles = alert["cibles"];

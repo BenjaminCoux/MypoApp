@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/database/scheduledmsg_database.dart';
 import 'package:mypo/model/scheduledmsg.dart';
+import 'package:mypo/pages/edit_scheduledmsg_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/boxes.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
@@ -50,13 +51,21 @@ class _SmsProgState extends State<SmsProg> {
       backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: "My Co'Laverie"),
       drawer: HamburgerMenu(),
-      body: ValueListenableBuilder<Box<Scheduledmsg_hive>>(
-        valueListenable: Boxes.getScheduledmsg().listenable(),
-        builder: (context, box, _) {
-          final messages = box.values.toList().cast<Scheduledmsg_hive>();
+      body: Scrollbar(
+        interactive: true,
+        isAlwaysShown: true,
+        showTrackOnHover: true,
+        thickness: 10,
+        child: Container(
+          child: ValueListenableBuilder<Box<Scheduledmsg_hive>>(
+            valueListenable: Boxes.getScheduledmsg().listenable(),
+            builder: (context, box, _) {
+              final messages = box.values.toList().cast<Scheduledmsg_hive>();
 
-          return buildListOfMsg(messages);
-        },
+              return buildListOfMsg(messages);
+            },
+          ),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBarSmsProgTwo(),
     );
@@ -108,59 +117,48 @@ class _SmsProgState extends State<SmsProg> {
         ],
       ));
     } else {
-      return Scrollbar(
-        interactive: true,
-        isAlwaysShown: true,
-        showTrackOnHover: true,
-        thickness: 15,
-        child: Column(
-          children: [
-            SizedBox(height: 24),
-            Text(
-              'Mes alertes programmées',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.all(8),
-                itemCount: messages.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final message = messages[index];
+      return Column(
+        children: [
+          SizedBox(height: 24),
+          Text(
+            'Mes alertes programmées',
+          ),
+          SizedBox(height: 20),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.all(8),
+              itemCount: messages.length,
+              itemBuilder: (BuildContext context, int index) {
+                final message = messages[index];
 
-                  return buildMsg(context, message);
-                },
-              ),
+                return buildMsg(context, message);
+              },
             ),
-            SizedBox(height: 20),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
+          ),
+          SizedBox(height: 20),
+          OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                  backgroundColor: d_darkgray,
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20))),
+              onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new ProgForm()))
+                  },
+              child: Text(
+                "+ Ajouter une alerte",
+                style: TextStyle(
                     backgroundColor: d_darkgray,
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                onPressed: () => {
-                      Navigator.pop(context),
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new ProgForm()))
-                    },
-                child: Text(
-                  "+ Ajouter une alerte",
-                  style: TextStyle(
-                      backgroundColor: d_darkgray,
-                      fontSize: 16,
-                      letterSpacing: 2.2,
-                      color: Colors.white,
-                      fontFamily: 'calibri'),
-                )),
-          ],
-        ),
+                    fontSize: 16,
+                    letterSpacing: 2.2,
+                    color: Colors.white,
+                    fontFamily: 'calibri'),
+              )),
+        ],
       );
     }
   }
@@ -175,13 +173,16 @@ class _SmsProgState extends State<SmsProg> {
       child: ExpansionTile(
         iconColor: d_green,
         textColor: Colors.black,
-        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 0),
         title: Text(
           message.name,
           maxLines: 2,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        subtitle: Text(message.message),
+        subtitle: Text(
+          message.message,
+          overflow: TextOverflow.ellipsis,
+        ),
         // trailing: Text(
         //   date,
         //   style: TextStyle(
@@ -198,25 +199,34 @@ class _SmsProgState extends State<SmsProg> {
         children: [
           Expanded(
             child: TextButton.icon(
-                style: TextButton.styleFrom(primary: d_darkgray),
-                label: Text('Edit'),
-                icon: Icon(Icons.edit),
-                onPressed: () {}),
+              style: TextButton.styleFrom(primary: d_darkgray),
+              label: Text('Edit'),
+              icon: Icon(Icons.edit),
+              onPressed: () => {
+                Navigator.pop(context),
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                    builder: (context) =>
+                        ScheduledmsgDetailPage(message: message),
+                  ),
+                ),
+              },
+            ),
           ),
           Expanded(
             child: TextButton.icon(
-                style: TextButton.styleFrom(primary: Colors.red.shade400),
-                label: Text('Delete'),
-                icon: Icon(Icons.delete),
-                onPressed: () {}),
+              style: TextButton.styleFrom(primary: Colors.red.shade400),
+              label: Text('Delete'),
+              icon: Icon(Icons.delete),
+              onPressed: () => {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        buildPopupDialog(message)),
+              },
+            ),
           ),
-          Expanded(
-            child: TextButton.icon(
-                style: TextButton.styleFrom(primary: Colors.red.shade400),
-                label: Text('Delete'),
-                icon: Icon(Icons.delete),
-                onPressed: () {}),
-          )
         ],
       );
 
@@ -282,71 +292,35 @@ class _SmsProgState extends State<SmsProg> {
               ),
             );
           }));
-}
 
-class AlertesProg extends StatefulWidget {
-  @override
-  _AlertesProgState createState() => new _AlertesProgState();
-}
-
-class _AlertesProgState extends State<AlertesProg> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
-              height: 30,
-              child: Row(children: [Text('Mes Alertes Programmées')]),
-            ),
-
-            // FutureBuilder(
-            //     future: null,
-            //     builder: (context, AsyncSnapshot<dynamic> snapshot) {
-            //       if (snapshot.hasData) {
-            //         return Container(
-            //             margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-            //             child: Container(
-            //                 /*
-            //                   -List d'alertes
-
-            //               */
-            //                 ));
-            //       } else {
-            //         return Text('Aucune alerte');
-            //       }
-            //     }),
-            SizedBox(height: 50),
-            Center(
-              child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: d_darkgray,
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  onPressed: () => {
-                        Navigator.pop(context),
-                        Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => new ProgForm()))
-                      },
-                  child: Text(
-                    "+ Ajouter une alerte",
-                    style: TextStyle(
-                        backgroundColor: d_darkgray,
-                        fontSize: 16,
-                        letterSpacing: 2.2,
-                        color: Colors.white,
-                        fontFamily: 'calibri'),
-                  )),
-            ),
-          ],
-        ),
+  /*
+    -Function that creates a pop up for asking a yes no question
+  */
+  buildPopupDialog(Scheduledmsg_hive message) {
+    String title = "";
+    title = message.name;
+    return new AlertDialog(
+      title: Text("Voulez vous supprimer $title ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
       ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            message.delete();
+            Navigator.of(context).pop();
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
     );
   }
 }

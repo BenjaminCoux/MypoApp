@@ -51,10 +51,11 @@ class _SmsAutoState extends State<SmsAuto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: TopBar(title: "My Co'Laverie"),
       drawer: HamburgerMenu(),
       body: Scrollbar(
-        thickness: 15,
+        thickness: 10,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -393,7 +394,7 @@ class _AlertesState extends State<Alertes> {
       child: ExpansionTile(
         iconColor: d_green,
         textColor: Colors.black,
-        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 0),
         title: Text(
           alert["title"],
           maxLines: 2,
@@ -504,7 +505,7 @@ class _AlertesState extends State<Alertes> {
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasData) {
                     return Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        // margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
                         child: myList(
                             widget.alerts, widget.alerts.length, context));
                   } else {

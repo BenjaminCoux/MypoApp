@@ -1,12 +1,13 @@
 import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:mypo/database/scheduledmsg_database.dart';
 import 'package:mypo/model/scheduledmsg.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/boxes.dart';
-import 'package:mypo/widget/textfield_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:mypo/model/scheduledmsg_hive.dart';
@@ -19,9 +20,9 @@ class ProgForm extends StatefulWidget {
 }
 
 class _ProgState extends State<ProgForm> {
-  final number = TextEditingController();
+  final nameController = TextEditingController();
+  final contactController = TextEditingController();
   final alertContent = TextEditingController();
-  bool repeat = false;
   bool rebours = false;
   bool confirm = false;
   bool notif = false;
@@ -37,12 +38,14 @@ class _ProgState extends State<ProgForm> {
     'Tous les mois',
     'Tous les ans'
   ];
-  var repeatinput = 'Toutes les heures';
-  final _isRepeatOptionActive = [false, false, false, false, false, false];
+  int index = 0;
+  var repeatinput = 'Tous les ans';
   List<Contact> contacts = [];
   TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
   DateTime date = DateTime.now();
+  DateTime time = DateTime.now();
+  bool fieldsEmpty = true;
   @override
   void initState() {
     super.initState();
@@ -72,8 +75,9 @@ class _ProgState extends State<ProgForm> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
+    nameController.dispose();
     alertContent.dispose();
-    number.dispose();
+    contactController.dispose();
     super.dispose();
   }
 
@@ -97,9 +101,11 @@ class _ProgState extends State<ProgForm> {
   }
 
   save() {
-    if (number.text != '' && alertContent.text != '' && repeatinput != '') {
+    if (contactController.text != '' &&
+        alertContent.text != '' &&
+        repeatinput != '') {
       Scheduledmsg msg = Scheduledmsg(
-        phoneNumber: number.text,
+        phoneNumber: contactController.text,
         message: alertContent.text,
         date: date,
         repeat: repeatinput,
@@ -112,10 +118,12 @@ class _ProgState extends State<ProgForm> {
   }
 
   saveToHive() {
-    if (number.text != '' && alertContent.text != '' && repeatinput != '') {
+    if (contactController.text != '' &&
+        alertContent.text != '' &&
+        repeatinput != '') {
       final msg = Scheduledmsg_hive()
-        ..name = number.text
-        ..phoneNumber = number.text
+        ..name = nameController.text
+        ..phoneNumber = contactController.text
         ..message = alertContent.text
         ..date = date
         ..repeat = repeatinput
@@ -144,11 +152,17 @@ class _ProgState extends State<ProgForm> {
       body: SingleChildScrollView(
         child: GestureDetector(
           onTap: () {
-            FocusScope.of(context).unfocus();
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
           },
           child: Center(
             child: Column(
               children: <Widget>[
+                buildTextField("Nom de l'alerte", "Ajoutez un nom à l'alerte",
+                    nameController, 1),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -158,12 +172,15 @@ class _ProgState extends State<ProgForm> {
                   ),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    padding: EdgeInsets.all(0),
                     child: TextField(
+                      minLines: 1,
+                      maxLines: 5,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
                       keyboardType: TextInputType.phone,
-                      controller: number,
+                      controller: contactController,
                       decoration: InputDecoration(
-                        labelText: 'Contact',
+                        labelText: 'Numero du contact',
                         suffixIcon: IconButton(
                             icon: Icon(Icons.contact_page,
                                 size: 35, color: Colors.blue),
@@ -190,23 +207,10 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                 ),
+                buildTextField(
+                    'Message', "Contenu du message", alertContent, 3),
                 Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(18),
-                      ),
-                    ),
-                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: textFieldWidget(
-                          controller: alertContent,
-                          hintText: "Contenu du message",
-                          labelText: 'Message',
-                          typeOfInputText: TextInputType.text,
-                        ))),
-                Container(
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(
@@ -216,109 +220,84 @@ class _ProgState extends State<ProgForm> {
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
-                      IconButton(
-                          icon: Icon(Icons.alarm),
-                          onPressed: () {
-                            selectTime(context);
-                          }),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(0),
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
                                 ),
-                              ),
-                              child: InkWell(
-                                onTap: () => {
-                                  setState(() {
-                                    if (!SMS) {
-                                      this.SMS = true;
-                                    } else {
-                                      this.SMS = false;
-                                    }
-                                  })
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: SMS ? d_green : Colors.grey,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
+                                child: OutlinedButton(
+                                  // onPressed: null,
+                                  onPressed: () => showSheet(context,
+                                      child: buildDatePicker(), onClicked: () {
+                                    final value =
+                                        DateFormat('dd/MM/yyyy').format(date);
+                                    showSnackBar(context, 'date "$value"');
+                                    Navigator.pop(context);
+                                  }),
+
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(color: d_green, width: 2),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
                                   child: Text(
-                                    "15 minutes",
-                                    style: TextStyle(color: Colors.white),
+                                    "Date",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      letterSpacing: 2.2,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(18),
-                                ),
-                              ),
-                              child: InkWell(
-                                onTap: () => {
-                                  setState(() {
-                                    if (!Tel) {
-                                      this.Tel = true;
-                                    } else {
-                                      this.Tel = false;
-                                    }
-                                  })
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: Tel ? d_green : Colors.grey,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                  child: Text(
-                                    "30 minutes",
-                                    style: TextStyle(color: Colors.white),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(0),
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(18),
-                                ),
-                              ),
-                              child: InkWell(
-                                onTap: () => {
-                                  setState(() {
-                                    if (!MMS) {
-                                      this.MMS = true;
-                                    } else {
-                                      this.MMS = false;
-                                    }
-                                  })
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: MMS ? d_green : Colors.grey,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
+                                child: OutlinedButton(
+                                  // onPressed: null,
+                                  onPressed: () => showSheet(context,
+                                      child: buildTimePicker(), onClicked: () {
+                                    final value =
+                                        DateFormat('HH:mm').format(time);
+                                    showSnackBar(context, 'heure "${value}"');
+                                    Navigator.pop(context);
+                                  }),
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(color: d_green, width: 2),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
                                   child: Text(
-                                    "1 heure",
-                                    style: TextStyle(color: Colors.white),
+                                    "Heure",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      letterSpacing: 2.2,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -327,7 +306,7 @@ class _ProgState extends State<ProgForm> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.all(12),
+                        padding: EdgeInsets.all(0),
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           decoration: BoxDecoration(
@@ -338,12 +317,12 @@ class _ProgState extends State<ProgForm> {
                           ),
                           child: OutlinedButton(
                             // onPressed: null,
-                            onPressed: () async {
-                              final pref =
-                                  await SharedPreferences.getInstance();
-                              pref.clear();
-                              // deleteDB();
-                            },
+                            onPressed: () => showSheet(context,
+                                child: buildRepeatOptions(), onClicked: () {
+                              repeatinput = repeatOptions[index];
+                              showSnackBar(context, 'option "${repeatinput}"');
+                              Navigator.pop(context);
+                            }),
 
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(color: d_green, width: 2),
@@ -353,7 +332,7 @@ class _ProgState extends State<ProgForm> {
                               ),
                             ),
                             child: Text(
-                              "Personnaliser",
+                              "Récurrence",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
@@ -364,40 +343,6 @@ class _ProgState extends State<ProgForm> {
                         ),
                       ),
                     ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    /*
-                    pop up menu with options
-                    */
-                    _showSingleChoiceDialog(context, _isRepeatOptionActive);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(18),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          child: Text("Répéter"),
-                          margin: EdgeInsets.fromLTRB(5, 0, 280 - 1.6, 0),
-                        ),
-                        Switch(
-                            activeColor: d_green,
-                            value: repeat,
-                            onChanged: (bool val) => {
-                                  setState(() {
-                                    repeat = val;
-                                  })
-                                }),
-                      ],
-                    ),
                   ),
                 ),
                 Container(
@@ -487,15 +432,29 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                   onPressed: () async => {
-                    // save(),
-                    saveToHive(),
-                    // deleteDB(),
-                    Navigator.pop(context),
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new SmsProg()),
-                    )
+                    if (nameController.text != '' &&
+                        contactController.text != '' &&
+                        alertContent.text != '')
+                      {fieldsEmpty = false},
+                    if (!fieldsEmpty)
+                      {
+                        // save(),
+
+                        // deleteDB(),
+
+                        saveToHive(),
+                        Navigator.pop(context),
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new SmsProg()),
+                        )
+                      }
+                    else
+                      {
+                        showSnackBar(
+                            context, 'Veuillez completer tous les champs')
+                      }
                   },
                   child: Text(
                     "Valider",
@@ -514,37 +473,62 @@ class _ProgState extends State<ProgForm> {
     );
   }
 
-  _showSingleChoiceDialog(BuildContext context, var _isRepeatOptionActive) =>
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-                title: Text('Repeter'),
-                content: SingleChildScrollView(
-                    child: Container(
-                        width: double.infinity,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: repeatOptions
-                              .map((option) => RadioListTile(
-                                    title: Text(option),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: d_green,
-                                    value: _isRepeatOptionActive[
-                                        repeatOptions.indexOf(option)],
-                                    onChanged: (dynamic value) => {
-                                      setState(() {
-                                        _isRepeatOptionActive[repeatOptions
-                                            .indexOf(option)] = value!;
-                                      }),
-                                      Navigator.of(context).pop(),
-                                    },
-                                    groupValue: null,
-                                  ))
-                              .toList(),
-                        ))));
-          });
+  void test() {
+    print('test');
+  }
+
+  Container buildTextField(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              // set new state
+
+              // this.contentchanged = true;
+              // this.titlechanged = true;
+              // this.hasChanged = true;
+            })
+          },
+          minLines: 1,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   _buildContactSelection(BuildContext context, var contacts) {
     showDialog(
@@ -581,7 +565,7 @@ class _ProgState extends State<ProgForm> {
                               // print('contact ' + index.toString());
                               Navigator.of(context).pop();
                               // we set the text of the controller to the number of the contact chosen
-                              number.text =
+                              contactController.text =
                                   contact.phones?.elementAt(0).value! ?? '';
                             },
                           );
@@ -591,4 +575,70 @@ class _ProgState extends State<ProgForm> {
               )));
         });
   }
+
+  Widget buildDatePicker() => SizedBox(
+        height: 150,
+        child: CupertinoDatePicker(
+            minimumYear: DateTime.now().year - 2,
+            maximumYear: DateTime.now().year + 3,
+            initialDateTime: date,
+            mode: CupertinoDatePickerMode.date,
+            use24hFormat: true,
+            onDateTimeChanged: (dateTime) =>
+                setState(() => this.date = dateTime)),
+      );
+
+  Widget buildTimePicker() => SizedBox(
+        height: 150,
+        child: CupertinoDatePicker(
+            initialDateTime: date,
+            mode: CupertinoDatePickerMode.time,
+            use24hFormat: true,
+            onDateTimeChanged: (dateTime) =>
+                setState(() => this.time = dateTime)),
+      );
+
+  showSheet(BuildContext context,
+          {required Widget child, required VoidCallback onClicked}) =>
+      showCupertinoModalPopup(
+          context: context,
+          builder: (context) => CupertinoActionSheet(
+                actions: [
+                  child,
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  child: Text('Valider', style: TextStyle(color: d_green)),
+                  onPressed: onClicked,
+                ),
+              ));
+
+  void showSnackBar(BuildContext context, String s) {
+    final snackBar = SnackBar(
+      content: Text(s, style: TextStyle(fontSize: 24)),
+    );
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
+  Widget buildRepeatOptions() => SizedBox(
+        height: 200,
+        child: CupertinoPicker(
+            diameterRatio: 0.8,
+            itemExtent: 50,
+            looping: true,
+            onSelectedItemChanged: (index) =>
+                setState(() => this.index = index),
+            children: modelBuilder<String>(repeatOptions, (index, option) {
+              return Center(child: Text(option));
+            })),
+      );
+  List<Widget> modelBuilder<M>(
+          List<M> models, Widget Function(int index, M model) builder) =>
+      models
+          .asMap()
+          .map<int, Widget>(
+              (index, model) => MapEntry(index, builder(index, model)))
+          .values
+          .toList();
 }

@@ -204,8 +204,24 @@ class _StateSwitchButton extends State<SwitchButton> {
     final cible = alerte["cibles"];
     final active = state;
     final key = alerte["keys"];
+    List<dynamic> tmpK = <dynamic>[];
+    for (int i = 0; i < key.length; i++) {
+      tmpK.add(json.decode(key[i]));
+    }
+    List<AlertKey> keyList = <AlertKey>[];
+    for (int i = 0; i < tmpK.length; i++) {
+      keyList.add(new AlertKey(
+          name: tmpK[i]["name"],
+          contient: tmpK[i]["contient"],
+          allow: tmpK[i]["allow"] == "true"));
+    }
+    List<String> listK = <String>[];
+    for (int i = 0; i < keyList.length; i++) {
+      listK.add(keyList[i].toString());
+    }
+    String kstr = json.encode(listK);
     String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active,"keys":$key}';
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active,"keys":$kstr}';
     prefs.setString(title, tmp);
     //  print(prefs.get(alerte["title"]));
   }

@@ -327,9 +327,8 @@ class _AlertesState extends State<Alertes> {
   /**
    * store the duplicated alert in the sharedPreferences
    */
-  void addToDB(dynamic alert) async {
+  void addToDB(dynamic alert, String title) async {
     final prefs = await SharedPreferences.getInstance();
-    String title = alert["title"];
     String content = alert["content"];
     final days = alert["days"];
     final cibles = alert["cibles"];
@@ -455,8 +454,8 @@ class _AlertesState extends State<Alertes> {
                     "active": alert["active"],
                     "keys": alert["keys"]
                   });
+                  addToDB(alert, title);
                 }),
-                addToDB(alert),
               },
             ),
           ),

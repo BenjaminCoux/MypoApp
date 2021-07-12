@@ -365,115 +365,99 @@ class _AlertesState extends State<Alertes> {
             shrinkWrap: true,
             itemCount: alerts.length,
             itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () => {
-                  Navigator.pop(context),
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new AlertScreen(
-                                alerte: createAlert(
-                              new Alert(
-                                  title: alerts[index]["title"],
-                                  content: alerts[index]["content"],
-                                  days: jsonDecode(alerts[index]["days"]),
-                                  cibles: jsonDecode(alerts[index]["cibles"]),
-                                  keys: buildKeys(alerts[index]["keys"])),
-                              alerts[index]["active"],
-                            ))),
-                  ),
-                },
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  height: 116,
-                  width: 290,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    alerts[index]["title"],
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontFamily: 'calibri',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                  SizedBox(
-                                    width: 100,
-                                    child: Text(
-                                      alerts[index]["content"],
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontFamily: 'calibri',
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(children: [
-                                Column(
-                                  children: [
-                                    Row(children: [
-                                      SwitchButton(
-                                        alerte: alerts[index],
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.delete),
-                                        onPressed: () => {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) =>
-                                                  buildPopupDialog(
-                                                      alerts[index])),
-                                        },
-                                      ),
-                                    ]),
-                                    IconButton(
-                                      icon: Icon(Icons.copy),
-                                      onPressed: () => {
-                                        setState(() {
-                                          String title = getNbAlerte(
-                                              alerts[index]["title"]);
-                                          alerts[index]["title"] = title;
-                                          widget.alerts.add({
-                                            "title": title,
-                                            "content": alerts[index]["content"],
-                                            "days": alerts[index]["days"],
-                                            "cibles": alerts[index]["cibles"],
-                                            "active": alerts[index]["active"],
-                                            "keys": alerts[index]["keys"]
-                                          });
-                                        }),
-                                        addToDB(alerts[index]),
-                                      },
-                                    ),
-                                  ],
-                                )
-                              ]),
-                            ],
-                          ))
-                    ],
-                  ),
-                ),
-              );
+              final alert = alerts[index];
+              return buildMsg(context, alert);
             })
         : const Text("Aucune alerte");
   }
+
+  Widget buildMsg(BuildContext context, var alert) {
+    return Card(
+      margin: EdgeInsets.fromLTRB(5, 5, 20, 5),
+      color: Colors.white,
+      child: ExpansionTile(
+        iconColor: d_green,
+        textColor: Colors.black,
+        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        title: Text(
+          alert["title"],
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        subtitle: Text(
+          alert["content"],
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: SwitchButton(alerte: alert),
+        children: [
+          buildButtons(context, alert),
+        ],
+      ),
+    );
+  }
+
+  buildButtons(BuildContext context, var alert) => Row(
+        children: [
+          Expanded(
+            child: TextButton.icon(
+              style: TextButton.styleFrom(primary: d_darkgray),
+              label: Text('Edit'),
+              icon: Icon(Icons.edit),
+              onPressed: () => {
+                Navigator.pop(context),
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new AlertScreen(
+                              alerte: createAlert(
+                            new Alert(
+                                title: alert["title"],
+                                content: alert["content"],
+                                days: jsonDecode(alert["days"]),
+                                cibles: jsonDecode(alert["cibles"]),
+                                keys: buildKeys(alert["keys"])),
+                            alert["active"],
+                          ))),
+                ),
+              },
+            ),
+          ),
+          Expanded(
+            child: TextButton.icon(
+              style: TextButton.styleFrom(primary: d_darkgray),
+              label: Text('Duplicate'),
+              icon: Icon(Icons.copy),
+              onPressed: () => {
+                setState(() {
+                  String title = getNbAlerte(alert["title"]);
+                  widget.alerts.add({
+                    "title": title,
+                    "content": alert["content"],
+                    "days": alert["days"],
+                    "cibles": alert["cibles"],
+                    "active": alert["active"],
+                    "keys": alert["keys"]
+                  });
+                }),
+                addToDB(alert),
+              },
+            ),
+          ),
+          Expanded(
+            child: TextButton.icon(
+              style: TextButton.styleFrom(primary: Colors.red.shade400),
+              label: Text('Delete'),
+              icon: Icon(Icons.delete),
+              onPressed: () => {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => buildPopupDialog(alert)),
+              },
+            ),
+          )
+        ],
+      );
 
   /*
     -Function that creates a loading circle delay for the duration needed

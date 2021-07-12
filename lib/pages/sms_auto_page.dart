@@ -313,7 +313,7 @@ class _AlertesState extends State<Alertes> {
    */
   void addToDB(dynamic alert) async {
     final prefs = await SharedPreferences.getInstance();
-    String title = getNbAlerte(alert["title"]);
+    String title = alert["title"];
     String content = alert["content"];
     final days = alert["days"];
     final cibles = alert["cibles"];
@@ -449,6 +449,7 @@ class _AlertesState extends State<Alertes> {
                                         setState(() {
                                           String title = getNbAlerte(
                                               alerts[index]["title"]);
+                                          alerts[index]["title"] = title;
                                           widget.alerts.add({
                                             "title": title,
                                             "content": alerts[index]["content"],

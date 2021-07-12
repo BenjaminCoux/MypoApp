@@ -4,8 +4,9 @@ A new Flutter app project.
 
 > Status : Developping ⚠️
 
-![mypoapp](https://user-images.githubusercontent.com/74957551/125346000-82bdbf80-e359-11eb-98b6-cb1599198424.gif)
-
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/74957551/125346000-82bdbf80-e359-11eb-98b6-cb1599198424.gif" alt="animated" />
+</p>
 
 ## App functionalities
 

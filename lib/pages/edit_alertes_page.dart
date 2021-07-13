@@ -583,6 +583,7 @@ class _AlertScreenState extends State<AlertScreen> {
         }
       }
       String title = widget.alerte.title;
+      Type type = widget.alerte.type;
       print(titlechanged);
       print(contentchanged);
       if (titlechanged) {
@@ -602,7 +603,7 @@ class _AlertScreenState extends State<AlertScreen> {
       }
       String str = json.encode(aStr);
       String tmp =
-          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$b,"keys":$str}';
+          '{"title":"$title","content":"$content","type":"$type","days":"$days","cibles":"$cible","active":$b,"keys":$str}';
       pref.setString(title, tmp);
     }
   }

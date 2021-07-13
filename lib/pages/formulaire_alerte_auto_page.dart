@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
 import 'sms_auto_page.dart';
 import 'package:weekday_selector/weekday_selector.dart';
+import 'package:mypo/model/alert.dart';
 
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
@@ -74,9 +75,10 @@ class _FormState extends State<FormScreen> {
     for (int i = 0; i < keys.length; i++) {
       listK.add(keys[i].toString());
     }
+    String type = Type.message.toString();
     String kstr = json.encode(listK);
     String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false,"keys":$kstr}';
+        '{"title":"$title","content":"$content","type":"$type","days":"$days","cibles":"$cibles","active":false,"keys":$kstr}';
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);

@@ -336,6 +336,7 @@ class _AlertesState extends State<Alertes> {
     final days = alert["days"];
     final cibles = alert["cibles"];
     final active = alert["active"];
+    final type = alert["type"];
     List<AlertKey> keys = buildKeys(alert["keys"]);
     List<String> aStr = <String>[];
     for (int i = 0; i < keys.length; i++) {
@@ -343,7 +344,7 @@ class _AlertesState extends State<Alertes> {
     }
     String str = json.encode(aStr);
     String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":$active,"keys":$str}';
+        '{"title":"$title","content":"$content","type":"$type","days":"$days","cibles":"$cibles","active":$active,"keys":$str}';
     prefs.setString(title, tmp);
   }
 
@@ -466,6 +467,7 @@ class _AlertesState extends State<Alertes> {
                   widget.alerts.add({
                     "title": title,
                     "content": alert["content"],
+                    "type": alert["type"],
                     "days": alert["days"],
                     "cibles": alert["cibles"],
                     "active": alert["active"],

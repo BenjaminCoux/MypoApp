@@ -20,9 +20,9 @@ A new Flutter app project.
 - install flutter SDK
 - install flutter/dart plugins in your IDE
 - Clone the project
--run :
+- run :
 `flutter pub get`
--then :
+- then :
 `flutter run`
 	or
 run it directly with your IDE

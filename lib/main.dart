@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/pages/home_page.dart';
@@ -26,6 +28,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // English
+        const Locale('de', 'DE'), // German
+        const Locale('ar'),
+        const Locale('hi'),
+        const Locale('es'),
+        const Locale('fr', 'FR'),
+        // ... other locales the app supports
+      ],
       debugShowCheckedModeBanner: false,
       title: 'mypo',
       home: HomePage(),

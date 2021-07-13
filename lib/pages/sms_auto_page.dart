@@ -384,7 +384,7 @@ class _AlertesState extends State<Alertes> {
               final alert = alerts[index];
               return buildMsg(context, alert);
             })
-        : const Text("Aucune alerte");
+        : const Text("Aucune alerte", style: TextStyle(fontSize: 24));
   }
 
   Widget buildMsg(BuildContext context, var alert) {
@@ -418,7 +418,7 @@ class _AlertesState extends State<Alertes> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Edit'),
+              label: Text('Modifier'),
               icon: Icon(Icons.edit),
               onPressed: () => {
                 Navigator.pop(context),
@@ -442,7 +442,7 @@ class _AlertesState extends State<Alertes> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Duplicate'),
+              label: Text('Dupliquer'),
               icon: Icon(Icons.copy),
               onPressed: () => {
                 setState(() {
@@ -463,7 +463,7 @@ class _AlertesState extends State<Alertes> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: Colors.red.shade400),
-              label: Text('Delete'),
+              label: Text('Supprimer'),
               icon: Icon(Icons.delete),
               onPressed: () => {
                 showDialog(
@@ -487,19 +487,24 @@ class _AlertesState extends State<Alertes> {
   @override
   Widget build(BuildContext context) {
     //print("hello");
-    for (int i = 0; i < widget.alerts.length; i++) {
-      print(widget.alerts[i]);
-    }
+    // for (int i = 0; i < widget.alerts.length; i++) {
+    //   print(widget.alerts[i]);
+    // }
     return Container(
       padding: EdgeInsets.all(10),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
-              height: 30,
-              child: Row(children: [Text('Mes alertes automatiques')]),
+            SizedBox(height: 24),
+            Text(
+              'Mes alertes automatiques',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.black,
+              ),
             ),
+            SizedBox(height: 20),
             FutureBuilder(
                 future: callAsyncFetch(),
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
@@ -514,7 +519,7 @@ class _AlertesState extends State<Alertes> {
                     );
                   }
                 }),
-            SizedBox(height: 50),
+            SizedBox(height: 20),
             Center(
               child: OutlinedButton(
                   style: OutlinedButton.styleFrom(

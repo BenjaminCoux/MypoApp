@@ -88,7 +88,7 @@ class _SmsProgState extends State<SmsProg> {
           ),
           SizedBox(height: 20),
           Text(
-            'No messages yet!',
+            'Aucune alerte',
             style: TextStyle(fontSize: 24),
           ),
           SizedBox(height: 20),
@@ -122,6 +122,11 @@ class _SmsProgState extends State<SmsProg> {
           SizedBox(height: 24),
           Text(
             'Mes alertes programmées',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.black,
+            ),
           ),
           SizedBox(height: 20),
           Expanded(
@@ -200,7 +205,7 @@ class _SmsProgState extends State<SmsProg> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Edit'),
+              label: Text('Modifier'),
               icon: Icon(Icons.edit),
               onPressed: () => {
                 Navigator.pop(context),
@@ -217,7 +222,7 @@ class _SmsProgState extends State<SmsProg> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: Colors.red.shade400),
-              label: Text('Delete'),
+              label: Text('Supprimer'),
               icon: Icon(Icons.delete),
               onPressed: () => {
                 showDialog(

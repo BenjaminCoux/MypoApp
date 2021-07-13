@@ -132,8 +132,8 @@ class _ProgState extends State<ProgForm> {
         ..notification = notif;
 
       final box = Boxes.getScheduledmsg();
-      box.add(msg);
-      //box.put('mykey',msg);
+      box.add(msg); // automatically generates a autoincrement key
+      //box.put('mykey',msg); // if we want to put a particular key
     }
   }
 
@@ -170,12 +170,12 @@ class _ProgState extends State<ProgForm> {
                       Radius.circular(18),
                     ),
                   ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: EdgeInsets.all(10),
                   child: Padding(
                     padding: EdgeInsets.all(0),
                     child: TextField(
                       minLines: 1,
-                      maxLines: 5,
+                      maxLines: 1,
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
                       keyboardType: TextInputType.phone,
                       controller: contactController,
@@ -220,90 +220,43 @@ class _ProgState extends State<ProgForm> {
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(0),
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                child: OutlinedButton(
-                                  // onPressed: null,
-                                  onPressed: () => showSheet(context,
-                                      child: buildDatePicker(), onClicked: () {
-                                    final value =
-                                        DateFormat('dd/MM/yyyy').format(date);
-                                    showSnackBar(context, 'date "$value"');
-                                    Navigator.pop(context);
-                                  }),
+                      Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                          child: OutlinedButton(
+                            // onPressed: null,
+                            onPressed: () => showSheet(context,
+                                child: buildDatePicker(), onClicked: () {
+                              final value =
+                                  DateFormat('dd/MM/yyyy HH:mm').format(date);
+                              showSnackBar(context, 'date "$value"');
+                              Navigator.pop(context);
+                            }),
 
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: d_green, width: 2),
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 50),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Date",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      letterSpacing: 2.2,
-                                    ),
-                                  ),
-                                ),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: d_green, width: 2),
+                              padding: EdgeInsets.symmetric(horizontal: 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            child: Text(
+                              "Date",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                letterSpacing: 2.2,
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(0),
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                child: OutlinedButton(
-                                  // onPressed: null,
-                                  onPressed: () => showSheet(context,
-                                      child: buildTimePicker(), onClicked: () {
-                                    final value =
-                                        DateFormat('HH:mm').format(time);
-                                    showSnackBar(context, 'heure "${value}"');
-                                    Navigator.pop(context);
-                                  }),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: d_green, width: 2),
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 50),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Heure",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      letterSpacing: 2.2,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.all(0),
@@ -322,6 +275,9 @@ class _ProgState extends State<ProgForm> {
                               repeatinput = repeatOptions[index];
                               showSnackBar(context, 'option "${repeatinput}"');
                               Navigator.pop(context);
+                              // print(rebours);
+                              // print(confirm);
+                              // print(notif);
                             }),
 
                             style: OutlinedButton.styleFrom(
@@ -582,12 +538,14 @@ class _ProgState extends State<ProgForm> {
             minimumYear: DateTime.now().year - 2,
             maximumYear: DateTime.now().year + 3,
             initialDateTime: date,
-            mode: CupertinoDatePickerMode.date,
+            mode: CupertinoDatePickerMode.dateAndTime,
             use24hFormat: true,
             onDateTimeChanged: (dateTime) =>
                 setState(() => this.date = dateTime)),
       );
-
+  /*
+    not used
+   */
   Widget buildTimePicker() => SizedBox(
         height: 150,
         child: CupertinoDatePicker(
@@ -627,8 +585,10 @@ class _ProgState extends State<ProgForm> {
             diameterRatio: 0.8,
             itemExtent: 50,
             looping: true,
-            onSelectedItemChanged: (index) =>
-                setState(() => this.index = index),
+            onSelectedItemChanged: (index) => setState(() {
+                  this.index = index;
+                  repeatinput = repeatOptions[index];
+                }),
             children: modelBuilder<String>(repeatOptions, (index, option) {
               return Center(child: Text(option));
             })),

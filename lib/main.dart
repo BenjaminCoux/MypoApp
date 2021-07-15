@@ -34,6 +34,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyappState extends State<MyApp> {
+  // ignore: unused_field
   late Timer _timer;
   int i = 0;
   @override
@@ -46,7 +47,7 @@ class _MyappState extends State<MyApp> {
   periodic() {
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
       // the code here will be repeated periodically according to de duration set
-      debugPrint("period : ${i}");
+      // debugPrint("period : ${i}");
       i++;
       final messages =
           Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
@@ -68,7 +69,7 @@ class _MyappState extends State<MyApp> {
           .forEach((Scheduledmsg_hive message) {
         debugPrint("message : ${message.name} , status: ${message.status}");
         /*
-            for each message verifying the condition we try sent a message and set the state to sent or failed if error
+            for each message verifying the condition we try to send a message and set the state to sent or failed if error
           */
         try {
           Telephony.instance
@@ -77,7 +78,9 @@ class _MyappState extends State<MyApp> {
             message.status = MessageStatus.SENT;
           });
         } catch (err) {
-          message.status = MessageStatus.FAILED;
+          setState(() {
+            message.status = MessageStatus.FAILED;
+          });
           debugPrint(err.toString());
         }
 

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/database/scheduledmsg_database.dart';
 import 'package:mypo/model/scheduledmsg.dart';
 import 'package:mypo/pages/edit_scheduledmsg_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
@@ -27,6 +26,7 @@ class SmsProg extends StatefulWidget {
 class _SmsProgState extends State<SmsProg> {
   late List<Scheduledmsg> allMessages;
   bool isLoading = false;
+  // ignore: unused_field
   late Timer _timer;
   String txt = "";
   int i = 0;
@@ -34,7 +34,6 @@ class _SmsProgState extends State<SmsProg> {
   @override
   void initState() {
     super.initState();
-    // periodic();
     //refreshMessages();
   }
 
@@ -44,6 +43,7 @@ class _SmsProgState extends State<SmsProg> {
     super.dispose();
   }
 
+  // SQFLITE
   Future refreshMessages() async {
     setState(() => isLoading = true);
     // this.allMessages =
@@ -312,9 +312,7 @@ class _SmsProgState extends State<SmsProg> {
             );
           }));
 
-  /*
-    -Function that creates a pop up for asking a yes no question
-  */
+  //-Function that creates a pop up for asking a yes no question based on a given message
   buildPopupDialog(Scheduledmsg_hive message) {
     String title = "";
     title = message.name;

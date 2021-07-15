@@ -22,7 +22,13 @@ class Scheduledmsg_hive extends HiveObject {
   @HiveField(7)
   late bool notification;
   @HiveField(8)
-  late MessageStatus status;
+  late MessageStatus status = MessageStatus.PENDING;
 }
 
 enum MessageStatus { PENDING, SENT, FAILED }
+
+//TODO: maybe use this ?
+
+//enum MessageRepeatOptions {daily, weekly, montly, yearly}
+
+// if (repeat == Tous les ans) message.repeatOption = MessageRepeatOptions.yearly

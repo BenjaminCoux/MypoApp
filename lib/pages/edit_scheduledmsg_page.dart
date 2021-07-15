@@ -102,6 +102,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     widget.message.countdown = countdown;
     widget.message.confirm = confirm;
     widget.message.notification = notification;
+    //todo: everytime we edit, status is set to PENDING
     widget.message.status = MessageStatus.PENDING;
     widget.message.save();
   }

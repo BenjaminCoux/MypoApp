@@ -34,52 +34,8 @@ class _SmsProgState extends State<SmsProg> {
   @override
   void initState() {
     super.initState();
-    periodic();
+    // periodic();
     //refreshMessages();
-  }
-
-  periodic() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      // the code here will be repeated periodically according to de duration set
-      debugPrint("period : ${i}");
-      i++;
-      final messages =
-          Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
-
-      messages
-          .takeWhile((Scheduledmsg_hive
-                  message) => /*   Condition to send message (Date.time.now > message.date && message.status != sent) */
-              (DateTime.now().microsecondsSinceEpoch >=
-                  DateTime(
-                          message.date.year,
-                          message.date.month,
-                          message.date.day,
-                          message.date.hour,
-                          message.date.minute)
-                      .microsecondsSinceEpoch
-              // message.confirm == true
-              ) &&
-              message.status != MessageStatus.SENT)
-          .forEach((Scheduledmsg_hive message) {
-        debugPrint("message : ${message.name} , status: ${message.status}");
-        /*
-            for each message verifying the condition we try sent a message and set the state to sent or failed if error
-          */
-        try {
-          Telephony.instance
-              .sendSms(to: message.phoneNumber, message: message.message);
-          setState(() {
-            message.status = MessageStatus.SENT;
-          });
-        } catch (err) {
-          message.status = MessageStatus.FAILED;
-          debugPrint(err.toString());
-        }
-
-        debugPrint(
-            "message sent to: ${message.phoneNumber}.. status: ${message.status}");
-      });
-    });
   }
 
   @override

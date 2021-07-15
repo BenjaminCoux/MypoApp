@@ -59,7 +59,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     alertContent.addListener(() {
       changed;
     });
-    print(widget.message.repeat);
+    // print(widget.message.repeat);
   }
 
   @override
@@ -245,8 +245,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             onPressed: () => showSheet(context,
                                 child: buildRepeatOptions(), onClicked: () {
                               Navigator.pop(context);
-                              print(widget.message.date);
-                              print(widget.message.repeat);
+                              // print(widget.message.date);
+                              //print(widget.message.repeat);
                               // print(confirm);
                               // print(notif);
                             }),

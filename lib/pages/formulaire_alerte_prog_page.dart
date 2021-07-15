@@ -148,7 +148,7 @@ class _ProgState extends State<ProgForm> {
   Widget build(BuildContext context) {
     // initState();
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: 'Ajoutez une alerte'),
       body: SingleChildScrollView(
         child: GestureDetector(
@@ -213,24 +213,19 @@ class _ProgState extends State<ProgForm> {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(18),
+                      Radius.circular(0),
                     ),
                   ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Column(
+                  margin: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(
                         padding: EdgeInsets.all(0),
                         child: Container(
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
+                          margin: EdgeInsets.all(2),
                           child: OutlinedButton(
                             // onPressed: null,
                             onPressed: () => showSheet(context,
@@ -242,16 +237,17 @@ class _ProgState extends State<ProgForm> {
                             }),
 
                             style: OutlinedButton.styleFrom(
+                              backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
-                              padding: EdgeInsets.symmetric(horizontal: 50),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(18),
                               ),
                             ),
                             child: Text(
                               "Date",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 14,
                                 letterSpacing: 2.2,
                               ),
@@ -263,12 +259,6 @@ class _ProgState extends State<ProgForm> {
                         padding: EdgeInsets.all(0),
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
                           child: OutlinedButton(
                             // onPressed: null,
                             onPressed: () => showSheet(context,
@@ -282,8 +272,9 @@ class _ProgState extends State<ProgForm> {
                             }),
 
                             style: OutlinedButton.styleFrom(
+                              backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
-                              padding: EdgeInsets.symmetric(horizontal: 50),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -291,7 +282,7 @@ class _ProgState extends State<ProgForm> {
                             child: Text(
                               "Récurrence",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 14,
                                 letterSpacing: 2.2,
                               ),
@@ -302,10 +293,24 @@ class _ProgState extends State<ProgForm> {
                     ],
                   ),
                 ),
+                // Container(
+                //   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                //   decoration: BoxDecoration(
+                //     color: Colors.transparent,
+                //     borderRadius: BorderRadius.all(
+                //       Radius.circular(18),
+                //     ),
+                //   ),
+                //   child: ListView(
+                //     children: <Widget>[
+                //       ListTile(title: Text('test')),
+                //     ],
+                //   ),
+                // ),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
@@ -313,13 +318,16 @@ class _ProgState extends State<ProgForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Icon(Icons.timer_rounded),
                       Container(
-                        child: Text("Compte à rebours"),
+                        child: Text(
+                          "Compte à rebours",
+                        ),
                         margin: EdgeInsets.fromLTRB(
                             5,
                             0,
                             MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.51,
+                                MediaQuery.of(context).size.width * 0.57,
                             0),
                       ),
                       Switch(
@@ -336,7 +344,7 @@ class _ProgState extends State<ProgForm> {
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
@@ -344,13 +352,14 @@ class _ProgState extends State<ProgForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Icon(Icons.check_circle_rounded),
                       Container(
                         child: Text("Confirmer avant envoi"),
                         margin: EdgeInsets.fromLTRB(
                             5,
                             0,
                             MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.57,
+                                MediaQuery.of(context).size.width * 0.63,
                             0),
                       ),
                       Switch(
@@ -367,7 +376,7 @@ class _ProgState extends State<ProgForm> {
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
@@ -375,13 +384,14 @@ class _ProgState extends State<ProgForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Icon(Icons.notifications),
                       Container(
                         child: Text("Notification"),
                         margin: EdgeInsets.fromLTRB(
                             5,
                             0,
                             MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.41,
+                                MediaQuery.of(context).size.width * 0.47,
                             0),
                       ),
                       Switch(
@@ -395,45 +405,55 @@ class _ProgState extends State<ProgForm> {
                     ],
                   ),
                 ),
-                ElevatedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: d_green,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  onPressed: () async => {
-                    if (nameController.text != '' &&
-                        contactController.text != '' &&
-                        alertContent.text != '')
-                      {fieldsEmpty = false},
-                    if (!fieldsEmpty)
-                      {
-                        // save(),
 
-                        // deleteDB(),
+                Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: OutlinedButton(
+                      // onPressed: null,
+                      onPressed: () async => {
+                        if (nameController.text != '' &&
+                            contactController.text != '' &&
+                            alertContent.text != '')
+                          {fieldsEmpty = false},
+                        if (!fieldsEmpty)
+                          {
+                            // save(),
 
-                        saveToHive(),
-                        Navigator.pop(context),
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new SmsProg()),
-                        )
-                      }
-                    else
-                      {
-                        showSnackBar(
-                            context, 'Veuillez completer tous les champs')
-                      }
-                  },
-                  child: Text(
-                    "Valider",
-                    style: TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 2.2,
-                      color: Colors.white,
+                            // deleteDB(),
+
+                            saveToHive(),
+                            Navigator.pop(context),
+                            Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => new SmsProg()),
+                            )
+                          }
+                        else
+                          {
+                            showSnackBar(
+                                context, 'Veuillez completer tous les champs')
+                          }
+                      },
+
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: d_green,
+                        side: BorderSide(color: d_green, width: 2),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Text(
+                        "Valider",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          letterSpacing: 2.2,
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -51,7 +51,7 @@ class _SmsAutoState extends State<SmsAuto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: "My Co'Laverie"),
       drawer: HamburgerMenu(),
       body: Scrollbar(
@@ -478,7 +478,7 @@ class _AlertesState extends State<Alertes> {
           ),
           Expanded(
             child: TextButton.icon(
-              style: TextButton.styleFrom(primary: Colors.red.shade400),
+              style: TextButton.styleFrom(primary: d_darkgray),
               label: Text('Supprimer'),
               icon: Icon(Icons.delete),
               onPressed: () => {

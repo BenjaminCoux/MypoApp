@@ -295,7 +295,7 @@ class _AlertScreenState extends State<AlertScreen> {
     final DateSymbols fr = dateTimeSymbolMap()['fr'];
     print(widget.alerte.days);
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
       body: Scrollbar(
         thickness: 10,

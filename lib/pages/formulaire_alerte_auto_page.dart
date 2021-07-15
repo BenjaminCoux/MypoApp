@@ -103,7 +103,7 @@ class _FormState extends State<FormScreen> {
       shortWeekdays: fr.STANDALONESHORTWEEKDAYS,
       firstDayOfWeek: fr.FIRSTDAYOFWEEK + 1,
       selectedFillColor: d_green,
-      fillColor: Colors.grey.shade100,
+      fillColor: Colors.white,
       onChanged: (v) {
         setState(() {
           week[v % 7] = !week[v % 7];
@@ -120,25 +120,14 @@ class _FormState extends State<FormScreen> {
   Widget alertKeys(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.transparent,
         borderRadius: BorderRadius.all(
           Radius.circular(18),
         ),
       ),
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(12),
+      padding: EdgeInsets.all(0),
+      margin: EdgeInsets.all(0),
       child: Column(children: [
-        Container(
-            child: Padding(
-                padding: EdgeInsets.all(12),
-                child: Row(children: [
-                  Text("Clés",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                        color: d_green,
-                      ))
-                ]))),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -146,7 +135,7 @@ class _FormState extends State<FormScreen> {
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.45,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.all(
                   Radius.circular(18),
                 ),
@@ -182,9 +171,8 @@ class _FormState extends State<FormScreen> {
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.45,
-              padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.all(
                   Radius.circular(18),
                 ),
@@ -218,17 +206,28 @@ class _FormState extends State<FormScreen> {
               Radius.circular(18),
             ),
           ),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Padding(
-            padding: EdgeInsets.all(0),
+            padding: const EdgeInsets.all(0),
             child: TextField(
+              onChanged: (String value) => {
+                setState(() {
+                  // set new state
+
+                  // this.contentchanged = true;
+                  // this.titlechanged = true;
+                  // this.hasChanged = true;
+                })
+              },
               maxLines: 1,
               onSubmitted: (String? txt) => {setState(() {})},
               controller: keyName,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 suffixIcon: IconButton(
                     icon: Icon(
-                      Icons.add,
-                      size: 35,
+                      Icons.add_box_rounded,
+                      size: 30,
                       color: d_green,
                     ),
                     onPressed: () {
@@ -245,13 +244,14 @@ class _FormState extends State<FormScreen> {
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey.shade300)),
+                    borderSide: BorderSide(color: Colors.transparent)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
+                contentPadding: EdgeInsets.all(8),
                 hintText: "Ajoutez une clé à l'alerte ",
                 hintStyle: TextStyle(
                   fontSize: 16,
@@ -263,6 +263,7 @@ class _FormState extends State<FormScreen> {
             ),
           ),
         ),
+
         // Showing added keys under the field
         keys.length > 0
             ? ListView.builder(
@@ -326,7 +327,7 @@ class _FormState extends State<FormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: 'Ajoutez une alerte'),
       body: Scrollbar(
         thickness: 10,
@@ -334,13 +335,8 @@ class _FormState extends State<FormScreen> {
         showTrackOnHover: true,
         child: SingleChildScrollView(
           child: GestureDetector(
-            onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
+            onTap: () => FocusScope.of(context).unfocus(),
+            // FocusManager.instance.primaryFocus?.unfocus(),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -348,28 +344,172 @@ class _FormState extends State<FormScreen> {
                   buildTextField(
                       'Titre', "Ajoutez un titre à l'alerte", alertName, 1),
                   buildTextField(
-                      'Contenu', "Contenu du message", alertContent, 3),
-                  alertKeys(context),
+                      'Contenu', "Contenu du message", alertContent, 1),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
+                    child: Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Cibles",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black),
+                            )
+                          ],
+                        )),
+                  ),
                   Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                      ),
+                      margin: EdgeInsets.all(0),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Column(children: [
+                              Container(
+                                child: Padding(
+                                  padding: EdgeInsets.all(0),
+                                  child: Column(
+                                    children: [
+                                      CheckboxListTile(
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          title: Text(
+                                            "Tous",
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                          activeColor: d_green,
+                                          value: cibles[0],
+                                          onChanged: (bool? value) => {
+                                                setState(() {
+                                                  cibles[0] = value!;
+                                                })
+                                              }),
+                                      CheckboxListTile(
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          title: Text(
+                                            "Numéros non enregistrés",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          activeColor: d_green,
+                                          value: cibles[1],
+                                          onChanged: (bool? value) => {
+                                                setState(() {
+                                                  cibles[1] = value!;
+                                                })
+                                              }),
+                                      CheckboxListTile(
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          title: Text(
+                                            "SMS reçu",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          activeColor: d_green,
+                                          value: cibles[2],
+                                          onChanged: (bool? value) => {
+                                                setState(() {
+                                                  cibles[2] = value!;
+                                                })
+                                              }),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Column(children: [
+                              Container(
+                                child: Padding(
+                                  padding: EdgeInsets.all(0),
+                                  child: Column(
+                                    children: [
+                                      CheckboxListTile(
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          title: Text(
+                                            "Contacts uniquement",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          activeColor: d_green,
+                                          value: cibles[0],
+                                          onChanged: (bool? value) => {
+                                                setState(() {
+                                                  cibles[0] = value!;
+                                                })
+                                              }),
+                                      CheckboxListTile(
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          title: Text(
+                                            "Groupe de contact",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          activeColor: d_green,
+                                          value: cibles[1],
+                                          onChanged: (bool? value) => {
+                                                setState(() {
+                                                  cibles[1] = value!;
+                                                })
+                                              }),
+                                      CheckboxListTile(
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          title: Text(
+                                            "Appel manqué",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          activeColor: d_green,
+                                          value: cibles[2],
+                                          onChanged: (bool? value) => {
+                                                setState(() {
+                                                  cibles[2] = value!;
+                                                })
+                                              }),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ],
+                      )),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
+                    child: Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Jours",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black),
+                            )
+                          ],
+                        )),
+                  ),
+                  Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.all(
                           Radius.circular(18),
                         ),
                       ),
                       margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                       child: Column(children: [
-                        Container(
-                            child: Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Row(children: [
-                                  Text("Jours",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22,
-                                        color: d_green,
-                                      ))
-                                ]))),
                         Container(
                           child: Padding(
                             padding: EdgeInsets.all(8),
@@ -382,93 +522,83 @@ class _FormState extends State<FormScreen> {
                         ),
                       ])),
                   Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(18),
-                        ),
+                    margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
+                    child: Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Contenu du message entrant",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black),
+                            )
+                          ],
+                        )),
+                  ),
+                  alertKeys(context),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
                       ),
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: Column(children: [
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
                         Container(
-                          child: Padding(
-                              padding: EdgeInsets.all(12),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Cibles",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22,
-                                        color: d_green),
-                                  )
-                                ],
-                              )),
+                          child: Text("Notification après réponses"),
+                          margin: EdgeInsets.fromLTRB(
+                              5,
+                              0,
+                              MediaQuery.of(context).size.width -
+                                  MediaQuery.of(context).size.width * 0.64,
+                              0),
                         ),
+                        Switch(
+                            activeColor: d_green,
+                            value: true,
+                            onChanged: (bool val) => {
+                                  setState(() {
+                                    // confirm = val;
+                                  })
+                                }),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
                         Container(
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Column(
-                              children: [
-                                CheckboxListTile(
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    secondary: Icon(Icons.contact_page,
-                                        color: cibles[0]
-                                            ? Colors.blue
-                                            : Colors.grey.shade500),
-                                    title: Text(
-                                      "Numéros Enregistrés",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    activeColor: d_green,
-                                    value: cibles[0],
-                                    onChanged: (bool? value) => {
-                                          setState(() {
-                                            cibles[0] = value!;
-                                          })
-                                        }),
-                                CheckboxListTile(
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    secondary: Icon(Icons.sms_rounded,
-                                        color: cibles[1]
-                                            ? Colors.blue
-                                            : Colors.grey.shade500),
-                                    title: Text(
-                                      "SMS reçu",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    activeColor: d_green,
-                                    value: cibles[1],
-                                    onChanged: (bool? value) => {
-                                          setState(() {
-                                            cibles[1] = value!;
-                                          })
-                                        }),
-                                CheckboxListTile(
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    secondary: Icon(Icons.call,
-                                        color: cibles[2]
-                                            ? Colors.blue
-                                            : Colors.grey.shade500),
-                                    title: Text(
-                                      "Appels Manqués",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    activeColor: d_green,
-                                    value: cibles[2],
-                                    onChanged: (bool? value) => {
-                                          setState(() {
-                                            cibles[2] = value!;
-                                          })
-                                        }),
-                              ],
-                            ),
-                          ),
+                          child: Text("Règle de réponse"),
+                          margin: EdgeInsets.fromLTRB(
+                              5,
+                              0,
+                              MediaQuery.of(context).size.width -
+                                  MediaQuery.of(context).size.width * 0.48,
+                              0),
                         ),
-                      ])),
+                        Switch(
+                            activeColor: d_green,
+                            value: true,
+                            onChanged: (bool val) => {
+                                  setState(() {
+                                    // confirm = val;
+                                  })
+                                }),
+                      ],
+                    ),
+                  ),
                   ElevatedButton(
                     style: OutlinedButton.styleFrom(
                       backgroundColor: d_green,

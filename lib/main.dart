@@ -93,26 +93,29 @@ class _MyappState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', 'US'), // English
-        const Locale('de', 'DE'), // German
-        const Locale('ar'),
-        const Locale('hi'),
-        const Locale('es'),
-        const Locale('fr', 'FR'),
-        // ... other locales the app supports
-      ],
-      debugShowCheckedModeBanner: false,
-      title: 'mypo',
-      home: HomePage(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: MaterialApp(
+        localizationsDelegates: [
+          // ... app-specific localization delegate[s] here
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'), // English
+          const Locale('de', 'DE'), // German
+          const Locale('ar'),
+          const Locale('hi'),
+          const Locale('es'),
+          const Locale('fr', 'FR'),
+          // ... other locales the app supports
+        ],
+        debugShowCheckedModeBanner: false,
+        title: 'mypo',
+        home: HomePage(),
+      ),
     );
   }
 }

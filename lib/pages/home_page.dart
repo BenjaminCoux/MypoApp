@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: "My Co'Laverie"),
       drawer: HamburgerMenu(),
       body: SingleChildScrollView(

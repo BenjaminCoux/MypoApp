@@ -172,7 +172,7 @@ class _ProgState extends State<ProgForm> {
                   ),
                   margin: EdgeInsets.all(10),
                   child: Padding(
-                    padding: EdgeInsets.all(0),
+                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: TextField(
                       minLines: 1,
                       maxLines: 1,
@@ -182,7 +182,7 @@ class _ProgState extends State<ProgForm> {
                       decoration: InputDecoration(
                         labelText: 'Numero du contact',
                         suffixIcon: IconButton(
-                            icon: Icon(Icons.contact_page,
+                            icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.blue),
                             onPressed: () =>
                                 _buildContactSelection(context, contacts)),
@@ -236,7 +236,7 @@ class _ProgState extends State<ProgForm> {
                                 child: buildDatePicker(), onClicked: () {
                               final value =
                                   DateFormat('dd/MM/yyyy HH:mm').format(date);
-                              showSnackBar(context, 'date "$value"');
+                              showSnackBar(context, 'Date "$value"');
                               Navigator.pop(context);
                             }),
 
@@ -273,7 +273,7 @@ class _ProgState extends State<ProgForm> {
                             onPressed: () => showSheet(context,
                                 child: buildRepeatOptions(), onClicked: () {
                               repeatinput = repeatOptions[index];
-                              showSnackBar(context, 'option "${repeatinput}"');
+                              showSnackBar(context, 'Option "${repeatinput}"');
                               Navigator.pop(context);
                               // print(rebours);
                               // print(confirm);
@@ -314,7 +314,12 @@ class _ProgState extends State<ProgForm> {
                     children: [
                       Container(
                         child: Text("Compte à rebours"),
-                        margin: EdgeInsets.fromLTRB(5, 0, 220 - 4.6, 0),
+                        margin: EdgeInsets.fromLTRB(
+                            5,
+                            0,
+                            MediaQuery.of(context).size.width -
+                                MediaQuery.of(context).size.width * 0.51,
+                            0),
                       ),
                       Switch(
                           activeColor: d_green,
@@ -340,7 +345,12 @@ class _ProgState extends State<ProgForm> {
                     children: [
                       Container(
                         child: Text("Confirmer avant envoi"),
-                        margin: EdgeInsets.fromLTRB(5, 0, 220 - 29.6, 0),
+                        margin: EdgeInsets.fromLTRB(
+                            5,
+                            0,
+                            MediaQuery.of(context).size.width -
+                                MediaQuery.of(context).size.width * 0.57,
+                            0),
                       ),
                       Switch(
                           activeColor: d_green,
@@ -366,7 +376,12 @@ class _ProgState extends State<ProgForm> {
                     children: [
                       Container(
                         child: Text("Notification"),
-                        margin: EdgeInsets.fromLTRB(5, 0, 254, 0),
+                        margin: EdgeInsets.fromLTRB(
+                            5,
+                            0,
+                            MediaQuery.of(context).size.width -
+                                MediaQuery.of(context).size.width * 0.41,
+                            0),
                       ),
                       Switch(
                           activeColor: d_green,
@@ -490,45 +505,53 @@ class _ProgState extends State<ProgForm> {
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-              title: Text('Contacts'),
-              content: SingleChildScrollView(
-                  child: Container(
-                height: MediaQuery.of(context).size.height * 0.9,
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Column(
-                  children: <Widget>[
-                    ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: contacts.length,
-                        itemBuilder: (context, index) {
-                          Contact contact = contacts[index];
-                          return ListTile(
-                            title: Text(contact.displayName ?? ' '),
-                            subtitle:
-                                Text(contact.phones?.elementAt(0).value! ?? ''),
-                            leading: (contact.avatar != null &&
-                                    contact.avatar!.length > 0)
-                                ? CircleAvatar(
-                                    backgroundImage:
-                                        MemoryImage(contact.avatar!))
-                                : CircleAvatar(
-                                    foregroundColor: Colors.white,
-                                    backgroundColor: d_green,
-                                    child: Text(contact.initials())),
-                            onTap: () {
-                              // selected contact
-                              // print('contact ' + index.toString());
-                              Navigator.of(context).pop();
-                              // we set the text of the controller to the number of the contact chosen
-                              contactController.text =
-                                  contact.phones?.elementAt(0).value! ?? '';
-                            },
-                          );
-                        })
-                  ],
-                ),
-              )));
+          return contacts.length > 0
+              ? AlertDialog(
+                  title: Text('Contacts'),
+                  content: SingleChildScrollView(
+                      child: Container(
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Column(
+                      children: <Widget>[
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: contacts.length,
+                            itemBuilder: (context, index) {
+                              Contact contact = contacts[index];
+                              return ListTile(
+                                title: Text(contact.displayName ?? ' '),
+                                subtitle: Text(
+                                    contact.phones?.elementAt(0).value! ?? ''),
+                                leading: (contact.avatar != null &&
+                                        contact.avatar!.length > 0)
+                                    ? CircleAvatar(
+                                        backgroundImage:
+                                            MemoryImage(contact.avatar!))
+                                    : CircleAvatar(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: d_green,
+                                        child: Text(contact.initials())),
+                                onTap: () {
+                                  // selected contact
+                                  // print('contact ' + index.toString());
+                                  Navigator.of(context).pop();
+                                  // we set the text of the controller to the number of the contact chosen
+                                  contactController.text =
+                                      contact.phones?.elementAt(0).value! ?? '';
+                                },
+                              );
+                            })
+                      ],
+                    ),
+                  )))
+              : AlertDialog(
+                  title: Text('Contacts'),
+                  content: SingleChildScrollView(
+                      child: Container(
+                          height: MediaQuery.of(context).size.height * 0.9,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: Text("Aucun contact"))));
         });
   }
 
@@ -572,7 +595,7 @@ class _ProgState extends State<ProgForm> {
 
   void showSnackBar(BuildContext context, String s) {
     final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 24)),
+      content: Text(s, style: TextStyle(fontSize: 20)),
     );
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()

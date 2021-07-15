@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/database/scheduledmsg_database.dart';
@@ -7,6 +9,7 @@ import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/boxes.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
+import 'package:telephony/telephony.dart';
 import 'formulaire_alerte_prog_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/model/scheduledmsg_hive.dart';
@@ -24,12 +27,59 @@ class SmsProg extends StatefulWidget {
 class _SmsProgState extends State<SmsProg> {
   late List<Scheduledmsg> allMessages;
   bool isLoading = false;
-
+  late Timer _timer;
+  String txt = "";
+  int i = 0;
+  final telephony = Telephony.instance;
   @override
   void initState() {
     super.initState();
+    periodic();
+    //refreshMessages();
+  }
 
-    refreshMessages();
+  periodic() {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      // the code here will be repeated periodically according to de duration set
+      debugPrint("period : ${i}");
+      i++;
+      final messages =
+          Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
+
+      messages
+          .takeWhile((Scheduledmsg_hive
+                  message) => /*   Condition to send message (Date.time.now > message.date && message.status != sent) */
+              (DateTime.now().microsecondsSinceEpoch >=
+                  DateTime(
+                          message.date.year,
+                          message.date.month,
+                          message.date.day,
+                          message.date.hour,
+                          message.date.minute)
+                      .microsecondsSinceEpoch
+              // message.confirm == true
+              ) &&
+              message.status != MessageStatus.SENT)
+          .forEach((Scheduledmsg_hive message) {
+        debugPrint("message : ${message.name} , status: ${message.status}");
+        /*
+            for each message verifying the condition we try sent a message and set the state to sent or failed if error
+          */
+        try {
+          Telephony.instance
+              .sendSms(to: message.phoneNumber, message: message.message);
+          setState(() {
+            message.status = MessageStatus.SENT;
+          });
+        } catch (err) {
+          message.status = MessageStatus.FAILED;
+          debugPrint(err.toString());
+        }
+
+        debugPrint(
+            "message sent to: ${message.phoneNumber}.. status: ${message.status}");
+      });
+    });
   }
 
   @override
@@ -40,8 +90,8 @@ class _SmsProgState extends State<SmsProg> {
 
   Future refreshMessages() async {
     setState(() => isLoading = true);
-    this.allMessages =
-        await ScheduledMessagesDataBase.instance.readAllScheduledmsg();
+    // this.allMessages =
+    //     await ScheduledMessagesDataBase.instance.readAllScheduledmsg();
     setState(() => isLoading = false);
   }
 
@@ -56,14 +106,22 @@ class _SmsProgState extends State<SmsProg> {
         isAlwaysShown: true,
         showTrackOnHover: true,
         thickness: 10,
-        child: Container(
-          child: ValueListenableBuilder<Box<Scheduledmsg_hive>>(
-            valueListenable: Boxes.getScheduledmsg().listenable(),
-            builder: (context, box, _) {
-              final messages = box.values.toList().cast<Scheduledmsg_hive>();
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height,
+                child: ValueListenableBuilder<Box<Scheduledmsg_hive>>(
+                  valueListenable: Boxes.getScheduledmsg().listenable(),
+                  builder: (context, box, _) {
+                    final messages =
+                        box.values.toList().cast<Scheduledmsg_hive>();
 
-              return buildListOfMsg(messages);
-            },
+                    return buildListOfMsg(messages);
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -87,11 +145,6 @@ class _SmsProgState extends State<SmsProg> {
             ),
           ),
           SizedBox(height: 20),
-          Text(
-            'Aucune alerte',
-            style: TextStyle(fontSize: 24),
-          ),
-          SizedBox(height: 20),
           OutlinedButton(
               style: OutlinedButton.styleFrom(
                   backgroundColor: d_darkgray,
@@ -114,6 +167,11 @@ class _SmsProgState extends State<SmsProg> {
                     color: Colors.white,
                     fontFamily: 'calibri'),
               )),
+          SizedBox(height: 20),
+          Text(
+            'Aucune alerte',
+            style: TextStyle(fontSize: 24),
+          ),
         ],
       ));
     } else {
@@ -129,17 +187,6 @@ class _SmsProgState extends State<SmsProg> {
             ),
           ),
           SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(8),
-              itemCount: messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                final message = messages[index];
-
-                return buildMsg(context, message);
-              },
-            ),
-          ),
           SizedBox(height: 20),
           OutlinedButton(
               style: OutlinedButton.styleFrom(
@@ -163,6 +210,17 @@ class _SmsProgState extends State<SmsProg> {
                     color: Colors.white,
                     fontFamily: 'calibri'),
               )),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.all(8),
+              itemCount: messages.length,
+              itemBuilder: (BuildContext context, int index) {
+                final message = messages[index];
+
+                return buildMsg(context, message);
+              },
+            ),
+          ),
         ],
       );
     }

@@ -21,4 +21,8 @@ class Scheduledmsg_hive extends HiveObject {
   late bool confirm;
   @HiveField(7)
   late bool notification;
+  @HiveField(8)
+  late MessageStatus status;
 }
+
+enum MessageStatus { PENDING, SENT, FAILED }

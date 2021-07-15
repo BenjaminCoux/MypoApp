@@ -102,6 +102,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     widget.message.countdown = countdown;
     widget.message.confirm = confirm;
     widget.message.notification = notification;
+    widget.message.status = MessageStatus.PENDING;
     widget.message.save();
   }
 
@@ -135,7 +136,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   ),
                   margin: EdgeInsets.all(10),
                   child: Padding(
-                    padding: EdgeInsets.all(0),
+                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: TextField(
                       minLines: 1,
                       maxLines: 1,
@@ -145,7 +146,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       decoration: InputDecoration(
                         labelText: 'Numero du contact',
                         suffixIcon: IconButton(
-                            icon: Icon(Icons.contact_page,
+                            icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.blue),
                             onPressed: () =>
                                 _buildContactSelection(context, contacts)),
@@ -284,7 +285,12 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     children: [
                       Container(
                         child: Text("Compte à rebours"),
-                        margin: EdgeInsets.fromLTRB(5, 0, 220 - 4.6, 0),
+                        margin: EdgeInsets.fromLTRB(
+                            5,
+                            0,
+                            MediaQuery.of(context).size.width -
+                                MediaQuery.of(context).size.width * 0.51,
+                            0),
                       ),
                       Switch(
                           activeColor: d_green,
@@ -310,7 +316,12 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     children: [
                       Container(
                         child: Text("Confirmer avant envoi"),
-                        margin: EdgeInsets.fromLTRB(5, 0, 220 - 29.6, 0),
+                        margin: EdgeInsets.fromLTRB(
+                            5,
+                            0,
+                            MediaQuery.of(context).size.width -
+                                MediaQuery.of(context).size.width * 0.57,
+                            0),
                       ),
                       Switch(
                           activeColor: d_green,
@@ -336,7 +347,12 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     children: [
                       Container(
                         child: Text("Notification"),
-                        margin: EdgeInsets.fromLTRB(5, 0, 254, 0),
+                        margin: EdgeInsets.fromLTRB(
+                            5,
+                            0,
+                            MediaQuery.of(context).size.width -
+                                MediaQuery.of(context).size.width * 0.41,
+                            0),
                       ),
                       Switch(
                           activeColor: d_green,

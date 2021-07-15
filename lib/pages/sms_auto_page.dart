@@ -523,21 +523,6 @@ class _AlertesState extends State<Alertes> {
               ),
             ),
             SizedBox(height: 20),
-            FutureBuilder(
-                future: callAsyncFetch(),
-                builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.hasData) {
-                    return Container(
-                        // margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                        child: myList(
-                            widget.alerts, widget.alerts.length, context));
-                  } else {
-                    return CircularProgressIndicator(
-                      color: d_green,
-                    );
-                  }
-                }),
-            SizedBox(height: 20),
             Center(
               child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
@@ -556,6 +541,21 @@ class _AlertesState extends State<Alertes> {
                         fontFamily: 'calibri'),
                   )),
             ),
+            SizedBox(height: 20),
+            FutureBuilder(
+                future: callAsyncFetch(),
+                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                        // margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        child: myList(
+                            widget.alerts, widget.alerts.length, context));
+                  } else {
+                    return CircularProgressIndicator(
+                      color: d_green,
+                    );
+                  }
+                }),
           ],
         ),
       ),

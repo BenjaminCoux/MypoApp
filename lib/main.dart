@@ -55,6 +55,7 @@ class _MyappState extends State<MyApp> {
       messages
           .takeWhile((Scheduledmsg_hive
                   message) => /*   Condition to send message (Date.time.now > message.date && message.status != sent) */
+              //TODO: create condition for repeat options (montly, weekly..)
               (DateTime.now().microsecondsSinceEpoch >=
                   DateTime(
                           message.date.year,

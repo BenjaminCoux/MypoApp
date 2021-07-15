@@ -27,8 +27,9 @@ class Scheduledmsg_hive extends HiveObject {
 
 enum MessageStatus { PENDING, SENT, FAILED }
 
-//TODO: maybe use this ?
 
+//TODO: maybe use this ??? instead of Status and handle each case 
 //enum MessageRepeatOptions {daily, weekly, montly, yearly}
 
 // if (repeat == Tous les ans) message.repeatOption = MessageRepeatOptions.yearly
+

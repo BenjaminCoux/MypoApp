@@ -142,9 +142,7 @@ class _StateSwitchButton extends State<SwitchButton> {
     }
   }
 
-  /*
-     This function return the status of the message after sending it
-  */
+  //This function return the status of the message after sending it
 
   onSendStatus(SendStatus status) {
     setState(() {

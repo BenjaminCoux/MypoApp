@@ -1,13 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/widget/boxes.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/logo_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
-import 'package:telephony/telephony.dart';
-import 'package:mypo/model/scheduledmsg_hive.dart';
 import 'sms_auto_page.dart';
 import 'sms_prog_page.dart';
 

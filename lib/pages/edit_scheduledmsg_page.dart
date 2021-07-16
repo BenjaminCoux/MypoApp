@@ -148,7 +148,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         labelText: 'Numero du contact',
                         suffixIcon: IconButton(
                             icon: Icon(Icons.person_add,
-                                size: 35, color: Colors.blue),
+                                size: 35, color: Colors.black),
                             onPressed: () =>
                                 _buildContactSelection(context, contacts)),
                         labelStyle: TextStyle(color: Colors.black),
@@ -274,13 +274,16 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Icon(Icons.timer_rounded),
                       Container(
-                        child: Text("Compte à rebours"),
+                        child: Text(
+                          "Compte à rebours",
+                        ),
                         margin: EdgeInsets.fromLTRB(
                             5,
                             0,
                             MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.51,
+                                MediaQuery.of(context).size.width * 0.57,
                             0),
                       ),
                       Switch(
@@ -305,13 +308,14 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Icon(Icons.check_circle_rounded),
                       Container(
                         child: Text("Confirmer avant envoi"),
                         margin: EdgeInsets.fromLTRB(
                             5,
                             0,
                             MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.57,
+                                MediaQuery.of(context).size.width * 0.63,
                             0),
                       ),
                       Switch(
@@ -336,13 +340,14 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Icon(Icons.notifications),
                       Container(
                         child: Text("Notification"),
                         margin: EdgeInsets.fromLTRB(
                             5,
                             0,
                             MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.41,
+                                MediaQuery.of(context).size.width * 0.47,
                             0),
                       ),
                       Switch(

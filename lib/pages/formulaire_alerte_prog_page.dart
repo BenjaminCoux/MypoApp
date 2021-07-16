@@ -184,7 +184,7 @@ class _ProgState extends State<ProgForm> {
                         labelText: 'Numero du contact',
                         suffixIcon: IconButton(
                             icon: Icon(Icons.person_add,
-                                size: 35, color: Colors.blue),
+                                size: 35, color: Colors.black),
                             onPressed: () =>
                                 _buildContactSelection(context, contacts)),
                         labelStyle: TextStyle(color: Colors.black),

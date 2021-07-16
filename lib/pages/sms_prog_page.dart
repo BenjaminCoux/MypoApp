@@ -56,9 +56,36 @@ class _SmsProgState extends State<SmsProg> {
         if (canbeSent(messages[i])) {
           Telephony.instance.sendSms(
               to: messages[i].phoneNumber, message: messages[i].message);
-          messages[i].time_till_next_send = -1;
+          updateDate(messages[i]);
         }
       }
+    }
+  }
+
+  void updateDate(Scheduledmsg_hive msg) {
+    final repeatOptions = [
+      'Toutes les heures',
+      'Tous les jours',
+      'Toutes les semaines',
+      'Tous les mois',
+      'Tous les ans'
+    ];
+    int hour = 3600000;
+    if (msg.repeat == repeatOptions[0]) {
+      msg.date = DateTime.fromMillisecondsSinceEpoch(
+          msg.date.millisecondsSinceEpoch + hour);
+    } else if (msg.repeat == repeatOptions[1]) {
+      msg.date = DateTime.fromMillisecondsSinceEpoch(
+          msg.date.millisecondsSinceEpoch + 24 * (hour));
+    } else if (msg.repeat == repeatOptions[2]) {
+      msg.date = DateTime.fromMillisecondsSinceEpoch(
+          msg.date.millisecondsSinceEpoch + 168 * hour);
+    } else if (msg.repeat == repeatOptions[3]) {
+      msg.date = DateTime.fromMillisecondsSinceEpoch(
+          msg.date.millisecondsSinceEpoch + 30 * 24 * hour);
+    } else {
+      msg.date = DateTime.fromMicrosecondsSinceEpoch(
+          msg.date.millisecondsSinceEpoch + 365 * 24 * (hour));
     }
   }
 
@@ -72,18 +99,9 @@ class _SmsProgState extends State<SmsProg> {
   ];
    */
   bool canbeSent(Scheduledmsg_hive msg) {
-    final repeatOptions = [
-      'Toutes les heures',
-      'Tous les jours',
-      'Toutes les semaines',
-      'Tous les mois',
-      'Tous les ans'
-    ];
-    msg.set_Time_till_next_send();
     int now = DateTime.now().millisecondsSinceEpoch;
     int msgdate = msg.date.millisecondsSinceEpoch;
-    String repeatOption = msg.repeat;
-    if (DateTime.now().millisecondsSinceEpoch > msg.time_till_next_send) {
+    if (now >= msgdate) {
       return true;
     } else {
       return false;

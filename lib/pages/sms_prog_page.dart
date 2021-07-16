@@ -87,6 +87,7 @@ class _SmsProgState extends State<SmsProg> {
       msg.date = DateTime.fromMicrosecondsSinceEpoch(
           msg.date.millisecondsSinceEpoch + 365 * 24 * (hour));
     }
+    msg.save();
   }
 
   /**

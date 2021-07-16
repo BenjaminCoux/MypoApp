@@ -173,11 +173,11 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   ),
                 ),
                 buildTextField(
-                    'Message', '${widget.message.message}', alertContent, 3),
+                    'Message', '${widget.message.message}', alertContent, 1),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
@@ -194,12 +194,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         padding: EdgeInsets.all(0),
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
                           child: OutlinedButton(
                             // onPressed: null,
                             onPressed: () => showSheet(context,
@@ -210,6 +204,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             }),
 
                             style: OutlinedButton.styleFrom(
+                              backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
                               padding: EdgeInsets.symmetric(horizontal: 50),
                               shape: RoundedRectangleBorder(
@@ -219,7 +214,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             child: Text(
                               "Changer la date ",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 14,
                                 letterSpacing: 1.5,
                               ),
@@ -235,12 +230,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         padding: EdgeInsets.all(0),
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
                           child: OutlinedButton(
                             // onPressed: null,
                             onPressed: () => showSheet(context,
@@ -253,6 +242,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             }),
 
                             style: OutlinedButton.styleFrom(
+                              backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
                               padding: EdgeInsets.symmetric(horizontal: 50),
                               shape: RoundedRectangleBorder(
@@ -262,7 +252,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             child: Text(
                               "Changer la récurrence",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 14,
                                 letterSpacing: 1.5,
                               ),
@@ -274,9 +264,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
@@ -305,9 +295,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
@@ -336,9 +326,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),

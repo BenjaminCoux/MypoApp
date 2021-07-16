@@ -85,25 +85,14 @@ class _AlertScreenState extends State<AlertScreen> {
   Widget alertKeys(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.transparent,
         borderRadius: BorderRadius.all(
           Radius.circular(18),
         ),
       ),
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(12),
+      padding: EdgeInsets.all(0),
+      margin: EdgeInsets.all(0),
       child: Column(children: [
-        Container(
-            child: Padding(
-                padding: EdgeInsets.all(12),
-                child: Row(children: [
-                  Text("Clés",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                        color: d_green,
-                      ))
-                ]))),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -111,7 +100,7 @@ class _AlertScreenState extends State<AlertScreen> {
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.45,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.all(
                   Radius.circular(18),
                 ),
@@ -149,9 +138,8 @@ class _AlertScreenState extends State<AlertScreen> {
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.45,
-              padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.all(
                   Radius.circular(18),
                 ),
@@ -185,18 +173,20 @@ class _AlertScreenState extends State<AlertScreen> {
               Radius.circular(18),
             ),
           ),
-          //margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Padding(
             padding: EdgeInsets.all(0),
             child: TextField(
+              onChanged: (String value) => {setState(() {})},
               maxLines: 1,
-              onSubmitted: (String? txt) => {},
+              onSubmitted: (String? txt) => {setState(() {})},
               controller: keyName,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 suffixIcon: IconButton(
                     icon: Icon(
-                      Icons.add,
-                      size: 35,
+                      Icons.add_box_rounded,
+                      size: 30,
                       color: d_green,
                     ),
                     onPressed: () {
@@ -214,13 +204,14 @@ class _AlertScreenState extends State<AlertScreen> {
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey.shade300)),
+                    borderSide: BorderSide(color: Colors.transparent)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
+                contentPadding: EdgeInsets.all(8),
                 hintText: "Ajoutez une clé à l'alerte ",
                 hintStyle: TextStyle(
                   fontSize: 16,
@@ -293,7 +284,7 @@ class _AlertScreenState extends State<AlertScreen> {
   @override
   Widget build(BuildContext context) {
     final DateSymbols fr = dateTimeSymbolMap()['fr'];
-    print(widget.alerte.days);
+    // print(widget.alerte.days);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
@@ -314,135 +305,282 @@ class _AlertScreenState extends State<AlertScreen> {
               children: <Widget>[
                 buildTextField('Nom', '${widget.alerte.title}', alertName, 1),
                 buildTextField(
-                    'Message', '${widget.alerte.content}', alertContent, 3),
-                alertKeys(context),
+                    'Message', '${widget.alerte.content}', alertContent, 1),
+                Container(
+                  margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
+                  child: Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Cibles",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black),
+                          )
+                        ],
+                      )),
+                ),
                 Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.all(
                         Radius.circular(18),
                       ),
                     ),
-                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Wrap(children: [
-                      Container(
-                          child: Padding(
-                              padding: EdgeInsets.all(12),
-                              child: Row(children: [
-                                Text("Jours",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
-                                      color: d_green,
-                                    ))
-                              ]))),
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Column(
-                            children: [
-                              WeekdaySelector(
-                                weekdays: fr.STANDALONEWEEKDAYS,
-                                // shortWeekdays: fr.STANDALONENARROWWEEKDAYS,
-                                shortWeekdays: fr.STANDALONESHORTWEEKDAYS,
-                                firstDayOfWeek: fr.FIRSTDAYOFWEEK + 1,
-                                selectedFillColor: d_green,
-                                fillColor: Colors.grey.shade100,
-                                onChanged: (v) {
-                                  setState(() {
-                                    widget.alerte.days[v % 7] =
-                                        !widget.alerte.days[v % 7];
-                                    hasChanged = true;
-                                  });
-                                },
-                                values: List<bool>.from(widget.alerte.days),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ])),
-                SizedBox(height: 35),
-                Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(18),
-                      ),
-                    ),
-                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Column(
+                    margin: EdgeInsets.all(0),
+                    child: Row(
                       children: [
-                        Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Row(children: [
-                              Container(
-                                child: Text("Cibles",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
-                                      color: d_green,
-                                    )),
-                              )
-                            ])),
-                        Container(
-                          child: Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Column(
-                                children: [
-                                  CheckboxListTile(
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                      secondary: Icon(Icons.contact_page,
-                                          color: widget.alerte.cibles[0]
-                                              ? Colors.blue
-                                              : Colors.grey.shade500),
-                                      title: Text("Numéros Enregistrés"),
-                                      activeColor: d_green,
-                                      value: widget.alerte.cibles[0],
-                                      onChanged: (bool? value) => {
-                                            setState(() {
-                                              hasChanged = true;
-                                              widget.alerte.cibles[0] = value!;
-                                            })
-                                          }),
-                                  CheckboxListTile(
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                      secondary: Icon(Icons.sms_rounded,
-                                          color: widget.alerte.cibles[1]
-                                              ? Colors.blue
-                                              : Colors.grey.shade500),
-                                      title: Text("SMS reçu"),
-                                      activeColor: d_green,
-                                      value: widget.alerte.cibles[1],
-                                      onChanged: (bool? value) => {
-                                            setState(() {
-                                              hasChanged = true;
-                                              widget.alerte.cibles[1] = value!;
-                                            })
-                                          }),
-                                  CheckboxListTile(
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                      secondary: Icon(Icons.call,
-                                          color: widget.alerte.cibles[2]
-                                              ? Colors.blue
-                                              : Colors.grey.shade500),
-                                      title: Text("Appels Manqués"),
-                                      activeColor: d_green,
-                                      value: widget.alerte.cibles[2],
-                                      onChanged: (bool? value) => {
-                                            setState(() {
-                                              hasChanged = true;
-                                              widget.alerte.cibles[2] = value!;
-                                            })
-                                          }),
-                                ],
-                              )),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: Column(children: [
+                            Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(0),
+                                child: Column(
+                                  children: [
+                                    CheckboxListTile(
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        title: Text(
+                                          "Tous",
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                        activeColor: d_green,
+                                        value: widget.alerte.cibles[0],
+                                        onChanged: (bool? value) => {
+                                              setState(() {
+                                                hasChanged = true;
+                                                widget.alerte.cibles[0] =
+                                                    value!;
+                                              })
+                                            }),
+                                    CheckboxListTile(
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        title: Text(
+                                          "Numéros non enregistrés",
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        activeColor: d_green,
+                                        value: widget.alerte.cibles[1],
+                                        onChanged: (bool? value) => {
+                                              setState(() {
+                                                hasChanged = true;
+                                                widget.alerte.cibles[1] =
+                                                    value!;
+                                              })
+                                            }),
+                                    CheckboxListTile(
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        title: Text(
+                                          "SMS reçu",
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        activeColor: d_green,
+                                        value: widget.alerte.cibles[2],
+                                        onChanged: (bool? value) => {
+                                              setState(() {
+                                                hasChanged = true;
+                                                widget.alerte.cibles[2] =
+                                                    value!;
+                                              })
+                                            }),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ]),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: Column(children: [
+                            Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(0),
+                                child: Column(
+                                  children: [
+                                    CheckboxListTile(
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        title: Text(
+                                          "Contacts uniquement",
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        activeColor: d_green,
+                                        value: widget.alerte.cibles[0],
+                                        onChanged: (bool? value) => {
+                                              setState(() {
+                                                hasChanged = true;
+                                                widget.alerte.cibles[0] =
+                                                    value!;
+                                              })
+                                            }),
+                                    CheckboxListTile(
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        title: Text(
+                                          "Groupe de contact",
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        activeColor: d_green,
+                                        value: widget.alerte.cibles[1],
+                                        onChanged: (bool? value) => {
+                                              setState(() {
+                                                hasChanged = true;
+                                                widget.alerte.cibles[1] =
+                                                    value!;
+                                              })
+                                            }),
+                                    CheckboxListTile(
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        title: Text(
+                                          "Appel manqué",
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        activeColor: d_green,
+                                        value: widget.alerte.cibles[2],
+                                        onChanged: (bool? value) => {
+                                              setState(() {
+                                                hasChanged = true;
+                                                widget.alerte.cibles[2] =
+                                                    value!;
+                                              })
+                                            }),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ]),
                         ),
                       ],
                     )),
+                Container(
+                  margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
+                  child: Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Jours",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black),
+                          )
+                        ],
+                      )),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                  ),
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      WeekdaySelector(
+                        weekdays: fr.STANDALONEWEEKDAYS,
+                        // shortWeekdays: fr.STANDALONENARROWWEEKDAYS,
+                        shortWeekdays: fr.STANDALONESHORTWEEKDAYS,
+                        firstDayOfWeek: fr.FIRSTDAYOFWEEK + 1,
+                        selectedFillColor: d_green,
+                        fillColor: Colors.white,
+                        onChanged: (v) {
+                          setState(() {
+                            widget.alerte.days[v % 7] =
+                                !widget.alerte.days[v % 7];
+                            hasChanged = true;
+                          });
+                        },
+                        values: List<bool>.from(widget.alerte.days),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
+                  child: Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Contenu du message entrant",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black),
+                          )
+                        ],
+                      )),
+                ),
+                alertKeys(context),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        child: Text("Notification après réponses"),
+                        margin: EdgeInsets.fromLTRB(
+                            5,
+                            0,
+                            MediaQuery.of(context).size.width -
+                                MediaQuery.of(context).size.width * 0.64,
+                            0),
+                      ),
+                      Switch(
+                          activeColor: d_green,
+                          value: true,
+                          onChanged: (bool val) => {
+                                setState(() {
+                                  // confirm = val;
+                                })
+                              }),
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        child: Text("Règle de réponse"),
+                        margin: EdgeInsets.fromLTRB(
+                            5,
+                            0,
+                            MediaQuery.of(context).size.width -
+                                MediaQuery.of(context).size.width * 0.48,
+                            0),
+                      ),
+                      Switch(
+                          activeColor: d_green,
+                          value: true,
+                          onChanged: (bool val) => {
+                                setState(() {
+                                  // confirm = val;
+                                })
+                              }),
+                    ],
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -210,15 +210,7 @@ class _FormState extends State<FormScreen> {
           child: Padding(
             padding: const EdgeInsets.all(0),
             child: TextField(
-              onChanged: (String value) => {
-                setState(() {
-                  // set new state
-
-                  // this.contentchanged = true;
-                  // this.titlechanged = true;
-                  // this.hasChanged = true;
-                })
-              },
+              onChanged: (String value) => {setState(() {})},
               maxLines: 1,
               onSubmitted: (String? txt) => {setState(() {})},
               controller: keyName,
@@ -384,7 +376,7 @@ class _FormState extends State<FormScreen> {
                                               ListTileControlAffinity.leading,
                                           title: Text(
                                             "Tous",
-                                            style: TextStyle(fontSize: 14),
+                                            style: TextStyle(fontSize: 15),
                                           ),
                                           activeColor: d_green,
                                           value: cibles[0],

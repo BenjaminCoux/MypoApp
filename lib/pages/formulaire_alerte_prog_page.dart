@@ -209,7 +209,7 @@ class _ProgState extends State<ProgForm> {
                   ),
                 ),
                 buildTextField(
-                    'Message', "Contenu du message", alertContent, 3),
+                    'Message', "Contenu du message", alertContent, 1),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(

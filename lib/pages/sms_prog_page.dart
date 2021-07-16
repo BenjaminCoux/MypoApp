@@ -27,7 +27,7 @@ class _SmsProgState extends State<SmsProg> {
   late List<Scheduledmsg> allMessages;
   bool isLoading = false;
   // ignore: unused_field
-  late Timer _timer;
+  Timer? timer;
   String txt = "";
   int i = 0;
   final telephony = Telephony.instance;
@@ -35,12 +35,59 @@ class _SmsProgState extends State<SmsProg> {
   void initState() {
     super.initState();
     //refreshMessages();
+    timer = Timer.periodic(
+        Duration(seconds: 20),
+        (Timer t) => {
+              sendSms(),
+            });
   }
 
   @override
   void dispose() {
     // ScheduledMessagesDataBase.instance.close();
     super.dispose();
+  }
+
+  void sendSms() async {
+    List<Scheduledmsg_hive> messages =
+        Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
+    if (!messages.isEmpty) {
+      for (int i = 0; i < messages.length; i++) {
+        if (canbeSent(messages[i])) {
+          Telephony.instance.sendSms(
+              to: messages[i].phoneNumber, message: messages[i].message);
+          messages[i].time_till_next_send = -1;
+        }
+      }
+    }
+  }
+
+  /**
+   * final repeatOptions = [
+    'Toutes les heures',
+    'Tous les jours',
+    'Toutes les semaines',
+    'Tous les mois',
+    'Tous les ans'
+  ];
+   */
+  bool canbeSent(Scheduledmsg_hive msg) {
+    final repeatOptions = [
+      'Toutes les heures',
+      'Tous les jours',
+      'Toutes les semaines',
+      'Tous les mois',
+      'Tous les ans'
+    ];
+    msg.set_Time_till_next_send();
+    int now = DateTime.now().millisecondsSinceEpoch;
+    int msgdate = msg.date.millisecondsSinceEpoch;
+    String repeatOption = msg.repeat;
+    if (DateTime.now().millisecondsSinceEpoch > msg.time_till_next_send) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // SQFLITE

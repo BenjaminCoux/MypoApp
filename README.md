@@ -18,7 +18,7 @@ A new Flutter app project.
 ## Getting Started
 
 - install flutter SDK and Android SDK
- `https://flutter.dev/docs/get-started/install`
+  or see [getting started](https://flutter.dev/docs/get-started/install)
 - install flutter/dart plugins in your IDE
 - Clone the project
 - run :

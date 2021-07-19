@@ -54,9 +54,13 @@ class _SmsProgState extends State<SmsProg> {
     if (!messages.isEmpty) {
       for (int i = 0; i < messages.length; i++) {
         if (canbeSent(messages[i])) {
-          Telephony.instance.sendSms(
-              to: messages[i].phoneNumber, message: messages[i].message);
-          updateDate(messages[i]);
+          if (messages[i].confirm) {
+            confirmSend(messages[i]);
+          } else {
+            Telephony.instance.sendSms(
+                to: messages[i].phoneNumber, message: messages[i].message);
+            updateDate(messages[i]);
+          }
         }
       }
     }
@@ -73,19 +77,19 @@ class _SmsProgState extends State<SmsProg> {
     int hour = 3600000;
     if (msg.repeat == repeatOptions[0]) {
       msg.date = DateTime.fromMillisecondsSinceEpoch(
-          msg.date.millisecondsSinceEpoch + hour);
+          DateTime.now().millisecondsSinceEpoch + hour);
     } else if (msg.repeat == repeatOptions[1]) {
       msg.date = DateTime.fromMillisecondsSinceEpoch(
-          msg.date.millisecondsSinceEpoch + 24 * (hour));
+          DateTime.now().millisecondsSinceEpoch + 24 * (hour));
     } else if (msg.repeat == repeatOptions[2]) {
       msg.date = DateTime.fromMillisecondsSinceEpoch(
-          msg.date.millisecondsSinceEpoch + 168 * hour);
+          DateTime.now().millisecondsSinceEpoch + 168 * hour);
     } else if (msg.repeat == repeatOptions[3]) {
       msg.date = DateTime.fromMillisecondsSinceEpoch(
-          msg.date.millisecondsSinceEpoch + 30 * 24 * hour);
+          DateTime.now().millisecondsSinceEpoch + 30 * 24 * hour);
     } else {
       msg.date = DateTime.fromMicrosecondsSinceEpoch(
-          msg.date.millisecondsSinceEpoch + 365 * 24 * (hour));
+          DateTime.now().millisecondsSinceEpoch + 365 * 24 * (hour));
     }
     msg.save();
   }
@@ -107,6 +111,37 @@ class _SmsProgState extends State<SmsProg> {
     } else {
       return false;
     }
+  }
+
+  confirmSend(Scheduledmsg_hive msg) {
+    String content = msg.message;
+    String to = msg.phoneNumber;
+    showDialog(
+        context: context,
+        builder: (BuildContext dialog) {
+          return new AlertDialog(
+            title: Text("Voulez envoyer le message $content à $to ?"),
+            content: new Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[],
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => {
+                        Telephony.instance.sendSms(to: to, message: content),
+                        updateDate(msg),
+                        Navigator.of(context).pop(),
+                      },
+                  child: Text("oui")),
+              TextButton(
+                  onPressed: () => {
+                        Navigator.of(context).pop(),
+                      },
+                  child: Text("non"))
+            ],
+          );
+        });
   }
 
   // SQFLITE

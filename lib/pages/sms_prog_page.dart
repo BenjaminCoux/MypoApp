@@ -114,7 +114,7 @@ class _SmsProgState extends State<SmsProg> {
   }
 
   confirmSend(Scheduledmsg_hive msg) {
-    int five_min = 5000;
+    int five_min = 300000 * 6;
     String content = msg.message;
     String to = msg.phoneNumber;
     showDialog(

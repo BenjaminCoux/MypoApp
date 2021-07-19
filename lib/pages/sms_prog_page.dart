@@ -114,6 +114,7 @@ class _SmsProgState extends State<SmsProg> {
   }
 
   confirmSend(Scheduledmsg_hive msg) {
+    int five_min = 5000;
     String content = msg.message;
     String to = msg.phoneNumber;
     showDialog(
@@ -136,6 +137,8 @@ class _SmsProgState extends State<SmsProg> {
                   child: Text("oui")),
               TextButton(
                   onPressed: () => {
+                        msg.date = new DateTime.fromMillisecondsSinceEpoch(
+                            DateTime.now().millisecondsSinceEpoch + five_min),
                         Navigator.of(context).pop(),
                       },
                   child: Text("non"))

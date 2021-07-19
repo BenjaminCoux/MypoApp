@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mypo/pages/home_page.dart';
 
@@ -26,13 +28,15 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final img = NetworkImage(imagePath);
+    final img = imagePath.contains('https://')
+        ? NetworkImage(imagePath)
+        : FileImage(File(imagePath));
 
     return ClipOval(
       child: Material(
         color: Colors.transparent,
         child: Ink.image(
-            image: img,
+            image: img as ImageProvider,
             fit: BoxFit.cover,
             width: 130,
             height: 130,
@@ -45,14 +49,24 @@ class ProfileWidget extends StatelessWidget {
       color: Colors.white,
       all: 3,
       child: buildCircle(
-        color: color,
-        all: 8,
-        child: Icon(
-          isEdit ? Icons.add_a_photo : Icons.edit,
-          color: Colors.white,
-          size: 20,
-        ),
-      ));
+          color: color,
+          all: 8,
+          // child: Icon(
+          //   isEdit ? Icons.add_a_photo : Icons.edit,
+          //   color: Colors.white,
+          //   size: 20,
+          // ),
+          child: SizedBox(
+            height: 30,
+            width: 30,
+            child: IconButton(
+              icon: isEdit
+                  ? Icon(Icons.add_a_photo, size: 20)
+                  : Icon(Icons.edit, size: 20),
+              color: Colors.white,
+              onPressed: onClicked,
+            ),
+          )));
 
   buildCircle({
     required Widget child,

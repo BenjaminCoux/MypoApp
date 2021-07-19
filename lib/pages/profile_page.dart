@@ -23,6 +23,9 @@ class _ProfilePageState extends State<ProfilePage> {
         body: ListView(
           physics: BouncingScrollPhysics(),
           children: [
+            const SizedBox(
+              height: 15,
+            ),
             ProfileWidget(
               imagePath: user.imagePath,
               onClicked: () async {
@@ -43,10 +46,6 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 24,
             ),
-            buildAbout(user),
-            const SizedBox(
-              height: 24,
-            ),
           ],
         ));
   }
@@ -54,27 +53,158 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildUserInfo(User user) => Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(user.name,
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              )),
-          const SizedBox(
-            height: 4,
+          Container(
+            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
+            child: Padding(
+                padding: EdgeInsets.all(0),
+                child: Row(
+                  children: [
+                    Text(
+                      "Nom",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                    )
+                  ],
+                )),
           ),
-          Text("email : ${user.email}",
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: d_darkgray)),
-          const SizedBox(
-            height: 4,
+          Container(
+            margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  child: Text(
+                    user.name,
+                    style: TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
-          Text("number : ${user.phoneNumber}",
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: d_darkgray))
+          Container(
+            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
+            child: Padding(
+                padding: EdgeInsets.all(0),
+                child: Row(
+                  children: [
+                    Text(
+                      "Prenom",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                    )
+                  ],
+                )),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  child: Text(
+                    user.name,
+                    style: TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
+            child: Padding(
+                padding: EdgeInsets.all(0),
+                child: Row(
+                  children: [
+                    Text(
+                      "Email",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                    )
+                  ],
+                )),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  child: Text(
+                    user.email,
+                    style: TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
+            child: Padding(
+                padding: EdgeInsets.all(0),
+                child: Row(
+                  children: [
+                    Text(
+                      "Téléphone",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                    )
+                  ],
+                )),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  child: Text(
+                    user.phoneNumber,
+                    style: TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       );
 

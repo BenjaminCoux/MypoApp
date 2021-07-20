@@ -32,6 +32,7 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
           label: '',
         ),
         BottomNavigationBarItem(
+          tooltip: "Accueil",
           icon: IconButton(
             icon: Icon(
               Icons.home,
@@ -86,6 +87,7 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
           label: '',
         ),
         BottomNavigationBarItem(
+          tooltip: "Accueil",
           icon: IconButton(
             icon: Icon(
               Icons.home,

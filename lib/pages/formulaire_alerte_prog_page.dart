@@ -186,18 +186,22 @@ class _ProgState extends State<ProgForm> {
                             icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.black),
                             onPressed: () async {
-                              final contact = await ContactsService
-                                  .openDeviceContactPicker();
-                              if (contact != null) {
-                                if (contactController.text.isEmpty) {
-                                  contactController.text =
-                                      (contact.phones?.elementAt(0).value! ??
-                                          '');
-                                } else {
-                                  contactController.text += ', ' +
-                                      (contact.phones?.elementAt(0).value! ??
-                                          '');
+                              try {
+                                final contact = await ContactsService
+                                    .openDeviceContactPicker();
+                                if (contact != null) {
+                                  if (contactController.text.isEmpty) {
+                                    contactController.text =
+                                        (contact.phones?.elementAt(0).value! ??
+                                            '');
+                                  } else {
+                                    contactController.text += ', ' +
+                                        (contact.phones?.elementAt(0).value! ??
+                                            '');
+                                  }
                                 }
+                              } catch (e) {
+                                debugPrint(e.toString());
                               }
                             }),
                         //_buildContactSelection(context, contacts)),

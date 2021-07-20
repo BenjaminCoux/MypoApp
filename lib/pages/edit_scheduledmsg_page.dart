@@ -149,8 +149,25 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         suffixIcon: IconButton(
                             icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.black),
-                            onPressed: () =>
-                                _buildContactSelection(context, contacts)),
+                            onPressed: () async {
+                              try {
+                                final contact = await ContactsService
+                                    .openDeviceContactPicker();
+                                if (contact != null) {
+                                  if (alertContact.text.isEmpty) {
+                                    alertContact.text =
+                                        (contact.phones?.elementAt(0).value! ??
+                                            '');
+                                  } else {
+                                    alertContact.text += ', ' +
+                                        (contact.phones?.elementAt(0).value! ??
+                                            '');
+                                  }
+                                }
+                              } catch (e) {
+                                debugPrint(e.toString());
+                              }
+                            }),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),

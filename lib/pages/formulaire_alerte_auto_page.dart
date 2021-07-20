@@ -32,7 +32,11 @@ class _FormState extends State<FormScreen> {
   final keyName = TextEditingController();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final week = [false, false, false, false, false, false, false];
-  final cibles = [false, false, false];
+  final cibles = [
+    false,
+    false,
+    false,
+  ];
   int _value = 1;
   bool _value2 = true;
   var db;
@@ -244,7 +248,7 @@ class _FormState extends State<FormScreen> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
                 contentPadding: EdgeInsets.all(8),
-                hintText: "Ajoutez une clé à l'alerte ",
+                hintText: "Ajoutez un mot-clé à l'alerte ",
                 hintStyle: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
@@ -311,7 +315,7 @@ class _FormState extends State<FormScreen> {
                                         ]))))
                       ]);
                 })
-            : Text("Pas encore de clés pour cette alerte"),
+            : Text("Pas encore de clé pour cette alerte"),
       ]),
     );
   }
@@ -552,7 +556,7 @@ class _FormState extends State<FormScreen> {
                         ),
                         Switch(
                             activeColor: d_green,
-                            value: true,
+                            value: false,
                             onChanged: (bool val) => {
                                   setState(() {
                                     // confirm = val;
@@ -582,7 +586,7 @@ class _FormState extends State<FormScreen> {
                         ),
                         Switch(
                             activeColor: d_green,
-                            value: true,
+                            value: false,
                             onChanged: (bool val) => {
                                   setState(() {
                                     // confirm = val;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/widget/hamburgermenu_widget.dart';
 
 import '../main.dart';
 
@@ -15,7 +14,6 @@ class _RepportsPageState extends State<RepportsPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: "Rapport des alertes émises"),
-      drawer: HamburgerMenu(),
       body: Rapport(),
     );
   }

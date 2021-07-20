@@ -3,6 +3,7 @@ import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/pages/formulaire_alerte_prog_page.dart';
 import 'package:mypo/pages/help_page.dart';
 import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/pages/repports_page.dart';
 import 'package:mypo/pages/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -248,7 +249,7 @@ class _StateBottomNavigationBarSection
       selectedItemColor: Colors.white,
       items: [
         BottomNavigationBarItem(
-          tooltip: 'test',
+          tooltip: "Temps d'accès",
           icon: IconButton(
               icon: Icon(
                 Icons.access_time,
@@ -259,17 +260,22 @@ class _StateBottomNavigationBarSection
           label: '',
         ),
         BottomNavigationBarItem(
+          tooltip: 'Rapport',
           icon: IconButton(
             icon: Icon(
               Icons.my_library_books_rounded,
               color: Colors.white,
               size: 50,
             ),
-            onPressed: null,
+            onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new RepportsPage()),
+            ),
           ),
           label: '',
         ),
         BottomNavigationBarItem(
+          tooltip: 'Aide',
           icon: IconButton(
             icon: Icon(
               Icons.help_outline,
@@ -285,6 +291,7 @@ class _StateBottomNavigationBarSection
           label: '',
         ),
         BottomNavigationBarItem(
+          tooltip: 'Paramètres',
           icon: IconButton(
             icon: Icon(
               Icons.settings_outlined,

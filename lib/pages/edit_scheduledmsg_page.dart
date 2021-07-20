@@ -369,7 +369,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          padding: EdgeInsets.symmetric(horizontal: 40),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -383,7 +383,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           ),
                         },
                         child: Text(
-                          "CANCEL",
+                          "Annuler",
                           style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.2,
@@ -397,7 +397,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       child: ElevatedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor: d_green,
-                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          padding: EdgeInsets.symmetric(horizontal: 40),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -412,7 +412,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                   builder: (context) => new SmsProg()));
                         },
                         child: Text(
-                          "SAVE",
+                          "Sauvegarder",
                           style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.2,

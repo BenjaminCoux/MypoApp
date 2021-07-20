@@ -185,8 +185,22 @@ class _ProgState extends State<ProgForm> {
                         suffixIcon: IconButton(
                             icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.black),
-                            onPressed: () =>
-                                _buildContactSelection(context, contacts)),
+                            onPressed: () async {
+                              final contact = await ContactsService
+                                  .openDeviceContactPicker();
+                              if (contact != null) {
+                                if (contactController.text.isEmpty) {
+                                  contactController.text =
+                                      (contact.phones?.elementAt(0).value! ??
+                                          '');
+                                } else {
+                                  contactController.text += ', ' +
+                                      (contact.phones?.elementAt(0).value! ??
+                                          '');
+                                }
+                              }
+                            }),
+                        //_buildContactSelection(context, contacts)),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -522,6 +536,7 @@ class _ProgState extends State<ProgForm> {
     );
   }
 
+  // ignore: unused_element
   _buildContactSelection(BuildContext context, var contacts) {
     showDialog(
         context: context,

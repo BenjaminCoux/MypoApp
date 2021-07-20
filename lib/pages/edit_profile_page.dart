@@ -7,7 +7,6 @@ import 'package:mypo/model/user.dart';
 import 'package:mypo/utils/user_preferences.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
-import 'package:mypo/widget/textfield_widget.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'home_page.dart';
@@ -71,7 +70,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        padding: EdgeInsets.symmetric(horizontal: 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -82,7 +81,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             builder: (context) => new ProfilePage()),
                       ),
                       child: Text(
-                        "CANCEL",
+                        "Annuler",
                         style: TextStyle(
                           fontSize: 14,
                           letterSpacing: 2.2,
@@ -96,7 +95,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     child: ElevatedButton(
                       style: OutlinedButton.styleFrom(
                         backgroundColor: d_green,
-                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        padding: EdgeInsets.symmetric(horizontal: 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -106,7 +105,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         Navigator.of(context).pop(context);
                       },
                       child: Text(
-                        "SAVE",
+                        "Sauvegarder",
                         style: TextStyle(
                           fontSize: 14,
                           letterSpacing: 2.2,

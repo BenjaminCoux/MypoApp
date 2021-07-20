@@ -6,7 +6,6 @@ import 'package:mypo/widget/button_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 
 import 'edit_profile_page.dart';
-import 'home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override

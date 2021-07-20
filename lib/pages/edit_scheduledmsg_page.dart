@@ -272,28 +272,35 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     ),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.timer_rounded),
-                      Container(
-                        child: Text(
-                          "Compte à rebours",
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.79,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.timer_rounded),
+                              Container(
+                                  child: Text(
+                                    "Compte à rebours",
+                                  ),
+                                  margin: EdgeInsets.all(5)),
+                            ],
+                          )),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Switch(
+                                activeColor: d_green,
+                                value: countdown,
+                                onChanged: (bool val) => {
+                                      setState(() {
+                                        countdown = val;
+                                      })
+                                    }),
+                          ],
                         ),
-                        margin: EdgeInsets.fromLTRB(
-                            5,
-                            0,
-                            MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.57,
-                            0),
                       ),
-                      Switch(
-                          activeColor: d_green,
-                          value: countdown,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  countdown = val;
-                                })
-                              }),
                     ],
                   ),
                 ),
@@ -306,26 +313,33 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     ),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.check_circle_rounded),
-                      Container(
-                        child: Text("Confirmer avant envoi"),
-                        margin: EdgeInsets.fromLTRB(
-                            5,
-                            0,
-                            MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.63,
-                            0),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.79,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.check_circle_rounded),
+                              Container(
+                                  child: Text("Confirmer avant envoi"),
+                                  margin: EdgeInsets.all(5)),
+                            ],
+                          )),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Switch(
+                                activeColor: d_green,
+                                value: confirm,
+                                onChanged: (bool val) => {
+                                      setState(() {
+                                        confirm = val;
+                                      })
+                                    }),
+                          ],
+                        ),
                       ),
-                      Switch(
-                          activeColor: d_green,
-                          value: confirm,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  confirm = val;
-                                })
-                              }),
                     ],
                   ),
                 ),
@@ -338,26 +352,33 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     ),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.notifications),
-                      Container(
-                        child: Text("Notification"),
-                        margin: EdgeInsets.fromLTRB(
-                            5,
-                            0,
-                            MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.47,
-                            0),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.79,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.notifications),
+                              Container(
+                                  child: Text("Notification"),
+                                  margin: EdgeInsets.all(5)),
+                            ],
+                          )),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Switch(
+                                activeColor: d_green,
+                                value: notification,
+                                onChanged: (bool val) => {
+                                      setState(() {
+                                        notification = val;
+                                      })
+                                    }),
+                          ],
+                        ),
                       ),
-                      Switch(
-                          activeColor: d_green,
-                          value: notification,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  notification = val;
-                                })
-                              }),
                     ],
                   ),
                 ),

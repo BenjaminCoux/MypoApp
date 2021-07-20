@@ -34,6 +34,7 @@ class _AlertScreenState extends State<AlertScreen> {
   bool _value2 = true;
   final keyName = TextEditingController();
   List<bool> boolWeek = <bool>[];
+  final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
 
   @override
   void initState() {
@@ -80,6 +81,33 @@ class _AlertScreenState extends State<AlertScreen> {
     } else {
       return Colors.grey.shade300;
     }
+  }
+
+  void showSnackBar(BuildContext context, String s) {
+    final snackBar = SnackBar(
+      content: Text(s, style: TextStyle(fontSize: 20)),
+    );
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
+  bool verifieCle(String nom) {
+    if (nom.length > 10) {
+      showSnackBar(context, '10 characters maximum.');
+      return false;
+    }
+    for (int i = 0; i < widget.alerte.keys.length; i++) {
+      if (widget.alerte.keys[i].name == nom) {
+        showSnackBar(context, 'Clé déjà existante.');
+        return false;
+      }
+    }
+    if (!alphanumeric.hasMatch(nom)) {
+      showSnackBar(context, 'Characters invalides.');
+      return false;
+    }
+    return true;
   }
 
   Widget alertKeys(BuildContext context) {
@@ -190,7 +218,7 @@ class _AlertScreenState extends State<AlertScreen> {
                       color: d_green,
                     ),
                     onPressed: () {
-                      if (keyName.text != '') {
+                      if (keyName.text != '' && verifieCle(keyName.text)) {
                         setState(() {
                           widget.alerte.keys.add(new AlertKey(
                               name: keyName.text,
@@ -410,11 +438,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                           style: TextStyle(fontSize: 15),
                                         ),
                                         activeColor: d_green,
-                                        value: widget.alerte.cibles[0],
+                                        value: widget.alerte.cibles[3],
                                         onChanged: (bool? value) => {
                                               setState(() {
                                                 hasChanged = true;
-                                                widget.alerte.cibles[0] =
+                                                widget.alerte.cibles[3] =
                                                     value!;
                                               })
                                             }),
@@ -426,11 +454,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                           style: TextStyle(fontSize: 15),
                                         ),
                                         activeColor: d_green,
-                                        value: widget.alerte.cibles[1],
+                                        value: widget.alerte.cibles[4],
                                         onChanged: (bool? value) => {
                                               setState(() {
                                                 hasChanged = true;
-                                                widget.alerte.cibles[1] =
+                                                widget.alerte.cibles[4] =
                                                     value!;
                                               })
                                             }),
@@ -442,11 +470,11 @@ class _AlertScreenState extends State<AlertScreen> {
                                           style: TextStyle(fontSize: 15),
                                         ),
                                         activeColor: d_green,
-                                        value: widget.alerte.cibles[2],
+                                        value: widget.alerte.cibles[5],
                                         onChanged: (bool? value) => {
                                               setState(() {
                                                 hasChanged = true;
-                                                widget.alerte.cibles[2] =
+                                                widget.alerte.cibles[5] =
                                                     value!;
                                               })
                                             }),
@@ -623,13 +651,23 @@ class _AlertScreenState extends State<AlertScreen> {
                           ),
                         ),
                         onPressed: () {
-                          save();
-                          print(widget.alerte.days);
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => new SmsAuto()));
+                          if (alertName.text != '' &&
+                              alertContent.text != '' &&
+                              alphanumeric.hasMatch(alertName.text)) {
+                            save();
+
+                            //print(widget.alerte.days);
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => new SmsAuto()));
+                          } else if (!alphanumeric.hasMatch(alertName.text)) {
+                            showSnackBar(context, 'Characters invalides.');
+                          } else {
+                            showSnackBar(
+                                context, 'Veuillez completer tous les champs.');
+                          }
                         },
                         child: Text(
                           "Sauvegarder",

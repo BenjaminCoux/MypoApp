@@ -36,11 +36,16 @@ class _FormState extends State<FormScreen> {
     false,
     false,
     false,
+    false,
+    false,
+    false,
   ];
   int _value = 1;
   bool _value2 = true;
   var db;
   List<AlertKey> keys = <AlertKey>[];
+  final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -97,6 +102,33 @@ class _FormState extends State<FormScreen> {
     } else {
       return Colors.grey.shade300;
     }
+  }
+
+  void showSnackBar(BuildContext context, String s) {
+    final snackBar = SnackBar(
+      content: Text(s, style: TextStyle(fontSize: 20)),
+    );
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
+  bool verifieCle(String nom) {
+    if (nom.length > 10) {
+      showSnackBar(context, '10 characters maximum.');
+      return false;
+    }
+    for (int i = 0; i < keys.length; i++) {
+      if (keys[i].name == nom) {
+        showSnackBar(context, 'Clé déjà existante.');
+        return false;
+      }
+    }
+    if (!alphanumeric.hasMatch(nom)) {
+      showSnackBar(context, 'Characters invalides.');
+      return false;
+    }
+    return true;
   }
 
   Widget weekSelector(BuildContext context) {
@@ -227,7 +259,7 @@ class _FormState extends State<FormScreen> {
                       color: d_green,
                     ),
                     onPressed: () {
-                      if (keyName.text != '') {
+                      if (keyName.text != '' && verifieCle(keyName.text)) {
                         setState(() {
                           keys.add(new AlertKey(
                               name: keyName.text,
@@ -439,10 +471,10 @@ class _FormState extends State<FormScreen> {
                                             style: TextStyle(fontSize: 15),
                                           ),
                                           activeColor: d_green,
-                                          value: cibles[0],
+                                          value: cibles[3],
                                           onChanged: (bool? value) => {
                                                 setState(() {
-                                                  cibles[0] = value!;
+                                                  cibles[3] = value!;
                                                 })
                                               }),
                                       CheckboxListTile(
@@ -453,10 +485,10 @@ class _FormState extends State<FormScreen> {
                                             style: TextStyle(fontSize: 15),
                                           ),
                                           activeColor: d_green,
-                                          value: cibles[1],
+                                          value: cibles[4],
                                           onChanged: (bool? value) => {
                                                 setState(() {
-                                                  cibles[1] = value!;
+                                                  cibles[4] = value!;
                                                 })
                                               }),
                                       CheckboxListTile(
@@ -467,10 +499,10 @@ class _FormState extends State<FormScreen> {
                                             style: TextStyle(fontSize: 15),
                                           ),
                                           activeColor: d_green,
-                                          value: cibles[2],
+                                          value: cibles[5],
                                           onChanged: (bool? value) => {
                                                 setState(() {
-                                                  cibles[2] = value!;
+                                                  cibles[5] = value!;
                                                 })
                                               }),
                                     ],
@@ -604,17 +636,28 @@ class _FormState extends State<FormScreen> {
                       ),
                     ),
                     onPressed: () => {
-                      if (alertName.text != '')
+                      if (alertName.text != '' &&
+                          alertContent != '' &&
+                          !keys.isEmpty &&
+                          alphanumeric.hasMatch(alertName.text)
+
+                      // && alphanumeric.hasMatch(alertContent.text)
+                      )
                         {
                           saveAlert(alertName.text, alertContent.text, week,
                               cibles, keys),
-                        },
-                      Navigator.pop(context),
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new SmsAuto()),
-                      )
+                          Navigator.pop(context),
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new SmsAuto()),
+                          )
+                        }
+                      else
+                        {
+                          showSnackBar(
+                              context, 'Veuillez completer tous les champs.')
+                        }
                     },
                     child: Text(
                       "Valider",

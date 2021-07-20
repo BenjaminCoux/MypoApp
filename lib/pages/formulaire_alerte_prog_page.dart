@@ -27,7 +27,7 @@ class _ProgState extends State<ProgForm> {
   bool confirm = false;
   bool notif = false;
   final week = [false, false, false, false, false, false, false];
-  final cibles = [false, false, false];
+  final cibles = [false, false, false, false, false, false];
   bool SMS = false;
   bool Tel = false;
   bool MMS = false;
@@ -315,105 +315,8 @@ class _ProgState extends State<ProgForm> {
                     ],
                   ),
                 ),
-                // Container(
-                //   width: double.infinity,
-                //   decoration: BoxDecoration(
-                //     color: Colors.transparent,
-                //     borderRadius: BorderRadius.all(
-                //       Radius.circular(0),
-                //     ),
-                //   ),
-                //   margin: EdgeInsets.all(10),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //     children: [
-                //       Padding(
-                //         padding: EdgeInsets.all(0),
-                //         child: Container(
-                //           margin: EdgeInsets.all(2),
-                //           child: OutlinedButton(
-                //             // onPressed: null,
-                //             onPressed: () => showSheet(context,
-                //                 child: buildDatePicker(), onClicked: () {
-                //               final value =
-                //                   DateFormat('dd/MM/yyyy HH:mm').format(date);
-                //               showSnackBar(context, 'Date "$value"');
-                //               Navigator.pop(context);
-                //             }),
-
-                //             style: OutlinedButton.styleFrom(
-                //               backgroundColor: d_green,
-                //               side: BorderSide(color: d_green, width: 2),
-                //               padding: EdgeInsets.symmetric(horizontal: 20),
-                //               shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(18),
-                //               ),
-                //             ),
-                //             child: Text(
-                //               "Date",
-                //               style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 14,
-                //                 letterSpacing: 2.2,
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //       Padding(
-                //         padding: EdgeInsets.all(0),
-                //         child: Container(
-                //           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                //           child: OutlinedButton(
-                //             // onPressed: null,
-                //             onPressed: () => showSheet(context,
-                //                 child: buildRepeatOptions(), onClicked: () {
-                //               repeatinput = repeatOptions[index];
-                //               showSnackBar(context, 'Option "${repeatinput}"');
-                //               Navigator.pop(context);
-                //               // print(rebours);
-                //               // print(confirm);
-                //               // print(notif);
-                //             }),
-
-                //             style: OutlinedButton.styleFrom(
-                //               backgroundColor: d_green,
-                //               side: BorderSide(color: d_green, width: 2),
-                //               padding: EdgeInsets.symmetric(horizontal: 20),
-                //               shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(20),
-                //               ),
-                //             ),
-                //             child: Text(
-                //               "Récurrence",
-                //               style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 14,
-                //                 letterSpacing: 2.2,
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // Container(
-                //   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                //   decoration: BoxDecoration(
-                //     color: Colors.transparent,
-                //     borderRadius: BorderRadius.all(
-                //       Radius.circular(18),
-                //     ),
-                //   ),
-                //   child: ListView(
-                //     children: <Widget>[
-                //       ListTile(title: Text('test')),
-                //     ],
-                //   ),
-                // ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.all(
@@ -421,33 +324,40 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.timer_rounded),
-                      Container(
-                        child: Text(
-                          "Compte à rebours",
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.79,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.timer_rounded),
+                              Container(
+                                  child: Text(
+                                    "Compte à rebours",
+                                  ),
+                                  margin: EdgeInsets.all(5)),
+                            ],
+                          )),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Switch(
+                                activeColor: d_green,
+                                value: rebours,
+                                onChanged: (bool val) => {
+                                      setState(() {
+                                        rebours = val;
+                                      })
+                                    }),
+                          ],
                         ),
-                        margin: EdgeInsets.fromLTRB(
-                            5,
-                            0,
-                            MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.57,
-                            0),
                       ),
-                      Switch(
-                          activeColor: d_green,
-                          value: rebours,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  rebours = val;
-                                })
-                              }),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.all(
@@ -455,31 +365,38 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.check_circle_rounded),
-                      Container(
-                        child: Text("Confirmer avant envoi"),
-                        margin: EdgeInsets.fromLTRB(
-                            5,
-                            0,
-                            MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.63,
-                            0),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.79,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.check_circle_rounded),
+                              Container(
+                                  child: Text("Confirmer avant envoi"),
+                                  margin: EdgeInsets.all(5)),
+                            ],
+                          )),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Switch(
+                                activeColor: d_green,
+                                value: confirm,
+                                onChanged: (bool val) => {
+                                      setState(() {
+                                        confirm = val;
+                                      })
+                                    }),
+                          ],
+                        ),
                       ),
-                      Switch(
-                          activeColor: d_green,
-                          value: confirm,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  confirm = val;
-                                })
-                              }),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.all(
@@ -487,30 +404,36 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.notifications),
-                      Container(
-                        child: Text("Notification"),
-                        margin: EdgeInsets.fromLTRB(
-                            5,
-                            0,
-                            MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.47,
-                            0),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.79,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.notifications),
+                              Container(
+                                  child: Text("Notification"),
+                                  margin: EdgeInsets.all(5)),
+                            ],
+                          )),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Switch(
+                                activeColor: d_green,
+                                value: notif,
+                                onChanged: (bool val) => {
+                                      setState(() {
+                                        notif = val;
+                                      })
+                                    }),
+                          ],
+                        ),
                       ),
-                      Switch(
-                          activeColor: d_green,
-                          value: notif,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  notif = val;
-                                })
-                              }),
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.all(0),
                   child: Container(

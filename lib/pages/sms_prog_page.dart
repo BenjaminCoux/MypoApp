@@ -139,6 +139,7 @@ class _SmsProgState extends State<SmsProg> {
                   onPressed: () => {
                         msg.date = new DateTime.fromMillisecondsSinceEpoch(
                             DateTime.now().millisecondsSinceEpoch + five_min),
+                        msg.save(),
                         Navigator.of(context).pop(),
                       },
                   child: Text("non"))

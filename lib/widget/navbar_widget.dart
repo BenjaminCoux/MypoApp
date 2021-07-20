@@ -35,7 +35,7 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
           icon: IconButton(
             icon: Icon(
               Icons.home,
-              size: 50,
+              size: 45,
               color: Colors.white,
             ),
             onPressed: () => Navigator.push(

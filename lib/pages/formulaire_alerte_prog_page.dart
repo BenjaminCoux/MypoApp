@@ -229,17 +229,21 @@ class _ProgState extends State<ProgForm> {
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(0),
+                      Radius.circular(18),
                     ),
                   ),
-                  margin: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
                     children: [
+                      Container(
+                        child: Text(
+                            "\ndate: ${DateFormat('dd/MM/yyyy').format(date)} \nheure: ${DateFormat('HH:mm').format(date)} ",
+                            style: TextStyle(fontSize: 16)),
+                      ),
                       Padding(
                         padding: EdgeInsets.all(0),
                         child: Container(
-                          margin: EdgeInsets.all(2),
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: OutlinedButton(
                             // onPressed: null,
                             onPressed: () => showSheet(context,
@@ -253,21 +257,25 @@ class _ProgState extends State<ProgForm> {
                             style: OutlinedButton.styleFrom(
                               backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
-                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              padding: EdgeInsets.symmetric(horizontal: 50),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
                             child: Text(
-                              "Date",
+                              "Date ",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
-                                letterSpacing: 2.2,
+                                letterSpacing: 1.5,
                               ),
                             ),
                           ),
                         ),
+                      ),
+                      Container(
+                        child: Text("récurrence: ${repeatinput} ",
+                            style: TextStyle(fontSize: 16)),
                       ),
                       Padding(
                         padding: EdgeInsets.all(0),
@@ -288,7 +296,7 @@ class _ProgState extends State<ProgForm> {
                             style: OutlinedButton.styleFrom(
                               backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
-                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              padding: EdgeInsets.symmetric(horizontal: 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -298,7 +306,7 @@ class _ProgState extends State<ProgForm> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
-                                letterSpacing: 2.2,
+                                letterSpacing: 1.5,
                               ),
                             ),
                           ),
@@ -307,6 +315,89 @@ class _ProgState extends State<ProgForm> {
                     ],
                   ),
                 ),
+                // Container(
+                //   width: double.infinity,
+                //   decoration: BoxDecoration(
+                //     color: Colors.transparent,
+                //     borderRadius: BorderRadius.all(
+                //       Radius.circular(0),
+                //     ),
+                //   ),
+                //   margin: EdgeInsets.all(10),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: [
+                //       Padding(
+                //         padding: EdgeInsets.all(0),
+                //         child: Container(
+                //           margin: EdgeInsets.all(2),
+                //           child: OutlinedButton(
+                //             // onPressed: null,
+                //             onPressed: () => showSheet(context,
+                //                 child: buildDatePicker(), onClicked: () {
+                //               final value =
+                //                   DateFormat('dd/MM/yyyy HH:mm').format(date);
+                //               showSnackBar(context, 'Date "$value"');
+                //               Navigator.pop(context);
+                //             }),
+
+                //             style: OutlinedButton.styleFrom(
+                //               backgroundColor: d_green,
+                //               side: BorderSide(color: d_green, width: 2),
+                //               padding: EdgeInsets.symmetric(horizontal: 20),
+                //               shape: RoundedRectangleBorder(
+                //                 borderRadius: BorderRadius.circular(18),
+                //               ),
+                //             ),
+                //             child: Text(
+                //               "Date",
+                //               style: TextStyle(
+                //                 color: Colors.white,
+                //                 fontSize: 14,
+                //                 letterSpacing: 2.2,
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: EdgeInsets.all(0),
+                //         child: Container(
+                //           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                //           child: OutlinedButton(
+                //             // onPressed: null,
+                //             onPressed: () => showSheet(context,
+                //                 child: buildRepeatOptions(), onClicked: () {
+                //               repeatinput = repeatOptions[index];
+                //               showSnackBar(context, 'Option "${repeatinput}"');
+                //               Navigator.pop(context);
+                //               // print(rebours);
+                //               // print(confirm);
+                //               // print(notif);
+                //             }),
+
+                //             style: OutlinedButton.styleFrom(
+                //               backgroundColor: d_green,
+                //               side: BorderSide(color: d_green, width: 2),
+                //               padding: EdgeInsets.symmetric(horizontal: 20),
+                //               shape: RoundedRectangleBorder(
+                //                 borderRadius: BorderRadius.circular(20),
+                //               ),
+                //             ),
+                //             child: Text(
+                //               "Récurrence",
+                //               style: TextStyle(
+                //                 color: Colors.white,
+                //                 fontSize: 14,
+                //                 letterSpacing: 2.2,
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 // Container(
                 //   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 //   decoration: BoxDecoration(

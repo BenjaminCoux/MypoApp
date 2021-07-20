@@ -103,6 +103,7 @@ flutter:
     - assets/images/smsprog_activated.png
     - assets/images/smsprog_disabled.png
     - assets/images/smsauto_disabled.png
+    - assets/images/home.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

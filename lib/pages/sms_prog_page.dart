@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:mypo/model/scheduledmsg.dart';
 import 'package:mypo/pages/edit_scheduledmsg_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/boxes.dart';
@@ -11,7 +9,7 @@ import 'package:mypo/widget/navbar_widget.dart';
 import 'package:telephony/telephony.dart';
 import 'formulaire_alerte_prog_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mypo/model/scheduledmsg_hive.dart';
+import 'package:mypo/database/scheduledmsg_hive.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -24,9 +22,7 @@ class SmsProg extends StatefulWidget {
 }
 
 class _SmsProgState extends State<SmsProg> {
-  late List<Scheduledmsg> allMessages;
   bool isLoading = false;
-  // ignore: unused_field
   Timer? timer;
   String txt = "";
   int i = 0;
@@ -34,7 +30,6 @@ class _SmsProgState extends State<SmsProg> {
   @override
   void initState() {
     super.initState();
-    //refreshMessages();
     timer = Timer.periodic(
         Duration(seconds: 20),
         (Timer t) => {
@@ -44,7 +39,6 @@ class _SmsProgState extends State<SmsProg> {
 
   @override
   void dispose() {
-    // ScheduledMessagesDataBase.instance.close();
     super.dispose();
   }
 
@@ -94,15 +88,6 @@ class _SmsProgState extends State<SmsProg> {
     msg.save();
   }
 
-  /**
-   * final repeatOptions = [
-    'Toutes les heures',
-    'Tous les jours',
-    'Toutes les semaines',
-    'Tous les mois',
-    'Tous les ans'
-  ];
-   */
   bool canbeSent(Scheduledmsg_hive msg) {
     int now = DateTime.now().millisecondsSinceEpoch;
     int msgdate = msg.date.millisecondsSinceEpoch;
@@ -121,7 +106,7 @@ class _SmsProgState extends State<SmsProg> {
         context: context,
         builder: (BuildContext dialog) {
           return new AlertDialog(
-            title: Text("Voulez envoyer le message $content à $to ?"),
+            title: Text("Voulez-vous envoyer le message $content à $to ?"),
             content: new Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,14 +131,6 @@ class _SmsProgState extends State<SmsProg> {
             ],
           );
         });
-  }
-
-  // SQFLITE
-  Future refreshMessages() async {
-    setState(() => isLoading = true);
-    // this.allMessages =
-    //     await ScheduledMessagesDataBase.instance.readAllScheduledmsg();
-    setState(() => isLoading = false);
   }
 
   @override
@@ -288,8 +265,6 @@ class _SmsProgState extends State<SmsProg> {
   }
 
   Widget buildMsg(BuildContext context, Scheduledmsg_hive message) {
-    // ignore: unused_local_variable
-    final date = DateFormat.yMMMd().format(message.date);
 
     return Card(
       margin: EdgeInsets.fromLTRB(5, 5, 20, 5),
@@ -307,11 +282,6 @@ class _SmsProgState extends State<SmsProg> {
           message.message,
           overflow: TextOverflow.ellipsis,
         ),
-        // trailing: Text(
-        //   date,
-        //   style: TextStyle(
-        //       color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
-        // ),
         children: [
           buildButtons(context, message),
         ],
@@ -353,69 +323,6 @@ class _SmsProgState extends State<SmsProg> {
           ),
         ],
       );
-
-  // SQFLITE
-  Widget buildMessages() => SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: ListView.builder(
-          padding: EdgeInsets.all(12),
-          itemCount: allMessages.length,
-          itemBuilder: (context, index) {
-            final msg = allMessages[index];
-            return InkWell(
-              onTap: () {
-                print('index:$index , msgId:${msg.id}');
-              },
-              child: Container(
-                ///////////////////////////
-                margin: EdgeInsets.all(20),
-                height: 106,
-                width: 290,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(18),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  msg.phoneNumber,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontFamily: 'calibri',
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    msg.message,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontFamily: 'calibri',
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-            );
-          }));
 
   //-Function that creates a pop up for asking a yes no question based on a given message
   buildPopupDialog(Scheduledmsg_hive message) {

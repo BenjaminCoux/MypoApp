@@ -15,9 +15,11 @@ const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
 
-/*
-  -That class creates the home page
-*/
+// **************************************************************************
+// This class creates the home page screen
+// input : 
+// output : scaffold widget with the components/widgets of home page
+// **************************************************************************
 
 class HomePage extends StatefulWidget {
   @override
@@ -42,10 +44,12 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/*
-    -That class creates icons to navigate to : programmed-msg or auto-message
+// **************************************************************************
+// That class creates icons to navigate to : programmed-msg or auto-message
+// input : 
+// output : column widget with the buttons to navigate to different pages
+// **************************************************************************
 
-*/
 class Mode extends StatefulWidget {
   @override
   _ModeState createState() => new _ModeState();
@@ -111,23 +115,6 @@ class _ModeState extends State<Mode> {
                     ],
                   ),
                 ),
-                // Container(
-                //     padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                //     margin: EdgeInsets.all(5),
-                //     height: MediaQuery.of(context).size.height * 0.30,
-                //     width: MediaQuery.of(context).size.width * 0.45,
-                //     decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.all(
-                //           Radius.circular(18),
-                //         ),
-                //         color: Colors.white,
-                //         image: DecorationImage(
-                //             image: AssetImage('images/smsprog.png'))),
-                //     child: Text(
-                //       'Messages programmés',
-                //       style: TextStyle(fontFamily: 'calibri'),
-                //       overflow: TextOverflow.ellipsis,
-                //     )),
               ),
               InkWell(
                 onTap: () => Navigator.push(
@@ -183,28 +170,6 @@ class _ModeState extends State<Mode> {
             ],
           ),
         ),
-        // ElevatedButton(
-        //   style: OutlinedButton.styleFrom(
-        //     backgroundColor: d_green,
-        //     padding: EdgeInsets.symmetric(horizontal: 50),
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.circular(20),
-        //     ),
-        //   ),
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //     Navigator.push(context,
-        //         new MaterialPageRoute(builder: (context) => new TestPage()));
-        //   },
-        //   child: Text(
-        //     "Test msg auto",
-        //     style: TextStyle(
-        //       fontSize: 14,
-        //       letterSpacing: 2.2,
-        //       color: Colors.white,
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

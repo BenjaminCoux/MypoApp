@@ -3,14 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/database/scheduledmsg_database.dart';
-import 'package:mypo/model/scheduledmsg.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/boxes.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:mypo/model/scheduledmsg_hive.dart';
+import 'package:mypo/database/scheduledmsg_hive.dart';
 
 import 'sms_prog_page.dart';
 
@@ -20,6 +15,7 @@ class ProgForm extends StatefulWidget {
 }
 
 class _ProgState extends State<ProgForm> {
+
   final nameController = TextEditingController();
   final contactController = TextEditingController();
   final alertContent = TextEditingController();
@@ -41,35 +37,14 @@ class _ProgState extends State<ProgForm> {
   int index = 0;
   var repeatinput = 'Tous les ans';
   List<Contact> contacts = [];
-  TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
   DateTime date = DateTime.now();
   DateTime time = DateTime.now();
   bool fieldsEmpty = true;
+
   @override
   void initState() {
     super.initState();
-    getAllContacts();
-  }
-
-  getAllContacts() async {
-    var status = await Permission.contacts.status;
-    if (status.isDenied) {
-      // We didn't ask for permission yet or the permission has been denied before but not permanently.
-    }
-
-    if (await Permission.location.isRestricted) {
-      // The OS restricts access, for example because of parental controls.
-    }
-
-    if (await Permission.contacts.request().isGranted) {
-      // Get all contacts without thumbnail (faster)
-      List<Contact> _contacts =
-          (await ContactsService.getContacts(withThumbnails: false)).toList();
-      setState(() {
-        contacts = _contacts;
-      });
-    }
   }
 
   @override
@@ -86,35 +61,6 @@ class _ProgState extends State<ProgForm> {
       return d_green;
     }
     return d_darkgray;
-  }
-
-  Future<Null> selectTime(BuildContext context) async {
-    picked = (await showTimePicker(
-          context: context,
-          initialTime: _time,
-        )) ??
-        _time;
-    setState(() {
-      _time = picked;
-      print(_time);
-    });
-  }
-
-  save() {
-    if (contactController.text != '' &&
-        alertContent.text != '' &&
-        repeatinput != '') {
-      Scheduledmsg msg = Scheduledmsg(
-        phoneNumber: contactController.text,
-        message: alertContent.text,
-        date: date,
-        repeat: repeatinput,
-        countdown: rebours,
-        confirm: confirm,
-        notification: notif,
-      );
-      ScheduledMessagesDataBase.instance.create(msg);
-    }
   }
 
   saveToHive() {
@@ -138,15 +84,8 @@ class _ProgState extends State<ProgForm> {
     }
   }
 
-  deleteDB() async {
-    var dbPath = await getDatabasesPath();
-    String path = join(dbPath, 'scheduledmsg.db');
-    await deleteDatabase(path);
-  }
-
   @override
   Widget build(BuildContext context) {
-    // initState();
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: 'Ajoutez une alerte'),
@@ -204,7 +143,6 @@ class _ProgState extends State<ProgForm> {
                                 debugPrint(e.toString());
                               }
                             }),
-                        //_buildContactSelection(context, contacts)),
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -286,15 +224,12 @@ class _ProgState extends State<ProgForm> {
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: OutlinedButton(
-                            // onPressed: null,
+                            
                             onPressed: () => showSheet(context,
                                 child: buildRepeatOptions(), onClicked: () {
                               repeatinput = repeatOptions[index];
                               showSnackBar(context, 'Option "${repeatinput}"');
                               Navigator.pop(context);
-                              // print(rebours);
-                              // print(confirm);
-                              // print(notif);
                             }),
 
                             style: OutlinedButton.styleFrom(
@@ -443,7 +378,6 @@ class _ProgState extends State<ProgForm> {
                   child: Container(
                     margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     child: OutlinedButton(
-                      // onPressed: null,
                       onPressed: () async => {
                         if (nameController.text != '' &&
                             contactController.text != '' &&
@@ -451,9 +385,6 @@ class _ProgState extends State<ProgForm> {
                           {fieldsEmpty = false},
                         if (!fieldsEmpty)
                           {
-                            // save(),
-
-                            // deleteDB(),
 
                             saveToHive(),
                             Navigator.pop(context),
@@ -495,10 +426,6 @@ class _ProgState extends State<ProgForm> {
         ),
       ),
     );
-  }
-
-  void test() {
-    print('test');
   }
 
   Container buildTextField(String labelText, String placeholder,
@@ -554,61 +481,6 @@ class _ProgState extends State<ProgForm> {
     );
   }
 
-  // ignore: unused_element
-  _buildContactSelection(BuildContext context, var contacts) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return contacts.length > 0
-              ? AlertDialog(
-                  title: Text('Contacts'),
-                  content: SingleChildScrollView(
-                      child: Container(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Column(
-                      children: <Widget>[
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: contacts.length,
-                            itemBuilder: (context, index) {
-                              Contact contact = contacts[index];
-                              return ListTile(
-                                title: Text(contact.displayName ?? ' '),
-                                subtitle: Text(
-                                    contact.phones?.elementAt(0).value! ?? ''),
-                                leading: (contact.avatar != null &&
-                                        contact.avatar!.length > 0)
-                                    ? CircleAvatar(
-                                        backgroundImage:
-                                            MemoryImage(contact.avatar!))
-                                    : CircleAvatar(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: d_green,
-                                        child: Text(contact.initials())),
-                                onTap: () {
-                                  // selected contact
-                                  // print('contact ' + index.toString());
-                                  Navigator.of(context).pop();
-                                  // we set the text of the controller to the number of the contact chosen
-                                  contactController.text =
-                                      contact.phones?.elementAt(0).value! ?? '';
-                                },
-                              );
-                            })
-                      ],
-                    ),
-                  )))
-              : AlertDialog(
-                  title: Text('Contacts'),
-                  content: SingleChildScrollView(
-                      child: Container(
-                          height: MediaQuery.of(context).size.height * 0.9,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: Text("Aucun contact"))));
-        });
-  }
-
   Widget buildDatePicker() => SizedBox(
         height: 150,
         child: CupertinoDatePicker(
@@ -619,18 +491,6 @@ class _ProgState extends State<ProgForm> {
             use24hFormat: true,
             onDateTimeChanged: (dateTime) =>
                 setState(() => this.date = dateTime)),
-      );
-  /*
-    not used
-   */
-  Widget buildTimePicker() => SizedBox(
-        height: 150,
-        child: CupertinoDatePicker(
-            initialDateTime: date,
-            mode: CupertinoDatePickerMode.time,
-            use24hFormat: true,
-            onDateTimeChanged: (dateTime) =>
-                setState(() => this.time = dateTime)),
       );
 
   showSheet(BuildContext context,

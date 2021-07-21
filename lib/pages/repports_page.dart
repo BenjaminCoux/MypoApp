@@ -91,23 +91,7 @@ class _RapportState extends State<Rapport> {
                   ),
                 ),
               )
-              // Padding(
-              //     padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-              //     child: Table(
-              //       // defaultColumnWidth: ,
-              //       children: <TableRow>[
-              //         TableRow(children: [
-              //           Icon(Icons.date_range),
-              //           Text('Type:',
-              //               style: TextStyle(fontWeight: FontWeight.bold)),
-              //         ]),
-              //         TableRow(children: [
-              //           Icon(Icons.notifications),
-              //           Text('To:',
-              //               style: TextStyle(fontWeight: FontWeight.bold)),
-              //         ]),
-              //       ],
-              //     ))
+             
             ],
           )))
     ]);
@@ -238,35 +222,6 @@ class _DetailState extends State<Detail> {
       ],
     );
 
-    // Padding(
-    //     padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-    //     child: Table(
-
-    //         // defaultColumnWidth: ,
-    //         children: <TableRow>[
-    //           TableRow(children: [
-    //             Text('Type:', style: TextStyle(fontWeight: FontWeight.bold)),
-    //             Text('test'),
-    //           ]),
-    //           TableRow(children: [
-    //             Text('To:', style: TextStyle(fontWeight: FontWeight.bold)),
-    //             Text('test'),
-    //           ]),
-    //           TableRow(children: [
-    //             Text('To:', style: TextStyle(fontWeight: FontWeight.bold)),
-    //             Text('test'),
-    //           ]),
-    //           TableRow(children: [
-    //             Text('To:', style: TextStyle(fontWeight: FontWeight.bold)),
-    //             Text('test'),
-    //           ])
-    //         ]));
-    // // Container(
-    //     color: Colors.red,
-    //     height: MediaQuery.of(context).size.height * 0.10,
-    //     width: MediaQuery.of(context).size.width,
-    //     child: ListView(children: <Widget>[
-    //       ListTile(title: Text('test'), subtitle: Text('test')),
-    //     ]));
+   
   }
 }

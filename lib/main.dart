@@ -6,7 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/pages/home_page.dart';
-import 'package:mypo/model/scheduledmsg_hive.dart';
+import 'package:mypo/database/scheduledmsg_hive.dart';
 import 'package:mypo/widget/boxes.dart';
 import 'package:telephony/telephony.dart';
 
@@ -14,7 +14,9 @@ const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
-
+// **************************************************************************
+// This function is building the app
+// **************************************************************************
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -28,6 +30,11 @@ Future main() async {
   runApp(MyApp());
 }
 
+// **************************************************************************
+// This class creates the app
+// input :
+// output : app with home page
+// **************************************************************************
 class MyApp extends StatefulWidget {
   @override
   _MyappState createState() => _MyappState();
@@ -44,9 +51,13 @@ class _MyappState extends State<MyApp> {
     //refreshMessages();
   }
 
+  // **************************************************************************
+  // This function is repeated periodically accord to the duration set (5 seconds right now)
+  // input :
+  // output : send message under time conditions
+  // **************************************************************************
   periodic() {
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      // the code here will be repeated periodically according to de duration set
       // debugPrint("period : ${i}");
       i++;
       final messages =
@@ -57,15 +68,7 @@ class _MyappState extends State<MyApp> {
                   message) => /*   Condition to send message (Date.time.now > message.date && message.status != sent) */
               //TODO: create condition for repeat options (montly, weekly..)
               (DateTime.now().microsecondsSinceEpoch >=
-                  DateTime(
-                          message.date.year,
-                          message.date.month,
-                          message.date.day,
-                          message.date.hour,
-                          message.date.minute)
-                      .microsecondsSinceEpoch
-              // message.confirm == true
-              ) &&
+                  message.date.microsecondsSinceEpoch) &&
               message.status != MessageStatus.SENT)
           .forEach((Scheduledmsg_hive message) {
         debugPrint("message : ${message.name} , status: ${message.status}");
@@ -119,7 +122,6 @@ class _MyappState extends State<MyApp> {
     );
   }
 }
-
 
 /*
 cleaning the cache

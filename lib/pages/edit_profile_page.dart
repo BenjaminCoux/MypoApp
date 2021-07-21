@@ -157,9 +157,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 setState(() {
                   // set new state
 
-                  // this.contentchanged = true;
-                  // this.titlechanged = true;
-                  // this.hasChanged = true;
                 })
               },
               minLines: 1,

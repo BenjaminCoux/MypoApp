@@ -3,10 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/scheduledmsg_hive.dart';
+import 'package:mypo/database/scheduledmsg_hive.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 // ignore: must_be_immutable
 class ScheduledmsgDetailPage extends StatefulWidget {
@@ -42,7 +41,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   @override
   void initState() {
     super.initState();
-    getAllContacts();
     alertName = TextEditingController(text: widget.message.name);
     alertContact = TextEditingController(text: widget.message.phoneNumber);
     alertContent = TextEditingController(text: widget.message.message);
@@ -69,26 +67,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     alertContent.dispose();
     alertContact.dispose();
     super.dispose();
-  }
-
-  getAllContacts() async {
-    var status = await Permission.contacts.status;
-    if (status.isDenied) {
-      // We didn't ask for permission yet or the permission has been denied before but not permanently.
-    }
-
-    if (await Permission.location.isRestricted) {
-      // The OS restricts access, for example because of parental controls.
-    }
-
-    if (await Permission.contacts.request().isGranted) {
-      // Get all contacts without thumbnail (faster)
-      List<Contact> _contacts =
-          (await ContactsService.getContacts(withThumbnails: false)).toList();
-      setState(() {
-        contacts = _contacts;
-      });
-    }
   }
 
   void changed() {
@@ -514,52 +492,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
         ),
       ),
     );
-  }
-
-  _buildContactSelection(BuildContext context, var contacts) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Text('Contacts'),
-              content: SingleChildScrollView(
-                  child: Container(
-                height: MediaQuery.of(context).size.height * 0.9,
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Column(
-                  children: <Widget>[
-                    ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: contacts.length,
-                        itemBuilder: (context, index) {
-                          Contact contact = contacts[index];
-                          return ListTile(
-                            title: Text(contact.displayName ?? ' '),
-                            subtitle:
-                                Text(contact.phones?.elementAt(0).value! ?? ''),
-                            leading: (contact.avatar != null &&
-                                    contact.avatar!.length > 0)
-                                ? CircleAvatar(
-                                    backgroundImage:
-                                        MemoryImage(contact.avatar!))
-                                : CircleAvatar(
-                                    foregroundColor: Colors.white,
-                                    backgroundColor: d_green,
-                                    child: Text(contact.initials())),
-                            onTap: () {
-                              // selected contact
-                              // print('contact ' + index.toString());
-                              Navigator.of(context).pop();
-                              // we set the text of the controller to the number of the contact chosen
-                              alertContact.text =
-                                  contact.phones?.elementAt(0).value! ?? '';
-                            },
-                          );
-                        })
-                  ],
-                ),
-              )));
-        });
   }
 
   Widget buildDatePicker() => SizedBox(

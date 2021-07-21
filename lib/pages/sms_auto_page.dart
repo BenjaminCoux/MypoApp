@@ -100,7 +100,7 @@ class _StateSwitchButton extends State<SwitchButton> {
   }
 
   /*
-    -This function do things when we recieve a message on the foreground
+    -This function reacts to messages on the foreground
     it gets incomming messages 
     Check if it contains any of the keys of activated alerts
     Send back the alert message to the person
@@ -133,6 +133,7 @@ class _StateSwitchButton extends State<SwitchButton> {
               contents[i]["active"]));
       debugPrint(tmp.toString());
       if (tmp) {
+        print(tmp);
         Telephony.instance.sendSms(
             to: message.address.toString(), message: contents[i]["content"]);
         return;
@@ -244,6 +245,12 @@ class _AlertesState extends State<Alertes> {
   void initState() {
     initNb();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    super.dispose();
   }
 
   /*
@@ -576,7 +583,7 @@ class _AlertesState extends State<Alertes> {
                       }),
               _buildDivider(),
               ListTile(
-                  leading: Icon(FontAwesomeIcons.whatsapp, color: Colors.green),
+                  leading: Icon(FontAwesomeIcons.whatsapp, color: d_darkgray),
                   title: Text('WhatsApp'),
                   onTap: () => {
                         Navigator.pop(context),
@@ -588,8 +595,8 @@ class _AlertesState extends State<Alertes> {
                       }),
               _buildDivider(),
               ListTile(
-                leading: Icon(FontAwesomeIcons.facebookMessenger,
-                    color: Colors.blue),
+                leading:
+                    Icon(FontAwesomeIcons.facebookMessenger, color: d_darkgray),
                 title: Text('Messenger'),
                 onTap: () => {
                   Navigator.pop(context),
@@ -830,3 +837,9 @@ List<AlertKey> buildKeys(dynamic input) {
 
   return res;
 }
+
+
+/////////////////////
+///erreur quand on essai de modifier une alerte
+///The following _TypeError was thrown building Builder(dirty): type '<Null>' is not a subtype of type 'String'
+///stack overflow: You are passing a function Future instead of Widget which is causing this error.

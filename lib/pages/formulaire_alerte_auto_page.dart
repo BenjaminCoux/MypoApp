@@ -7,17 +7,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
 import 'sms_auto_page.dart';
 import 'package:weekday_selector/weekday_selector.dart';
-import 'package:mypo/model/alert.dart';
 
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
 const d_green = Color(0xFFA6C800);
-const String pathToDB = "../assets/database.json";
 
-/*
-  -This class creates the screeen to crate a new alor with all the options 
-*/
+// **************************************************************************
+// This class creates the screeen to crate a new alert with all the options
+// input : the number of alerts
+// output : scaffold widget with form inside
+// **************************************************************************
 // ignore: must_be_immutable
 class FormScreen extends StatefulWidget {
   int nb;
@@ -32,14 +32,7 @@ class _FormState extends State<FormScreen> {
   final keyName = TextEditingController();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final week = [false, false, false, false, false, false, false];
-  final cibles = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ];
+  final cibles = [false, false, false, false, false, false];
   int _value = 1;
   bool _value2 = true;
   var db;
@@ -68,7 +61,7 @@ class _FormState extends State<FormScreen> {
       "Contient",
       "Ne contient pas",
       "est au debut",
-      "est à la fin",
+      "est à la fin"
     ];
     return contient[a.contient];
   }
@@ -112,6 +105,11 @@ class _FormState extends State<FormScreen> {
       ..showSnackBar(snackBar);
   }
 
+// **************************************************************************
+// This function verify if the key is valid
+// input : the name of the key
+// output : true if valid false if not valid
+// **************************************************************************
   bool verifieCle(String nom) {
     if (nom.length > 10) {
       showSnackBar(context, '10 characters maximum.');
@@ -590,7 +588,7 @@ class _FormState extends State<FormScreen> {
                             value: false,
                             onChanged: (bool val) => {
                                   setState(() {
-                                    // confirm = val;
+                                    //set new state
                                   })
                                 }),
                       ],
@@ -620,7 +618,7 @@ class _FormState extends State<FormScreen> {
                             value: false,
                             onChanged: (bool val) => {
                                   setState(() {
-                                    // confirm = val;
+                                    //set new state
                                   })
                                 }),
                       ],
@@ -638,10 +636,7 @@ class _FormState extends State<FormScreen> {
                       if (alertName.text != '' &&
                           alertContent != '' &&
                           !keys.isEmpty &&
-                          alphanumeric.hasMatch(alertName.text)
-
-                      // && alphanumeric.hasMatch(alertContent.text)
-                      )
+                          alphanumeric.hasMatch(alertName.text))
                         {
                           saveAlert(alertName.text, alertContent.text, week,
                               cibles, keys),
@@ -652,6 +647,8 @@ class _FormState extends State<FormScreen> {
                                 builder: (context) => new SmsAuto()),
                           )
                         }
+                      else if (!alphanumeric.hasMatch(alertName.text))
+                        {showSnackBar(context, 'Characters invalides.')}
                       else
                         {
                           showSnackBar(
@@ -693,10 +690,6 @@ class _FormState extends State<FormScreen> {
           onChanged: (String value) => {
             setState(() {
               // set new state
-
-              // this.contentchanged = true;
-              // this.titlechanged = true;
-              // this.hasChanged = true;
             })
           },
           maxLines: nbLines,

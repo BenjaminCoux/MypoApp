@@ -31,7 +31,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
         _buildDivider(),
         new ListTile(
           leading: Icon(Icons.my_library_books_rounded, color: Colors.black),
-          title: new Text("Reports", style: TextStyle(color: Colors.black)),
+          title: new Text("Rapport", style: TextStyle(color: Colors.black)),
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
           onTap: () {
             Navigator.of(context).pop();

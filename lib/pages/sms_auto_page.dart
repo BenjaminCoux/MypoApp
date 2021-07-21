@@ -127,7 +127,6 @@ class _StateSwitchButton extends State<SwitchButton> {
               new Alert(
                   title: contents[i]["title"],
                   content: contents[i]["content"],
-                  type: contents[i]["type"],
                   days: json.decode(contents[i]["days"]),
                   cibles: json.decode(contents[i]["cibles"]),
                   keys: buildKeys(contents[i]["keys"])),
@@ -317,7 +316,6 @@ class _AlertesState extends State<Alertes> {
     Alert res = new Alert(
         title: a.title,
         content: a.content,
-        type: a.type,
         days: a.days,
         cibles: a.cibles,
         keys: a.keys);
@@ -334,7 +332,6 @@ class _AlertesState extends State<Alertes> {
     final days = alert["days"];
     final cibles = alert["cibles"];
     final active = alert["active"];
-    final type = alert["type"];
     List<AlertKey> keys = buildKeys(alert["keys"]);
     List<String> aStr = <String>[];
     for (int i = 0; i < keys.length; i++) {
@@ -342,7 +339,7 @@ class _AlertesState extends State<Alertes> {
     }
     String str = json.encode(aStr);
     String tmp =
-        '{"title":"$title","content":"$content","type":"$type","days":"$days","cibles":"$cibles","active":$active,"keys":$str}';
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":$active,"keys":$str}';
     prefs.setString(title, tmp);
   }
 
@@ -414,19 +411,6 @@ class _AlertesState extends State<Alertes> {
     );
   }
 
-  /**
-   * guess the type of an alert with type stored as a string
-   */
-  Type getType(String type) {
-    if (type == "Type.messages") {
-      return Type.message;
-    } else if (type == "Type.whatsapp") {
-      return Type.whatsapp;
-    } else {
-      return Type.messenger;
-    }
-  }
-
   buildButtons(BuildContext context, var alert) => Row(
         children: [
           Expanded(
@@ -444,7 +428,6 @@ class _AlertesState extends State<Alertes> {
                             new Alert(
                                 title: alert["title"],
                                 content: alert["content"],
-                                type: getType(alert["type"]),
                                 days: jsonDecode(alert["days"]),
                                 cibles: jsonDecode(alert["cibles"]),
                                 keys: buildKeys(alert["keys"])),
@@ -465,7 +448,6 @@ class _AlertesState extends State<Alertes> {
                   widget.alerts.add({
                     "title": title,
                     "content": alert["content"],
-                    "type": alert["type"],
                     "days": alert["days"],
                     "cibles": alert["cibles"],
                     "active": alert["active"],
@@ -673,7 +655,6 @@ onBackgroundMessage(SmsMessage message) async {
             new Alert(
                 title: contents[i]["title"],
                 content: contents[i]["content"],
-                type: contents[i]["type"],
                 days: json.decode(contents[i]["days"]),
                 cibles: json.decode(contents[i]["cibles"]),
                 keys: buildKeys(contents[i]["keys"])),
@@ -720,7 +701,6 @@ Alert createAlert(Alert a, bool actived) {
   Alert res = new Alert(
       title: a.title,
       content: a.content,
-      type: a.type,
       days: a.days,
       cibles: a.cibles,
       keys: a.keys);

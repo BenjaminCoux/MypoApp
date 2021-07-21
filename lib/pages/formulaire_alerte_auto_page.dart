@@ -84,10 +84,9 @@ class _FormState extends State<FormScreen> {
     for (int i = 0; i < keys.length; i++) {
       listK.add(keys[i].toString());
     }
-    String type = Type.message.toString();
     String kstr = json.encode(listK);
     String tmp =
-        '{"title":"$title","content":"$content","type":"$type","days":"$days","cibles":"$cibles","active":false,"keys":$kstr}';
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false,"keys":$kstr}';
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);

@@ -17,7 +17,7 @@ const d_lightgray = Color(0XFFFAFAFA);
 
 // **************************************************************************
 // This class creates the home page screen
-// input : 
+// input :
 // output : scaffold widget with the components/widgets of home page
 // **************************************************************************
 
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
 // **************************************************************************
 // That class creates icons to navigate to : programmed-msg or auto-message
-// input : 
+// input :
 // output : column widget with the buttons to navigate to different pages
 // **************************************************************************
 
@@ -73,7 +73,7 @@ class _ModeState extends State<Mode> {
                 child: Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),
-                  height: MediaQuery.of(context).size.height * 0.24,
+                  height: MediaQuery.of(context).size.height * 0.25,
                   width: MediaQuery.of(context).size.width * 0.45,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
@@ -124,7 +124,7 @@ class _ModeState extends State<Mode> {
                 child: Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),
-                  height: MediaQuery.of(context).size.height * 0.24,
+                  height: MediaQuery.of(context).size.height * 0.25,
                   width: MediaQuery.of(context).size.width * 0.45,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(

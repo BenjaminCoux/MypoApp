@@ -15,7 +15,6 @@ class ProgForm extends StatefulWidget {
 }
 
 class _ProgState extends State<ProgForm> {
-
   final nameController = TextEditingController();
   final contactController = TextEditingController();
   final alertContent = TextEditingController();
@@ -177,10 +176,20 @@ class _ProgState extends State<ProgForm> {
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
-                      Container(
-                        child: Text(
-                            "\ndate: ${DateFormat('dd/MM/yyyy').format(date)} \nheure: ${DateFormat('HH:mm').format(date)} ",
-                            style: TextStyle(fontSize: 16)),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Date: ${DateFormat('dd/MM/yyyy').format(date)} ",
+                            style: TextStyle(fontSize: 16),
+                            //textAlign: TextAlign.start,
+                          ),
+                          Text(
+                            "Heure: ${DateFormat('HH:mm').format(date)} ",
+                            style: TextStyle(fontSize: 16),
+                            // textAlign: TextAlign.start,
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: EdgeInsets.all(0),
@@ -216,7 +225,7 @@ class _ProgState extends State<ProgForm> {
                         ),
                       ),
                       Container(
-                        child: Text("récurrence: ${repeatinput} ",
+                        child: Text("Récurrence: ${repeatinput} ",
                             style: TextStyle(fontSize: 16)),
                       ),
                       Padding(
@@ -224,14 +233,12 @@ class _ProgState extends State<ProgForm> {
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: OutlinedButton(
-                            
                             onPressed: () => showSheet(context,
                                 child: buildRepeatOptions(), onClicked: () {
                               repeatinput = repeatOptions[index];
                               showSnackBar(context, 'Option "${repeatinput}"');
                               Navigator.pop(context);
                             }),
-
                             style: OutlinedButton.styleFrom(
                               backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
@@ -385,7 +392,6 @@ class _ProgState extends State<ProgForm> {
                           {fieldsEmpty = false},
                         if (!fieldsEmpty)
                           {
-
                             saveToHive(),
                             Navigator.pop(context),
                             Navigator.push(
@@ -400,7 +406,6 @@ class _ProgState extends State<ProgForm> {
                                 context, 'Veuillez completer tous les champs')
                           }
                       },
-
                       style: OutlinedButton.styleFrom(
                         backgroundColor: d_green,
                         side: BorderSide(color: d_green, width: 2),

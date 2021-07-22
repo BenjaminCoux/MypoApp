@@ -125,6 +125,29 @@ class _AlertScreenState extends State<AlertScreen> {
     }
   }
 
+  bool isCiblesSet(List<dynamic> cibles) {
+    int cpt = 0;
+    for (int i = 0; i < cibles.length; i++) {
+      if (cibles[i] == false) {
+        cpt++;
+      }
+    }
+    if (cpt == 6) {
+      return false;
+    }
+    return true;
+  }
+
+  bool isWeekSet(List<dynamic> week) {
+    return !(week[0] == false &&
+        week[1] == false &&
+        week[2] == false &&
+        week[3] == false &&
+        week[4] == false &&
+        week[5] == false &&
+        week[6] == false);
+  }
+
   Widget alertKeys(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -601,7 +624,7 @@ class _AlertScreenState extends State<AlertScreen> {
                       ),
                       Switch(
                           activeColor: d_green,
-                          value: true,
+                          value: false,
                           onChanged: (bool val) => {
                                 setState(() {
                                   // confirm = val;
@@ -631,7 +654,7 @@ class _AlertScreenState extends State<AlertScreen> {
                       ),
                       Switch(
                           activeColor: d_green,
-                          value: true,
+                          value: false,
                           onChanged: (bool val) => {
                                 setState(() {
                                   // confirm = val;
@@ -682,19 +705,35 @@ class _AlertScreenState extends State<AlertScreen> {
                           ),
                         ),
                         onPressed: () {
-                          if (alertName.text != '' &&
+                          if (alertName.text == '') {
+                            showSnackBar(
+                                context, "Veuillez rentrer un nom à l'alerte.");
+                          } else if (alertContent.text == '') {
+                            showSnackBar(
+                                context, "Veuillez écrire un message.");
+                          } else if (!isCiblesSet(widget.alerte.cibles)) {
+                            showSnackBar(
+                                context, "Veuillez choisir une cible.");
+                          } else if (!isWeekSet(widget.alerte.days)) {
+                            showSnackBar(
+                                context, "Veuillez choisir le(s) jour(s).");
+                          } else if (!alphanumeric.hasMatch(alertName.text)) {
+                            showSnackBar(context,
+                                "Characters invalides pour le nom de l'alerte.");
+                          } else if (widget.alerte.keys.isEmpty) {
+                            showSnackBar(
+                                context, 'Veuillez rentrer un mot-clé.');
+                          } else if (alertName.text != '' &&
                               alertContent.text != '' &&
-                              alphanumeric.hasMatch(alertName.text)) {
+                              alphanumeric.hasMatch(alertName.text) &&
+                              isCiblesSet(widget.alerte.cibles) &&
+                              isWeekSet(widget.alerte.days)) {
                             save();
-
-                            //print(widget.alerte.days);
                             Navigator.pop(context);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => new SmsAuto()));
-                          } else if (!alphanumeric.hasMatch(alertName.text)) {
-                            showSnackBar(context, 'Characters invalides.');
                           } else {
                             showSnackBar(
                                 context, 'Veuillez completer tous les champs.');

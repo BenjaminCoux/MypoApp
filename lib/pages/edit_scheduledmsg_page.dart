@@ -181,10 +181,20 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
-                      Container(
-                        child: Text(
-                            "\ndate: ${DateFormat('dd/MM/yyyy').format(widget.message.date)} \nheure: ${DateFormat('HH:mm').format(widget.message.date)} ",
-                            style: TextStyle(fontSize: 16)),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Date: ${DateFormat('dd/MM/yyyy').format(widget.message.date)} ",
+                            style: TextStyle(fontSize: 16),
+                            //textAlign: TextAlign.start,
+                          ),
+                          Text(
+                            "Heure: ${DateFormat('HH:mm').format(widget.message.date)} ",
+                            style: TextStyle(fontSize: 16),
+                            // textAlign: TextAlign.start,
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: EdgeInsets.all(0),
@@ -219,7 +229,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         ),
                       ),
                       Container(
-                        child: Text("récurrence: ${widget.message.repeat} ",
+                        child: Text("Récurrence: ${widget.message.repeat} ",
                             style: TextStyle(fontSize: 16)),
                       ),
                       Padding(

@@ -143,6 +143,29 @@ class _FormState extends State<FormScreen> {
     }
   }
 
+  bool isCiblesSet(List<bool> cibles) {
+    int cpt = 0;
+    for (int i = 0; i < cibles.length; i++) {
+      if (cibles[i] == false) {
+        cpt++;
+      }
+    }
+    if (cpt == 6) {
+      return false;
+    }
+    return true;
+  }
+
+  bool isWeekSet(List<bool> week) {
+    return !(week[0] == false &&
+        week[1] == false &&
+        week[2] == false &&
+        week[3] == false &&
+        week[4] == false &&
+        week[5] == false &&
+        week[6] == false);
+  }
+
   Widget weekSelector(BuildContext context) {
     final DateSymbols fr = dateTimeSymbolMap()['fr'];
     return WeekdaySelector(
@@ -372,6 +395,7 @@ class _FormState extends State<FormScreen> {
       body: Scrollbar(
         thickness: 10,
         interactive: true,
+        isAlwaysShown: true,
         showTrackOnHover: true,
         child: SingleChildScrollView(
           child: GestureDetector(
@@ -657,10 +681,33 @@ class _FormState extends State<FormScreen> {
                       ),
                     ),
                     onPressed: () => {
-                      if (alertName.text != '' &&
+                      if (alertName.text == '')
+                        {
+                          showSnackBar(
+                              context, "Veuillez rentrer un nom à l'alerte.")
+                        }
+                      else if (alertContent.text == '')
+                        {showSnackBar(context, "Veuillez écrire un message.")}
+                      else if (!isCiblesSet(cibles))
+                        {showSnackBar(context, "Veuillez choisir une cible.")}
+                      else if (!isWeekSet(week))
+                        {
+                          showSnackBar(
+                              context, "Veuillez choisir le(s) jour(s).")
+                        }
+                      else if (!alphanumeric.hasMatch(alertName.text))
+                        {
+                          showSnackBar(context,
+                              "Characters invalides pour le nom de l'alerte.")
+                        }
+                      else if (keys.isEmpty)
+                        {showSnackBar(context, 'Veuillez rentrer un mot-clé.')}
+                      else if (alertName.text != '' &&
                           alertContent != '' &&
                           !keys.isEmpty &&
-                          alphanumeric.hasMatch(alertName.text))
+                          alphanumeric.hasMatch(alertName.text) &&
+                          isCiblesSet(cibles) &&
+                          isWeekSet(week))
                         {
                           saveAlert(alertName.text, alertContent.text, week,
                               cibles, keys),
@@ -671,8 +718,6 @@ class _FormState extends State<FormScreen> {
                                 builder: (context) => new SmsAuto()),
                           )
                         }
-                      else if (!alphanumeric.hasMatch(alertName.text))
-                        {showSnackBar(context, 'Characters invalides.')}
                       else
                         {
                           showSnackBar(

@@ -25,8 +25,8 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
-  late final alertName;
-  late final alertContent;
+  late var alertName = TextEditingController();
+  late var alertContent = TextEditingController();
   bool hasChanged = false;
   bool titlechanged = false;
   bool contentchanged = false;
@@ -34,7 +34,7 @@ class _AlertScreenState extends State<AlertScreen> {
   bool _value2 = true;
   final keyName = TextEditingController();
   List<bool> boolWeek = <bool>[];
-  final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
+  final alphanumeric = RegExp(r'^[a-zA-Z0-9.:#_-éàô]+$');
 
   @override
   void initState() {
@@ -108,6 +108,21 @@ class _AlertScreenState extends State<AlertScreen> {
       return false;
     }
     return true;
+  }
+
+  verifieCibles(List<dynamic> cibles) {
+    for (int i = 0; i < cibles.length; i++) {
+      if (cibles[0] == true && cibles[i] == false) {
+        cibles[0] = false;
+      }
+    }
+    if (cibles[1] == true &&
+        cibles[2] == true &&
+        cibles[3] == true &&
+        cibles[4] == true &&
+        cibles[5] == true) {
+      cibles[0] = true;
+    }
   }
 
   Widget alertKeys(BuildContext context) {
@@ -380,8 +395,14 @@ class _AlertScreenState extends State<AlertScreen> {
                                         onChanged: (bool? value) => {
                                               setState(() {
                                                 hasChanged = true;
-                                                widget.alerte.cibles[0] =
-                                                    value!;
+                                                for (int i = 0;
+                                                    i <
+                                                        widget.alerte.cibles
+                                                            .length;
+                                                    i++) {
+                                                  widget.alerte.cibles[i] =
+                                                      value!;
+                                                }
                                               })
                                             }),
                                     CheckboxListTile(
@@ -398,6 +419,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                                 hasChanged = true;
                                                 widget.alerte.cibles[1] =
                                                     value!;
+                                                verifieCibles(
+                                                    widget.alerte.cibles);
                                               })
                                             }),
                                     CheckboxListTile(
@@ -414,6 +437,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                                 hasChanged = true;
                                                 widget.alerte.cibles[2] =
                                                     value!;
+                                                verifieCibles(
+                                                    widget.alerte.cibles);
                                               })
                                             }),
                                   ],
@@ -444,6 +469,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                                 hasChanged = true;
                                                 widget.alerte.cibles[3] =
                                                     value!;
+                                                verifieCibles(
+                                                    widget.alerte.cibles);
                                               })
                                             }),
                                     CheckboxListTile(
@@ -460,6 +487,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                                 hasChanged = true;
                                                 widget.alerte.cibles[4] =
                                                     value!;
+                                                verifieCibles(
+                                                    widget.alerte.cibles);
                                               })
                                             }),
                                     CheckboxListTile(
@@ -476,6 +505,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                                 hasChanged = true;
                                                 widget.alerte.cibles[5] =
                                                     value!;
+                                                verifieCibles(
+                                                    widget.alerte.cibles);
                                               })
                                             }),
                                   ],
@@ -707,6 +738,7 @@ class _AlertScreenState extends State<AlertScreen> {
       child: Padding(
         padding: const EdgeInsets.all(0),
         child: TextField(
+          autofocus: false,
           controller: controller,
           onChanged: (String value) => {
             setState(() {
@@ -749,7 +781,7 @@ class _AlertScreenState extends State<AlertScreen> {
   void save() async {
     if (hasChanged) {
       final pref = await SharedPreferences.getInstance();
-      print(pref.getString(widget.alerte.title));
+      //print(pref.getString(widget.alerte.title));
       final keys = pref.getKeys();
       //dd
       Iterator<String> it = keys.iterator;
@@ -759,8 +791,8 @@ class _AlertScreenState extends State<AlertScreen> {
         }
       }
       String title = widget.alerte.title;
-      print(titlechanged);
-      print(contentchanged);
+      //print(titlechanged);
+      //print(contentchanged);
       if (titlechanged) {
         title = alertName.text;
       }

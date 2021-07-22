@@ -93,6 +93,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
       body: Scrollbar(
         thickness: 10,
         interactive: true,
+        isAlwaysShown: true,
         showTrackOnHover: true,
         child: Container(
           child: GestureDetector(

@@ -128,6 +128,21 @@ class _FormState extends State<FormScreen> {
     return true;
   }
 
+  verifieCibles(List<bool> cibles) {
+    for (int i = 0; i < cibles.length; i++) {
+      if (cibles[0] == true && cibles[i] == false) {
+        cibles[0] = false;
+      }
+    }
+    if (cibles[1] == true &&
+        cibles[2] == true &&
+        cibles[3] == true &&
+        cibles[4] == true &&
+        cibles[5] == true) {
+      cibles[0] = true;
+    }
+  }
+
   Widget weekSelector(BuildContext context) {
     final DateSymbols fr = dateTimeSymbolMap()['fr'];
     return WeekdaySelector(
@@ -415,7 +430,11 @@ class _FormState extends State<FormScreen> {
                                           value: cibles[0],
                                           onChanged: (bool? value) => {
                                                 setState(() {
-                                                  cibles[0] = value!;
+                                                  for (int i = 0;
+                                                      i < cibles.length;
+                                                      i++) {
+                                                    cibles[i] = value!;
+                                                  }
                                                 })
                                               }),
                                       CheckboxListTile(
@@ -430,6 +449,7 @@ class _FormState extends State<FormScreen> {
                                           onChanged: (bool? value) => {
                                                 setState(() {
                                                   cibles[1] = value!;
+                                                  verifieCibles(cibles);
                                                 })
                                               }),
                                       CheckboxListTile(
@@ -444,6 +464,7 @@ class _FormState extends State<FormScreen> {
                                           onChanged: (bool? value) => {
                                                 setState(() {
                                                   cibles[2] = value!;
+                                                  verifieCibles(cibles);
                                                 })
                                               }),
                                     ],
@@ -472,6 +493,7 @@ class _FormState extends State<FormScreen> {
                                           onChanged: (bool? value) => {
                                                 setState(() {
                                                   cibles[3] = value!;
+                                                  verifieCibles(cibles);
                                                 })
                                               }),
                                       CheckboxListTile(
@@ -486,6 +508,7 @@ class _FormState extends State<FormScreen> {
                                           onChanged: (bool? value) => {
                                                 setState(() {
                                                   cibles[4] = value!;
+                                                  verifieCibles(cibles);
                                                 })
                                               }),
                                       CheckboxListTile(
@@ -500,6 +523,7 @@ class _FormState extends State<FormScreen> {
                                           onChanged: (bool? value) => {
                                                 setState(() {
                                                   cibles[5] = value!;
+                                                  verifieCibles(cibles);
                                                 })
                                               }),
                                     ],

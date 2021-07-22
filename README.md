@@ -1,7 +1,5 @@
 # My Co'Laverie
 
-A new Flutter app project.
-
 > Status : Developping ⚠️
 
 <p align="center">
@@ -10,10 +8,10 @@ A new Flutter app project.
 
 ## App functionalities
 
-- Sending messages automatically
-- Sending scheduled messages
-- Help page & ChatBot
-- User profile
+- 💬 Sending messages automatically
+- 🗨️ Sending scheduled messages
+- 🤖 Help page & ChatBot
+- 📌 User profile
 
 ## Getting Started
 
@@ -22,11 +20,15 @@ A new Flutter app project.
 - install flutter/dart plugins in your IDE
 - Clone the project
 - run :
-`flutter pub get`
+  `flutter pub get`
 - then :
-`flutter run`
-	or
-run it directly with your IDE
+  `flutter run`
+  or
+  run it directly with your IDE
+
+## Used on this App
+
+[Hive NoSQL Database](https://github.com/hivedb/hive)
 
 ## Flutter
 

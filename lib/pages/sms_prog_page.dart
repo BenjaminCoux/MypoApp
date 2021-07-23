@@ -61,9 +61,24 @@ class _SmsProgState extends State<SmsProg> {
               _showNotification(messages[i].phoneNumber, messages[i].message);
             }
           }
+        } else if (fiveMinutesBeforeSend(messages[i]) &&
+            messages[i].countdown) {
+          String nom = messages[i].name;
+          _showNotificationBis(
+              "5 minutes avant l'envoie de l'alerte $nom", "accedez à l'appli");
+          messages[i].countdown = false;
         }
       }
     }
+  }
+
+  bool fiveMinutesBeforeSend(Scheduledmsg_hive msg) {
+    int five_minutes = 300000;
+    if (DateTime.now().millisecondsSinceEpoch + five_minutes >=
+        msg.date.millisecondsSinceEpoch) {
+      return true;
+    }
+    return false;
   }
 
   void updateDate(Scheduledmsg_hive msg) {
@@ -125,6 +140,19 @@ class _SmsProgState extends State<SmsProg> {
         body,
         platformChannelSpecifics,
         payload: 'item x');
+  }
+
+  Future<void> _showNotificationBis(String title, String body) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+            'your channel id', 'your channel name', 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin
+        .show(0, title, body, platformChannelSpecifics, payload: 'item x');
   }
 
   confirmSend(Scheduledmsg_hive msg) {

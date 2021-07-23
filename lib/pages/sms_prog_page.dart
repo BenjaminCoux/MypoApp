@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/pages/edit_scheduledmsg_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
@@ -10,11 +10,14 @@ import 'package:telephony/telephony.dart';
 import 'formulaire_alerte_prog_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:mypo/model/notification.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class SmsProg extends StatefulWidget {
   @override
@@ -54,6 +57,9 @@ class _SmsProgState extends State<SmsProg> {
             Telephony.instance.sendSms(
                 to: messages[i].phoneNumber, message: messages[i].message);
             updateDate(messages[i]);
+            if (messages[i].notification) {
+              _showNotification(messages[i].phoneNumber, messages[i].message);
+            }
           }
         }
       }
@@ -98,6 +104,29 @@ class _SmsProgState extends State<SmsProg> {
     }
   }
 
+  Future selectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+  }
+
+  Future<void> _showNotification(String number, String body) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+            'your channel id', 'your channel name', 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'Le message suivant à été envoyé à $number',
+        body,
+        platformChannelSpecifics,
+        payload: 'item x');
+  }
+
   confirmSend(Scheduledmsg_hive msg) {
     int five_min = 300000 * 6;
     String content = msg.message;
@@ -117,6 +146,7 @@ class _SmsProgState extends State<SmsProg> {
                   onPressed: () => {
                         Telephony.instance.sendSms(to: to, message: content),
                         updateDate(msg),
+                        _showNotification(msg.phoneNumber, msg.message),
                         Navigator.of(context).pop(),
                       },
                   child: Text("oui")),
@@ -265,7 +295,6 @@ class _SmsProgState extends State<SmsProg> {
   }
 
   Widget buildMsg(BuildContext context, Scheduledmsg_hive message) {
-
     return Card(
       margin: EdgeInsets.fromLTRB(5, 5, 20, 5),
       color: Colors.white,

@@ -58,15 +58,18 @@ Future main() async {
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
       macOS: initializationSettingsMacOS);
-
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String? payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: $payload');
-    }
-    selectedNotificationPayload = payload;
-    selectNotificationSubject.add(payload);
-  });
+  try {
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (String? payload) async {
+      if (payload != null) {
+        debugPrint('notification payload: $payload');
+      }
+      selectedNotificationPayload = payload;
+      selectNotificationSubject.add(payload);
+    });
+  } catch (e) {
+    debugPrint(e.toString());
+  }
 
   runApp(MyApp());
 }

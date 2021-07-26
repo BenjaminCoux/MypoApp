@@ -433,7 +433,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                             ListTileControlAffinity.leading,
                                         title: Text(
                                           "Numéros non enregistrés",
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                              fontSize: 15, color: Colors.blue),
                                         ),
                                         activeColor: d_green,
                                         value: widget.alerte.cibles[1],
@@ -483,7 +484,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                             ListTileControlAffinity.leading,
                                         title: Text(
                                           "Contacts uniquement",
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                              fontSize: 15, color: Colors.blue),
                                         ),
                                         activeColor: d_green,
                                         value: widget.alerte.cibles[3],
@@ -501,7 +503,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                             ListTileControlAffinity.leading,
                                         title: Text(
                                           "Groupe de contact",
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                              fontSize: 15, color: Colors.red),
                                         ),
                                         activeColor: d_green,
                                         value: widget.alerte.cibles[4],
@@ -519,7 +522,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                             ListTileControlAffinity.leading,
                                         title: Text(
                                           "Appel manqué",
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                              fontSize: 15, color: Colors.red),
                                         ),
                                         activeColor: d_green,
                                         value: widget.alerte.cibles[5],

@@ -132,14 +132,14 @@ class _StateSwitchButton extends State<SwitchButton> {
                   keys: buildKeys(contents[i]["keys"])),
               contents[i]["active"]));
       debugPrint(tmp.toString());
-      // if (tmp) {
-      // TODO: le if ne fonctionne pas bien
-      print(tmp);
-      Telephony.instance.sendSms(
-          to: message.address.toString(), message: contents[i]["content"]);
-      return;
-      // }
-      // i++;
+      if (tmp) {
+        // TODO: le if ne fonctionne pas bien
+        print(tmp);
+        Telephony.instance.sendSms(
+            to: message.address.toString(), message: contents[i]["content"]);
+        return;
+      }
+      i++;
     }
   }
 
@@ -669,8 +669,6 @@ onBackgroundMessage(SmsMessage message) async {
             contents[i]["active"]))) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
-      Telephony.backgroundInstance
-          .sendSms(to: '', message: contents[i]["content"]);
       return;
     }
     i++;

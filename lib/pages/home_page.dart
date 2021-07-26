@@ -73,7 +73,7 @@ class _ModeState extends State<Mode> {
                 child: Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),
-                  height: MediaQuery.of(context).size.height * 0.25,
+                  height: MediaQuery.of(context).size.height * 0.28,
                   width: MediaQuery.of(context).size.width * 0.45,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
@@ -124,8 +124,8 @@ class _ModeState extends State<Mode> {
                 child: Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.28,
+                  width: MediaQuery.of(context).size.width * 0.40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
@@ -139,7 +139,7 @@ class _ModeState extends State<Mode> {
                         padding: EdgeInsets.all(5),
                         margin: EdgeInsets.all(5),
                         height: MediaQuery.of(context).size.height * 0.14,
-                        width: MediaQuery.of(context).size.width * 0.45,
+                        width: MediaQuery.of(context).size.width * 0.40,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(
                               Radius.circular(18),

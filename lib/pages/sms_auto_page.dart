@@ -681,6 +681,9 @@ onBackgroundMessage(SmsMessage message) async {
 String getLastWord(String str) {
   String res = "";
   int i = str.length - 1;
+  if (str[i] == "." || str[i] == " ") {
+    i = str.length - 2;
+  }
   bool stop = false;
   while (!stop && i >= 0) {
     if (str[i] != " ") {

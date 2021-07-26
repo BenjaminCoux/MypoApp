@@ -628,10 +628,11 @@ class _AlertScreenState extends State<AlertScreen> {
                       ),
                       Switch(
                           activeColor: d_green,
-                          value: false,
+                          value: widget.alerte.notification,
                           onChanged: (bool val) => {
                                 setState(() {
-                                  // confirm = val;
+                                  hasChanged = true;
+                                  widget.alerte.notification = val;
                                 })
                               }),
                     ],
@@ -846,6 +847,7 @@ class _AlertScreenState extends State<AlertScreen> {
       final days = widget.alerte.days;
       final cible = widget.alerte.cibles;
       final b = widget.alerte.active;
+      String not = widget.alerte.notification.toString();
       List<AlertKey> a = widget.alerte.keys;
       List<String> aStr = <String>[];
       for (int i = 0; i < a.length; i++) {
@@ -853,7 +855,7 @@ class _AlertScreenState extends State<AlertScreen> {
       }
       String str = json.encode(aStr);
       String tmp =
-          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$b,"keys":$str}';
+          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$b,"notification":$not,"keys":$str}';
       pref.setString(title, tmp);
     }
   }

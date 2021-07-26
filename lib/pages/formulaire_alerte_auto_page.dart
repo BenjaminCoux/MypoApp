@@ -36,6 +36,7 @@ class _FormState extends State<FormScreen> {
   int _value = 1;
   bool _value2 = true;
   var db;
+  bool notif = false;
   List<AlertKey> keys = <AlertKey>[];
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
 
@@ -69,7 +70,7 @@ class _FormState extends State<FormScreen> {
   /**
    * save the alert in the shared prefrences
    */
-  void saveAlert(String title, String content, var days, var cibles,
+  void saveAlert(String title, String content, var days, var cibles, bool notif,
       List<AlertKey> keys) async {
     final pref = await SharedPreferences.getInstance();
     //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
@@ -77,9 +78,10 @@ class _FormState extends State<FormScreen> {
     for (int i = 0; i < keys.length; i++) {
       listK.add(keys[i].toString());
     }
+    String not = notif.toString();
     String kstr = json.encode(listK);
     String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false,"keys":$kstr}';
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false,"notification":$not,"keys":$kstr}';
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);
@@ -633,10 +635,10 @@ class _FormState extends State<FormScreen> {
                         ),
                         Switch(
                             activeColor: d_green,
-                            value: false,
+                            value: notif,
                             onChanged: (bool val) => {
                                   setState(() {
-                                    //set new state
+                                    notif = val;
                                   })
                                 }),
                       ],
@@ -710,7 +712,7 @@ class _FormState extends State<FormScreen> {
                           isWeekSet(week))
                         {
                           saveAlert(alertName.text, alertContent.text, week,
-                              cibles, keys),
+                              cibles, notif, keys),
                           Navigator.pop(context),
                           Navigator.push(
                             context,

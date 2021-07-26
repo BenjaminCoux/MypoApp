@@ -11,7 +11,10 @@ import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
 import 'edit_alertes_page.dart';
 import 'formulaire_alerte_auto_page.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
@@ -121,22 +124,29 @@ class _StateSwitchButton extends State<SwitchButton> {
     int i = 0;
     //si le message reçu contient
     while (i < keys.length) {
-      bool tmp = isActive(
-          message.body,
-          createAlert(
-              new Alert(
-                  title: contents[i]["title"],
-                  content: contents[i]["content"],
-                  days: json.decode(contents[i]["days"]),
-                  cibles: json.decode(contents[i]["cibles"]),
-                  keys: buildKeys(contents[i]["keys"])),
-              contents[i]["active"]));
+      Alert a = createAlert(
+          new Alert(
+              title: contents[i]["title"],
+              content: contents[i]["content"],
+              days: json.decode(contents[i]["days"]),
+              cibles: json.decode(contents[i]["cibles"]),
+              notification: contents[i]["notification"],
+              keys: buildKeys(contents[i]["keys"])),
+          contents[i]["active"]);
+      bool tmp = isActive(message.body, a);
       debugPrint(tmp.toString());
       if (tmp) {
         // TODO: le if ne fonctionne pas bien
         print(tmp);
         Telephony.instance.sendSms(
             to: message.address.toString(), message: contents[i]["content"]);
+        if (a.notification) {
+          String title = a.title;
+          String content = a.content;
+          String number = message.address.toString();
+          _showNotification("Une reponse de l'alerte $title à été envoyée",
+              "La reponse '$content' à été envoyée à $number");
+        }
         return;
       }
       i++;
@@ -205,6 +215,7 @@ class _StateSwitchButton extends State<SwitchButton> {
     final cible = alerte["cibles"];
     final active = state;
     final key = alerte["keys"];
+    String not = alerte["notification"].toString();
     List<dynamic> tmpK = <dynamic>[];
     for (int i = 0; i < key.length; i++) {
       tmpK.add(json.decode(key[i]));
@@ -222,7 +233,7 @@ class _StateSwitchButton extends State<SwitchButton> {
     }
     String kstr = json.encode(listK);
     String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active,"keys":$kstr}';
+        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active,"notification":$not,"keys":$kstr}';
     prefs.setString(title, tmp);
     //  print(prefs.get(alerte["title"]));
   }
@@ -326,6 +337,7 @@ class _AlertesState extends State<Alertes> {
         content: a.content,
         days: a.days,
         cibles: a.cibles,
+        notification: a.notification,
         keys: a.keys);
     res.active = actived;
     return res;
@@ -438,6 +450,7 @@ class _AlertesState extends State<Alertes> {
                                 content: alert["content"],
                                 days: jsonDecode(alert["days"]),
                                 cibles: jsonDecode(alert["cibles"]),
+                                notification: alert["notification"],
                                 keys: buildKeys(alert["keys"])),
                             alert["active"],
                           ))),
@@ -459,6 +472,7 @@ class _AlertesState extends State<Alertes> {
                     "days": alert["days"],
                     "cibles": alert["cibles"],
                     "active": alert["active"],
+                    "notification": alert["notification"],
                     "keys": alert["keys"]
                   });
                   addToDB(alert, title);
@@ -657,18 +671,26 @@ onBackgroundMessage(SmsMessage message) async {
   int i = 0;
   //si le message reçu contient
   while (i < keys.length) {
-    if (isActive(
-        message.body,
-        createAlert(
-            new Alert(
-                title: contents[i]["title"],
-                content: contents[i]["content"],
-                days: json.decode(contents[i]["days"]),
-                cibles: json.decode(contents[i]["cibles"]),
-                keys: buildKeys(contents[i]["keys"])),
-            contents[i]["active"]))) {
+    Alert a = createAlert(
+        new Alert(
+            title: contents[i]["title"],
+            content: contents[i]["content"],
+            days: json.decode(contents[i]["days"]),
+            cibles: json.decode(contents[i]["cibles"]),
+            notification: contents[i]["notification"],
+            keys: buildKeys(contents[i]["keys"])),
+        contents[i]["active"]);
+    ;
+    if (isActive(message.body, a)) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
+      if (a.notification) {
+        String title = a.title;
+        String content = a.content;
+        String number = message.address.toString();
+        _showNotification("Une reponse de l'alerte $title à été envoyée",
+            "La reponse '$content' à été envoyée à $number");
+      }
       return;
     }
     i++;
@@ -712,6 +734,7 @@ Alert createAlert(Alert a, bool actived) {
       content: a.content,
       days: a.days,
       cibles: a.cibles,
+      notification: a.notification,
       keys: a.keys);
   res.active = actived;
   return res;
@@ -821,6 +844,19 @@ bool dayIsRight(Alert alert, String day) {
     }
   }
   return false;
+}
+
+Future<void> _showNotification(String title, String body) async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+          'your channel id', 'your channel name', 'your channel description',
+          importance: Importance.max,
+          priority: Priority.high,
+          ticker: 'ticker');
+  const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin
+      .show(0, title, body, platformChannelSpecifics, payload: 'item x');
 }
 
 /***

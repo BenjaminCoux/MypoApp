@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/model/alert.dart';
 import 'package:mypo/model/alertkey.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:telephony/telephony.dart';
@@ -121,6 +123,30 @@ class _StateSwitchButton extends State<SwitchButton> {
     }
     contents = await getContents();
     debugPrint("onMessage called (Foreground)");
+    debugPrint("cibles du message: " + contents[0]['cibles'].toString());
+    //Si numero non enregistrés est coché et contacts uniquement n'est pas coché
+    // if (contents[i]['cibles'][1] == true && contents[i]['cibles'][3] == false){
+    //    si le contact n'appartient pas a la liste de contact
+    //    if(isContactInContactList(message) == false){
+    //        on envoie un msg
+    //         Telephony.backgroundInstance.sendSms( to: message.address.toString(), message: contents[i]["content"]);
+    //     }
+    // }
+    //Si numero non enregistrés n'est pas coché et contacts uniquement est coché
+    // if(contents[i]['cibles'][1] == false && contents[i]['cibles'][3] == true) {
+    //    // si le contact appartient a la liste de contacts
+    //    if(isContactInContactList(message) == true){
+    //          // on envoie un msg
+    //          Telephony.backgroundInstance.sendSms(
+    //       to: message.address.toString(), message: contents[i]["content"]);
+    //    }
+    // }
+    Future<bool> test = isContactInContactList(message);
+    if (await test) {
+      debugPrint("contact is in contact list");
+    } else {
+      debugPrint("Contact is not in contact list");
+    }
     int i = 0;
     //si le message reçu contient
     while (i < keys.length) {
@@ -134,9 +160,8 @@ class _StateSwitchButton extends State<SwitchButton> {
               keys: buildKeys(contents[i]["keys"])),
           contents[i]["active"]);
       bool tmp = isActive(message.body, a);
-      debugPrint(tmp.toString());
+      //debugPrint(tmp.toString());
       if (tmp) {
-        // TODO: le if ne fonctionne pas bien
         print(tmp);
         Telephony.instance.sendSms(
             to: message.address.toString(), message: contents[i]["content"]);
@@ -167,8 +192,9 @@ class _StateSwitchButton extends State<SwitchButton> {
 
   Future<void> initPlatformState() async {
     final bool? result = await telephony.requestPhoneAndSmsPermissions;
+    final bool? resultContact = await Permission.contacts.request().isGranted;
 
-    if (result != null && result) {
+    if (result != null && result && resultContact!) {
       telephony.listenIncomingSms(
           onNewMessage: onMessage,
           onBackgroundMessage: onBackgroundMessage,
@@ -668,6 +694,33 @@ onBackgroundMessage(SmsMessage message) async {
   }
   contents = await getContents();
   debugPrint("onBackgroundMessage called");
+  // debugPrint('test');
+  debugPrint("cibles du message: " + contents[0]['cibles'].toString());
+  //Si numero non enregistrés est coché et contacts uniquement n'est pas coché
+  // if (contents[i]['cibles'][1] == true && contents[i]['cibles'][3] == false){
+  //    si le contact n'appartient pas a la liste de contact
+  //    if(isContactInContactList(message) == false){
+  //        on envoie un msg
+  //         Telephony.backgroundInstance.sendSms( to: message.address.toString(), message: contents[i]["content"]);
+  //     }
+  // }
+  //Si numero non enregistrés n'est pas coché et contacts uniquement est coché
+  // if(contents[i]['cibles'][1] == false && contents[i]['cibles'][3] == true) {
+  //    // si le contact appartient a la liste de contacts
+  //    if(isContactInContactList(message) == true){
+  //          // on envoie un msg
+  //          Telephony.backgroundInstance.sendSms(
+  //       to: message.address.toString(), message: contents[i]["content"]);
+  //    }
+  // }
+  Future<bool> test = isContactInContactList(message);
+  if (await test) {
+    debugPrint("contact is in contact list");
+    // debugPrint('test');
+  } else {
+    debugPrint("Contact is not in contact list");
+    // debugPrint('test');
+  }
   int i = 0;
   //si le message reçu contient
   while (i < keys.length) {
@@ -680,7 +733,7 @@ onBackgroundMessage(SmsMessage message) async {
             notification: contents[i]["notification"],
             keys: buildKeys(contents[i]["keys"])),
         contents[i]["active"]);
-    ;
+
     if (isActive(message.body, a)) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
@@ -800,6 +853,23 @@ bool isActive(String? body, Alert alert) {
     }
   }
   return res;
+}
+
+Future<bool> isContactInContactList(SmsMessage message) async {
+  List<Contact> _contacts =
+      (await ContactsService.getContacts(withThumbnails: false)).toList();
+  for (var i = 0; i < _contacts.length; i++) {
+    if (message.address.toString() ==
+        _contacts[i]
+            .phones
+            ?.elementAt(0)
+            .value!
+            .replaceAll(' ', '')
+            .replaceAll('-', '')
+            .replaceAll('(', '')
+            .replaceAll(')', '')) return true;
+  }
+  return false;
 }
 
 /**

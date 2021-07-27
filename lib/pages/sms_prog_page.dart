@@ -10,7 +10,6 @@ import 'package:telephony/telephony.dart';
 import 'formulaire_alerte_prog_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/database/scheduledmsg_hive.dart';
-import 'package:mypo/model/notification.dart';
 
 const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
@@ -120,6 +119,7 @@ class _SmsProgState extends State<SmsProg> {
   }
 
   Future selectNotification(String payload) async {
+    // ignore: unnecessary_null_comparison
     if (payload != null) {
       debugPrint('notification payload: $payload');
     }

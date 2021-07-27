@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/pages/edit_scheduledmsg_page.dart';
+import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/boxes.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
@@ -11,9 +12,7 @@ import 'formulaire_alerte_prog_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/database/scheduledmsg_hive.dart';
 
-const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
-const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();

@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/database/scheduledmsg_hive.dart';
 
 // ignore: must_be_immutable
 class ScheduledmsgDetailPage extends StatefulWidget {
@@ -80,8 +81,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     widget.message.countdown = countdown;
     widget.message.confirm = confirm;
     widget.message.notification = notification;
-    //TODO: right now everytime we edit a scheduled msg, status is set to PENDING
-    widget.message.status = MessageStatus.PENDING;
+
+    // widget.message.status = MessageStatus.PENDING;
     widget.message.save();
   }
 
@@ -89,7 +90,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(title: 'Alerte : ${widget.message.name}'),
+      appBar: TopBarAlerteProg(title: 'Alerte : ${widget.message.name}'),
       body: Scrollbar(
         thickness: 10,
         interactive: true,

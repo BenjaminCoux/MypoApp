@@ -25,6 +25,19 @@ class Scheduledmsg_hive extends HiveObject {
   late MessageStatus status = MessageStatus.PENDING;
 }
 
+@HiveType(typeId: 1)
+class Rapportmsg_hive extends HiveObject {
+  //extending to hiveobject we can use hive methods such as save delete etc.
+  @HiveField(0)
+  late String name;
+  @HiveField(1)
+  late String phoneNumber;
+  @HiveField(2)
+  late String message;
+  @HiveField(3)
+  late DateTime date;
+}
+
 enum MessageStatus { PENDING, SENT, FAILED }
 
 

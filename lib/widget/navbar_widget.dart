@@ -4,8 +4,6 @@ import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/pages/repports_page.dart';
 import 'package:mypo/pages/settings_page.dart';
 
-const d_green = Color(0xFFA6C800);
-
 /*
     -this class is responsible of the bottom nav bar of 2 elements for the sms auto page with images as icon
 */

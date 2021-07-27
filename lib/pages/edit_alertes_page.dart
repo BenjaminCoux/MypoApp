@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:mypo/model/alert.dart';
+import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'sms_auto_page.dart';
 
-const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);
@@ -353,7 +353,7 @@ class _AlertScreenState extends State<AlertScreen> {
     // print(widget.alerte.days);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(title: 'Alerte : ${widget.alerte.title}'),
+      appBar: TopBarAlerteAuto(title: 'Alerte : ${widget.alerte.title}'),
       body: Scrollbar(
         thickness: 10,
         interactive: true,

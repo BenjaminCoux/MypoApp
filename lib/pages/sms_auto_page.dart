@@ -14,10 +14,10 @@ import 'package:intl/intl.dart';
 import 'edit_alertes_page.dart';
 import 'formulaire_alerte_auto_page.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mypo/pages/home_page.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-const d_green = Color(0xFFA6C800);
 const d_gray = Color(0xFFBABABA);
 const d_darkgray = Color(0xFF6C6C6C);
 const d_lightgray = Color(0XFFFAFAFA);

@@ -797,7 +797,7 @@ bool isActive(String? body, Alert alert, bool isInContact) {
   if (!alert.active) {
     return res;
   }
-  if ((alert.cibles[3] && isInContact) || (alert.cibles[1] && !isInContact)) {
+  if ((alert.cibles[3] && !isInContact) || (alert.cibles[1] && isInContact)) {
     return res;
   }
 

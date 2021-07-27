@@ -124,29 +124,7 @@ class _StateSwitchButton extends State<SwitchButton> {
     contents = await getContents();
     debugPrint("onMessage called (Foreground)");
     debugPrint("cibles du message: " + contents[0]['cibles'].toString());
-    //Si numero non enregistrés est coché et contacts uniquement n'est pas coché
-    // if (contents[i]['cibles'][1] == true && contents[i]['cibles'][3] == false){
-    //    si le contact n'appartient pas a la liste de contact
-    //    if(isContactInContactList(message) == false){
-    //        on envoie un msg
-    //         Telephony.backgroundInstance.sendSms( to: message.address.toString(), message: contents[i]["content"]);
-    //     }
-    // }
-    //Si numero non enregistrés n'est pas coché et contacts uniquement est coché
-    // if(contents[i]['cibles'][1] == false && contents[i]['cibles'][3] == true) {
-    //    // si le contact appartient a la liste de contacts
-    //    if(isContactInContactList(message) == true){
-    //          // on envoie un msg
-    //          Telephony.backgroundInstance.sendSms(
-    //       to: message.address.toString(), message: contents[i]["content"]);
-    //    }
-    // }
     Future<bool> test = isContactInContactList(message);
-    if (await test) {
-      debugPrint("contact is in contact list");
-    } else {
-      debugPrint("Contact is not in contact list");
-    }
     int i = 0;
     //si le message reçu contient
     while (i < keys.length) {
@@ -159,7 +137,7 @@ class _StateSwitchButton extends State<SwitchButton> {
               notification: contents[i]["notification"],
               keys: buildKeys(contents[i]["keys"])),
           contents[i]["active"]);
-      bool tmp = isActive(message.body, a);
+      bool tmp = isActive(message.body, a, await test);
       //debugPrint(tmp.toString());
       if (tmp) {
         print(tmp);
@@ -734,7 +712,7 @@ onBackgroundMessage(SmsMessage message) async {
             keys: buildKeys(contents[i]["keys"])),
         contents[i]["active"]);
 
-    if (isActive(message.body, a)) {
+    if (isActive(message.body, a, await test)) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
       if (a.notification) {
@@ -814,11 +792,15 @@ String getFirstWord(String str) {
 /**
  * function that check if an alert should respond to a received message on the phone
  */
-bool isActive(String? body, Alert alert) {
+bool isActive(String? body, Alert alert, bool isInContact) {
   bool res = false;
   if (!alert.active) {
     return res;
   }
+  if ((alert.cibles[3] && isInContact) || (alert.cibles[1] && !isInContact)) {
+    return res;
+  }
+
   DateTime now = DateTime.now();
   String day = DateFormat('EEEE').format(now);
   if (!dayIsRight(alert, day)) {

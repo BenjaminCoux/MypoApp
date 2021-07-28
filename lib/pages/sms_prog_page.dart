@@ -171,6 +171,7 @@ class _SmsProgState extends State<SmsProg> {
 
   confirmSend(Scheduledmsg_hive msg) {
     timer!.cancel();
+    bool notif = msg.notification;
     int five_min = 300000 * 6;
     String content = msg.message;
     String to = msg.phoneNumber;
@@ -189,7 +190,10 @@ class _SmsProgState extends State<SmsProg> {
                   onPressed: () => {
                         Telephony.instance.sendSms(to: to, message: content),
                         updateDate(msg),
-                        _showNotification(msg.phoneNumber, msg.message),
+                        if (notif)
+                          {
+                            _showNotification(msg.phoneNumber, msg.message),
+                          },
                         this.timer = Timer.periodic(
                             Duration(seconds: 20),
                             (Timer t) => {

@@ -435,12 +435,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               context: context,
                               builder: (BuildContext context) =>
                                   buildPopupDialogCancel());
-                          // Navigator.pop(context),
-                          // Navigator.push(
-                          //   context,
-                          //   new MaterialPageRoute(
-                          //       builder: (context) => new SmsProg()),
-                          // ),
                         },
                         child: Text(
                           "Annuler",

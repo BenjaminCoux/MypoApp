@@ -36,6 +36,7 @@ class Rapportmsg_hive extends HiveObject {
   late String message;
   @HiveField(3)
   late DateTime date;
+  //TODO: field pour msg programme et message auto
 }
 
 enum MessageStatus { PENDING, SENT, FAILED }

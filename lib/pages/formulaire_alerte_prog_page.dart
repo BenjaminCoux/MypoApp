@@ -279,9 +279,8 @@ class _ProgState extends State<ProgForm> {
                             children: [
                               Icon(Icons.timer_rounded),
                               Container(
-                                  child: Text(
-                                    "Compte à rebours",
-                                  ),
+                                  child: Text("Compte à rebours",
+                                      style: TextStyle(color: Colors.red)),
                                   margin: EdgeInsets.all(5)),
                             ],
                           )),

@@ -32,6 +32,7 @@ class _SmsProgState extends State<SmsProg> {
   void initState() {
     super.initState();
     timer = Timer.periodic(
+        //TODO: mettre à 60 seconds
         Duration(seconds: 20),
         (Timer t) => {
               sendSms(),
@@ -407,7 +408,6 @@ class _SmsProgState extends State<SmsProg> {
         ],
       );
 
-  //-Function that creates a pop up for asking a yes no question based on a given message
   buildPopupDialog(Scheduledmsg_hive message) {
     String title = "";
     title = message.name;
@@ -436,3 +436,8 @@ class _SmsProgState extends State<SmsProg> {
     );
   }
 }
+
+
+// created time and time for the next execution
+
+// le message est envoyé avant la sauvegarde

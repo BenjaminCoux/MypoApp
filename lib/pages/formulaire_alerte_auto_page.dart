@@ -527,7 +527,9 @@ class _FormState extends State<FormScreen> {
                                               ListTileControlAffinity.leading,
                                           title: Text(
                                             "Groupe de contact",
-                                            style: TextStyle(fontSize: 15),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.red),
                                           ),
                                           activeColor: d_green,
                                           value: cibles[4],
@@ -655,7 +657,8 @@ class _FormState extends State<FormScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                          child: Text("Règle de réponse"),
+                          child: Text("Règle de réponse",
+                              style: TextStyle(color: Colors.red)),
                           margin: EdgeInsets.fromLTRB(
                               5,
                               0,

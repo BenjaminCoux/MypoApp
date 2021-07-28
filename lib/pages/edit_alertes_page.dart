@@ -649,7 +649,8 @@ class _AlertScreenState extends State<AlertScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
-                        child: Text("Règle de réponse"),
+                        child: Text("Règle de réponse",
+                            style: TextStyle(color: Colors.red)),
                         margin: EdgeInsets.fromLTRB(
                             5,
                             0,
@@ -825,18 +826,18 @@ class _AlertScreenState extends State<AlertScreen> {
   void save() async {
     if (hasChanged) {
       final pref = await SharedPreferences.getInstance();
-      //print(pref.getString(widget.alerte.title));
       final keys = pref.getKeys();
-      //dd
       Iterator<String> it = keys.iterator;
+
+      //TODO: Not delete but just replace the data using the same index
+
       while (it.moveNext()) {
         if (it.current == widget.alerte.title) {
           pref.remove(it.current);
         }
       }
+
       String title = widget.alerte.title;
-      //print(titlechanged);
-      //print(contentchanged);
       if (titlechanged) {
         title = alertName.text;
       }

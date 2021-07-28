@@ -28,6 +28,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   bool confirm = false;
   bool notification = false;
   bool hasChanged = false;
+  String repeat = "";
+  late DateTime timeUpdated;
 
   List<Contact> contacts = [];
   final repeatOptions = [
@@ -80,8 +82,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     widget.message.message = alertContent.text;
     widget.message.countdown = countdown;
     widget.message.confirm = confirm;
+    widget.message.date = timeUpdated;
+    widget.message.repeat = repeat;
     widget.message.notification = notification;
-
     // widget.message.status = MessageStatus.PENDING;
     widget.message.save();
   }
@@ -515,7 +518,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
             mode: CupertinoDatePickerMode.dateAndTime,
             use24hFormat: true,
             onDateTimeChanged: (dateTime) =>
-                setState(() => widget.message.date = dateTime)),
+                setState(() => timeUpdated = dateTime)),
       );
 
   showSheet(BuildContext context,
@@ -538,7 +541,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
             itemExtent: 50,
             looping: true,
             onSelectedItemChanged: (index) => setState(() {
-                  widget.message.repeat = repeatOptions[index];
+                  repeat = repeatOptions[index];
                 }),
             children: modelBuilder<String>(repeatOptions, (index, option) {
               return Center(child: Text(option));

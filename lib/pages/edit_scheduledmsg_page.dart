@@ -30,6 +30,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   bool hasChanged = false;
   String repeat = "";
   late DateTime timeUpdated;
+  late DateTime timeAux;
 
   List<Contact> contacts = [];
   final repeatOptions = [
@@ -50,6 +51,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     countdown = widget.message.countdown;
     confirm = widget.message.confirm;
     notification = widget.message.notification;
+    timeUpdated = widget.message.date;
+    timeAux = widget.message.date;
 
     alertName.addListener(() {
       changed;
@@ -82,7 +85,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     widget.message.message = alertContent.text;
     widget.message.countdown = countdown;
     widget.message.confirm = confirm;
-    widget.message.date = timeUpdated;
+    widget.message.date = new DateTime(timeUpdated.year, timeUpdated.month,
+        timeUpdated.day, timeAux.hour, timeAux.minute, timeAux.second);
     widget.message.repeat = repeat;
     widget.message.notification = notification;
     // widget.message.status = MessageStatus.PENDING;
@@ -219,17 +223,14 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                 Text(
                                   "Date du prochain envoie ",
                                   style: TextStyle(fontSize: 16),
-                                  //textAlign: TextAlign.start,
                                 ),
                                 Text(
                                   "${DateFormat('dd/MM/yyyy').format(widget.message.date)} ",
                                   style: TextStyle(fontSize: 16),
-                                  //textAlign: TextAlign.start,
                                 ),
                                 Text(
                                   "Heure: ${DateFormat('HH:mm').format(widget.message.date)} ",
                                   style: TextStyle(fontSize: 16),
-                                  // textAlign: TextAlign.start,
                                 ),
                               ],
                             ),
@@ -241,14 +242,10 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: OutlinedButton(
-                            // onPressed: null,
                             onPressed: () => showSheet(context,
                                 child: buildDatePicker(), onClicked: () {
-                              // final value =
-                              //     DateFormat('dd/MM/yyyy HH:mm').format(alertDate);
                               Navigator.pop(context);
                             }),
-
                             style: OutlinedButton.styleFrom(
                               backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
@@ -277,16 +274,10 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: OutlinedButton(
-                            // onPressed: null,
                             onPressed: () => showSheet(context,
                                 child: buildRepeatOptions(), onClicked: () {
                               Navigator.pop(context);
-                              // print(widget.message.date);
-                              //print(widget.message.repeat);
-                              // print(confirm);
-                              // print(notif);
                             }),
-
                             style: OutlinedButton.styleFrom(
                               backgroundColor: d_green,
                               side: BorderSide(color: d_green, width: 2),
@@ -442,12 +433,13 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           ),
                         ),
                         onPressed: () => {
-                          Navigator.pop(context),
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => new SmsProg()),
-                          ),
+                          buildPopupDialogCancel(),
+                          // Navigator.pop(context),
+                          // Navigator.push(
+                          //   context,
+                          //   new MaterialPageRoute(
+                          //       builder: (context) => new SmsProg()),
+                          // ),
                         },
                         child: Text(
                           "Annuler",
@@ -495,6 +487,35 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           ),
         ),
       ),
+    );
+  }
+
+  buildPopupDialogCancel() {
+    return new AlertDialog(
+      title: Text("Voulez vous annuler ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new SmsProg()),
+            );
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
     );
   }
 
@@ -567,14 +588,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                 initialDateTime: widget.message.date,
                 mode: CupertinoDatePickerMode.time,
                 use24hFormat: true,
-                onDateTimeChanged: (dateTime) => setState(() => timeUpdated =
-                    new DateTime(
-                        timeUpdated.year,
-                        timeUpdated.month,
-                        timeUpdated.day,
-                        dateTime.hour,
-                        dateTime.minute,
-                        dateTime.second)),
+                onDateTimeChanged: (dateTime) =>
+                    setState(() => timeAux = dateTime),
               )),
         ]),
       );

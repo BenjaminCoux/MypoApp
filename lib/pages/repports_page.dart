@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/boxes.dart';
+import 'package:mypo/database/scheduledmsg_hive.dart';
 
 import '../main.dart';
 
@@ -14,13 +19,38 @@ class _RepportsPageState extends State<RepportsPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: "Rapport des alertes émises"),
-      body: Rapport(),
+      body: Scrollbar(
+        interactive: true,
+        isAlwaysShown: true,
+        showTrackOnHover: true,
+        thickness: 10,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: ValueListenableBuilder<Box<Rapportmsg_hive>>(
+                    valueListenable: Boxes.getRapportmsg().listenable(),
+                    builder: (context, box, _) {
+                      final rapportmsg =
+                          box.values.toList().cast<Rapportmsg_hive>();
+                      return Rapport(rapportmsg: rapportmsg);
+                    },
+                  ))
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
+// ignore: must_be_immutable
 class Rapport extends StatefulWidget {
+  List rapportmsg;
+
+  Rapport({required this.rapportmsg});
   @override
   _RapportState createState() => _RapportState();
 }
@@ -28,80 +58,138 @@ class Rapport extends StatefulWidget {
 class _RapportState extends State<Rapport> {
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
-      Padding(
-          padding: EdgeInsets.all(10),
-          child: Card(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.70,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(children: [
-                        Row(children: [
-                          Icon(Icons.access_time_filled, color: d_darkgray),
-                          Text(' Date :test'),
-                        ]),
-                        Row(children: [
-                          Icon(Icons.person, color: d_darkgray),
-                          Text(' Number :test'),
-                        ]),
-                        Row(children: [
-                          Icon(Icons.notifications, color: d_darkgray),
-                          Text(' Alerte :test',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ]),
-                        Row(children: [
-                          Icon(Icons.sms_rounded, color: d_darkgray),
-                          Text(' Message :test'),
-                        ]),
+    if (widget.rapportmsg.isEmpty) {
+      return Center(
+        child: Text(
+          'Aucun message',
+          style: TextStyle(fontSize: 24),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        padding: EdgeInsets.all(8),
+        itemCount: widget.rapportmsg.length,
+        itemBuilder: (BuildContext context, int index) {
+          final message = widget.rapportmsg[index];
+
+          return buildMessage(context, message);
+        },
+      );
+    }
+  }
+
+  Widget buildMessage(BuildContext context, Rapportmsg_hive message) {
+    late String preview = " ";
+    for (int i = 0; i < message.message.length && i < 20; i++) {
+      preview += message.message[i];
+    }
+    return Padding(
+        padding: EdgeInsets.all(10),
+        child: Card(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.67,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(children: [
+                      Row(children: [
+                        Icon(Icons.access_time_filled, color: d_darkgray),
+                        Text(
+                            ' Date: ${DateFormat('dd/MM/yyyy HH:mm').format(message.date)}'),
                       ]),
+                      Row(children: [
+                        Icon(Icons.person, color: d_darkgray),
+                        Text(' Numéro: ${message.phoneNumber}'),
+                      ]),
+                      Row(children: [
+                        Icon(Icons.notifications, color: d_darkgray),
+                        Text(' Alerte: ${message.name}',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ]),
+                      Row(children: [
+                        Icon(Icons.sms_rounded, color: d_darkgray),
+                        message.message.length < 20
+                            ? Text(' Message: ${message.message}',
+                                overflow: TextOverflow.ellipsis)
+                            : Text(' Message: ${preview}...',
+                                overflow: TextOverflow.ellipsis),
+                      ]),
+                    ]),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.20,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(height: 5),
+                    Icon(
+                      Icons.check_circle_rounded,
+                      size: 35,
+                      color: d_green,
                     ),
+                    SizedBox(height: 5),
+                    IconButton(
+                        padding: EdgeInsets.all(12),
+                        icon: Icon(Icons.delete, color: Colors.black, size: 35),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  buildPopupDialog(message));
+                        }),
                   ],
                 ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.20,
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SizedBox(height: 5),
-                      Icon(
-                        Icons.check_circle_rounded,
-                        size: 35,
-                        color: d_green,
-                      ),
-                      SizedBox(height: 5),
-                      IconButton(
-                          padding: EdgeInsets.all(12),
-                          icon:
-                              Icon(Icons.delete, color: Colors.black, size: 35),
-                          onPressed: () {}),
-                    ],
-                  ),
-                ),
-              )
-             
-            ],
-          )))
-    ]);
+            )
+          ],
+        )));
+  }
+
+  buildPopupDialog(Rapportmsg_hive message) {
+    String title = "";
+    title = message.name;
+    return new AlertDialog(
+      title: Text("Voulez vous SUPPRIMER $title ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            message.delete();
+            Navigator.of(context).pop();
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
   }
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 
 class Detail extends StatefulWidget {
-  // demander l'alerte
-
   @override
   _DetailState createState() => _DetailState();
 }
@@ -127,7 +215,6 @@ class _DetailState extends State<Detail> {
                   Padding(
                       padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                       child: Table(
-                        // defaultColumnWidth: ,
                         children: <TableRow>[
                           TableRow(children: [
                             Text('Type:',
@@ -191,9 +278,7 @@ class _DetailState extends State<Detail> {
                                         color: Color(0xFFFFFFFF)),
                                     textAlign: TextAlign.left,
                                   ),
-                                  Divider(
-                                      color: Color(
-                                          0x00000000)), // 0 alpha (invisible)
+                                  Divider(color: Colors.transparent),
                                   Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
@@ -210,8 +295,6 @@ class _DetailState extends State<Detail> {
                                         ),
                                         Icon(
                                           Icons.schedule,
-                                          //   _message.status == MessageStatus.PENDING ? Icons.schedule :
-                                          // _message.status == MessageStatus.SENT ? Icons.done : Icons.error,
                                           color: Colors.white,
                                           size: 16.0,
                                         )
@@ -221,7 +304,5 @@ class _DetailState extends State<Detail> {
             ))
       ],
     );
-
-   
   }
 }

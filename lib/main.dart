@@ -32,9 +32,16 @@ Future main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(ScheduledmsghiveAdapter());
+  Hive.registerAdapter(RapportmsghiveAdapter());
 
   // loading the <key,values> pair from the local storage into memory
-  await Hive.openBox<Scheduledmsg_hive>('scheduledmsg');
+  try {
+    await Hive.openBox<Scheduledmsg_hive>('scheduledmsg');
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+
+  await Hive.openBox<Rapportmsg_hive>('rapportmsg');
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('app_icon');
@@ -112,28 +119,22 @@ class _MyappState extends State<MyApp> {
                   message) => /*   Condition to send message (Date.time.now > message.date && message.status != sent) */
 
               (DateTime.now().microsecondsSinceEpoch >=
-                  message.date.microsecondsSinceEpoch) &&
-              message.status != MessageStatus.SENT)
+                  message.date.microsecondsSinceEpoch))
           .forEach((Scheduledmsg_hive message) {
-        debugPrint("message : ${message.name} , status: ${message.status}");
+        debugPrint("message : ${message.name} ");
         /*
             for each message verifying the condition we try to send a message and set the state to sent or failed if error
           */
         try {
           Telephony.instance
               .sendSms(to: message.phoneNumber, message: message.message);
-          setState(() {
-            message.status = MessageStatus.SENT;
-          });
+          setState(() {});
         } catch (err) {
-          setState(() {
-            message.status = MessageStatus.FAILED;
-          });
+          setState(() {});
           debugPrint(err.toString());
         }
 
-        debugPrint(
-            "message sent to: ${message.phoneNumber}.. status: ${message.status}");
+        debugPrint("message sent to: ${message.phoneNumber}.. ");
       });
     });
   }

@@ -75,8 +75,8 @@ class _ProgState extends State<ProgForm> {
         ..repeat = repeatinput
         ..countdown = rebours
         ..confirm = confirm
-        ..notification = notif
-        ..status = MessageStatus.PENDING;
+        ..notification = notif;
+      //..status = MessageStatus.PENDING;
 
       final box = Boxes.getScheduledmsg();
       box.add(msg); // automatically generates a autoincrement key

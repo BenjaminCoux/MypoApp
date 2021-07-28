@@ -43,7 +43,19 @@ class _SmsProgState extends State<SmsProg> {
     super.dispose();
   }
 
+  saveMsgToRapport(Scheduledmsg_hive message) {
+    final messageToRapport = Rapportmsg_hive()
+      ..name = message.name
+      ..phoneNumber = message.phoneNumber
+      ..message = message.message
+      ..date = DateTime.now();
+    final box = Boxes.getRapportmsg();
+    box.add(messageToRapport);
+  }
+
   void sendSms() async {
+    List<Rapportmsg_hive> rapportmsg =
+        Boxes.getRapportmsg().values.toList().cast<Rapportmsg_hive>();
     List<Scheduledmsg_hive> messages =
         Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
     if (!messages.isEmpty) {
@@ -54,6 +66,10 @@ class _SmsProgState extends State<SmsProg> {
           } else {
             Telephony.instance.sendSms(
                 to: messages[i].phoneNumber, message: messages[i].message);
+            debugPrint(
+                'Message programmé envoyé a: ${messages[i].phoneNumber}');
+            saveMsgToRapport(messages[i]);
+
             updateDate(messages[i]);
             if (messages[i].notification) {
               _showNotification(messages[i].phoneNumber, messages[i].message);

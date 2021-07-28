@@ -177,4 +177,8 @@ flutter pub get
 flutter pub run build_runner clean
 flutter pub run build_runner build
 
+
+creating new fields in hive database
+
+flutter packages pub run build_runner build
 */

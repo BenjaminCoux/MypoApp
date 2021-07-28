@@ -431,36 +431,10 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           ),
                         ),
                         onPressed: () {
-                          AlertDialog(
-                            title: Text("Voulez vous annuler ?"),
-                            content: new Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[],
-                            ),
-                            actions: <Widget>[
-                              new TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) => new SmsProg()),
-                                  );
-                                },
-                                child: const Text('Oui',
-                                    style: TextStyle(color: Colors.black)),
-                              ),
-                              new TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Non',
-                                    style: TextStyle(color: Colors.black)),
-                              ),
-                            ],
-                          );
-                          // buildPopupDialogCancel();
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  buildPopupDialogCancel());
                           // Navigator.pop(context),
                           // Navigator.push(
                           //   context,

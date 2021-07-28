@@ -683,12 +683,10 @@ class _AlertScreenState extends State<AlertScreen> {
                           ),
                         ),
                         onPressed: () => {
-                          Navigator.pop(context),
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => new SmsAuto()),
-                          ),
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  buildPopupDialogCancel())
                         },
                         child: Text(
                           "Annuler",
@@ -765,6 +763,34 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
+  buildPopupDialogCancel() {
+    return new AlertDialog(
+      title: Text("Voulez vous annuler ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new SmsAuto()),
+            );
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
+  }
   /*
   function that crates a text field
 

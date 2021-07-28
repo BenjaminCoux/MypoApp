@@ -63,7 +63,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     alertContent.addListener(() {
       changed;
     });
-    // print(widget.message.repeat);
   }
 
   @override
@@ -317,9 +316,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             children: [
                               Icon(Icons.timer_rounded),
                               Container(
-                                  child: Text(
-                                    "Compte à rebours",
-                                  ),
+                                  child: Text("Compte à rebours",
+                                      style: TextStyle(color: Colors.red)),
                                   margin: EdgeInsets.all(5)),
                             ],
                           )),
@@ -432,8 +430,37 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed: () => {
-                          buildPopupDialogCancel(),
+                        onPressed: () {
+                          AlertDialog(
+                            title: Text("Voulez vous annuler ?"),
+                            content: new Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[],
+                            ),
+                            actions: <Widget>[
+                              new TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => new SmsProg()),
+                                  );
+                                },
+                                child: const Text('Oui',
+                                    style: TextStyle(color: Colors.black)),
+                              ),
+                              new TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Non',
+                                    style: TextStyle(color: Colors.black)),
+                              ),
+                            ],
+                          );
+                          // buildPopupDialogCancel();
                           // Navigator.pop(context),
                           // Navigator.push(
                           //   context,

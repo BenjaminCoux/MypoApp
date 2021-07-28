@@ -24,13 +24,14 @@ class ScheduledmsghiveAdapter extends TypeAdapter<Scheduledmsg_hive> {
       ..repeat = fields[4] as String
       ..countdown = fields[5] as bool
       ..confirm = fields[6] as bool
-      ..notification = fields[7] as bool;
+      ..notification = fields[7] as bool
+      ..dateOfCreation = fields[8] as DateTime;
   }
 
   @override
   void write(BinaryWriter writer, Scheduledmsg_hive obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -46,7 +47,9 @@ class ScheduledmsghiveAdapter extends TypeAdapter<Scheduledmsg_hive> {
       ..writeByte(6)
       ..write(obj.confirm)
       ..writeByte(7)
-      ..write(obj.notification);
+      ..write(obj.notification)
+      ..writeByte(8)
+      ..write(obj.dateOfCreation);
   }
 
   @override

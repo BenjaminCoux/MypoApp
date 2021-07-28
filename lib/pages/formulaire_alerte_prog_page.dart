@@ -72,6 +72,7 @@ class _ProgState extends State<ProgForm> {
         ..phoneNumber = contactController.text
         ..message = alertContent.text
         ..date = date
+        ..dateOfCreation = date
         ..repeat = repeatinput
         ..countdown = rebours
         ..confirm = confirm

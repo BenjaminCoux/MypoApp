@@ -185,18 +185,54 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "Date: ${DateFormat('dd/MM/yyyy').format(widget.message.date)} ",
-                            style: TextStyle(fontSize: 16),
-                            //textAlign: TextAlign.start,
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Date de création ",
+                                  style: TextStyle(fontSize: 16),
+                                  //textAlign: TextAlign.start,
+                                ),
+                                Text(
+                                  "${DateFormat('dd/MM/yyyy').format(widget.message.dateOfCreation)} ",
+                                  style: TextStyle(fontSize: 16),
+                                  //textAlign: TextAlign.start,
+                                ),
+                                Text(
+                                  "Heure: ${DateFormat('HH:mm').format(widget.message.dateOfCreation)} ",
+                                  style: TextStyle(fontSize: 16),
+                                  // textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            "Heure: ${DateFormat('HH:mm').format(widget.message.date)} ",
-                            style: TextStyle(fontSize: 16),
-                            // textAlign: TextAlign.start,
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Date du prochain envoie ",
+                                  style: TextStyle(fontSize: 16),
+                                  //textAlign: TextAlign.start,
+                                ),
+                                Text(
+                                  "${DateFormat('dd/MM/yyyy').format(widget.message.date)} ",
+                                  style: TextStyle(fontSize: 16),
+                                  //textAlign: TextAlign.start,
+                                ),
+                                Text(
+                                  "Heure: ${DateFormat('HH:mm').format(widget.message.date)} ",
+                                  style: TextStyle(fontSize: 16),
+                                  // textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -511,14 +547,36 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
 
   Widget buildDatePicker() => SizedBox(
         height: 150,
-        child: CupertinoDatePicker(
-            minimumYear: widget.message.date.year,
-            maximumYear: DateTime.now().year + 3,
-            initialDateTime: widget.message.date,
-            mode: CupertinoDatePickerMode.dateAndTime,
-            use24hFormat: true,
-            onDateTimeChanged: (dateTime) =>
-                setState(() => timeUpdated = dateTime)),
+        child: Flex(direction: Axis.horizontal, children: [
+          Flexible(
+            flex: 7,
+            child: CupertinoDatePicker(
+                minimumYear: widget.message.date.year,
+                maximumYear: DateTime.now().year + 3,
+                initialDateTime: widget.message.date,
+                mode: CupertinoDatePickerMode.date,
+                use24hFormat: true,
+                onDateTimeChanged: (dateTime) =>
+                    setState(() => timeUpdated = dateTime)),
+          ),
+          Flexible(
+              flex: 3,
+              child: CupertinoDatePicker(
+                minimumYear: widget.message.date.year - 3,
+                maximumYear: DateTime.now().year + 3,
+                initialDateTime: widget.message.date,
+                mode: CupertinoDatePickerMode.time,
+                use24hFormat: true,
+                onDateTimeChanged: (dateTime) => setState(() => timeUpdated =
+                    new DateTime(
+                        timeUpdated.year,
+                        timeUpdated.month,
+                        timeUpdated.day,
+                        dateTime.hour,
+                        dateTime.minute,
+                        dateTime.second)),
+              )),
+        ]),
       );
 
   showSheet(BuildContext context,

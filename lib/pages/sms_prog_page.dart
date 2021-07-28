@@ -55,8 +55,6 @@ class _SmsProgState extends State<SmsProg> {
   }
 
   void sendSms() async {
-    List<Rapportmsg_hive> rapportmsg =
-        Boxes.getRapportmsg().values.toList().cast<Rapportmsg_hive>();
     List<Scheduledmsg_hive> messages =
         Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
     if (!messages.isEmpty) {

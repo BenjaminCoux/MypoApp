@@ -70,7 +70,8 @@ class _RapportState extends State<Rapport> {
         padding: EdgeInsets.all(8),
         itemCount: widget.rapportmsg.length,
         itemBuilder: (BuildContext context, int index) {
-          final message = widget.rapportmsg[index];
+          final message =
+              widget.rapportmsg[widget.rapportmsg.length - 1 - index];
 
           return buildMessage(context, message);
         },

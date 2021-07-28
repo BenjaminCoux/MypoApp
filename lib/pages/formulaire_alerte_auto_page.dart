@@ -714,7 +714,8 @@ class _FormState extends State<FormScreen> {
                           alphanumeric.hasMatch(alertName.text) &&
                           isCiblesSet(cibles) &&
                           isWeekSet(week) &&
-                          await Permission.contacts.request().isGranted)
+                          await Permission.contacts.request().isGranted &&
+                          await Permission.sms.request().isGranted)
                         {
                           saveAlert(alertName.text, alertContent.text, week,
                               cibles, notif, keys),

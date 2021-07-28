@@ -161,7 +161,7 @@ class _MyappState extends State<MyApp> {
           // ... other locales the app supports
         ],
         debugShowCheckedModeBanner: false,
-        title: 'mypo',
+        title: 'Mypo',
         home: HomePage(),
       ),
     );

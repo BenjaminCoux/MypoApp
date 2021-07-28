@@ -7,6 +7,7 @@ import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/boxes.dart';
 import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'sms_prog_page.dart';
 
@@ -406,7 +407,9 @@ class _ProgState extends State<ProgForm> {
                           }
                         else if (nameController.text != '' &&
                             contactController.text != '' &&
-                            alertContent.text != '')
+                            alertContent.text != '' &&
+                            await Permission.contacts.request().isGranted &&
+                            await Permission.sms.request().isGranted)
                           {
                             fieldsEmpty = false,
                             saveToHive(),

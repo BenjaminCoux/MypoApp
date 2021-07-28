@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />  
 
    <application
-        android:label="mypo"
+        android:label="Mypo"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

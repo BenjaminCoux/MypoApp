@@ -220,7 +220,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Date du prochain envoie ",
+                                  "Date du prochain envoi ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 Text(

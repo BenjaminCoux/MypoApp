@@ -4,6 +4,7 @@ import 'package:intl/date_symbols.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mypo/model/alertkey.dart';
 import 'sms_auto_page.dart';
@@ -685,7 +686,7 @@ class _FormState extends State<FormScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    onPressed: () => {
+                    onPressed: () async => {
                       if (alertName.text == '')
                         {
                           showSnackBar(
@@ -712,7 +713,8 @@ class _FormState extends State<FormScreen> {
                           !keys.isEmpty &&
                           alphanumeric.hasMatch(alertName.text) &&
                           isCiblesSet(cibles) &&
-                          isWeekSet(week))
+                          isWeekSet(week) &&
+                          await Permission.contacts.request().isGranted)
                         {
                           saveAlert(alertName.text, alertContent.text, week,
                               cibles, notif, keys),

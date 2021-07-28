@@ -41,6 +41,7 @@ class _ProgState extends State<ProgForm> {
   DateTime date = DateTime.now();
   DateTime time = DateTime.now();
   bool fieldsEmpty = true;
+  final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
 
   @override
   void initState() {
@@ -387,12 +388,27 @@ class _ProgState extends State<ProgForm> {
                     margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     child: OutlinedButton(
                       onPressed: () async => {
-                        if (nameController.text != '' &&
+                        if (nameController.text == '')
+                          {
+                            {
+                              showSnackBar(context,
+                                  "Veuillez rentrer un nom à l'alerte.")
+                            }
+                          }
+                        else if (contactController.text == '')
+                          {showSnackBar(context, "Veuillez rentrer un numéro.")}
+                        else if (alertContent.text == '')
+                          {showSnackBar(context, "Veuillez écrire un message.")}
+                        else if (!alphanumeric.hasMatch(nameController.text))
+                          {
+                            showSnackBar(context,
+                                "Characters invalides pour le nom de l'alerte.")
+                          }
+                        else if (nameController.text != '' &&
                             contactController.text != '' &&
                             alertContent.text != '')
-                          {fieldsEmpty = false},
-                        if (!fieldsEmpty)
                           {
+                            fieldsEmpty = false,
                             saveToHive(),
                             Navigator.pop(context),
                             Navigator.push(

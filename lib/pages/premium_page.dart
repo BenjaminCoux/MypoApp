@@ -31,7 +31,7 @@ class _PremiumPageState extends State<PremiumPage> {
               SizedBox(height: 20),
               Center(
                 child: Text(
-                  'Profize sans limites du mode Premium',
+                  'Profitez sans limites du mode Premium',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,

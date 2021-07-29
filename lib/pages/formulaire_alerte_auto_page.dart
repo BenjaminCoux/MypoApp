@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,13 +24,34 @@ class FormScreen extends StatefulWidget {
   _FormState createState() => _FormState();
 }
 
+List<bool> initDay() {
+  final days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ];
+  List<bool> res = <bool>[false, false, false, false, false, false, false];
+  final now = DateTime.now();
+  String day = DateFormat('EEEE').format(now);
+  for (int i = 0; i < res.length; i++) {
+    if (day == days[i]) {
+      res[(i + 1) % res.length] = true;
+    }
+  }
+  return res;
+}
+
 class _FormState extends State<FormScreen> {
   final alertName = TextEditingController();
   final alertContent = TextEditingController();
   final keyName = TextEditingController();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final week = [false, false, false, false, false, false, false];
-  final cibles = [false, false, false, false, false, false];
+  final week = initDay();
+  final cibles = [false, false, true, false, false, false];
   int _value = 1;
   bool _value2 = true;
   var db;

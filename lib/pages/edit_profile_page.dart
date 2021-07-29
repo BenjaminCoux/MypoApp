@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mypo/model/colors.dart';
 import 'package:mypo/model/user.dart';
 import 'package:mypo/utils/user_preferences.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'home_page.dart';
 import 'profile_page.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -156,7 +156,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               onChanged: (String value) => {
                 setState(() {
                   // set new state
-
                 })
               },
               minLines: 1,

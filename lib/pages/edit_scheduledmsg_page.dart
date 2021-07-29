@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/model/colors.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/scheduledmsg_hive.dart';

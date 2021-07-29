@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mypo/model/colors.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 
-import 'home_page.dart';
 
 // ignore: must_be_immutable
 class SettingsScreenOne extends StatelessWidget {

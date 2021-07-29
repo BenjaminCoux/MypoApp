@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/model/colors.dart';
 
 class ProfileWidget extends StatelessWidget {
   final String imagePath;

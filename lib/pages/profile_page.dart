@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/model/user.dart';
+import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/pages/premium_page.dart';
 import 'package:mypo/utils/user_preferences.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/button_widget.dart';
@@ -18,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final user = UserPreferences.myUser;
 
     return Scaffold(
-        appBar: TopBar(title: "Profile"),
+        appBar: TopBarRedirection(title: "Profile", page: () => HomePage()),
         body: ListView(
           physics: BouncingScrollPhysics(),
           children: [
@@ -209,7 +211,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget buildUpgradeButton() => ButtonWidget(
         text: "Upgrade to Premium",
-        onClicked: () {},
+        onClicked: () => {
+          Navigator.pop(context),
+          Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => new PremiumPage()))
+        },
       );
 
   Widget buildAbout(User user) => Container(

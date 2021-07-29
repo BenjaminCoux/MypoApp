@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:mypo/model/colors.dart';
 import 'package:mypo/model/alert.dart';
 import 'package:mypo/model/alertkey.dart';
+import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,15 +14,10 @@ import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
 import 'edit_alertes_page.dart';
 import 'formulaire_alerte_auto_page.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:mypo/pages/home_page.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-const d_gray = Color(0xFFBABABA);
-const d_darkgray = Color(0xFF6C6C6C);
-const d_lightgray = Color(0XFFFAFAFA);
 
 class SmsAuto extends StatefulWidget {
   @override
@@ -58,8 +54,7 @@ class _SmsAutoState extends State<SmsAuto> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(title: "My Co'Laverie"),
-      drawer: HamburgerMenu(),
+      appBar: TopBarRedirection(title: "My Co'Laverie", page: () => HomePage()),
       body: Scrollbar(
         thickness: 10,
         interactive: true,
@@ -127,7 +122,6 @@ class _StateSwitchButton extends State<SwitchButton> {
     debugPrint("cibles du message: " + contents[0]['cibles'].toString());
     Future<bool> test = isContactInContactList(message);
     int i = 0;
-    //si le message reçu contient
     while (i < keys.length) {
       Alert a = createAlert(
           new Alert(
@@ -139,7 +133,6 @@ class _StateSwitchButton extends State<SwitchButton> {
               keys: buildKeys(contents[i]["keys"])),
           contents[i]["active"]);
       bool tmp = isActive(message.body, a, await test);
-      //debugPrint(tmp.toString());
       if (tmp) {
         print(tmp);
         Telephony.instance.sendSms(

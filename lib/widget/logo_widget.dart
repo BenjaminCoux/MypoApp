@@ -14,3 +14,19 @@ class Logo extends StatelessWidget {
     );
   }
 }
+
+class LogoPremium extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ColorFiltered(
+        colorFilter: ColorFilter.mode(
+            Colors.grey.shade800.withOpacity(0), BlendMode.srcOver),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.25,
+          decoration: BoxDecoration(
+              color: Colors.transparent,
+              image: DecorationImage(
+                  image: AssetImage('assets/images/logopremium.png'))),
+        ));
+  }
+}

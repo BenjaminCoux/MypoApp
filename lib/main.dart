@@ -7,8 +7,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/database/scheduledmsg_hive.dart';
-import 'package:mypo/widget/boxes.dart';
-import 'package:telephony/telephony.dart';
 import 'package:mypo/model/notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -17,12 +15,9 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 final BehaviorSubject<String?> selectNotificationSubject =
     BehaviorSubject<String?>();
-const d_green = Color(0xFFA6C800);
-const d_gray = Color(0xFFBABABA);
-const d_darkgray = Color(0xFF6C6C6C);
-const d_lightgray = Color(0XFFFAFAFA);
 final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
     BehaviorSubject<ReceivedNotification>();
+
 // **************************************************************************
 // This function is building the app
 // **************************************************************************
@@ -98,45 +93,6 @@ class _MyappState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    //periodic();
-    //refreshMessages();
-  }
-
-  // **************************************************************************
-  // This function is repeated periodically accord to the duration set (5 seconds right now)
-  // input :
-  // output : send message under time conditions
-  // **************************************************************************
-  periodic() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      // debugPrint("period : ${i}");
-      i++;
-      final messages =
-          Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
-
-      messages
-          .takeWhile((Scheduledmsg_hive
-                  message) => /*   Condition to send message (Date.time.now > message.date && message.status != sent) */
-
-              (DateTime.now().microsecondsSinceEpoch >=
-                  message.date.microsecondsSinceEpoch))
-          .forEach((Scheduledmsg_hive message) {
-        debugPrint("message : ${message.name} ");
-        /*
-            for each message verifying the condition we try to send a message and set the state to sent or failed if error
-          */
-        try {
-          Telephony.instance
-              .sendSms(to: message.phoneNumber, message: message.message);
-          setState(() {});
-        } catch (err) {
-          setState(() {});
-          debugPrint(err.toString());
-        }
-
-        debugPrint("message sent to: ${message.phoneNumber}.. ");
-      });
-    });
   }
 
   @override
@@ -167,9 +123,8 @@ class _MyappState extends State<MyApp> {
     );
   }
 }
-
 /*
-cleaning the cache
+cleaning the cache:
 
 flutter clean
 flutter pub cache repair
@@ -178,7 +133,7 @@ flutter pub run build_runner clean
 flutter pub run build_runner build
 
 
-creating new fields in hive database
+creating new fields in hive database:
 
 flutter packages pub run build_runner build
 */

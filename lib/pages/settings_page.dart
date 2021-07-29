@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mypo/model/colors.dart';
+import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-
 
 // ignore: must_be_immutable
 class SettingsScreenOne extends StatelessWidget {
@@ -11,7 +11,7 @@ class SettingsScreenOne extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: TopBar(title: 'Parametres'),
+      appBar: TopBarRedirection(title: 'Parametres', page: () => HomePage()),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -48,7 +48,6 @@ class SettingsScreenOne extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     children: <Widget>[
-                   
                       ListTile(
                           leading:
                               Icon(FontAwesomeIcons.language, color: d_green),
@@ -101,7 +100,6 @@ class SettingsScreenOne extends StatelessWidget {
               ],
             ),
           ),
-        
         ],
       ),
     );

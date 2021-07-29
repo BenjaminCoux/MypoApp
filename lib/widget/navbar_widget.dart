@@ -30,16 +30,19 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
         BottomNavigationBarItem(
           tooltip: "Accueil",
           icon: IconButton(
-            icon: Icon(
-              Icons.home,
-              size: 40,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new HomePage()),
-            ),
-          ),
+              icon: Icon(
+                Icons.home,
+                size: 40,
+                color: Colors.white,
+              ),
+              onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new HomePage()),
+                    ),
+                  }),
           label: '',
         ),
         BottomNavigationBarItem(
@@ -85,16 +88,19 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
         BottomNavigationBarItem(
           tooltip: "Accueil",
           icon: IconButton(
-            icon: Icon(
-              Icons.home,
-              size: 40,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new HomePage()),
-            ),
-          ),
+              icon: Icon(
+                Icons.home,
+                size: 40,
+                color: Colors.white,
+              ),
+              onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new HomePage()),
+                    ),
+                  }),
           label: '',
         ),
         BottomNavigationBarItem(
@@ -149,48 +155,55 @@ class _StateBottomNavigationBarSection
         BottomNavigationBarItem(
           tooltip: 'Rapport',
           icon: IconButton(
-            icon: Icon(
-              Icons.my_library_books_rounded,
-              color: Colors.white,
-              size: 50,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new RepportsPage()),
-            ),
-          ),
+              icon: Icon(
+                Icons.my_library_books_rounded,
+                color: Colors.white,
+                size: 50,
+              ),
+              onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new RepportsPage()),
+                    ),
+                  }),
           label: '',
         ),
         BottomNavigationBarItem(
           tooltip: 'Aide',
           icon: IconButton(
-            icon: Icon(
-              Icons.help_outline,
-              color: Colors.white,
-              size: 50,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new HelpScreen(value: value)),
-            ),
-          ),
+              icon: Icon(
+                Icons.help_outline,
+                color: Colors.white,
+                size: 50,
+              ),
+              onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new HelpScreen(value: value)),
+                    ),
+                  }),
           label: '',
         ),
         BottomNavigationBarItem(
           tooltip: 'Paramètres',
           icon: IconButton(
-            icon: Icon(
-              Icons.settings_outlined,
-              color: Colors.white,
-              size: 50,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new SettingsScreenOne()),
-            ),
-          ),
+              icon: Icon(
+                Icons.settings_outlined,
+                color: Colors.white,
+                size: 50,
+              ),
+              onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new SettingsScreenOne()),
+                    ),
+                  }),
           label: '',
         ),
       ],

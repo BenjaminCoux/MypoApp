@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/model/colors.dart';
+import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 
 // import 'home_page.dart';
@@ -10,7 +11,7 @@ class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: TopBar(title: "Aide"),
+        appBar: TopBarRedirection(title: "Aide", page: () => HomePage()),
         body: Stack(
           fit: StackFit.expand,
           children: [

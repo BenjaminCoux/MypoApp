@@ -96,7 +96,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBarAlerteProg(title: 'Alerte : ${widget.message.name}'),
+      appBar: TopBarRedirection(
+          title: 'Alerte : ${widget.message.name}', page: () => SmsProg()),
       body: Scrollbar(
         thickness: 10,
         interactive: true,

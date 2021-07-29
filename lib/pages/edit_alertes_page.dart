@@ -349,7 +349,8 @@ class _AlertScreenState extends State<AlertScreen> {
     // print(widget.alerte.days);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBarAlerteAuto(title: 'Alerte : ${widget.alerte.title}'),
+      appBar: TopBarRedirection(
+          title: 'Alerte : ${widget.alerte.title}', page: () => SmsAuto()),
       body: Scrollbar(
         thickness: 10,
         interactive: true,

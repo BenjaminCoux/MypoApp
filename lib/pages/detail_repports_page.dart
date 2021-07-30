@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/pages/repports_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:mypo/database/hive_database.dart';
 
 class DetailRepportsPage extends StatefulWidget {
   final Rapportmsg_hive message;

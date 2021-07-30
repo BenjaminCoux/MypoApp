@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/user.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/pages/premium_page.dart';
-import 'package:mypo/utils/user_preferences.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/button_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'edit_profile_page.dart';
 
@@ -16,9 +21,46 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
-  Widget build(BuildContext context) {
-    final user = UserPreferences.myUser;
+  void initState() {
+    super.initState();
+    // final box = Boxes.getUser();
+    // final user = User_hive()
+    //   ..firstname = ''
+    //   ..name = ''
+    //   ..phoneNumber = ''
+    //   ..email = ''
+    //   ..imagePath = 'https://picsum.photos/id/1005/200/300';
+    // box.add(user);
+  }
 
+  Future<File> getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    return file;
+  }
+
+  getPath() async {
+    await getImageFileFromAssets('images/profile.jpg').then((value) {
+      return value.path;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    bool userDefined = false;
+    User_hive? user;
+    List users = Boxes.getUser().values.toList().cast<User_hive>();
+    if (!users.isEmpty) {
+      userDefined = true;
+
+      user = users[0];
+      //debugPrint('User is defined ${user!.imagePath}');
+    }
+    final imgPath = "https://picsum.photos/id/1005/200/300";
     return Scaffold(
         appBar: TopBarRedirection(title: "Profile", page: () => HomePage()),
         body: ListView(
@@ -28,18 +70,18 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 15,
             ),
             ProfileWidget(
-              imagePath: user.imagePath,
+              imagePath: userDefined ? user!.imagePath : imgPath,
               onClicked: () async {
-                await Navigator.of(context).push(
+                // debugPrint(user!.imagePath);
+                Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => EditProfilePage()),
                 );
-                setState(() {});
               },
             ),
             const SizedBox(
               height: 24,
             ),
-            buildUserInfo(user),
+            buildUserInfo(user, userDefined),
             const SizedBox(
               height: 24,
             ),
@@ -51,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ));
   }
 
-  Widget buildUserInfo(User user) => Column(
+  Widget buildUserInfo(User_hive? user, bool userDefined) => Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
@@ -84,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: Text(
-                    user.name,
+                    userDefined ? user!.name : "Example",
                     style: TextStyle(fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -122,7 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: Text(
-                    user.name,
+                    userDefined ? user!.firstname : "Example",
                     style: TextStyle(fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -160,7 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: Text(
-                    user.email,
+                    userDefined ? user!.email : "Example@example.com",
                     style: TextStyle(fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -198,7 +240,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: Text(
-                    user.phoneNumber,
+                    userDefined ? user!.phoneNumber : "0606060606",
                     style: TextStyle(fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                   ),

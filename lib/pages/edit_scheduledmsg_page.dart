@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:mypo/database/hive_database.dart';
 
 // ignore: must_be_immutable
 class ScheduledmsgDetailPage extends StatefulWidget {

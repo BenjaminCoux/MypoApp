@@ -6,7 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/pages/home_page.dart';
-import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -28,6 +28,7 @@ Future main() async {
 
   Hive.registerAdapter(ScheduledmsghiveAdapter());
   Hive.registerAdapter(RapportmsghiveAdapter());
+  Hive.registerAdapter(UserhiveAdapter());
 
   // loading the <key,values> pair from the local storage into memory
   try {
@@ -35,7 +36,7 @@ Future main() async {
   } catch (e) {
     debugPrint(e.toString());
   }
-
+  await Hive.openBox<User_hive>('user');
   await Hive.openBox<Rapportmsg_hive>('rapportmsg');
 
   const AndroidInitializationSettings initializationSettingsAndroid =

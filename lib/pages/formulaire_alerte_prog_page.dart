@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/widget/boxes.dart';
-import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'sms_prog_page.dart';
@@ -43,6 +43,7 @@ class _ProgState extends State<ProgForm> {
   DateTime time = DateTime.now();
   bool fieldsEmpty = true;
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
+  final regularExpression = RegExp(r'^[a-zA-Z0-9_\-@,.éàçè@ñÉÀ\.;]+$');
 
   @override
   void initState() {
@@ -128,22 +129,32 @@ class _ProgState extends State<ProgForm> {
                             icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.black),
                             onPressed: () async {
-                              try {
-                                final contact = await ContactsService
-                                    .openDeviceContactPicker();
-                                if (contact != null) {
-                                  if (contactController.text.isEmpty) {
-                                    contactController.text =
-                                        (contact.phones?.elementAt(0).value! ??
-                                            '');
-                                  } else {
-                                    contactController.text += ', ' +
-                                        (contact.phones?.elementAt(0).value! ??
-                                            '');
+                              if (await Permission.contacts
+                                  .request()
+                                  .isGranted) {
+                                try {
+                                  final contact = await ContactsService
+                                      .openDeviceContactPicker();
+                                  if (contact != null) {
+                                    if (contactController.text.isEmpty) {
+                                      contactController.text = (contact.phones
+                                              ?.elementAt(0)
+                                              .value! ??
+                                          '');
+                                    } else {
+                                      contactController.text += ', ' +
+                                          (contact.phones
+                                                  ?.elementAt(0)
+                                                  .value! ??
+                                              '');
+                                    }
                                   }
+                                } catch (e) {
+                                  debugPrint(e.toString());
                                 }
-                              } catch (e) {
-                                debugPrint(e.toString());
+                              } else {
+                                showSnackBar(context,
+                                    "Veuillez activer les permissions d'accès aux contacts");
                               }
                             }),
                         labelStyle: TextStyle(color: Colors.black),

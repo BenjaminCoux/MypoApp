@@ -5,12 +5,12 @@ import 'package:mypo/model/colors.dart';
 import 'package:mypo/pages/edit_scheduledmsg_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/widget/boxes.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 import 'package:telephony/telephony.dart';
 import 'formulaire_alerte_prog_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:mypo/database/hive_database.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();

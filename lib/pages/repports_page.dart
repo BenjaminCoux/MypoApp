@@ -6,8 +6,8 @@ import 'package:mypo/model/colors.dart';
 import 'package:mypo/pages/detail_repports_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/widget/boxes.dart';
-import 'package:mypo/database/scheduledmsg_hive.dart';
+import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/database/hive_database.dart';
 
 class RepportsPage extends StatefulWidget {
   @override

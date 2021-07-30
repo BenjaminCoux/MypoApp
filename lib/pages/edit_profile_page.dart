@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mypo/model/colors.dart';
-import 'package:mypo/model/user.dart';
-import 'package:mypo/utils/user_preferences.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'profile_page.dart';
+import 'package:mypo/database/hive_database.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -23,12 +23,70 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final nomController = TextEditingController();
   final emailController = TextEditingController();
   final numeroController = TextEditingController();
+  // late File _image;
+  // Future getImage() async {
+  //   final image = await ImagePicker().getImage(source: ImageSource.gallery);
+  //   setState(() {
+  //     _image = image as File;
+  //   });
+  // }
+
+  saveUserToHive(User_hive? User) {
+    if (prenomController.text != '' &&
+        nomController.text != '' &&
+        emailController != '' &&
+        numeroController != '') {
+      final user = User_hive()
+        ..name = nomController.text
+        ..firstname = prenomController.text
+        ..email = emailController.text
+        ..phoneNumber = numeroController.text
+        ..imagePath =
+            User?.imagePath ?? "https://picsum.photos/id/1005/200/300";
+
+      final box = Boxes.getUser();
+      if (box.isEmpty) {
+        box.add(user);
+      } else {
+        box.put(0, user);
+        //debugPrint(USER[0].name);
+      }
+    }
+  }
+
+  Future<File> getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    return file;
+  }
+
+  final profileImagePath = "https://picsum.photos/id/1005/200/300";
+
   @override
   Widget build(BuildContext context) {
-    User user = UserPreferences.myUser;
-
+    bool userDefined = false;
+    User_hive? user;
+    List users = Boxes.getUser().values.toList().cast<User_hive>();
+    if (!users.isEmpty) {
+      userDefined = true;
+      user = users[0];
+    } else {
+      user = User_hive()
+        ..firstname = ''
+        ..name = ''
+        ..email = ''
+        ..phoneNumber = ''
+        ..imagePath = "https://picsum.photos/id/1005/200/300";
+      final box = Boxes.getUser();
+      box.add(user);
+    }
     return Scaffold(
-        appBar: TopBar(title: "Edit profile"),
+        appBar:
+            TopBarRedirection(title: "Edit profile", page: () => ProfilePage()),
         body: GestureDetector(
           onTap: () {
             //FocusScope.of(context).unfocus();
@@ -40,7 +98,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 height: 15,
               ),
               ProfileWidget(
-                imagePath: user.imagePath,
+                imagePath: userDefined ? user!.imagePath : profileImagePath,
                 isEdit: true,
                 onClicked: () async {
                   final image =
@@ -50,18 +108,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   final name = basename(image.path);
                   final imageFile = File('${directory.path}/${name}');
                   final newImage = await File(image.path).copy(imageFile.path);
-
-                  setState(() => user = user.copy(imagePath: newImage.path));
+                  // debugPrint(newImage.path);
+                  setState(() => user!.imagePath = newImage.path);
+                  //debugPrint(user!.imagePath);
                 },
               ),
               const SizedBox(
                 height: 30,
               ),
-              buildTextField('Prenom', user.name, prenomController, 1),
-              buildTextField('Nom', user.name, nomController, 1),
-              buildTextField('Email', user.email, emailController, 1),
               buildTextField(
-                  'Téléphone', user.phoneNumber, numeroController, 1),
+                  'Prenom',
+                  userDefined ? user!.firstname : "Example",
+                  prenomController,
+                  1),
+              buildTextField('Nom', userDefined ? user!.name : "Example",
+                  nomController, 1),
+              buildTextField(
+                  'Email',
+                  userDefined ? user!.email : "Example@example.com",
+                  emailController,
+                  1),
+              buildTextField(
+                  'Téléphone',
+                  userDefined ? user!.phoneNumber : "06060606",
+                  numeroController,
+                  1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -102,7 +173,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                       onPressed: () {
                         // UserPreferences.setUser(user);
+
+                        saveUserToHive(user);
                         Navigator.of(context).pop(context);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => ProfilePage()),
+                        );
                       },
                       child: Text(
                         "Sauvegarder",

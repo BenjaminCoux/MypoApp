@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'scheduledmsg_hive.g.dart';
+part 'hive_database.g.dart';
 
 @HiveType(typeId: 0)
 class Scheduledmsg_hive extends HiveObject {
@@ -39,11 +39,17 @@ class Rapportmsg_hive extends HiveObject {
   //TODO: field pour msg programme et message auto
 }
 
-enum MessageStatus { PENDING, SENT, FAILED }
-
-
-//TODO: maybe use this ??? instead of Status and handle each case 
-//enum MessageRepeatOptions {daily, weekly, montly, yearly}
-
-// if (repeat == Tous les ans) message.repeatOption = MessageRepeatOptions.yearly
-
+@HiveType(typeId: 2)
+class User_hive extends HiveObject {
+  //extending to hiveobject we can use hive methods such as save delete etc.
+  @HiveField(0)
+  late String name;
+  @HiveField(1)
+  late String firstname;
+  @HiveField(2)
+  late String email;
+  @HiveField(3)
+  late String phoneNumber;
+  @HiveField(4)
+  late String imagePath;
+}

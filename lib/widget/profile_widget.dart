@@ -47,15 +47,10 @@ class ProfileWidget extends StatelessWidget {
 
   Widget buildEditIcon(Color color) => buildCircle(
       color: Colors.white,
-      all: 3,
+      all: 2,
       child: buildCircle(
           color: color,
-          all: 8,
-          // child: Icon(
-          //   isEdit ? Icons.add_a_photo : Icons.edit,
-          //   color: Colors.white,
-          //   size: 20,
-          // ),
+          all: 1,
           child: SizedBox(
             height: 30,
             width: 30,

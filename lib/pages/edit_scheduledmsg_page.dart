@@ -132,7 +132,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       keyboardType: TextInputType.phone,
                       controller: alertContact,
                       decoration: InputDecoration(
-                        labelText: 'Numero du contact',
+                        labelText: 'Numero(s) de(s) contact(s)',
                         suffixIcon: IconButton(
                             icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.black),

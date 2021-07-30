@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/model/colors.dart';
+import 'package:mypo/pages/group_contact._page.dart';
 import 'package:mypo/pages/help_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/pages/repports_page.dart';
@@ -145,11 +146,17 @@ class _StateBottomNavigationBarSection
           tooltip: "Temps d'accès",
           icon: IconButton(
               icon: Icon(
-                Icons.access_time,
+                Icons.group,
                 color: Colors.white,
                 size: 50,
               ),
-              onPressed: null),
+              onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new GroupContact())),
+                  }),
           label: '',
         ),
         BottomNavigationBarItem(

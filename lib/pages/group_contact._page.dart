@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypo/pages/formulaire_group_contact_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
@@ -82,7 +83,13 @@ class _GroupContactState extends State<GroupContact> {
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20))),
-              onPressed: () => {},
+              onPressed: () => {
+                    Navigator.pop(context),
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new GroupForm()))
+                  },
               child: Text(
                 "+ Ajouter un groupe de contact",
                 style: TextStyle(

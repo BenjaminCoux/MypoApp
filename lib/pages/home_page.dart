@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/widget/logo_widget.dart';
@@ -20,15 +22,28 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    bool userDefined = false;
+    User_hive? user;
+    List users = Boxes.getUser().values.toList().cast<User_hive>();
+    if (!users.isEmpty) {
+      userDefined = true;
+
+      user = users[0];
+      //debugPrint('User is defined ${user!.imagePath}');
+    }
+    final defaultImgPath = "https://picsum.photos/id/1005/200/300";
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(title: "My Co'Laverie"),
+      appBar: TopBar(title: userDefined ? user!.name : "My Co'Laverie"),
       drawer: HamburgerMenu(),
       body: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [Logo(), Mode()],
+        children: [
+          Logo(imgPath: userDefined ? user!.imagePath : defaultImgPath),
+          Mode()
+        ],
       )),
       bottomNavigationBar: BottomNavigationBarSection(),
     );

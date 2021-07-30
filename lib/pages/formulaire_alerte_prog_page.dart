@@ -43,7 +43,8 @@ class _ProgState extends State<ProgForm> {
   DateTime time = DateTime.now();
   bool fieldsEmpty = true;
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
-  final regularExpression = RegExp(r'^[a-zA-Z0-9_\-@,.éàçè@ñÉÀ\.;]+$');
+  final regularExpression =
+      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@\.;]+$');
 
   @override
   void initState() {
@@ -92,7 +93,7 @@ class _ProgState extends State<ProgForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(title: 'Ajoutez une alerte'),
+      appBar: TopBar(title: 'Ajouter une alerte'),
       body: SingleChildScrollView(
         child: GestureDetector(
           onTap: () {
@@ -124,7 +125,7 @@ class _ProgState extends State<ProgForm> {
                       keyboardType: TextInputType.phone,
                       controller: contactController,
                       decoration: InputDecoration(
-                        labelText: 'Numero du contact',
+                        labelText: 'Numero(s) de(s) contact(s)',
                         suffixIcon: IconButton(
                             icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.black),
@@ -411,7 +412,8 @@ class _ProgState extends State<ProgForm> {
                           {showSnackBar(context, "Veuillez rentrer un numéro.")}
                         else if (alertContent.text == '')
                           {showSnackBar(context, "Veuillez écrire un message.")}
-                        else if (!alphanumeric.hasMatch(nameController.text))
+                        else if (!regularExpression
+                            .hasMatch(nameController.text))
                           {
                             showSnackBar(context,
                                 "Characters invalides pour le nom de l'alerte.")
@@ -451,7 +453,7 @@ class _ProgState extends State<ProgForm> {
                       style: OutlinedButton.styleFrom(
                         backgroundColor: d_green,
                         side: BorderSide(color: d_green, width: 2),
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -459,9 +461,9 @@ class _ProgState extends State<ProgForm> {
                       child: Text(
                         "Valider",
                         style: TextStyle(
-                          color: Colors.white,
                           fontSize: 14,
                           letterSpacing: 2.2,
+                          color: Colors.white,
                         ),
                       ),
                     ),

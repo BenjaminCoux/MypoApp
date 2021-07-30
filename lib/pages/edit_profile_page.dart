@@ -9,6 +9,7 @@ import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'profile_page.dart';
 import 'package:mypo/database/hive_database.dart';
 
@@ -101,16 +102,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 imagePath: userDefined ? user!.imagePath : profileImagePath,
                 isEdit: true,
                 onClicked: () async {
-                  final image =
-                      await ImagePicker().getImage(source: ImageSource.gallery);
-                  if (image == null) return;
-                  final directory = await getApplicationDocumentsDirectory();
-                  final name = basename(image.path);
-                  final imageFile = File('${directory.path}/${name}');
-                  final newImage = await File(image.path).copy(imageFile.path);
-                  // debugPrint(newImage.path);
-                  setState(() => user!.imagePath = newImage.path);
-                  //debugPrint(user!.imagePath);
+                  if (await Permission.photos.request().isGranted) {
+                    try {
+                      final image = await ImagePicker()
+                          .getImage(source: ImageSource.gallery);
+                      if (image == null) return;
+                      final directory =
+                          await getApplicationDocumentsDirectory();
+                      final name = basename(image.path);
+                      final imageFile = File('${directory.path}/${name}');
+                      final newImage =
+                          await File(image.path).copy(imageFile.path);
+                      // debugPrint(newImage.path);
+                      setState(() => user!.imagePath = newImage.path);
+                      //debugPrint(user!.imagePath);
+                    } catch (e) {
+                      debugPrint(e.toString());
+                    }
+                  } else {
+                    showSnackBar(context,
+                        "Veuillez activer les permissions d'accès aux photos");
+                  }
                 },
               ),
               const SizedBox(
@@ -172,15 +184,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                       ),
                       onPressed: () {
-                        // UserPreferences.setUser(user);
-
-                        saveUserToHive(user);
-                        Navigator.of(context).pop(context);
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => ProfilePage()),
-                        );
+                        if (prenomController.text == '') {
+                          {
+                            showSnackBar(
+                                context, "Veuillez rentrer un prénom.");
+                          }
+                        } else if (nomController.text == '') {
+                          showSnackBar(context, "Veuillez rentrer un nom.");
+                        } else if (emailController.text == '') {
+                          showSnackBar(context, "Veuillez rentrer un email.");
+                        } else if (numeroController.text == '') {
+                          showSnackBar(context, "Veuillez rentrer un numéro.");
+                        } else if (nomController.text != '' &&
+                            prenomController.text != '' &&
+                            emailController.text != '' &&
+                            numeroController.text != '') {
+                          saveUserToHive(user);
+                          Navigator.of(context).pop(context);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => ProfilePage()),
+                          );
+                        } else {
+                          showSnackBar(
+                              context, 'Veuillez completer tous les champs');
+                        }
                       },
+
+                      // UserPreferences.setUser(user);
+
                       child: Text(
                         "Sauvegarder",
                         style: TextStyle(
@@ -196,6 +228,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ],
           ),
         ));
+  }
+
+  void showSnackBar(BuildContext context, String s) {
+    final snackBar = SnackBar(
+      content: Text(s, style: TextStyle(fontSize: 20)),
+    );
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
   }
 
   Widget buildTextField(String labelText, String placeholder,

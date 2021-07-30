@@ -58,6 +58,8 @@ class _FormState extends State<FormScreen> {
   bool notif = false;
   List<AlertKey> keys = <AlertKey>[];
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
+  final regularExpression =
+      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@\.;]+$');
 
   @override
   void dispose() {
@@ -412,7 +414,7 @@ class _FormState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(title: 'Ajoutez une alerte'),
+      appBar: TopBar(title: 'Ajouter une alerte'),
       body: Scrollbar(
         thickness: 10,
         interactive: true,
@@ -634,8 +636,9 @@ class _FormState extends State<FormScreen> {
                         )),
                   ),
                   alertKeys(context),
+                  SizedBox(height: 20),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.all(
@@ -643,29 +646,40 @@ class _FormState extends State<FormScreen> {
                       ),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          child: Text("Notification après réponses"),
-                          margin: EdgeInsets.fromLTRB(
-                              5,
-                              0,
-                              MediaQuery.of(context).size.width -
-                                  MediaQuery.of(context).size.width * 0.64,
-                              0),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.79,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.timer_rounded),
+                                Container(
+                                    child: Text(
+                                      "Notification après réponse",
+                                    ),
+                                    margin: EdgeInsets.all(5)),
+                              ],
+                            )),
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Switch(
+                                  activeColor: d_green,
+                                  value: notif,
+                                  onChanged: (bool val) => {
+                                        setState(() {
+                                          notif = val;
+                                        })
+                                      }),
+                            ],
+                          ),
                         ),
-                        Switch(
-                            activeColor: d_green,
-                            value: notif,
-                            onChanged: (bool val) => {
-                                  setState(() {
-                                    notif = val;
-                                  })
-                                }),
                       ],
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.all(
@@ -673,29 +687,37 @@ class _FormState extends State<FormScreen> {
                       ),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          child: Text("Règle de réponse",
-                              style: TextStyle(color: Colors.red)),
-                          margin: EdgeInsets.fromLTRB(
-                              5,
-                              0,
-                              MediaQuery.of(context).size.width -
-                                  MediaQuery.of(context).size.width * 0.48,
-                              0),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.79,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.rule_outlined),
+                                Container(
+                                    child: Text("Règle de réponse"),
+                                    margin: EdgeInsets.all(5)),
+                              ],
+                            )),
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Switch(
+                                  activeColor: d_green,
+                                  value: false,
+                                  onChanged: (bool val) => {
+                                        setState(() {
+                                          //set new state
+                                        })
+                                      }),
+                            ],
+                          ),
                         ),
-                        Switch(
-                            activeColor: d_green,
-                            value: false,
-                            onChanged: (bool val) => {
-                                  setState(() {
-                                    //set new state
-                                  })
-                                }),
                       ],
                     ),
                   ),
+                  SizedBox(height: 20),
                   ElevatedButton(
                     style: OutlinedButton.styleFrom(
                       backgroundColor: d_green,
@@ -719,7 +741,7 @@ class _FormState extends State<FormScreen> {
                           showSnackBar(
                               context, "Veuillez choisir le(s) jour(s).")
                         }
-                      else if (!alphanumeric.hasMatch(alertName.text))
+                      else if (!regularExpression.hasMatch(alertName.text))
                         {
                           showSnackBar(context,
                               "Characters invalides pour le nom de l'alerte.")
@@ -770,6 +792,7 @@ class _FormState extends State<FormScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 20),
                 ],
               ),
             ),

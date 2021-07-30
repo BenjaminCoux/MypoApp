@@ -431,7 +431,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                         title: Text(
                                           "Numéros non enregistrés",
                                           style: TextStyle(
-                                              fontSize: 15, color: Colors.blue),
+                                            fontSize: 15,
+                                          ),
                                         ),
                                         activeColor: d_green,
                                         value: widget.alerte.cibles[1],
@@ -482,7 +483,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                         title: Text(
                                           "Contacts uniquement",
                                           style: TextStyle(
-                                              fontSize: 15, color: Colors.blue),
+                                            fontSize: 15,
+                                          ),
                                         ),
                                         activeColor: d_green,
                                         value: widget.alerte.cibles[3],
@@ -604,7 +606,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 ),
                 alertKeys(context),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.all(
@@ -612,30 +614,41 @@ class _AlertScreenState extends State<AlertScreen> {
                     ),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
-                        child: Text("Notification après réponses"),
-                        margin: EdgeInsets.fromLTRB(
-                            5,
-                            0,
-                            MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.64,
-                            0),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.79,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.timer_rounded),
+                              Container(
+                                  child: Text(
+                                    "Notification après réponse",
+                                  ),
+                                  margin: EdgeInsets.all(5)),
+                            ],
+                          )),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Switch(
+                                activeColor: d_green,
+                                value: widget.alerte.notification,
+                                onChanged: (bool val) => {
+                                      setState(() {
+                                        hasChanged = true;
+                                        widget.alerte.notification = val;
+                                      })
+                                    }),
+                          ],
+                        ),
                       ),
-                      Switch(
-                          activeColor: d_green,
-                          value: widget.alerte.notification,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  hasChanged = true;
-                                  widget.alerte.notification = val;
-                                })
-                              }),
                     ],
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.all(
@@ -643,26 +656,33 @@ class _AlertScreenState extends State<AlertScreen> {
                     ),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
-                        child: Text("Règle de réponse",
-                            style: TextStyle(color: Colors.red)),
-                        margin: EdgeInsets.fromLTRB(
-                            5,
-                            0,
-                            MediaQuery.of(context).size.width -
-                                MediaQuery.of(context).size.width * 0.48,
-                            0),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.79,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.rule_outlined),
+                              Container(
+                                  child: Text("Règle de réponse"),
+                                  margin: EdgeInsets.all(5)),
+                            ],
+                          )),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Switch(
+                                activeColor: d_green,
+                                value: false,
+                                onChanged: (bool val) => {
+                                      setState(() {
+                                        // confirm = val;
+                                      })
+                                    }),
+                          ],
+                        ),
                       ),
-                      Switch(
-                          activeColor: d_green,
-                          value: false,
-                          onChanged: (bool val) => {
-                                setState(() {
-                                  // confirm = val;
-                                })
-                              }),
                     ],
                   ),
                 ),

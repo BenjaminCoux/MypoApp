@@ -17,13 +17,35 @@ class _GroupFormState extends State<GroupForm> {
   final contactController = TextEditingController();
   List contactList = [];
 
+  buildTile(String number) {
+    return Container(
+        decoration: BoxDecoration(
+          color: d_lightgray,
+          borderRadius: BorderRadius.all(
+            Radius.circular(18),
+          ),
+        ),
+        padding: EdgeInsets.all(0),
+        margin: EdgeInsets.all(0),
+        child: Center(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Row(
+            children: [
+              Text(number),
+              IconButton(onPressed: null, icon: Icon(Icons.delete))
+            ],
+          ),
+        ])));
+  }
+
   buildList() {
     return contactList.length > 0
         ? ListView.builder(
             shrinkWrap: true,
             itemCount: contactList.length,
             itemBuilder: (BuildContext context, int index) {
-              return Text(contactList[index]);
+              return buildTile(contactList[index]);
             },
           )
         : Text("Pas encore de contact dans le groupe");

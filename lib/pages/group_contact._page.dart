@@ -10,6 +10,62 @@ class GroupContact extends StatefulWidget {
 }
 
 class _GroupContactState extends State<GroupContact> {
+  buildGroup(BuildContext context, String nom) {
+    return Card(
+      margin: EdgeInsets.fromLTRB(5, 5, 20, 5),
+      color: Colors.white,
+      child: ExpansionTile(
+        iconColor: d_green,
+        textColor: Colors.black,
+        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+        title: Text(
+          nom,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        subtitle: Text(
+          nom,
+          overflow: TextOverflow.ellipsis,
+        ),
+        children: [
+          buildButtons(context, nom),
+        ],
+      ),
+    );
+  }
+
+  buildButtons(BuildContext context, var alert) => Row(
+        children: [
+          Expanded(
+            child: TextButton.icon(
+              style: TextButton.styleFrom(primary: d_darkgray),
+              label: Text('Modifier'),
+              icon: Icon(Icons.edit),
+              onPressed: () => {
+                //Todo page de formulaire
+              },
+            ),
+          ),
+          Expanded(
+            child: TextButton.icon(
+              style: TextButton.styleFrom(primary: d_darkgray),
+              label: Text('Supprimer'),
+              icon: Icon(Icons.delete),
+              onPressed: () => {
+                //TODO : suppression
+              },
+            ),
+          )
+        ],
+      );
+
+  buildListofCOntact(int lenght, String nom, BuildContext context) {
+    return lenght > 0
+        ? buildGroup(context, nom)
+        : Text("Il n'y a pas encore degroupe de contacts enregistrés");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +92,7 @@ class _GroupContactState extends State<GroupContact> {
                     color: Colors.white,
                     fontFamily: 'calibri'),
               )),
+          buildListofCOntact(1, "test", context),
         ]),
       ),
     );

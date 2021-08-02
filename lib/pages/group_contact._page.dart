@@ -1,5 +1,7 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/model/group_contact.dart';
+import 'package:mypo/pages/edit_groupcontact_page.dart';
 import 'package:mypo/pages/formulaire_group_contact_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/utils/boxes.dart';
@@ -41,7 +43,7 @@ class _GroupContactState extends State<GroupContactPage> {
     );
   }
 
-  buildButtons(BuildContext context, var alert) => Row(
+  buildButtons(BuildContext context, var contact) => Row(
         children: [
           Expanded(
             child: TextButton.icon(
@@ -49,7 +51,11 @@ class _GroupContactState extends State<GroupContactPage> {
               label: Text('Modifier'),
               icon: Icon(Icons.edit),
               onPressed: () => {
-                //Todo page de formulaire
+                Navigator.pop(context),
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new EditGroup(grp: contact)))
               },
             ),
           ),
@@ -59,7 +65,10 @@ class _GroupContactState extends State<GroupContactPage> {
               label: Text('Supprimer'),
               icon: Icon(Icons.delete),
               onPressed: () => {
-                //TODO : suppression
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        buildPopupDialog(contact)),
               },
             ),
           )
@@ -112,6 +121,34 @@ class _GroupContactState extends State<GroupContactPage> {
           buildListofCOntact(groupContact.length, groupContact),
         ]),
       ),
+    );
+  }
+
+  buildPopupDialog(GroupContact contact) {
+    String title = "";
+    title = contact.name;
+    return new AlertDialog(
+      title: Text("Voulez vous supprimer $title ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            contact.delete();
+            Navigator.of(context).pop();
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
     );
   }
 }

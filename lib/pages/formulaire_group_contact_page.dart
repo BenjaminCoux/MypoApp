@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mypo/model/group_contact.dart';
-import 'package:mypo/pages/group_contact._page.dart';
+import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/model/colors.dart';

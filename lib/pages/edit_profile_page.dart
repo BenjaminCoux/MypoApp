@@ -20,37 +20,25 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool hasChanged = false;
-  final prenomController = TextEditingController();
   final nomController = TextEditingController();
   final emailController = TextEditingController();
   final numeroController = TextEditingController();
-  // late File _image;
-  // Future getImage() async {
-  //   final image = await ImagePicker().getImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     _image = image as File;
-  //   });
-  // }
 
   saveUserToHive(User_hive? User) {
-    if (prenomController.text != '' &&
-        nomController.text != '' &&
+    if (nomController.text != '' &&
         emailController != '' &&
         numeroController != '') {
       final user = User_hive()
         ..name = nomController.text
-        ..firstname = prenomController.text
         ..email = emailController.text
         ..phoneNumber = numeroController.text
-        ..imagePath =
-            User?.imagePath ?? "https://picsum.photos/id/1005/200/300";
+        ..imagePath = User!.imagePath;
 
       final box = Boxes.getUser();
       if (box.isEmpty) {
         box.add(user);
       } else {
         box.put(0, user);
-        //debugPrint(USER[0].name);
       }
     }
   }
@@ -77,7 +65,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       user = users[0];
     } else {
       user = User_hive()
-        ..firstname = ''
         ..name = ''
         ..email = ''
         ..phoneNumber = ''
@@ -113,9 +100,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       final imageFile = File('${directory.path}/${name}');
                       final newImage =
                           await File(image.path).copy(imageFile.path);
-                      // debugPrint(newImage.path);
                       setState(() => user!.imagePath = newImage.path);
-                      //debugPrint(user!.imagePath);
                     } catch (e) {
                       debugPrint(e.toString());
                     }
@@ -128,11 +113,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(
                 height: 30,
               ),
-              buildTextField(
-                  'Prenom',
-                  userDefined ? user!.firstname : "Example",
-                  prenomController,
-                  1),
               buildTextField('Nom', userDefined ? user!.name : "Example",
                   nomController, 1),
               buildTextField(
@@ -184,19 +164,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                       ),
                       onPressed: () {
-                        if (prenomController.text == '') {
-                          {
-                            showSnackBar(
-                                context, "Veuillez rentrer un prénom.");
-                          }
-                        } else if (nomController.text == '') {
+                        if (nomController.text == '') {
                           showSnackBar(context, "Veuillez rentrer un nom.");
                         } else if (emailController.text == '') {
                           showSnackBar(context, "Veuillez rentrer un email.");
                         } else if (numeroController.text == '') {
                           showSnackBar(context, "Veuillez rentrer un numéro.");
                         } else if (nomController.text != '' &&
-                            prenomController.text != '' &&
                             emailController.text != '' &&
                             numeroController.text != '') {
                           saveUserToHive(user);
@@ -210,9 +184,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               context, 'Veuillez completer tous les champs');
                         }
                       },
-
-                      // UserPreferences.setUser(user);
-
                       child: Text(
                         "Sauvegarder",
                         style: TextStyle(

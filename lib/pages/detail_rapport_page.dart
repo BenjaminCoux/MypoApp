@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/model/colors.dart';
-import 'package:mypo/pages/repports_page.dart';
+import 'package:mypo/pages/rapports_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
 
@@ -57,7 +57,7 @@ class _DetailState extends State<Detail> {
                           TableRow(children: [
                             Text('Type :',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text('Message programmé')
+                            Text('${widget.message.type}')
                           ]),
                           TableRow(children: [
                             Text('Destinataire :',

@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:mypo/model/alertkey.dart';
-import 'package:mypo/model/group_contact.dart';
+import 'package:mypo/database/hive_database.dart';
 
 part 'alert.g.dart';
 

@@ -29,9 +29,8 @@ class _HomePageState extends State<HomePage> {
       userDefined = true;
 
       user = users[0];
-      //debugPrint('User is defined ${user!.imagePath}');
     }
-    final defaultImgPath = "https://picsum.photos/id/1005/200/300";
+
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: userDefined ? user!.name : "My Co'Laverie"),
@@ -40,10 +39,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Logo(imgPath: userDefined ? user!.imagePath : defaultImgPath),
-          Mode()
-        ],
+        children: [Logo(imgPath: userDefined ? user!.imagePath : null), Mode()],
       )),
       bottomNavigationBar: BottomNavigationBarSection(),
     );

@@ -23,14 +23,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    // final box = Boxes.getUser();
-    // final user = User_hive()
-    //   ..firstname = ''
-    //   ..name = ''
-    //   ..phoneNumber = ''
-    //   ..email = ''
-    //   ..imagePath = 'https://picsum.photos/id/1005/200/300';
-    // box.add(user);
   }
 
   Future<File> getImageFileFromAssets(String path) async {
@@ -58,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
       userDefined = true;
 
       user = users[0];
-      //debugPrint('User is defined ${user!.imagePath}');
+      // debugPrint('User is defined  ${user!.name} ,  ${user.imagePath}');
     }
     final imgPath = "https://picsum.photos/id/1005/200/300";
     return Scaffold(
@@ -72,7 +64,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ProfileWidget(
               imagePath: userDefined ? user!.imagePath : imgPath,
               onClicked: () async {
-                // debugPrint(user!.imagePath);
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => EditProfilePage()),
                 );
@@ -141,44 +132,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Row(
                   children: [
                     Text(
-                      "Prenom",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black),
-                    )
-                  ],
-                )),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(18),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                  child: Text(
-                    userDefined ? user!.firstname : "Example",
-                    style: TextStyle(fontSize: 16),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
-            child: Padding(
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Text(
                       "Email",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -202,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: Text(
-                    userDefined ? user!.email : "Example@example.com",
+                    userDefined ? '${user?.email} test' : "Example@example.com",
                     style: TextStyle(fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                   ),

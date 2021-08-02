@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/model/colors.dart';
-import 'package:mypo/pages/edit_scheduledmsg_page.dart';
+import 'package:mypo/pages/edit_alerte_prog_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/boxes.dart';
@@ -47,6 +47,7 @@ class _SmsProgState extends State<SmsProg> {
       ..name = message.name
       ..phoneNumber = message.phoneNumber
       ..message = message.message
+      ..type = 'Mesage programmé'
       ..date = DateTime.now();
     final box = Boxes.getRapportmsg();
     box.add(messageToRapport);

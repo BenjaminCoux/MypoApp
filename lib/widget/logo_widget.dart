@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 class Logo extends StatelessWidget {
   final String? imgPath;
   Logo({Key? key, required this.imgPath}) : super(key: key);
-  bool isImgSet = false;
 
   @override
   Widget build(BuildContext context) {
+    bool isImgSet = false;
     if (imgPath != null) {
       isImgSet = true;
     }

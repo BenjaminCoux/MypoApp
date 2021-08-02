@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mypo/model/group_contact.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/pages/formulaire_group_contact_page.dart';
-import 'package:mypo/pages/group_contact._page.dart';
-import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+// ignore: must_be_immutable
 class EditGroup extends StatefulWidget {
   GroupContact grp;
   EditGroup({required this.grp});

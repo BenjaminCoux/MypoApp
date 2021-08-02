@@ -36,6 +36,8 @@ class Rapportmsg_hive extends HiveObject {
   late String message;
   @HiveField(3)
   late DateTime date;
+  @HiveField(4)
+  late String type;
   //TODO: field pour msg programme et message auto
 }
 
@@ -45,11 +47,19 @@ class User_hive extends HiveObject {
   @HiveField(0)
   late String name;
   @HiveField(1)
-  late String firstname;
-  @HiveField(2)
   late String email;
-  @HiveField(3)
+  @HiveField(2)
   late String phoneNumber;
-  @HiveField(4)
+  @HiveField(3)
   late String imagePath;
+}
+
+@HiveType(typeId: 3)
+class GroupContact extends HiveObject {
+  @HiveField(0)
+  late String name;
+  @HiveField(1)
+  late String description;
+  @HiveField(2)
+  late List<String> numbers;
 }

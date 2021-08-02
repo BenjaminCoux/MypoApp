@@ -39,7 +39,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         numeroController != '') {
       final user = User_hive()
         ..name = nomController.text
-        ..firstname = prenomController.text
+        // ..firstname = prenomController.text
         ..email = emailController.text
         ..phoneNumber = numeroController.text
         ..imagePath =
@@ -77,7 +77,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       user = users[0];
     } else {
       user = User_hive()
-        ..firstname = ''
+        // ..firstname = ''
         ..name = ''
         ..email = ''
         ..phoneNumber = ''
@@ -128,11 +128,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(
                 height: 30,
               ),
-              buildTextField(
-                  'Prenom',
-                  userDefined ? user!.firstname : "Example",
-                  prenomController,
-                  1),
+              // buildTextField(
+              //     'Prenom',
+              //     userDefined ? user!.firstname : "Example",
+              //     prenomController,
+              //     1),
               buildTextField('Nom', userDefined ? user!.name : "Example",
                   nomController, 1),
               buildTextField(
@@ -184,19 +184,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                       ),
                       onPressed: () {
-                        if (prenomController.text == '') {
-                          {
-                            showSnackBar(
-                                context, "Veuillez rentrer un prénom.");
-                          }
-                        } else if (nomController.text == '') {
+                        // if (prenomController.text == '') {
+                        //   {
+                        //     showSnackBar(
+                        //         context, "Veuillez rentrer un prénom.");
+                        //   }
+                        // } else
+                        if (nomController.text == '') {
                           showSnackBar(context, "Veuillez rentrer un nom.");
                         } else if (emailController.text == '') {
                           showSnackBar(context, "Veuillez rentrer un email.");
                         } else if (numeroController.text == '') {
                           showSnackBar(context, "Veuillez rentrer un numéro.");
                         } else if (nomController.text != '' &&
-                            prenomController.text != '' &&
+                            // prenomController.text != '' &&
                             emailController.text != '' &&
                             numeroController.text != '') {
                           saveUserToHive(user);

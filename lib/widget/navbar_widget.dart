@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/colors.dart';
-import 'package:mypo/pages/group_contact._page.dart';
+import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/pages/help_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/pages/repports_page.dart';

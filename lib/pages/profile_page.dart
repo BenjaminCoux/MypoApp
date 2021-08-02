@@ -134,44 +134,44 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
-            child: Padding(
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Text(
-                      "Prenom",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black),
-                    )
-                  ],
-                )),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(18),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                  child: Text(
-                    userDefined ? user!.firstname : "Example",
-                    style: TextStyle(fontSize: 16),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
+          //   child: Padding(
+          //       padding: EdgeInsets.all(0),
+          //       child: Row(
+          //         children: [
+          //           Text(
+          //             "Prenom",
+          //             style: TextStyle(
+          //                 fontWeight: FontWeight.bold,
+          //                 fontSize: 20,
+          //                 color: Colors.black),
+          //           )
+          //         ],
+          //       )),
+          // ),
+          // Container(
+          //   margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.all(
+          //       Radius.circular(18),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.start,
+          //     children: [
+          //       Container(
+          //         padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+          //         child: Text(
+          //           userDefined ? user!.firstname : "Example",
+          //           style: TextStyle(fontSize: 16),
+          //           overflow: TextOverflow.ellipsis,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           Container(
             margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
             child: Padding(

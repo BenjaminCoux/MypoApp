@@ -117,25 +117,22 @@ class UserhiveAdapter extends TypeAdapter<User_hive> {
     };
     return User_hive()
       ..name = fields[0] as String
-      ..firstname = fields[1] as String
-      ..email = fields[2] as String
-      ..phoneNumber = fields[3] as String
-      ..imagePath = fields[4] as String;
+      ..email = fields[1] as String
+      ..phoneNumber = fields[2] as String
+      ..imagePath = fields[3] as String;
   }
 
   @override
   void write(BinaryWriter writer, User_hive obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.firstname)
-      ..writeByte(2)
       ..write(obj.email)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.phoneNumber)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.imagePath);
   }
 

@@ -1,4 +1,3 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/pages/edit_groupcontact_page.dart';
@@ -6,7 +5,6 @@ import 'package:mypo/pages/formulaire_group_contact_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/model/colors.dart';
 
 class GroupContactPage extends StatefulWidget {

@@ -31,7 +31,25 @@ class _HomePageState extends State<HomePage> {
       user = users[0];
       //debugPrint('User is defined ${user!.imagePath}');
     }
-    final defaultImgPath = "https://picsum.photos/id/1005/200/300";
+    // final defaultImgPath = "https://picsum.photos/id/1005/200/300";
+    // Image loadImageFromFile(String path) {
+    //   File file = new File(path);
+    //   Image img = Image.file(file);
+    //   return img;
+    // }
+
+    // void storeImageToFile(String path, String url) async {
+    //   var response = await get(Url);
+    //   File file = new File(path);
+    //   file.create(recursive: true).then((val) async {
+    //     if (await val.exists()) {
+    //       await file.writeAsBytesSync(response.bodyBytes);
+    //     }
+    //   });
+    // }
+
+    // final imgPath = loadImageFromFile('assets/images/profile.jpg');
+
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: userDefined ? user!.name : "My Co'Laverie"),
@@ -40,10 +58,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Logo(imgPath: userDefined ? user!.imagePath : defaultImgPath),
-          Mode()
-        ],
+        children: [Logo(imgPath: userDefined ? user!.imagePath : null), Mode()],
       )),
       bottomNavigationBar: BottomNavigationBarSection(),
     );

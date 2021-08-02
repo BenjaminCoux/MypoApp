@@ -45,12 +45,10 @@ class User_hive extends HiveObject {
   @HiveField(0)
   late String name;
   @HiveField(1)
-  late String firstname;
-  @HiveField(2)
   late String email;
-  @HiveField(3)
+  @HiveField(2)
   late String phoneNumber;
-  @HiveField(4)
+  @HiveField(3)
   late String imagePath;
 }
 

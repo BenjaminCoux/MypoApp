@@ -8,6 +8,7 @@ import 'package:mypo/model/colors.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+// ignore: must_be_immutable
 class EditGroup extends StatefulWidget {
   GroupContact grp;
   EditGroup({required this.grp});

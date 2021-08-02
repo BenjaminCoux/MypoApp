@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
-import 'edit_alertes_page.dart';
+import 'edit_alerte_auto_page.dart';
 import 'formulaire_alerte_auto_page.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 

@@ -1,6 +1,6 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:mypo/model/group_contact.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/pages/edit_groupcontact_page.dart';
 import 'package:mypo/pages/formulaire_group_contact_page.dart';
 import 'package:mypo/pages/home_page.dart';

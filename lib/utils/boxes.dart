@@ -9,4 +9,7 @@ class Boxes {
       Hive.box<Rapportmsg_hive>('rapportmsg');
 
   static Box<User_hive> getUser() => Hive.box<User_hive>('user');
+
+  static Box<GroupContact> getGroupContact() =>
+      Hive.box<GroupContact>('groupcontact');
 }

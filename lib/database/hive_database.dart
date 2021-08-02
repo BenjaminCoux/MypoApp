@@ -53,3 +53,13 @@ class User_hive extends HiveObject {
   @HiveField(4)
   late String imagePath;
 }
+
+@HiveType(typeId: 3)
+class GroupContact extends HiveObject {
+  @HiveField(0)
+  late String name;
+  @HiveField(1)
+  late String description;
+  @HiveField(2)
+  late List<String> numbers;
+}

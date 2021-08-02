@@ -3,6 +3,11 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/colors.dart';
+<<<<<<< HEAD
+=======
+import 'package:mypo/model/alert.dart';
+import 'package:mypo/model/alertkey.dart';
+>>>>>>> 9fc96565d55d9e050f16c48754e0424a44da77a6
 import 'package:mypo/pages/edit_alerte_auto_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/utils/boxes.dart';

@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/model/alert.dart';
 import 'package:mypo/model/alertkey.dart';
+import 'package:mypo/pages/edit_alerte_auto_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';

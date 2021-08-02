@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mypo/model/group_contact.dart';
 import 'package:mypo/pages/group_contact._page.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -15,7 +17,16 @@ class _GroupFormState extends State<GroupForm> {
   TextEditingController name = TextEditingController();
   TextEditingController descri = TextEditingController();
   final contactController = TextEditingController();
-  List contactList = [];
+  List<String> contactList = <String>[];
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    name.dispose();
+    descri.dispose();
+    contactController.dispose();
+    super.dispose();
+  }
 
   buildTile(String number) {
     return Container(
@@ -33,10 +44,27 @@ class _GroupFormState extends State<GroupForm> {
           Row(
             children: [
               Text(number),
-              IconButton(onPressed: null, icon: Icon(Icons.delete))
+              IconButton(
+                  onPressed: () => {
+                        setState(() {
+                          contactList.remove(number);
+                        })
+                      },
+                  icon: Icon(Icons.delete))
             ],
           ),
         ])));
+  }
+
+  void save() {
+    if (name.text.length > 0 && contactList.length > 0) {
+      final grp = GroupContact()
+        ..name = name.text
+        ..description = descri.text
+        ..numbers = contactList;
+      final box = Boxes.getGroupContact();
+      box.add(grp);
+    }
   }
 
   buildList() {
@@ -143,7 +171,16 @@ class _GroupFormState extends State<GroupForm> {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              onPressed: () => {},
+              onPressed: () => {
+                save(),
+                Navigator.pop(
+                  context,
+                ),
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new GroupContactPage())),
+              },
               child: Text("Valider"),
             )
           ],

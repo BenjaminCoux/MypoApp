@@ -21,13 +21,29 @@ class _EditGroupState extends State<EditGroup> {
   late TextEditingController descri;
   late List<String> contactList;
   final contactController = TextEditingController();
+  bool hasChanged = false;
 
   @override
   void initState() {
     name = TextEditingController(text: widget.grp.name);
     descri = TextEditingController(text: widget.grp.description);
     contactList = widget.grp.numbers;
+    name.addListener(() {
+      changed;
+    });
+    descri.addListener(() {
+      changed;
+    });
+    contactController.addListener(() {
+      changed;
+    });
     super.initState();
+  }
+
+  void changed() {
+    setState(() {
+      hasChanged = true;
+    });
   }
 
   @override
@@ -54,21 +70,23 @@ class _EditGroupState extends State<EditGroup> {
           Row(
             children: [
               Text(number),
-              IconButton(onPressed: null, icon: Icon(Icons.delete))
+              IconButton(
+                  onPressed: () => {
+                        setState(() {
+                          contactList.remove(number);
+                        })
+                      },
+                  icon: Icon(Icons.delete))
             ],
           ),
         ])));
   }
 
   void save() {
-    if (name.text.length > 0 && contactList.length > 0) {
-      final grp = GroupContact()
-        ..name = name.text
-        ..description = descri.text
-        ..numbers = contactList;
-      final box = Boxes.getGroupContact();
-      box.add(grp);
-    }
+    widget.grp.name = name.text;
+    widget.grp.description = descri.text;
+    widget.grp.numbers = contactList;
+    widget.grp.save();
   }
 
   buildList() {
@@ -139,6 +157,7 @@ class _EditGroupState extends State<EditGroup> {
                                 setState(() {
                                   contactList.add(
                                       contact.phones?.elementAt(0).value ?? '');
+                                  hasChanged = true;
                                 });
                               }
                             } catch (e) {
@@ -168,6 +187,26 @@ class _EditGroupState extends State<EditGroup> {
               ),
             ),
             buildList(),
+            ElevatedButton(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: d_green,
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              onPressed: () => {
+                save(),
+                Navigator.pop(
+                  context,
+                ),
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new GroupContactPage())),
+              },
+              child: Text("Valider"),
+            )
           ],
         ),
       ),

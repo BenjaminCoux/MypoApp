@@ -1,19 +1,17 @@
 import 'dart:convert';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/colors.dart';
-<<<<<<< HEAD
-=======
-import 'package:mypo/model/alert.dart';
-import 'package:mypo/model/alertkey.dart';
->>>>>>> 9fc96565d55d9e050f16c48754e0424a44da77a6
 import 'package:mypo/pages/edit_alerte_auto_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:telephony/telephony.dart';
@@ -84,6 +82,8 @@ class SwitchButton extends StatefulWidget {
 
 class _StateSwitchButton extends State<SwitchButton> {
   bool state = false;
+
+  final box = Boxes.getAutoAlert();
 
   // ignore: unused_field
   String _message = "";
@@ -647,9 +647,13 @@ Future<bool> isContactInContactList(SmsMessage message) async {
 }
 
 onBackgroundMessage(SmsMessage message) async {
-  final box = Boxes.getAutoAlert();
-  final alerts = box.values.toList().cast<Alert>();
   debugPrint("onMessage called (background)");
+
+  final alerts = await getAlerts();
+  // debugPrint(alerts.toString());
+  // for (int i = 0; i < alerts.length; i++) {
+  //   debugPrint(alerts[i].title);
+  // }
   Future<bool> test = isContactInContactList(message);
   int i = 0;
   while (i < alerts[i].keys.length) {
@@ -670,6 +674,38 @@ onBackgroundMessage(SmsMessage message) async {
     }
     i++;
   }
+}
+
+Future<List<Alert>> getAlerts() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Hive.initFlutter();
+
+    Hive.registerAdapter(ScheduledmsghiveAdapter());
+    Hive.registerAdapter(RapportmsghiveAdapter());
+    Hive.registerAdapter(UserhiveAdapter());
+    Hive.registerAdapter(GroupContactAdapter());
+    Hive.registerAdapter(AlertAdapter());
+    Hive.registerAdapter(AlertKeyAdapter());
+
+    // loading the <key,values> pair from the local storage into memory
+    await Hive.openBox<Alert>('alert');
+    try {
+      await Hive.openBox<Scheduledmsg_hive>('scheduledmsg');
+      await Hive.openBox<GroupContact>('group');
+      await Hive.openBox<User_hive>('user');
+      await Hive.openBox<Rapportmsg_hive>('rapportmsg');
+
+      await Hive.openBox<Alert>('alertkey');
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+  final alerts = Hive.box<Alert>('alert').values.toList().cast<Alert>();
+
+  return alerts;
 }
 
 /**

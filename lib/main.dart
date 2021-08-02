@@ -36,13 +36,14 @@ Future main() async {
   // loading the <key,values> pair from the local storage into memory
   try {
     await Hive.openBox<Scheduledmsg_hive>('scheduledmsg');
+    await Hive.openBox<GroupContact>('group');
+    await Hive.openBox<User_hive>('user');
+    await Hive.openBox<Rapportmsg_hive>('rapportmsg');
+    await Hive.openBox<Alert>('alert');
+    await Hive.openBox<Alert>('alertkey');
   } catch (e) {
     debugPrint(e.toString());
   }
-  await Hive.openBox<GroupContact>('group');
-  await Hive.openBox<User_hive>('user');
-  await Hive.openBox<Rapportmsg_hive>('rapportmsg');
-  await Hive.openBox<Alert>('alert');
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('app_icon');
@@ -136,7 +137,7 @@ flutter clean
 flutter pub cache repair
 flutter pub get
 flutter pub run build_runner clean
-flutter pub run build_runner build
+flutter pub run build_runner build --delete-conflicting-outputs
 
 
 creating new fields in hive database:

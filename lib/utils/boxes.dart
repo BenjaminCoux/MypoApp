@@ -9,5 +9,6 @@ class Boxes {
       Hive.box<Rapportmsg_hive>('rapportmsg');
   static Box<GroupContact> getGroupContact() => Hive.box<GroupContact>('group');
   static Box<Alert> getAutoAlert() => Hive.box<Alert>('alert');
+  static Box<Alert> getAlertKey() => Hive.box<Alert>('alertkey');
   static Box<User_hive> getUser() => Hive.box<User_hive>('user');
 }

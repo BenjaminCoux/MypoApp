@@ -38,7 +38,6 @@ class Rapportmsg_hive extends HiveObject {
   late DateTime date;
   @HiveField(4)
   late String type;
-  //TODO: field pour msg programme et message auto
 }
 
 @HiveType(typeId: 2)

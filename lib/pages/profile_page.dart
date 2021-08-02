@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/model/colors.dart';
 import 'package:mypo/model/user.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/pages/premium_page.dart';
@@ -10,7 +11,6 @@ import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/button_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'edit_profile_page.dart';
 
@@ -20,24 +20,24 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String data = '';
   @override
   void initState() {
+    getDataFromFile('assets/log.txt');
     super.initState();
   }
 
-  Future<File> getImageFileFromAssets(String path) async {
-    final byteData = await rootBundle.load('assets/$path');
-
-    final file = File('${(await getTemporaryDirectory()).path}/$path');
-    await file.writeAsBytes(byteData.buffer
-        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-
-    return file;
+  writeDataToFile(String path, String data) async {
+    final file = await File(path);
+    debugPrint(file.toString());
+    file.writeAsStringSync(data, mode: FileMode.append);
   }
 
-  getPath() async {
-    await getImageFileFromAssets('images/profile.jpg').then((value) {
-      return value.path;
+  getDataFromFile(String path) async {
+    String responseText;
+    responseText = await rootBundle.loadString(path);
+    setState(() {
+      data = responseText;
     });
   }
 
@@ -80,6 +80,23 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 24,
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(data,
+                  style: TextStyle(fontSize: 25, color: Colors.black)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  textStyle: TextStyle(fontFamily: 'calibri', fontSize: 18),
+                  primary: d_green,
+                  onPrimary: Colors.white,
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 9)),
+              child: Text('test'),
+              onPressed: () {
+                // writeDataToFile('assets/log.txt', 'test');
+              },
+            )
           ],
         ));
   }

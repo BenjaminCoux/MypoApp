@@ -47,6 +47,8 @@ List<bool> initDay() {
 }
 
 class _FormState extends State<FormScreen> {
+  final contactgroup =
+      Boxes.getGroupContact().values.toList().cast<GroupContact>();
   final alertName = TextEditingController();
   final alertContent = TextEditingController();
   final keyName = TextEditingController();
@@ -578,7 +580,16 @@ class _FormState extends State<FormScreen> {
                                                 setState(() {
                                                   cibles[4] = value!;
                                                   verifieCibles(cibles);
-                                                })
+                                                }),
+                                                if (cibles[4])
+                                                  {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            showgrp(
+                                                                contactgroup)),
+                                                  }
                                               }),
                                       CheckboxListTile(
                                           controlAffinity:
@@ -819,6 +830,67 @@ class _FormState extends State<FormScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  groupTile(GroupContact contact) {
+    return Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: d_green, borderRadius: BorderRadius.all(Radius.circular(5))),
+        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+        child: Row(children: [
+          Text(contact.name,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.justify,
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          IconButton(
+              //
+              alignment: Alignment(0, 10),
+              onPressed: () => {setState(() {})},
+              icon: const Icon(Icons.delete))
+        ]));
+  }
+
+  buildGrpList(List<GroupContact> contactgroup) {
+    return contactgroup.length > 0
+        ? Container(
+            height: 300,
+            width: 350,
+            child: ListView.builder(
+              itemCount: contactgroup.length,
+              itemBuilder: (BuildContext context, int index) {
+                return groupTile(contactgroup[index]);
+              },
+            ))
+        : Text("Pas de groupe de contact éxistants");
+  }
+
+  showgrp(List<GroupContact> contactgroup) {
+    return new AlertDialog(
+      title: Text("Séléctionner groupes de contacts"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          buildGrpList(contactgroup),
+        ],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            setState(() {});
+            Navigator.of(context).pop();
+          },
+          child: const Text('Valider', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Retour', style: TextStyle(color: Colors.black)),
+        ),
+      ],
     );
   }
 

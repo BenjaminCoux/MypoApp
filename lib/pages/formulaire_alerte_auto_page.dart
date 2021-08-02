@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'package:hive/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mypo/model/alert.dart';
 import 'package:mypo/model/colors.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -106,6 +109,24 @@ class _FormState extends State<FormScreen> {
     print("alert" + widget.nb.toString());
     pref.setString(title, tmp);
     pref.setInt("nombreAlerte", widget.nb + 1);
+    List<AlertKey> hivekey = <AlertKey>[];
+    for (int i = 0; i < keys.length; i++) {
+      final key = AlertKey()
+        ..name = keys[i].name
+        ..allow = keys[i].allow
+        ..contient = keys[i].contient;
+      hivekey.add(key);
+    }
+    final alert = Alert()
+      ..title = title
+      ..content = content
+      ..days = days
+      ..cibles = cibles
+      ..active = false
+      ..notification = notif
+      ..keys = hivekey
+      ..groupcontats = [];
+    final box = Boxes.getAutoAlert().add(alert);
   }
 
   /**
@@ -319,10 +340,10 @@ class _FormState extends State<FormScreen> {
                     onPressed: () {
                       if (keyName.text != '' && verifieCle(keyName.text)) {
                         setState(() {
-                          keys.add(new AlertKey(
-                              name: keyName.text,
-                              contient: _value,
-                              allow: _value2));
+                          keys.add(AlertKey()
+                            ..name = keyName.text
+                            ..contient = _value
+                            ..allow = _value2);
                           keyName.text = "";
                         });
                       }

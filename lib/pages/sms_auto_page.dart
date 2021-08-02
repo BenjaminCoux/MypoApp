@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/model/alert.dart';
 import 'package:mypo/model/alertkey.dart';
 import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
@@ -25,29 +27,23 @@ class SmsAuto extends StatefulWidget {
 }
 
 class _SmsAutoState extends State<SmsAuto> {
-  List alerts = <dynamic>[];
+  List<Alert> alerts = <Alert>[];
 
-  Future<List> readAlert() async {
-    final prefs = await SharedPreferences.getInstance();
-    List res = <dynamic>[];
-    Set<String> keys = prefs.getKeys();
-    Iterator<String> it = keys.iterator;
-    String cc;
-    while (it.moveNext()) {
-      cc = it.current;
-      if (cc != "nombreAlerte") {
-        res.add(json.decode(prefs.getString(cc) ?? "/"));
-        alerts.add(json.decode(prefs.getString(cc) ?? "/"));
-      }
-    }
+  Future<void> readAlert() async {
+    this.alerts = Boxes.getAutoAlert().values.toList().cast<Alert>();
 
-    return res;
+    this.alerts = alerts;
   }
 
   @override
   void initState() {
     readAlert();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -77,7 +73,7 @@ class _SmsAutoState extends State<SmsAuto> {
 
 // ignore: must_be_immutable
 class SwitchButton extends StatefulWidget {
-  dynamic alerte;
+  Alert alerte;
   SwitchButton({required this.alerte});
   @override
   _StateSwitchButton createState() => _StateSwitchButton();
@@ -107,36 +103,17 @@ class _StateSwitchButton extends State<SwitchButton> {
     Send back the alert message to the person
   */
   onMessage(SmsMessage message) async {
-    List<String> keys = <String>[];
-    List contents = <dynamic>[];
-    final prefs = await SharedPreferences.getInstance();
-    final tmp = prefs.getKeys();
-    Iterator<String> it = tmp.iterator;
-    while (it.moveNext()) {
-      if (it.current != "nombreAlerte") {
-        keys.add(it.current);
-      }
-    }
-    contents = await getContents();
+    List<Alert> alerts = Boxes.getAutoAlert().values.toList().cast<Alert>();
     debugPrint("onMessage called (Foreground)");
-    debugPrint("cibles du message: " + contents[0]['cibles'].toString());
     Future<bool> test = isContactInContactList(message);
     int i = 0;
-    while (i < keys.length) {
-      Alert a = createAlert(
-          new Alert(
-              title: contents[i]["title"],
-              content: contents[i]["content"],
-              days: json.decode(contents[i]["days"]),
-              cibles: json.decode(contents[i]["cibles"]),
-              notification: contents[i]["notification"],
-              keys: buildKeys(contents[i]["keys"])),
-          contents[i]["active"]);
+    while (i < alerts[i].keys.length) {
+      Alert a = alerts[i];
       bool tmp = isActive(message.body, a, await test);
       if (tmp) {
         print(tmp);
-        Telephony.instance.sendSms(
-            to: message.address.toString(), message: contents[i]["content"]);
+        Telephony.instance
+            .sendSms(to: message.address.toString(), message: a.content);
         if (a.notification) {
           String title = a.title;
           String content = a.content;
@@ -179,61 +156,27 @@ class _StateSwitchButton extends State<SwitchButton> {
   @override
   Widget build(BuildContext context) {
     return Switch(
-        value: widget.alerte["active"],
+        value: widget.alerte.active,
         activeColor: d_green,
         onChanged: (bool s) {
           setState(() {
             state = s;
-            widget.alerte["active"] = s;
+            widget.alerte.active = s;
             //print(state);
             if (s == true) {
               initPlatformState();
             }
           });
-          changeActive(widget.alerte);
+          changeActive(widget.alerte, s);
         });
   }
 
   /**
    * change the active value of an alert both in the alert list and in the sharedPreferences
    */
-  changeActive(dynamic alerte) async {
-    final prefs = await SharedPreferences.getInstance();
-    //print(prefs.get(alerte["title"]));
-    final keys = prefs.getKeys();
-    Iterator<String> it = keys.iterator;
-    while (it.moveNext()) {
-      if (it.current == widget.alerte["title"]) {
-        prefs.remove(it.current);
-      }
-    }
-    String title = alerte["title"];
-    String content = alerte["content"];
-    final days = alerte["days"];
-    final cible = alerte["cibles"];
-    final active = state;
-    final key = alerte["keys"];
-    String not = alerte["notification"].toString();
-    List<dynamic> tmpK = <dynamic>[];
-    for (int i = 0; i < key.length; i++) {
-      tmpK.add(json.decode(key[i]));
-    }
-    List<AlertKey> keyList = <AlertKey>[];
-    for (int i = 0; i < tmpK.length; i++) {
-      keyList.add(new AlertKey(
-          name: tmpK[i]["name"],
-          contient: tmpK[i]["contient"],
-          allow: tmpK[i]["allow"] == "true"));
-    }
-    List<String> listK = <String>[];
-    for (int i = 0; i < keyList.length; i++) {
-      listK.add(keyList[i].toString());
-    }
-    String kstr = json.encode(listK);
-    String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$active,"notification":$not,"keys":$kstr}';
-    prefs.setString(title, tmp);
-    //  print(prefs.get(alerte["title"]));
+  changeActive(Alert alerte, bool s) async {
+    alerte.active = s;
+    alerte.save();
   }
 }
 /*  
@@ -242,7 +185,7 @@ class _StateSwitchButton extends State<SwitchButton> {
 
 // ignore: must_be_immutable
 class Alertes extends StatefulWidget {
-  List alerts = <dynamic>[];
+  List<Alert> alerts = <Alert>[];
   Alertes({required this.alerts});
   @override
   _AlertesState createState() => new _AlertesState();
@@ -253,7 +196,6 @@ class _AlertesState extends State<Alertes> {
 
   @override
   void initState() {
-    initNb();
     super.initState();
   }
 
@@ -266,41 +208,20 @@ class _AlertesState extends State<Alertes> {
   /*
     -Function to delete an alert of the list
   */
-  void delete(var alert) async {
-    final pref = await SharedPreferences.getInstance();
-    Set<String> keys = pref.getKeys();
-    Iterator<String> it = keys.iterator;
-    // ignore: unused_local_variable
-    int i = 0;
-    bool done = false;
-    while (it.moveNext() && !done) {
-      if (it.current != "nombreAlerte") {
-        if (alert["title"] == it.current) {
-          pref.remove(it.current);
-          done = true;
-        }
-      }
-      i++;
-    }
+  void delete(Alert alert) async {
+    alert.delete();
   }
 
   /*
     - Function that get the number of alerts saved, 0 by default
   */
-  void initNb() async {
-    final prefs = await SharedPreferences.getInstance();
-    int tmp = prefs.getInt("nombreAlerte") ?? -1;
-    if (tmp == -1) {
-      prefs.setInt("nombreAlerte", 0);
-    }
-  }
 
   /*
     -Function that creates a pop up for asking a yes no question
   */
-  buildPopupDialog(dynamic alerte) {
+  buildPopupDialog(Alert alerte) {
     String title = "";
-    title = alerte["title"];
+    title = alerte.title;
     return new AlertDialog(
       title: Text("Voulez vous supprimer $title ?"),
       content: new Column(
@@ -329,36 +250,21 @@ class _AlertesState extends State<Alertes> {
     );
   }
 
-  Alert createAlert(Alert a, bool actived) {
-    Alert res = new Alert(
-        title: a.title,
-        content: a.content,
-        days: a.days,
-        cibles: a.cibles,
-        notification: a.notification,
-        keys: a.keys);
-    res.active = actived;
-    return res;
-  }
-
   /**
    * store the duplicated alert in the sharedPreferences
    */
-  void addToDB(dynamic alert, String title) async {
-    final prefs = await SharedPreferences.getInstance();
-    String content = alert["content"];
-    final days = alert["days"];
-    final cibles = alert["cibles"];
-    final active = alert["active"];
-    List<AlertKey> keys = buildKeys(alert["keys"]);
-    List<String> aStr = <String>[];
-    for (int i = 0; i < keys.length; i++) {
-      aStr.add(keys[i].toString());
-    }
-    String str = json.encode(aStr);
-    String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":$active,"keys":$str}';
-    prefs.setString(title, tmp);
+  void addToDB(Alert alert, String title) async {
+    Alert tmp = Alert()
+      ..title = alert.title
+      ..content = alert.content
+      ..active = alert.active
+      ..keys = alert.keys
+      ..cibles = alert.cibles
+      ..days = alert.days
+      ..groupcontats = alert.groupcontats
+      ..notification = alert.notification;
+    final box = Boxes.getAutoAlert();
+    box.add(tmp);
   }
 
   /**
@@ -381,7 +287,7 @@ class _AlertesState extends State<Alertes> {
     }
     int count = 0;
     for (int i = 0; i < widget.alerts.length; i++) {
-      if (widget.alerts[i]["title"].contains(title)) {
+      if (widget.alerts[i].title.contains(title)) {
         count++;
       }
     }
@@ -391,7 +297,7 @@ class _AlertesState extends State<Alertes> {
   /*
     -Function that creates the list of alerts on the screen
   */
-  myList(var alerts, int lenght, BuildContext context) {
+  myList(List<Alert> alerts, int lenght, BuildContext context) {
     return lenght > 0
         ? ListView.builder(
             shrinkWrap: true,
@@ -403,7 +309,7 @@ class _AlertesState extends State<Alertes> {
         : const Text("Aucune alerte", style: TextStyle(fontSize: 24));
   }
 
-  Widget buildMsg(BuildContext context, var alert) {
+  Widget buildMsg(BuildContext context, Alert alert) {
     return Card(
       margin: EdgeInsets.fromLTRB(5, 5, 20, 5),
       color: Colors.white,
@@ -412,13 +318,13 @@ class _AlertesState extends State<Alertes> {
         textColor: Colors.black,
         tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 0),
         title: Text(
-          alert["title"],
+          alert.title,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         subtitle: Text(
-          alert["content"],
+          alert.content,
           overflow: TextOverflow.ellipsis,
         ),
         trailing: SwitchButton(alerte: alert),
@@ -429,7 +335,7 @@ class _AlertesState extends State<Alertes> {
     );
   }
 
-  buildButtons(BuildContext context, var alert) => Row(
+  buildButtons(BuildContext context, Alert alert) => Row(
         children: [
           Expanded(
             child: TextButton.icon(
@@ -441,17 +347,7 @@ class _AlertesState extends State<Alertes> {
                 Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => new AlertScreen(
-                              alerte: createAlert(
-                            new Alert(
-                                title: alert["title"],
-                                content: alert["content"],
-                                days: jsonDecode(alert["days"]),
-                                cibles: jsonDecode(alert["cibles"]),
-                                notification: alert["notification"],
-                                keys: buildKeys(alert["keys"])),
-                            alert["active"],
-                          ))),
+                      builder: (context) => new AlertScreen(alerte: alert)),
                 ),
               },
             ),
@@ -463,16 +359,8 @@ class _AlertesState extends State<Alertes> {
               icon: Icon(Icons.copy),
               onPressed: () => {
                 setState(() {
-                  String title = getNbAlerte(alert["title"]);
-                  widget.alerts.add({
-                    "title": title,
-                    "content": alert["content"],
-                    "days": alert["days"],
-                    "cibles": alert["cibles"],
-                    "active": alert["active"],
-                    "notification": alert["notification"],
-                    "keys": alert["keys"]
-                  });
+                  String title = getNbAlerte(alert.title);
+                  widget.alerts.add(alert);
                   addToDB(alert, title);
                 }),
               },
@@ -567,12 +455,7 @@ class _AlertesState extends State<Alertes> {
   */
   void _onButtonPressed() {
     int nb = 0;
-    void getNb() async {
-      final pref = await SharedPreferences.getInstance();
-      nb = pref.getInt("nombreAlerte")!;
-    }
 
-    getNb();
     showModalBottomSheet(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         context: context,
@@ -634,93 +517,11 @@ Container _buildDivider() {
       color: Colors.grey.shade400);
 }
 
-Future<List> getContents() async {
-  final pref = await SharedPreferences.getInstance();
-  final tmp = pref.getKeys();
-  List contents = <dynamic>[];
-  Iterator<String> it = tmp.iterator;
-  while (it.moveNext()) {
-    if (it.current != "nombreAlerte") {
-      contents.add(json.decode(pref.getString(it.current) ?? ""));
-    }
-  }
-  return contents;
-}
-
 /*
   This Function gets incomming messages in the back ground
   Check if it contains any of the keys of activated alerts
   Send back the alert message to the person
 */
-
-onBackgroundMessage(SmsMessage message) async {
-  List<String> keys = <String>[];
-  List contents = <dynamic>[];
-  final prefs = await SharedPreferences.getInstance();
-  final tmp = prefs.getKeys();
-  Iterator<String> it = tmp.iterator;
-  while (it.moveNext()) {
-    if (it.current != "nombreAlerte") {
-      keys.add(it.current);
-    }
-  }
-  contents = await getContents();
-  debugPrint("onBackgroundMessage called");
-  // debugPrint('test');
-  debugPrint("cibles du message: " + contents[0]['cibles'].toString());
-  //Si numero non enregistrés est coché et contacts uniquement n'est pas coché
-  // if (contents[i]['cibles'][1] == true && contents[i]['cibles'][3] == false){
-  //    si le contact n'appartient pas a la liste de contact
-  //    if(isContactInContactList(message) == false){
-  //        on envoie un msg
-  //         Telephony.backgroundInstance.sendSms( to: message.address.toString(), message: contents[i]["content"]);
-  //     }
-  // }
-  //Si numero non enregistrés n'est pas coché et contacts uniquement est coché
-  // if(contents[i]['cibles'][1] == false && contents[i]['cibles'][3] == true) {
-  //    // si le contact appartient a la liste de contacts
-  //    if(isContactInContactList(message) == true){
-  //          // on envoie un msg
-  //          Telephony.backgroundInstance.sendSms(
-  //       to: message.address.toString(), message: contents[i]["content"]);
-  //    }
-  // }
-  Future<bool> test = isContactInContactList(message);
-  if (await test) {
-    debugPrint("contact is in contact list");
-    // debugPrint('test');
-  } else {
-    debugPrint("Contact is not in contact list");
-    // debugPrint('test');
-  }
-  int i = 0;
-  //si le message reçu contient
-  while (i < keys.length) {
-    Alert a = createAlert(
-        new Alert(
-            title: contents[i]["title"],
-            content: contents[i]["content"],
-            days: json.decode(contents[i]["days"]),
-            cibles: json.decode(contents[i]["cibles"]),
-            notification: contents[i]["notification"],
-            keys: buildKeys(contents[i]["keys"])),
-        contents[i]["active"]);
-
-    if (isActive(message.body, a, await test)) {
-      Telephony.backgroundInstance.sendSms(
-          to: message.address.toString(), message: contents[i]["content"]);
-      if (a.notification) {
-        String title = a.title;
-        String content = a.content;
-        String number = message.address.toString();
-        _showNotification("Une reponse de l'alerte $title à été envoyée",
-            "La reponse '$content' à été envoyée à $number");
-      }
-      return;
-    }
-    i++;
-  }
-}
 
 /**
  * return the last word in the message body
@@ -754,14 +555,7 @@ String getLastWord(String str) {
  * return an alerte from an original alert and the activated value
  */
 Alert createAlert(Alert a, bool actived) {
-  Alert res = new Alert(
-      title: a.title,
-      content: a.content,
-      days: a.days,
-      cibles: a.cibles,
-      notification: a.notification,
-      keys: a.keys);
-  res.active = actived;
+  Alert res = Alert();
   return res;
 }
 
@@ -849,6 +643,32 @@ Future<bool> isContactInContactList(SmsMessage message) async {
   return false;
 }
 
+onBackgroundMessage(SmsMessage message) async {
+  final box = await Hive.openBox<Alert>('alert');
+  final alerts = box.values.toList().cast<Alert>();
+  debugPrint("onMessage called (background)");
+  Future<bool> test = isContactInContactList(message);
+  int i = 0;
+  while (i < alerts[i].keys.length) {
+    Alert a = alerts[i];
+    bool tmp = isActive(message.body, a, await test);
+    if (tmp) {
+      print(tmp);
+      Telephony.instance
+          .sendSms(to: message.address.toString(), message: a.content);
+      if (a.notification) {
+        String title = a.title;
+        String content = a.content;
+        String number = message.address.toString();
+        _showNotification("Une reponse de l'alerte $title à été envoyée",
+            "La reponse '$content' à été envoyée à $number");
+      }
+      return;
+    }
+    i++;
+  }
+}
+
 /**
  * function that check if a not allowed word is present in the body of the message
  */
@@ -914,10 +734,10 @@ List<AlertKey> buildKeys(dynamic input) {
   List<AlertKey> res = <AlertKey>[];
 
   for (int i = 0; i < input.length; i++) {
-    res.add(new AlertKey(
-        name: json.decode(input[i])["name"],
-        contient: json.decode(input[i])["contient"],
-        allow: json.decode(input[i])["allow"] == "true"));
+    res.add(AlertKey()
+      ..name = json.decode(input[i])["name"]
+      ..contient = json.decode(input[i])["contient"]
+      ..allow = json.decode(input[i])["allow"] == "true");
   }
 
   return res;

@@ -143,7 +143,7 @@ class _StateBottomNavigationBarSection
       selectedItemColor: Colors.white,
       items: [
         BottomNavigationBarItem(
-          tooltip: "Temps d'accès",
+          tooltip: "Groupes de contacts",
           icon: IconButton(
               icon: Icon(
                 Icons.group,
@@ -155,7 +155,7 @@ class _StateBottomNavigationBarSection
                     Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (context) => new GroupContact())),
+                            builder: (context) => new GroupContactPage())),
                   }),
           label: '',
         ),

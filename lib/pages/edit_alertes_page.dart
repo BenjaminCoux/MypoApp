@@ -254,10 +254,10 @@ class _AlertScreenState extends State<AlertScreen> {
                     onPressed: () {
                       if (keyName.text != '' && verifieCle(keyName.text)) {
                         setState(() {
-                          widget.alerte.keys.add(new AlertKey(
-                              name: keyName.text,
-                              contient: _value,
-                              allow: _value2));
+                          widget.alerte.keys.add(new AlertKey()
+                            ..name = keyName.text
+                            ..contient = _value
+                            ..allow = _value2);
                           keyName.text = "";
                           hasChanged = true;
                         });
@@ -868,39 +868,9 @@ class _AlertScreenState extends State<AlertScreen> {
   */
   void save() async {
     if (hasChanged) {
-      final pref = await SharedPreferences.getInstance();
-      final keys = pref.getKeys();
-      Iterator<String> it = keys.iterator;
-
-      //TODO: Not delete but just replace the data using the same index
-
-      while (it.moveNext()) {
-        if (it.current == widget.alerte.title) {
-          pref.remove(it.current);
-        }
-      }
-
-      String title = widget.alerte.title;
-      if (titlechanged) {
-        title = alertName.text;
-      }
-      String content = widget.alerte.content;
-      if (contentchanged) {
-        content = alertContent.text;
-      }
-      final days = widget.alerte.days;
-      final cible = widget.alerte.cibles;
-      final b = widget.alerte.active;
-      String not = widget.alerte.notification.toString();
-      List<AlertKey> a = widget.alerte.keys;
-      List<String> aStr = <String>[];
-      for (int i = 0; i < a.length; i++) {
-        aStr.add(a[i].toString());
-      }
-      String str = json.encode(aStr);
-      String tmp =
-          '{"title":"$title","content":"$content","days":"$days","cibles":"$cible","active":$b,"notification":$not,"keys":$str}';
-      pref.setString(title, tmp);
+      widget.alerte.title = alertName.text;
+      widget.alerte.content = alertContent.text;
+      widget.alerte.save();
     }
   }
 }

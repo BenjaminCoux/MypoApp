@@ -137,7 +137,9 @@ class _GroupContactState extends State<GroupContactPage> {
       actions: <Widget>[
         new TextButton(
           onPressed: () {
-            contact.delete();
+            setState(() {
+              contact.delete();
+            });
             Navigator.of(context).pop();
           },
           child: const Text('Oui', style: TextStyle(color: Colors.black)),

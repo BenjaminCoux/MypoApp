@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:mypo/model/alert.dart';
+import 'package:mypo/model/alertkey.dart';
+import 'package:mypo/model/group_contact.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +32,9 @@ Future main() async {
   Hive.registerAdapter(ScheduledmsghiveAdapter());
   Hive.registerAdapter(RapportmsghiveAdapter());
   Hive.registerAdapter(UserhiveAdapter());
+  Hive.registerAdapter(GroupContactAdapter());
+  Hive.registerAdapter(AlertAdapter());
+  Hive.registerAdapter(AlertKeyAdapter());
 
   // loading the <key,values> pair from the local storage into memory
   try {
@@ -36,8 +42,10 @@ Future main() async {
   } catch (e) {
     debugPrint(e.toString());
   }
+  await Hive.openBox<GroupContact>('group');
   await Hive.openBox<User_hive>('user');
   await Hive.openBox<Rapportmsg_hive>('rapportmsg');
+  await Hive.openBox<Alert>('alert');
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('app_icon');

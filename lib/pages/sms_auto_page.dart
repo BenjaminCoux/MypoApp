@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/model/alert.dart';
 import 'package:mypo/model/alertkey.dart';
 import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -100,6 +102,21 @@ class _StateSwitchButton extends State<SwitchButton> {
     initPlatformState();
   }
 
+  saveMsgToRapport(
+    String message,
+    String numero,
+    String name,
+  ) {
+    final messageToRapport = Rapportmsg_hive()
+      ..name = name
+      ..phoneNumber = numero
+      ..message = message
+      ..type = 'Mesage automatique'
+      ..date = DateTime.now();
+    final box = Boxes.getRapportmsg();
+    box.add(messageToRapport);
+  }
+
   /*
     -This function reacts to messages on the foreground
     it gets incomming messages 
@@ -137,6 +154,8 @@ class _StateSwitchButton extends State<SwitchButton> {
         print(tmp);
         Telephony.instance.sendSms(
             to: message.address.toString(), message: contents[i]["content"]);
+        saveMsgToRapport(contents[i]["content"], message.address.toString(),
+            contents[i]["title"]);
         if (a.notification) {
           String title = a.title;
           String content = a.content;
@@ -666,32 +685,13 @@ onBackgroundMessage(SmsMessage message) async {
   }
   contents = await getContents();
   debugPrint("onBackgroundMessage called");
-  // debugPrint('test');
   debugPrint("cibles du message: " + contents[0]['cibles'].toString());
-  //Si numero non enregistrés est coché et contacts uniquement n'est pas coché
-  // if (contents[i]['cibles'][1] == true && contents[i]['cibles'][3] == false){
-  //    si le contact n'appartient pas a la liste de contact
-  //    if(isContactInContactList(message) == false){
-  //        on envoie un msg
-  //         Telephony.backgroundInstance.sendSms( to: message.address.toString(), message: contents[i]["content"]);
-  //     }
-  // }
-  //Si numero non enregistrés n'est pas coché et contacts uniquement est coché
-  // if(contents[i]['cibles'][1] == false && contents[i]['cibles'][3] == true) {
-  //    // si le contact appartient a la liste de contacts
-  //    if(isContactInContactList(message) == true){
-  //          // on envoie un msg
-  //          Telephony.backgroundInstance.sendSms(
-  //       to: message.address.toString(), message: contents[i]["content"]);
-  //    }
-  // }
+
   Future<bool> test = isContactInContactList(message);
   if (await test) {
     debugPrint("contact is in contact list");
-    // debugPrint('test');
   } else {
     debugPrint("Contact is not in contact list");
-    // debugPrint('test');
   }
   int i = 0;
   //si le message reçu contient
@@ -709,6 +709,9 @@ onBackgroundMessage(SmsMessage message) async {
     if (isActive(message.body, a, await test)) {
       Telephony.backgroundInstance.sendSms(
           to: message.address.toString(), message: contents[i]["content"]);
+
+      saveMsgToRapport(contents[i]["content"], message.address.toString(),
+          contents[i]["title"]);
       if (a.notification) {
         String title = a.title;
         String content = a.content;
@@ -720,6 +723,21 @@ onBackgroundMessage(SmsMessage message) async {
     }
     i++;
   }
+}
+
+saveMsgToRapport(
+  String message,
+  String numero,
+  String name,
+) {
+  final messageToRapport = Rapportmsg_hive()
+    ..name = name
+    ..phoneNumber = numero
+    ..message = message
+    ..type = 'Mesage automatique'
+    ..date = DateTime.now();
+  final box = Boxes.getRapportmsg();
+  box.add(messageToRapport);
 }
 
 /**

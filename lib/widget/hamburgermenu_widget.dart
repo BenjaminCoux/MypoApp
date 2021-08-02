@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/pages/help_page.dart';
+import 'package:mypo/pages/aide_page.dart';
 import 'package:mypo/pages/profile_page.dart';
-import 'package:mypo/pages/repports_page.dart';
-import 'package:mypo/pages/settings_page.dart';
+import 'package:mypo/pages/rapports_page.dart';
+import 'package:mypo/pages/parametres_page.dart';
 
 class HamburgerMenu extends StatefulWidget {
   @override

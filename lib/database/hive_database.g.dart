@@ -77,13 +77,14 @@ class RapportmsghiveAdapter extends TypeAdapter<Rapportmsg_hive> {
       ..name = fields[0] as String
       ..phoneNumber = fields[1] as String
       ..message = fields[2] as String
-      ..date = fields[3] as DateTime;
+      ..date = fields[3] as DateTime
+      ..type = fields[4] as String;
   }
 
   @override
   void write(BinaryWriter writer, Rapportmsg_hive obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -91,7 +92,9 @@ class RapportmsghiveAdapter extends TypeAdapter<Rapportmsg_hive> {
       ..writeByte(2)
       ..write(obj.message)
       ..writeByte(3)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(4)
+      ..write(obj.type);
   }
 
   @override

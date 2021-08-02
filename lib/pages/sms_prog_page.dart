@@ -47,6 +47,7 @@ class _SmsProgState extends State<SmsProg> {
       ..name = message.name
       ..phoneNumber = message.phoneNumber
       ..message = message.message
+      ..type = 'Mesage programmé'
       ..date = DateTime.now();
     final box = Boxes.getRapportmsg();
     box.add(messageToRapport);

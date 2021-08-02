@@ -50,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
       userDefined = true;
 
       user = users[0];
-      debugPrint('User is defined  ${user!.name} ,  ${user.imagePath}');
+      // debugPrint('User is defined  ${user!.name} ,  ${user.imagePath}');
     }
     final imgPath = "https://picsum.photos/id/1005/200/300";
     return Scaffold(

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/pages/profile_page.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 
 // ignore: must_be_immutable
@@ -9,6 +12,15 @@ class SettingsScreenOne extends StatelessWidget {
   bool state = false;
   @override
   Widget build(BuildContext context) {
+    bool userDefined = false;
+    User_hive? user;
+    List users = Boxes.getUser().values.toList().cast<User_hive>();
+    if (!users.isEmpty) {
+      userDefined = true;
+
+      user = users[0];
+      // debugPrint('User is defined  ${user!.name} ,  ${user.imagePath}');
+    }
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: TopBarRedirection(title: 'Parametres', page: () => HomePage()),
@@ -29,13 +41,20 @@ class SettingsScreenOne extends StatelessWidget {
                     onTap: () {
                       //Open edit profile
                     },
-                    title: Text('Username',
+                    title: Text(userDefined ? user!.name : 'Username',
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'calibri',
                             fontWeight: FontWeight.w500)),
-                    leading: CircleAvatar(backgroundColor: Colors.red),
-                    trailing: Icon(Icons.edit, color: Colors.white),
+                    trailing: IconButton(
+                        icon: Icon(Icons.edit, size: 35, color: Colors.white),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => ProfilePage()),
+                          );
+                        }),
                   ),
                 ),
                 const SizedBox(

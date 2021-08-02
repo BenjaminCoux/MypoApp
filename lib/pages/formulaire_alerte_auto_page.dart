@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'package:hive/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/alert.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/colors.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mypo/model/alertkey.dart';
 import 'sms_auto_page.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
@@ -126,7 +124,8 @@ class _FormState extends State<FormScreen> {
       ..notification = notif
       ..keys = hivekey
       ..groupcontats = [];
-    final box = Boxes.getAutoAlert().add(alert);
+    final box = Boxes.getAutoAlert();
+    box.add(alert);
   }
 
   /**

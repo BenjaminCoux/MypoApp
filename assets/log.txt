@@ -1,0 +1,2 @@
+Voici un message de test écrit dans le fichier log.txt
+Ceci est un example

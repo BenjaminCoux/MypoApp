@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/colors.dart';
-import 'package:mypo/model/alert.dart';
-import 'package:mypo/model/alertkey.dart';
+import 'package:mypo/pages/edit_alerte_auto_page.dart';
 import 'package:mypo/pages/home_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
@@ -14,7 +13,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
-import 'edit_alertes_page.dart';
 import 'formulaire_alerte_auto_page.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -644,7 +642,7 @@ Future<bool> isContactInContactList(SmsMessage message) async {
 }
 
 onBackgroundMessage(SmsMessage message) async {
-  final box = await Hive.openBox<Alert>('alert');
+  final box = Boxes.getAutoAlert();
   final alerts = box.values.toList().cast<Alert>();
   debugPrint("onMessage called (background)");
   Future<bool> test = isContactInContactList(message);

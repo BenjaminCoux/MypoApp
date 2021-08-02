@@ -188,3 +188,96 @@ class GroupContactAdapter extends TypeAdapter<GroupContact> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class AlertAdapter extends TypeAdapter<Alert> {
+  @override
+  final int typeId = 4;
+
+  @override
+  Alert read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Alert()
+      ..title = fields[1] as String
+      ..content = fields[2] as String
+      ..days = fields[3] as dynamic
+      ..cibles = fields[4] as dynamic
+      ..active = fields[5] as bool
+      ..keys = (fields[6] as List).cast<AlertKey>()
+      ..notification = fields[7] as bool
+      ..groupcontats = (fields[8] as List).cast<GroupContact>();
+  }
+
+  @override
+  void write(BinaryWriter writer, Alert obj) {
+    writer
+      ..writeByte(8)
+      ..writeByte(1)
+      ..write(obj.title)
+      ..writeByte(2)
+      ..write(obj.content)
+      ..writeByte(3)
+      ..write(obj.days)
+      ..writeByte(4)
+      ..write(obj.cibles)
+      ..writeByte(5)
+      ..write(obj.active)
+      ..writeByte(6)
+      ..write(obj.keys)
+      ..writeByte(7)
+      ..write(obj.notification)
+      ..writeByte(8)
+      ..write(obj.groupcontats);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AlertAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class AlertKeyAdapter extends TypeAdapter<AlertKey> {
+  @override
+  final int typeId = 5;
+
+  @override
+  AlertKey read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return AlertKey()
+      ..name = fields[1] as String
+      ..contient = fields[2] as int
+      ..allow = fields[3] as bool;
+  }
+
+  @override
+  void write(BinaryWriter writer, AlertKey obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.contient)
+      ..writeByte(3)
+      ..write(obj.allow);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AlertKeyAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

@@ -1,7 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/alert.dart';
-
 
 class Boxes {
   static Box<Scheduledmsg_hive> getScheduledmsg() =>
@@ -12,6 +10,4 @@ class Boxes {
   static Box<GroupContact> getGroupContact() => Hive.box<GroupContact>('group');
   static Box<Alert> getAutoAlert() => Hive.box<Alert>('alert');
   static Box<User_hive> getUser() => Hive.box<User_hive>('user');
-
-
 }

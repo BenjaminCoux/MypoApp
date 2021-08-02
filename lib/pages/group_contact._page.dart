@@ -13,10 +13,10 @@ class GroupContactPage extends StatefulWidget {
 }
 
 class _GroupContactState extends State<GroupContactPage> {
-  final groupContact =
+  List<GroupContact> groupContact =
       Boxes.getGroupContact().values.toList().cast<GroupContact>();
 
-  buildGroup(BuildContext context, String nom) {
+  buildGroup(BuildContext context, GroupContact contact) {
     return Card(
       margin: EdgeInsets.fromLTRB(5, 5, 20, 5),
       color: Colors.white,
@@ -25,17 +25,17 @@ class _GroupContactState extends State<GroupContactPage> {
         textColor: Colors.black,
         tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 0),
         title: Text(
-          nom,
+          contact.name,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         subtitle: Text(
-          nom,
+          contact.description,
           overflow: TextOverflow.ellipsis,
         ),
         children: [
-          buildButtons(context, nom),
+          buildButtons(context, contact),
         ],
       ),
     );
@@ -66,9 +66,14 @@ class _GroupContactState extends State<GroupContactPage> {
         ],
       );
 
-  buildListofCOntact(int lenght, dynamic list) {
+  buildListofCOntact(int lenght, List<GroupContact> list) {
     return lenght > 0
-        ? buildGroup(context, list)
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: list.length,
+            itemBuilder: (BuildContext context, int index) {
+              return buildGroup(context, list[index]);
+            })
         : Text("Il n'y a pas encore degroupe de contacts enregistrés");
   }
 

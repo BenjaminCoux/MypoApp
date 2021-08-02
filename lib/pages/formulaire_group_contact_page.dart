@@ -57,7 +57,7 @@ class _GroupFormState extends State<GroupForm> {
       backgroundColor: Colors.grey.shade100,
       appBar: TopBarRedirection(
         title: "Créer un nouveau groupe de contact",
-        page: () => GroupContact(),
+        page: () => GroupContactPage(),
       ),
       body: Center(
         child: Column(

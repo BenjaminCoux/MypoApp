@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mypo/model/group_contact.dart';
 import 'package:mypo/pages/formulaire_group_contact_page.dart';
 import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
 import 'package:mypo/model/colors.dart';
 
-class GroupContact extends StatefulWidget {
+class GroupContactPage extends StatefulWidget {
   @override
   _GroupContactState createState() => _GroupContactState();
 }
 
-class _GroupContactState extends State<GroupContact> {
+class _GroupContactState extends State<GroupContactPage> {
+  final groupContact =
+      Boxes.getGroupContact().values.toList().cast<GroupContact>();
+
   buildGroup(BuildContext context, String nom) {
     return Card(
       margin: EdgeInsets.fromLTRB(5, 5, 20, 5),
@@ -61,9 +66,9 @@ class _GroupContactState extends State<GroupContact> {
         ],
       );
 
-  buildListofCOntact(int lenght, String nom, BuildContext context) {
+  buildListofCOntact(int lenght, dynamic list) {
     return lenght > 0
-        ? buildGroup(context, nom)
+        ? buildGroup(context, list)
         : Text("Il n'y a pas encore degroupe de contacts enregistrés");
   }
 
@@ -99,7 +104,7 @@ class _GroupContactState extends State<GroupContact> {
                     color: Colors.white,
                     fontFamily: 'calibri'),
               )),
-          buildListofCOntact(1, "test", context),
+          buildListofCOntact(groupContact.length, groupContact),
         ]),
       ),
     );

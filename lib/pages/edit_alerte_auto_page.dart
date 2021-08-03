@@ -3,6 +3,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'sms_auto_page.dart';
@@ -17,6 +19,8 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
+  final contactgroup =
+      Boxes.getGroupContact().values.toList().cast<GroupContact>();
   late var alertName = TextEditingController();
   late var alertContent = TextEditingController();
   bool hasChanged = false;
@@ -33,10 +37,12 @@ class _AlertScreenState extends State<AlertScreen> {
   int nbMaxWords = 450;
   bool wordsLimit = true;
   int nbWords = 0;
-
+  late List<bool> boolCheckedGrp;
   @override
   void initState() {
     super.initState();
+    boolCheckedGrp =
+        buildboolListEdit(contactgroup, widget.alerte.groupcontats);
     alertName = TextEditingController(text: widget.alerte.title);
     alertContent = TextEditingController(text: widget.alerte.content);
     alertName.addListener(() {
@@ -516,7 +522,22 @@ class _AlertScreenState extends State<AlertScreen> {
                                                     value!;
                                                 verifieCibles(
                                                     widget.alerte.cibles);
-                                              })
+                                              }),
+                                              if (widget.alerte.cibles[4])
+                                                {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return MyDialog(
+                                                            contactgroup:
+                                                                contactgroup,
+                                                            alertGroup: widget
+                                                                .alerte
+                                                                .groupcontats,
+                                                            boolCheckedGrp:
+                                                                boolCheckedGrp);
+                                                      })
+                                                }
                                             }),
                                     CheckboxListTile(
                                         controlAffinity:
@@ -936,4 +957,19 @@ class _AlertScreenState extends State<AlertScreen> {
       widget.alerte.save();
     }
   }
+}
+
+List<bool> buildboolListEdit(List<GroupContact> db, List<GroupContact> cur) {
+  List<bool> res = <bool>[];
+  for (int i = 0; i < db.length; i++) {
+    res.add(false);
+  }
+  for (int i = 0; i < cur.length; i++) {
+    for (int j = 0; j < db.length; j++) {
+      if (cur[i].name == db[j].name) {
+        res[j] = true;
+      }
+    }
+  }
+  return res;
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/database/hive_database.dart';
@@ -20,6 +21,10 @@ class _ProgState extends State<ProgForm> {
   final nameController = TextEditingController();
   final contactController = TextEditingController();
   final alertContent = TextEditingController();
+  final contactgroup =
+      Boxes.getGroupContact().values.toList().cast<GroupContact>();
+  List<GroupContact> alertGroup = <GroupContact>[];
+  late List<bool> boolCheckedGrp;
   bool rebours = false;
   bool confirm = false;
   bool notif = false;
@@ -45,10 +50,12 @@ class _ProgState extends State<ProgForm> {
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
   final regularExpression =
       RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
+  final groupcontactcontroller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    boolCheckedGrp = buildboolList(contactgroup);
   }
 
   @override
@@ -71,6 +78,14 @@ class _ProgState extends State<ProgForm> {
     if (contactController.text != '' &&
         alertContent.text != '' &&
         repeatinput != '') {
+      List<GroupContact> grp = <GroupContact>[];
+      for (int i = 0; i < alertGroup.length; i++) {
+        final tmp = GroupContact()
+          ..name = alertGroup[i].name
+          ..description = alertGroup[i].description
+          ..numbers = alertGroup[i].numbers;
+        grp.add(tmp);
+      }
       final msg = Scheduledmsg_hive()
         ..name = nameController.text
         ..phoneNumber = contactController.text
@@ -80,7 +95,8 @@ class _ProgState extends State<ProgForm> {
         ..repeat = repeatinput
         ..countdown = rebours
         ..confirm = confirm
-        ..notification = notif;
+        ..notification = notif
+        ..groupContact = grp;
       //..status = MessageStatus.PENDING;
 
       final box = Boxes.getScheduledmsg();
@@ -176,6 +192,72 @@ class _ProgState extends State<ProgForm> {
                           color: Colors.black,
                         ),
                       ),
+                    ),
+                  ),
+                ),
+                Text("ou"),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                    child: TextField(
+                      minLines: 1,
+                      maxLines: 1,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      keyboardType: TextInputType.phone,
+                      controller: groupcontactcontroller,
+                      decoration: InputDecoration(
+                          labelText: "Groupes de contacts",
+                          suffixIcon: IconButton(
+                              onPressed: () => {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return MyDialog(
+                                              contactgroup: contactgroup,
+                                              alertGroup: alertGroup,
+                                              boolCheckedGrp: boolCheckedGrp);
+                                        }),
+                                    setState(() {
+                                      String tmp = "";
+                                      for (int i = 0;
+                                          i < alertGroup.length;
+                                          i++) {
+                                        tmp += alertGroup[i].name;
+                                      }
+                                      groupcontactcontroller.text = tmp;
+                                    })
+                                  },
+                              icon: Icon(
+                                Icons.group_add_rounded,
+                                color: Colors.black,
+                                size: 35,
+                              )),
+                          labelStyle: TextStyle(color: Colors.black),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
+                          hintText: "Ajoutez groupe de contact",
+                          hintStyle: TextStyle(
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                          )),
                     ),
                   ),
                 ),

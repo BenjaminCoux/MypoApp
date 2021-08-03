@@ -52,6 +52,19 @@ class _SmsProgState extends State<SmsProg> {
     box.add(messageToRapport);
   }
 
+  void send(Scheduledmsg_hive msg) async {
+    if (msg.groupContact.isEmpty) {
+      Telephony.instance.sendSms(to: msg.phoneNumber, message: msg.message);
+    } else {
+      for (int i = 0; i < msg.groupContact.length; i++) {
+        for (int j = 0; j < msg.groupContact[i].numbers.length; j++) {
+          Telephony.instance.sendSms(
+              to: msg.groupContact[i].numbers[j], message: msg.message);
+        }
+      }
+    }
+  }
+
   void sendSms() async {
     List<Scheduledmsg_hive> messages =
         Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
@@ -61,10 +74,7 @@ class _SmsProgState extends State<SmsProg> {
           if (messages[i].confirm) {
             confirmSend(messages[i]);
           } else {
-            Telephony.instance.sendSms(
-                to: messages[i].phoneNumber, message: messages[i].message);
-            debugPrint(
-                'Message programmé envoyé a: ${messages[i].phoneNumber}');
+            send(messages[i]);
             saveMsgToRapport(messages[i]);
 
             updateDate(messages[i]);
@@ -186,7 +196,7 @@ class _SmsProgState extends State<SmsProg> {
             actions: <Widget>[
               TextButton(
                   onPressed: () => {
-                        Telephony.instance.sendSms(to: to, message: content),
+                        send(msg),
                         updateDate(msg),
                         if (notif)
                           {

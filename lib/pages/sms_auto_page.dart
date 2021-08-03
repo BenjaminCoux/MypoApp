@@ -788,8 +788,11 @@ bool isInGroup(Alert a, String? adress) {
     return true;
   } else {
     for (int i = 0; i < a.groupcontats.length; i++) {
-      if (a.groupcontats[i].numbers.contains(adress)) {
-        return true;
+      for (int j = 0; j < a.groupcontats[i].numbers.length; j++) {
+        String tmp = a.groupcontats[i].numbers[j].replaceAll(' ', '');
+        if (tmp == adress) {
+          return true;
+        }
       }
     }
     return false;

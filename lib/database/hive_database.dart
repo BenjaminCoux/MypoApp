@@ -4,7 +4,7 @@ part 'hive_database.g.dart';
 
 @HiveType(typeId: 0)
 class Scheduledmsg_hive extends HiveObject {
-  //extending to hiveobject we can use hive methods such as save delete etc.
+  //extending to hiveobject we can use hive methods such as add save delete etc.
   @HiveField(0)
   late String name;
   @HiveField(1)
@@ -27,7 +27,7 @@ class Scheduledmsg_hive extends HiveObject {
 
 @HiveType(typeId: 1)
 class Rapportmsg_hive extends HiveObject {
-  //extending to hiveobject we can use hive methods such as save delete etc.
+  //extending to hiveobject we can use hive methods such as add save delete etc.
   @HiveField(0)
   late String name;
   @HiveField(1)
@@ -42,7 +42,7 @@ class Rapportmsg_hive extends HiveObject {
 
 @HiveType(typeId: 2)
 class User_hive extends HiveObject {
-  //extending to hiveobject we can use hive methods such as save delete etc.
+  //extending to hiveobject we can use hive methods such as add save delete etc.
   @HiveField(0)
   late String name;
   @HiveField(1)

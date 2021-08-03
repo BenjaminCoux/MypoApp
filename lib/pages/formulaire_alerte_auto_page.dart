@@ -1,14 +1,12 @@
-import 'dart:convert';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/colors.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'sms_auto_page.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
@@ -71,7 +69,7 @@ class _FormState extends State<FormScreen> {
   List<AlertKey> keys = <AlertKey>[];
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
   final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@\.;]+$');
+      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
   late List<bool> boolCheckedGrp;
 
   @override
@@ -793,7 +791,7 @@ class _FormState extends State<FormScreen> {
                       else if (alertName.text != '' &&
                           alertContent != '' &&
                           !keys.isEmpty &&
-                          alphanumeric.hasMatch(alertName.text) &&
+                          regularExpression.hasMatch(alertName.text) &&
                           isCiblesSet(cibles) &&
                           isWeekSet(week) &&
                           await Permission.contacts.request().isGranted &&
@@ -816,7 +814,9 @@ class _FormState extends State<FormScreen> {
                               {
                                 showSnackBar(context,
                                     'Veuillez activer les permissions (sms et contacts).')
-                              }
+                              },
+                              await Permission.contacts.request().isGranted,
+                              await Permission.sms.request().isGranted
                             }
                           else
                             {

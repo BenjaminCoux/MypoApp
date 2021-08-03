@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/model/colors.dart';
-import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 
 // import 'home_page.dart';

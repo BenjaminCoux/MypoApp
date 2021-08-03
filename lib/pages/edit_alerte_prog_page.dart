@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/colors.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
@@ -41,7 +41,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     'Tous les ans'
   ];
   int index = 0;
-
+  final regularExpression =
+      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
   @override
   void initState() {
     super.initState();

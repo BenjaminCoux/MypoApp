@@ -4,7 +4,7 @@ import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/model/colors.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -31,7 +31,7 @@ class _GroupFormState extends State<GroupForm> {
   buildTile(String number) {
     return Container(
         decoration: BoxDecoration(
-          color: d_lightgray,
+          color: Colors.grey.shade100,
           borderRadius: BorderRadius.all(
             Radius.circular(18),
           ),
@@ -41,17 +41,20 @@ class _GroupFormState extends State<GroupForm> {
         child: Center(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Row(
-            children: [
-              Text(number),
-              IconButton(
-                  onPressed: () => {
-                        setState(() {
-                          contactList.remove(number);
-                        })
-                      },
-                  icon: Icon(Icons.delete))
-            ],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
+            child: Row(
+              children: [
+                Text(number),
+                IconButton(
+                    onPressed: () => {
+                          setState(() {
+                            contactList.remove(number);
+                          })
+                        },
+                    icon: Icon(Icons.delete))
+              ],
+            ),
           ),
         ])));
   }
@@ -87,103 +90,121 @@ class _GroupFormState extends State<GroupForm> {
         title: "Créer un nouveau groupe de contact",
         page: () => GroupContactPage(),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            buildTextField(
-                'Nom', 'Donner un nom au groupe de contact', name, 1),
-            buildTextField('Description', 'Ajouter une description', descri, 1),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(18),
-                ),
-              ),
-              margin: EdgeInsets.all(10),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                child: TextField(
-                  minLines: 1,
-                  maxLines: 1,
-                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                  keyboardType: TextInputType.phone,
-                  controller: contactController,
-                  decoration: InputDecoration(
-                    labelText: 'Numero(s) de(s) contact(s)',
-                    suffixIcon: IconButton(
-                        icon: Icon(Icons.person_add,
-                            size: 35, color: Colors.black),
-                        onPressed: () async {
-                          if (await Permission.contacts.request().isGranted) {
-                            try {
-                              final contact = await ContactsService
-                                  .openDeviceContactPicker();
-                              if (contact != null) {
-                                if (contactController.text.isEmpty) {
-                                  contactController.text =
-                                      (contact.phones?.elementAt(0).value! ??
+      body: Scrollbar(
+        interactive: true,
+        isAlwaysShown: true,
+        showTrackOnHover: true,
+        thickness: 10,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                buildTextField(
+                    'Nom', 'Donner un nom au groupe de contact', name, 1),
+                buildTextField(
+                    'Description', 'Ajouter une description', descri, 1),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                  ),
+                  margin: EdgeInsets.all(10),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                    child: TextField(
+                      minLines: 1,
+                      maxLines: 1,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      keyboardType: TextInputType.phone,
+                      controller: contactController,
+                      decoration: InputDecoration(
+                        labelText: 'Numero(s) de(s) contact(s)',
+                        suffixIcon: IconButton(
+                            icon: Icon(Icons.person_add,
+                                size: 35, color: Colors.black),
+                            onPressed: () async {
+                              if (await Permission.contacts
+                                  .request()
+                                  .isGranted) {
+                                try {
+                                  final contact = await ContactsService
+                                      .openDeviceContactPicker();
+                                  if (contact != null) {
+                                    if (contactController.text.isEmpty) {
+                                      contactController.text = (contact.phones
+                                              ?.elementAt(0)
+                                              .value! ??
                                           '');
-                                } else {
-                                  contactController.text += ', ' +
-                                      (contact.phones?.elementAt(0).value! ??
-                                          '');
-                                  contactList.add(
-                                      contact.phones?.elementAt(0).value ?? '');
+                                    } else {
+                                      contactController.text += ', ' +
+                                          (contact.phones
+                                                  ?.elementAt(0)
+                                                  .value! ??
+                                              '');
+                                      // contactList.add(
+                                      //     contact.phones?.elementAt(0).value ?? '');
+                                    }
+                                    setState(() {
+                                      contactList.add(
+                                          contact.phones?.elementAt(0).value ??
+                                              '');
+                                    });
+                                  }
+                                } catch (e) {
+                                  debugPrint(e.toString());
                                 }
-                                setState(() {
-                                  contactList.add(
-                                      contact.phones?.elementAt(0).value ?? '');
-                                });
                               }
-                            } catch (e) {
-                              debugPrint(e.toString());
-                            }
-                          }
-                        }),
-                    labelStyle: TextStyle(color: Colors.black),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.transparent)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.transparent)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.transparent)),
-                    hintText: "Ajoutez un numero de telephone",
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.black,
+                            }),
+                        labelStyle: TextStyle(color: Colors.black),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.transparent)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.transparent)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.transparent)),
+                        hintText: "Ajoutez un numero de telephone",
+                        hintStyle: TextStyle(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+                buildList(),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: d_green,
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: () => {
+                    save(),
+                    Navigator.pop(
+                      context,
+                    ),
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new GroupContactPage())),
+                  },
+                  child: Text("Valider"),
+                )
+              ],
             ),
-            buildList(),
-            ElevatedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: d_green,
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              onPressed: () => {
-                save(),
-                Navigator.pop(
-                  context,
-                ),
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => new GroupContactPage())),
-              },
-              child: Text("Valider"),
-            )
-          ],
+          ),
         ),
       ),
     );

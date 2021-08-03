@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/colors.dart';
-import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/profile_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';

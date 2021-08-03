@@ -789,7 +789,9 @@ bool isInGroup(Alert a, String? adress) {
   } else {
     for (int i = 0; i < a.groupcontats.length; i++) {
       for (int j = 0; j < a.groupcontats[i].numbers.length; j++) {
-        String tmp = a.groupcontats[i].numbers[j].replaceAll(' ', '');
+        String tmp = a.groupcontats[i].numbers[j].replaceAll(' ', '').replaceAll('-', '')
+            .replaceAll('(', '')
+            .replaceAll(')', '');
         if (tmp == adress) {
           return true;
         }

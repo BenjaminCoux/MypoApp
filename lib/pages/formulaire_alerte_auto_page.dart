@@ -596,10 +596,15 @@ class _FormState extends State<FormScreen> {
                                                   {
                                                     showDialog(
                                                         context: context,
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            showgrp(
-                                                                contactgroup)),
+                                                        builder: (context) {
+                                                          return MyDialog(
+                                                              contactgroup:
+                                                                  contactgroup,
+                                                              alertGroup:
+                                                                  alertGroup,
+                                                              boolCheckedGrp:
+                                                                  boolCheckedGrp);
+                                                        })
                                                   }
                                               }),
                                       CheckboxListTile(
@@ -844,87 +849,6 @@ class _FormState extends State<FormScreen> {
     );
   }
 
-  groupTile(GroupContact contact, int index) {
-    return Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            color: d_gray, borderRadius: BorderRadius.all(Radius.circular(5))),
-        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-        child: InkWell(
-            onTap: () => {
-                  setState(() {
-                    if (!alertGroup.contains(contact)) {
-                      alertGroup.add(contact);
-                      boolCheckedGrp[index] = true;
-                    } else {
-                      alertGroup.remove(contact);
-                      boolCheckedGrp[index] = false;
-                    }
-                  })
-                },
-            child: Row(children: [
-              Text(contact.name,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Checkbox(
-                  value: boolCheckedGrp[index],
-                  activeColor: d_green,
-                  onChanged: (bool? v) => {
-                        setState(() {
-                          this.boolCheckedGrp[index] = v!;
-                          if (!alertGroup.contains(contact)) {
-                            alertGroup.add(contact);
-                          } else {
-                            alertGroup.remove(contact);
-                          }
-                        })
-                      })
-            ])));
-  }
-
-  buildGrpList(List<GroupContact> contactgroup) {
-    return contactgroup.length > 0
-        ? Container(
-            height: 300,
-            width: 350,
-            child: ListView.builder(
-              itemCount: contactgroup.length,
-              itemBuilder: (BuildContext context, int index) {
-                return groupTile(contactgroup[index], index);
-              },
-            ))
-        : Text("Pas de groupe de contact éxistants");
-  }
-
-  showgrp(List<GroupContact> contactgroup) {
-    return new AlertDialog(
-      title: Text("Séléctionner groupes de contacts"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          buildGrpList(contactgroup),
-        ],
-      ),
-      actions: <Widget>[
-        new TextButton(
-          onPressed: () {
-            setState(() {});
-            Navigator.of(context).pop();
-          },
-          child: const Text('Valider', style: TextStyle(color: Colors.black)),
-        ),
-        new TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Retour', style: TextStyle(color: Colors.black)),
-        ),
-      ],
-    );
-  }
-
   Container buildTextField(String labelText, String placeholder,
       TextEditingController controller, int nbLines) {
     return Container(
@@ -969,6 +893,102 @@ class _FormState extends State<FormScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class MyDialog extends StatefulWidget {
+  List<GroupContact> alertGroup;
+  List<GroupContact> contactgroup;
+  List<bool> boolCheckedGrp;
+  MyDialog(
+      {required this.contactgroup,
+      required this.alertGroup,
+      required this.boolCheckedGrp});
+  @override
+  _MyDialogState createState() => new _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  groupTile(GroupContact contact, int index) {
+    return Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: d_gray, borderRadius: BorderRadius.all(Radius.circular(5))),
+        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+        child: InkWell(
+            onTap: () => {
+                  setState(() {
+                    if (!widget.alertGroup.contains(contact)) {
+                      widget.alertGroup.add(contact);
+                      widget.boolCheckedGrp[index] = true;
+                    } else {
+                      widget.alertGroup.remove(contact);
+                      widget.boolCheckedGrp[index] = false;
+                    }
+                  })
+                },
+            child: Row(children: [
+              Text(contact.name,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Checkbox(
+                  value: widget.boolCheckedGrp[index],
+                  activeColor: d_green,
+                  onChanged: (bool? v) => {
+                        setState(() {
+                          widget.boolCheckedGrp[index] = v!;
+                          if (!widget.alertGroup.contains(contact)) {
+                            widget.alertGroup.add(contact);
+                          } else {
+                            widget.alertGroup.remove(contact);
+                          }
+                        })
+                      })
+            ])));
+  }
+
+  buildGrpList(List<GroupContact> contactgroup) {
+    return contactgroup.length > 0
+        ? Container(
+            height: 300,
+            width: 350,
+            child: ListView.builder(
+              itemCount: contactgroup.length,
+              itemBuilder: (BuildContext context, int index) {
+                return groupTile(contactgroup[index], index);
+              },
+            ))
+        : Text("Pas de groupe de contact éxistants");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new AlertDialog(
+      title: Text("Séléctionner groupes de contacts"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          buildGrpList(widget.contactgroup),
+        ],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            setState(() {});
+            Navigator.of(context).pop();
+          },
+          child: const Text('Valider', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Retour', style: TextStyle(color: Colors.black)),
+        ),
+      ],
     );
   }
 }

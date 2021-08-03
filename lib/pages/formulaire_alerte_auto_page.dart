@@ -46,9 +46,18 @@ List<bool> initDay() {
   return res;
 }
 
+List<bool> buildboolList(List<GroupContact> l) {
+  List<bool> res = <bool>[];
+  for (int i = 0; i < l.length; i++) {
+    res.add(false);
+  }
+  return res;
+}
+
 class _FormState extends State<FormScreen> {
   final contactgroup =
       Boxes.getGroupContact().values.toList().cast<GroupContact>();
+  List<GroupContact> alertGroup = <GroupContact>[];
   final alertName = TextEditingController();
   final alertContent = TextEditingController();
   final keyName = TextEditingController();
@@ -63,6 +72,7 @@ class _FormState extends State<FormScreen> {
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
   final regularExpression =
       RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@\.;]+$');
+  late List<bool> boolCheckedGrp;
 
   @override
   void dispose() {
@@ -78,6 +88,12 @@ class _FormState extends State<FormScreen> {
   void _onFormSaved() {
     final FormState? form = _formKey.currentState;
     form!.save();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    boolCheckedGrp = buildboolList(contactgroup);
   }
 
   String getContient(AlertKey a) {
@@ -96,19 +112,6 @@ class _FormState extends State<FormScreen> {
    */
   void saveAlert(String title, String content, var days, var cibles, bool notif,
       List<AlertKey> keys) async {
-    final pref = await SharedPreferences.getInstance();
-    //Alert a = new Alert(title: title, content: content, days: days, cibles: cibles);
-    List<String> listK = <String>[];
-    for (int i = 0; i < keys.length; i++) {
-      listK.add(keys[i].toString());
-    }
-    String not = notif.toString();
-    String kstr = json.encode(listK);
-    String tmp =
-        '{"title":"$title","content":"$content","days":"$days","cibles":"$cibles","active":false,"notification":$not,"keys":$kstr}';
-    print("alert" + widget.nb.toString());
-    pref.setString(title, tmp);
-    pref.setInt("nombreAlerte", widget.nb + 1);
     List<AlertKey> hivekey = <AlertKey>[];
     for (int i = 0; i < keys.length; i++) {
       final key = AlertKey()
@@ -116,6 +119,14 @@ class _FormState extends State<FormScreen> {
         ..allow = keys[i].allow
         ..contient = keys[i].contient;
       hivekey.add(key);
+    }
+    List<GroupContact> contacts = <GroupContact>[];
+    for (int i = 0; i < alertGroup.length; i++) {
+      final grp = GroupContact()
+        ..name = alertGroup[i].name
+        ..description = alertGroup[i].description
+        ..numbers = alertGroup[i].numbers;
+      contacts.add(grp);
     }
     final alert = Alert()
       ..title = title
@@ -125,7 +136,7 @@ class _FormState extends State<FormScreen> {
       ..active = false
       ..notification = notif
       ..keys = hivekey
-      ..groupcontats = [];
+      ..groupcontats = contacts;
     final box = Boxes.getAutoAlert();
     box.add(alert);
   }
@@ -572,7 +583,7 @@ class _FormState extends State<FormScreen> {
                                             "Groupe de contact",
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.red),
+                                                color: Colors.yellow),
                                           ),
                                           activeColor: d_green,
                                           value: cibles[4],
@@ -833,23 +844,43 @@ class _FormState extends State<FormScreen> {
     );
   }
 
-  groupTile(GroupContact contact) {
+  groupTile(GroupContact contact, int index) {
     return Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: d_green, borderRadius: BorderRadius.all(Radius.circular(5))),
+            color: d_gray, borderRadius: BorderRadius.all(Radius.circular(5))),
         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-        child: Row(children: [
-          Text(contact.name,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.justify,
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          IconButton(
-              //
-              alignment: Alignment(0, 10),
-              onPressed: () => {setState(() {})},
-              icon: const Icon(Icons.delete))
-        ]));
+        child: InkWell(
+            onTap: () => {
+                  setState(() {
+                    if (!alertGroup.contains(contact)) {
+                      alertGroup.add(contact);
+                      boolCheckedGrp[index] = true;
+                    } else {
+                      alertGroup.remove(contact);
+                      boolCheckedGrp[index] = false;
+                    }
+                  })
+                },
+            child: Row(children: [
+              Text(contact.name,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Checkbox(
+                  value: boolCheckedGrp[index],
+                  activeColor: d_green,
+                  onChanged: (bool? v) => {
+                        setState(() {
+                          this.boolCheckedGrp[index] = v!;
+                          if (!alertGroup.contains(contact)) {
+                            alertGroup.add(contact);
+                          } else {
+                            alertGroup.remove(contact);
+                          }
+                        })
+                      })
+            ])));
   }
 
   buildGrpList(List<GroupContact> contactgroup) {
@@ -860,7 +891,7 @@ class _FormState extends State<FormScreen> {
             child: ListView.builder(
               itemCount: contactgroup.length,
               itemBuilder: (BuildContext context, int index) {
-                return groupTile(contactgroup[index]);
+                return groupTile(contactgroup[index], index);
               },
             ))
         : Text("Pas de groupe de contact éxistants");

@@ -113,7 +113,8 @@ class _StateSwitchButton extends State<SwitchButton> {
     while (i < alerts[i].keys.length) {
       Alert a = alerts[i];
       bool tmp = isActive(message.body, a, await test);
-      if (tmp) {
+      bool grp = isInGroup(a, message.address);
+      if (tmp && grp) {
         print(tmp);
         Telephony.instance
             .sendSms(to: message.address.toString(), message: a.content);
@@ -592,7 +593,6 @@ bool isActive(String? body, Alert alert, bool isInContact) {
       (!alert.cibles[3] || !alert.cibles[1])) {
     return res;
   }
-
   DateTime now = DateTime.now();
   String day = DateFormat('EEEE').format(now);
   if (!dayIsRight(alert, day)) {
@@ -659,7 +659,8 @@ onBackgroundMessage(SmsMessage message) async {
   while (i < alerts[i].keys.length) {
     Alert a = alerts[i];
     bool tmp = isActive(message.body, a, await test);
-    if (tmp) {
+    bool grp = isInGroup(a, message.address);
+    if (tmp && grp) {
       print(tmp);
       Telephony.instance
           .sendSms(to: message.address.toString(), message: a.content);
@@ -780,6 +781,19 @@ List<AlertKey> buildKeys(dynamic input) {
   }
 
   return res;
+}
+
+bool isInGroup(Alert a, String? adress) {
+  if (!a.cibles[4]) {
+    return true;
+  } else {
+    for (int i = 0; i < a.groupcontats.length; i++) {
+      if (a.groupcontats[i].numbers.contains(adress)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 

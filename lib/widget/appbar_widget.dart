@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/model/colors.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/profile_page.dart';
 
 /*
-  -that class creates the top app bad widget
+  -that class creates the top app bar widget
 */
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
@@ -43,12 +43,17 @@ class TopBarRedirection extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: d_green,
       leading: new IconButton(
-        icon: new Icon(Icons.arrow_back),
-        onPressed: () => Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => page()),
-        ),
-      ),
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () {
+            try {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (context) => page()),
+              );
+            } catch (e) {
+              debugPrint(e.toString());
+            }
+          }),
     );
   }
 }

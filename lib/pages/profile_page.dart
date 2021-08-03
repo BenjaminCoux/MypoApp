@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/colors.dart';
-import 'package:mypo/model/user.dart';
-import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/premium_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
@@ -80,23 +78,23 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 24,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(data,
-                  style: TextStyle(fontSize: 25, color: Colors.black)),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  textStyle: TextStyle(fontFamily: 'calibri', fontSize: 18),
-                  primary: d_green,
-                  onPrimary: Colors.white,
-                  shape: StadiumBorder(),
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 9)),
-              child: Text('test'),
-              onPressed: () {
-                // writeDataToFile('assets/log.txt', 'test');
-              },
-            )
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Text(data,
+            //       style: TextStyle(fontSize: 25, color: Colors.black)),
+            // ),
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //       textStyle: TextStyle(fontFamily: 'calibri', fontSize: 18),
+            //       primary: d_green,
+            //       onPrimary: Colors.white,
+            //       shape: StadiumBorder(),
+            //       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 9)),
+            //   child: Text('test'),
+            //   onPressed: () {
+            //     // writeDataToFile('assets/log.txt', 'test');
+            //   },
+            // )
           ],
         ));
   }
@@ -228,28 +226,5 @@ class _ProfilePageState extends State<ProfilePage> {
           Navigator.push(context,
               new MaterialPageRoute(builder: (context) => new PremiumPage()))
         },
-      );
-
-  Widget buildAbout(User user) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 48),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'About',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'calibri'),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text(
-              user.about,
-              style: TextStyle(fontSize: 20, height: 1.4),
-            ),
-          ],
-        ),
       );
 }

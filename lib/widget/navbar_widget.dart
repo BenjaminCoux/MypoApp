@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mypo/model/colors.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/pages/aide_page.dart';
-import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/rapports_page.dart';
 import 'package:mypo/pages/parametres_page.dart';
 import 'package:path_provider/path_provider.dart';

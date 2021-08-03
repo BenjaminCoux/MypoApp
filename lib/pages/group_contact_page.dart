@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/pages/edit_groupcontact_page.dart';
 import 'package:mypo/pages/formulaire_group_contact_page.dart';
-import 'package:mypo/pages/home_page.dart';
+import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/model/colors.dart';
+import 'package:mypo/model/couleurs.dart';
 
 class GroupContactPage extends StatefulWidget {
   @override
@@ -81,7 +81,9 @@ class _GroupContactState extends State<GroupContactPage> {
             itemBuilder: (BuildContext context, int index) {
               return buildGroup(context, list[index]);
             })
-        : Text("Il n'y a pas encore degroupe de contacts enregistrés");
+        : Column(
+            children: [Text("Aucun groupe de contacts enregistré")],
+          );
   }
 
   @override
@@ -94,6 +96,7 @@ class _GroupContactState extends State<GroupContactPage> {
       ),
       body: Center(
         child: Column(children: [
+          SizedBox(height: 10),
           OutlinedButton(
               style: OutlinedButton.styleFrom(
                   backgroundColor: d_darkgray,
@@ -116,6 +119,7 @@ class _GroupContactState extends State<GroupContactPage> {
                     color: Colors.white,
                     fontFamily: 'calibri'),
               )),
+          SizedBox(height: 10),
           buildListofCOntact(groupContact.length, groupContact),
         ]),
       ),

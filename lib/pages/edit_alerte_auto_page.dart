@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/colors.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'sms_auto_page.dart';
@@ -27,6 +27,8 @@ class _AlertScreenState extends State<AlertScreen> {
   final keyName = TextEditingController();
   List<bool> boolWeek = <bool>[];
   final alphanumeric = RegExp(r'^[a-zA-Z0-9.:#_-éàô]+$');
+  final regularExpression =
+      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
 
   @override
   void initState() {
@@ -734,7 +736,8 @@ class _AlertScreenState extends State<AlertScreen> {
                           } else if (!isWeekSet(widget.alerte.days)) {
                             showSnackBar(
                                 context, "Veuillez choisir le(s) jour(s).");
-                          } else if (!alphanumeric.hasMatch(alertName.text)) {
+                          } else if (!regularExpression
+                              .hasMatch(alertName.text)) {
                             showSnackBar(context,
                                 "Characters invalides pour le nom de l'alerte.");
                           } else if (widget.alerte.keys.isEmpty) {
@@ -742,7 +745,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 context, 'Veuillez rentrer un mot-clé.');
                           } else if (alertName.text != '' &&
                               alertContent.text != '' &&
-                              alphanumeric.hasMatch(alertName.text) &&
+                              regularExpression.hasMatch(alertName.text) &&
                               isCiblesSet(widget.alerte.cibles) &&
                               isWeekSet(widget.alerte.days)) {
                             save();

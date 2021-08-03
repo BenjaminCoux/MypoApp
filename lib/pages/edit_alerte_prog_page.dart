@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/pages/edit_alerte_auto_page.dart';
+import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,8 +23,18 @@ class ScheduledmsgDetailPage extends StatefulWidget {
   _ScheduledmsgDetailPageState createState() => _ScheduledmsgDetailPageState();
 }
 
+String getHintgrpCo(List<GroupContact> l) {
+  String res = "";
+  for (int i = 0; i < l.length; i++) {
+    res += l[i].name + ',';
+  }
+  return res;
+}
+
 class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   late final alertName;
+  final contactgroup =
+      Boxes.getGroupContact().values.toList().cast<GroupContact>();
   late final alertContact;
   late final alertContent;
   late final alertTime;
@@ -35,7 +48,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   late DateTime timeAux;
   int nbMaxWords = 450;
   int nbWords = 0;
-
+  late final groupcontactcontroller;
+  late List<bool> boolCheckedGrp;
   List<Contact> contacts = [];
   final repeatOptions = [
     'Toutes les heures',
@@ -53,12 +67,15 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     alertName = TextEditingController(text: widget.message.name);
     alertContact = TextEditingController(text: widget.message.phoneNumber);
     alertContent = TextEditingController(text: widget.message.message);
+    groupcontactcontroller =
+        TextEditingController(text: getHintgrpCo(widget.message.groupContact));
     countdown = widget.message.countdown;
     confirm = widget.message.confirm;
     notification = widget.message.notification;
     timeUpdated = widget.message.date;
     timeAux = widget.message.date;
-
+    boolCheckedGrp =
+        buildboolListEdit(contactgroup, widget.message.groupContact);
     alertName.addListener(() {
       changed;
     });
@@ -181,6 +198,76 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           color: Colors.black,
                         ),
                       ),
+                    ),
+                  ),
+                ),
+                Text("ou"),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                    child: TextField(
+                      minLines: 1,
+                      maxLines: 1,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      keyboardType: TextInputType.phone,
+                      controller: groupcontactcontroller,
+                      decoration: InputDecoration(
+                          labelText: "Groupes de contacts",
+                          suffixIcon: IconButton(
+                              onPressed: () => {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return MyDialog(
+                                              contactgroup: contactgroup,
+                                              alertGroup:
+                                                  widget.message.groupContact,
+                                              boolCheckedGrp: boolCheckedGrp);
+                                        }),
+                                    setState(() {
+                                      String tmp = "";
+                                      for (int i = 0;
+                                          i <
+                                              widget
+                                                  .message.groupContact.length;
+                                          i++) {
+                                        tmp +=
+                                            widget.message.groupContact[i].name;
+                                      }
+                                      groupcontactcontroller.text = tmp;
+                                    })
+                                  },
+                              icon: Icon(
+                                Icons.group_add_rounded,
+                                color: Colors.black,
+                                size: 35,
+                              )),
+                          labelStyle: TextStyle(color: Colors.black),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
+                          hintText: "Ajoutez groupe de contact",
+                          hintStyle: TextStyle(
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                          )),
                     ),
                   ),
                 ),

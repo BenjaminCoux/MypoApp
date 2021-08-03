@@ -47,6 +47,7 @@ class _ProgState extends State<ProgForm> {
       RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
   int nbMaxWords = 450;
   bool wordsLimit = true;
+  int nbWords = 0;
 
   @override
   void initState() {
@@ -557,6 +558,7 @@ class _ProgState extends State<ProgForm> {
           controller: controller,
           onChanged: (String value) => {
             setState(() {
+              this.nbWords = value.length;
               this.nbMaxWords = 450 - value.length;
               if (this.nbMaxWords < 0) {
                 this.wordsLimit = false;
@@ -568,7 +570,7 @@ class _ProgState extends State<ProgForm> {
           maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-            errorText: wordsLimit ? null : '${-this.nbMaxWords}/450',
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
             labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(

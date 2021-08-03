@@ -32,6 +32,7 @@ class _AlertScreenState extends State<AlertScreen> {
 
   int nbMaxWords = 450;
   bool wordsLimit = true;
+  int nbWords = 0;
 
   @override
   void initState() {
@@ -837,6 +838,7 @@ class _AlertScreenState extends State<AlertScreen> {
           controller: controller,
           onChanged: (String value) => {
             setState(() {
+              this.nbWords = value.length;
               this.nbMaxWords = 450 - value.length;
               if (this.nbMaxWords < 0) {
                 this.wordsLimit = false;
@@ -848,7 +850,7 @@ class _AlertScreenState extends State<AlertScreen> {
           maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-            errorText: wordsLimit ? null : '${-this.nbMaxWords}/450',
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
             labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(

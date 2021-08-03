@@ -34,6 +34,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   late DateTime timeUpdated;
   late DateTime timeAux;
   int nbMaxWords = 450;
+  int nbWords = 0;
 
   List<Contact> contacts = [];
   final repeatOptions = [
@@ -645,6 +646,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           controller: controller,
           onChanged: (String value) => {
             setState(() {
+              this.nbWords = value.length;
               this.hasChanged = true;
               this.nbMaxWords = 450 - value.length;
               if (this.nbMaxWords < 0) {
@@ -657,7 +659,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-            errorText: wordsLimit ? null : '${-this.nbMaxWords}/450',
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
             labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(

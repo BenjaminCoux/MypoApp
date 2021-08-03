@@ -7,6 +7,7 @@ import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 // ignore: must_be_immutable
 class ScheduledmsgDetailPage extends StatefulWidget {
@@ -28,9 +29,12 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   bool confirm = false;
   bool notification = false;
   bool hasChanged = false;
+  bool wordsLimit = true;
   String repeat = "";
   late DateTime timeUpdated;
   late DateTime timeAux;
+  int nbMaxWords = 450;
+  int nbWords = 0;
 
   List<Contact> contacts = [];
   final repeatOptions = [
@@ -127,6 +131,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: TextField(
+                      onChanged: (text) {
+                        // final result = 450 - text.length;
+                      },
                       minLines: 1,
                       maxLines: 1,
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -177,7 +184,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     ),
                   ),
                 ),
-                buildTextField(
+                buildTextFieldMessage(
                     'Message', '${widget.message.message}', alertContent, 1),
                 Container(
                   width: double.infinity,
@@ -458,14 +465,74 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed: () {
-                          // print('dont forget to save');
-                          saveChanges();
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => new SmsProg()));
+                        onPressed: () async => {
+                          if (alertName.text == '')
+                            {
+                              {
+                                showSnackBar(context,
+                                    "Veuillez rentrer un nom à l'alerte.")
+                              }
+                            }
+                          else if (alertContact.text == '')
+                            {
+                              showSnackBar(
+                                  context, "Veuillez rentrer un numéro.")
+                            }
+                          else if (alertContent.text == '')
+                            {
+                              showSnackBar(
+                                  context, "Veuillez écrire un message.")
+                            }
+                          else if (wordsLimit == false)
+                            {
+                              {
+                                showSnackBar(context,
+                                    "Nombre de character maximal dépassé.")
+                              }
+                            }
+                          else if (!regularExpression.hasMatch(alertName.text))
+                            {
+                              showSnackBar(context,
+                                  "Characters invalides pour le nom de l'alerte.")
+                            }
+                          else if (alertName.text != '' &&
+                              alertContact.text != '' &&
+                              alertContent.text != '' &&
+                              wordsLimit &&
+                              await Permission.contacts.request().isGranted &&
+                              await Permission.sms.request().isGranted)
+                            {
+                              saveChanges(),
+                              Navigator.pop(context),
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new SmsProg()),
+                              )
+                            }
+                          else
+                            {
+                              if (!(await Permission.sms.isGranted) &&
+                                  !(await Permission.contacts.isGranted))
+                                {
+                                  {
+                                    showSnackBar(context,
+                                        'Veuillez activer les permissions (sms et contacts).')
+                                  }
+                                }
+                              else
+                                {
+                                  showSnackBar(context,
+                                      'Veuillez completer tous les champs')
+                                }
+                            }
+                          // // print('dont forget to save');
+                          // saveChanges();
+                          // Navigator.pop(context);
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => new SmsProg()));
                         },
                         child: Text(
                           "Sauvegarder",
@@ -563,6 +630,61 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     );
   }
 
+  Container buildTextFieldMessage(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.nbWords = value.length;
+              this.hasChanged = true;
+              this.nbMaxWords = 450 - value.length;
+              if (this.nbMaxWords < 0) {
+                this.wordsLimit = false;
+              } else {
+                this.wordsLimit = true;
+              }
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
+            labelText: labelText,
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildDatePicker() => SizedBox(
         height: 150,
         child: Flex(direction: Axis.horizontal, children: [
@@ -604,6 +726,16 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   onPressed: onClicked,
                 ),
               ));
+
+  void showSnackBar(BuildContext context, String s) {
+    final snackBar = SnackBar(
+      content: Text(s, style: TextStyle(fontSize: 20)),
+    );
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
   Widget buildRepeatOptions() => SizedBox(
         height: 200,
         child: CupertinoPicker(

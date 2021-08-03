@@ -71,6 +71,9 @@ class _FormState extends State<FormScreen> {
   final regularExpression =
       RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
   late List<bool> boolCheckedGrp;
+  int nbMaxWords = 450;
+  int nbWords = 0;
+  bool wordsLimit = true;
 
   @override
   void dispose() {
@@ -461,7 +464,7 @@ class _FormState extends State<FormScreen> {
                 children: <Widget>[
                   buildTextField(
                       'Titre', "Ajoutez un titre à l'alerte", alertName, 1),
-                  buildTextField(
+                  buildTextFieldMessage(
                       'Contenu', "Contenu du message", alertContent, 1),
                   Container(
                     margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
@@ -779,6 +782,13 @@ class _FormState extends State<FormScreen> {
                         }
                       else if (alertContent.text == '')
                         {showSnackBar(context, "Veuillez écrire un message.")}
+                      else if (wordsLimit == false)
+                        {
+                          {
+                            showSnackBar(
+                                context, "Nombre de character maximal dépassé.")
+                          }
+                        }
                       else if (!isCiblesSet(cibles))
                         {showSnackBar(context, "Veuillez choisir une cible.")}
                       else if (!isWeekSet(week))
@@ -799,6 +809,7 @@ class _FormState extends State<FormScreen> {
                           regularExpression.hasMatch(alertName.text) &&
                           isCiblesSet(cibles) &&
                           isWeekSet(week) &&
+                          wordsLimit &&
                           await Permission.contacts.request().isGranted &&
                           await Permission.sms.request().isGranted)
                         {
@@ -895,8 +906,63 @@ class _FormState extends State<FormScreen> {
       ),
     );
   }
+
+  Container buildTextFieldMessage(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.nbWords = value.length;
+              this.nbMaxWords = 450 - value.length;
+              if (this.nbMaxWords < 0) {
+                this.wordsLimit = false;
+              } else {
+                this.wordsLimit = true;
+              }
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
+            labelText: labelText,
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
+// ignore: must_be_immutable
 class MyDialog extends StatefulWidget {
   List<GroupContact> alertGroup;
   List<GroupContact> contactgroup;

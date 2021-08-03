@@ -50,6 +50,9 @@ class _ProgState extends State<ProgForm> {
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
   final regularExpression =
       RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
+  int nbMaxWords = 450;
+  bool wordsLimit = true;
+  int nbWords = 0;
   final groupcontactcontroller = TextEditingController();
 
   @override
@@ -109,7 +112,8 @@ class _ProgState extends State<ProgForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(title: 'Ajouter une alerte'),
+      appBar:
+          TopBarRedirection(title: 'Ajouter une alerte', page: () => SmsProg()),
       body: SingleChildScrollView(
         child: GestureDetector(
           onTap: () {
@@ -261,7 +265,7 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                 ),
-                buildTextField(
+                buildTextFieldMessage(
                     'Message', "Contenu du message", alertContent, 1),
                 Container(
                   width: double.infinity,
@@ -494,6 +498,13 @@ class _ProgState extends State<ProgForm> {
                           {showSnackBar(context, "Veuillez rentrer un numéro.")}
                         else if (alertContent.text == '')
                           {showSnackBar(context, "Veuillez écrire un message.")}
+                        else if (wordsLimit == false)
+                          {
+                            {
+                              showSnackBar(context,
+                                  "Nombre de character maximal dépassé.")
+                            }
+                          }
                         else if (!regularExpression
                             .hasMatch(nameController.text))
                           {
@@ -503,6 +514,7 @@ class _ProgState extends State<ProgForm> {
                         else if (nameController.text != '' &&
                             contactController.text != '' &&
                             alertContent.text != '' &&
+                            wordsLimit &&
                             await Permission.contacts.request().isGranted &&
                             await Permission.sms.request().isGranted)
                           {
@@ -587,6 +599,60 @@ class _ProgState extends State<ProgForm> {
           maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildTextFieldMessage(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.nbWords = value.length;
+              this.nbMaxWords = 450 - value.length;
+              if (this.nbMaxWords < 0) {
+                this.wordsLimit = false;
+              } else {
+                this.wordsLimit = true;
+              }
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
             labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(

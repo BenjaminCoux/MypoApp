@@ -30,6 +30,10 @@ class _AlertScreenState extends State<AlertScreen> {
   final regularExpression =
       RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
 
+  int nbMaxWords = 450;
+  bool wordsLimit = true;
+  int nbWords = 0;
+
   @override
   void initState() {
     super.initState();
@@ -365,7 +369,7 @@ class _AlertScreenState extends State<AlertScreen> {
             child: ListView(
               children: <Widget>[
                 buildTextField('Nom', '${widget.alerte.title}', alertName, 1),
-                buildTextField(
+                buildTextFieldMessage(
                     'Message', '${widget.alerte.content}', alertContent, 1),
                 Container(
                   margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
@@ -730,6 +734,11 @@ class _AlertScreenState extends State<AlertScreen> {
                           } else if (alertContent.text == '') {
                             showSnackBar(
                                 context, "Veuillez écrire un message.");
+                          } else if (wordsLimit == false) {
+                            {
+                              showSnackBar(context,
+                                  "Nombre de character maximal dépassé.");
+                            }
                           } else if (!isCiblesSet(widget.alerte.cibles)) {
                             showSnackBar(
                                 context, "Veuillez choisir une cible.");
@@ -745,6 +754,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                 context, 'Veuillez rentrer un mot-clé.');
                           } else if (alertName.text != '' &&
                               alertContent.text != '' &&
+                              wordsLimit &&
                               regularExpression.hasMatch(alertName.text) &&
                               isCiblesSet(widget.alerte.cibles) &&
                               isWeekSet(widget.alerte.days)) {
@@ -807,10 +817,64 @@ class _AlertScreenState extends State<AlertScreen> {
       ],
     );
   }
+
   /*
   function that crates a text field
 
   */
+  Container buildTextFieldMessage(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.nbWords = value.length;
+              this.nbMaxWords = 450 - value.length;
+              if (this.nbMaxWords < 0) {
+                this.wordsLimit = false;
+              } else {
+                this.wordsLimit = true;
+              }
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
+            labelText: labelText,
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   Container buildTextField(String labelText, String placeholder,
       TextEditingController controller, int nbLines) {

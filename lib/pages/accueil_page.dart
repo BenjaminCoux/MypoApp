@@ -68,10 +68,13 @@ class _ModeState extends State<Mode> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => new SmsProg()),
-                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (context) => new SmsProg()),
+                  );
+                },
                 child: Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),
@@ -119,10 +122,13 @@ class _ModeState extends State<Mode> {
                 ),
               ),
               InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => new SmsAuto()),
-                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (context) => new SmsAuto()),
+                  );
+                },
                 child: Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),

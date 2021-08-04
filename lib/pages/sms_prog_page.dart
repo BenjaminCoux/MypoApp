@@ -222,7 +222,8 @@ class _SmsProgState extends State<SmsProg> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBarRedirection(title: "My Co'Laverie", page: () => HomePage()),
+      appBar: TopBarRedirection(
+          title: "Messages programmés", page: () => HomePage()),
       body: Scrollbar(
         interactive: true,
         isAlwaysShown: true,

@@ -51,7 +51,8 @@ class _SmsAutoState extends State<SmsAuto> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBarRedirection(title: "My Co'Laverie", page: () => HomePage()),
+      appBar: TopBarRedirection(
+          title: "Messages automatiques", page: () => HomePage()),
       body: Scrollbar(
         thickness: 10,
         interactive: true,
@@ -789,7 +790,9 @@ bool isInGroup(Alert a, String? adress) {
   } else {
     for (int i = 0; i < a.groupcontats.length; i++) {
       for (int j = 0; j < a.groupcontats[i].numbers.length; j++) {
-        String tmp = a.groupcontats[i].numbers[j].replaceAll(' ', '').replaceAll('-', '')
+        String tmp = a.groupcontats[i].numbers[j]
+            .replaceAll(' ', '')
+            .replaceAll('-', '')
             .replaceAll('(', '')
             .replaceAll(')', '');
         if (tmp == adress) {

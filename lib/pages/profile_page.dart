@@ -62,6 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ProfileWidget(
               imagePath: userDefined ? user!.imagePath : imgPath,
               onClicked: () async {
+                Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => EditProfilePage()),
                 );
@@ -170,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: Text(
-                    userDefined ? '${user?.email} test' : "Example@example.com",
+                    userDefined ? '${user?.email} ' : "Example@example.com",
                     style: TextStyle(fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                   ),

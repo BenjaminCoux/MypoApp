@@ -46,6 +46,7 @@ class TopBarRedirection extends StatelessWidget implements PreferredSizeWidget {
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
             try {
+              Navigator.of(context).pop();
               Navigator.push(
                 context,
                 new MaterialPageRoute(builder: (context) => page()),

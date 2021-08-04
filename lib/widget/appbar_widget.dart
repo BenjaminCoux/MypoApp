@@ -75,12 +75,14 @@ class TopBarPremium extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: Colors.grey.shade600,
       leading: new IconButton(
-        icon: new Icon(Icons.arrow_back),
-        onPressed: () => Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => new ProfilePage()),
-        ),
-      ),
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new ProfilePage()),
+            );
+          }),
     );
   }
 }

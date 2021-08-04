@@ -51,53 +51,58 @@ class _ProfilePageState extends State<ProfilePage> {
       // debugPrint('User is defined  ${user!.name} ,  ${user.imagePath}');
     }
     final imgPath = "https://picsum.photos/id/1005/200/300";
-    return Scaffold(
-        appBar: TopBarRedirection(title: "Profile", page: () => HomePage()),
-        body: ListView(
-          physics: BouncingScrollPhysics(),
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            ProfileWidget(
-              imagePath: userDefined ? user!.imagePath : imgPath,
-              onClicked: () async {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => EditProfilePage()),
-                );
-              },
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            buildUserInfo(user, userDefined),
-            const SizedBox(
-              height: 24,
-            ),
-            Center(child: buildUpgradeButton()),
-            const SizedBox(
-              height: 24,
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Text(data,
-            //       style: TextStyle(fontSize: 25, color: Colors.black)),
-            // ),
-            // ElevatedButton(
-            //   style: ElevatedButton.styleFrom(
-            //       textStyle: TextStyle(fontFamily: 'calibri', fontSize: 18),
-            //       primary: d_green,
-            //       onPrimary: Colors.white,
-            //       shape: StadiumBorder(),
-            //       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 9)),
-            //   child: Text('test'),
-            //   onPressed: () {
-            //     // writeDataToFile('assets/log.txt', 'test');
-            //   },
-            // )
-          ],
-        ));
+    return new WillPopScope(
+      child: Scaffold(
+          appBar: TopBarRedirection(title: "Profile", page: () => HomePage()),
+          body: ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              const SizedBox(
+                height: 15,
+              ),
+              ProfileWidget(
+                imagePath: userDefined ? user!.imagePath : imgPath,
+                onClicked: () async {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => EditProfilePage()),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              buildUserInfo(user, userDefined),
+              const SizedBox(
+                height: 24,
+              ),
+              Center(child: buildUpgradeButton()),
+              const SizedBox(
+                height: 24,
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Text(data,
+              //       style: TextStyle(fontSize: 25, color: Colors.black)),
+              // ),
+              // ElevatedButton(
+              //   style: ElevatedButton.styleFrom(
+              //       textStyle: TextStyle(fontFamily: 'calibri', fontSize: 18),
+              //       primary: d_green,
+              //       onPrimary: Colors.white,
+              //       shape: StadiumBorder(),
+              //       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 9)),
+              //   child: Text('test'),
+              //   onPressed: () {
+              //     // writeDataToFile('assets/log.txt', 'test');
+              //   },
+              // )
+            ],
+          )),
+      onWillPop: () async {
+        return false;
+      },
+    );
   }
 
   Widget buildUserInfo(User_hive? user, bool userDefined) => Column(

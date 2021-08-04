@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/group_contact_page.dart';
@@ -7,13 +5,6 @@ import 'package:mypo/pages/aide_page.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/rapports_page.dart';
 import 'package:mypo/pages/parametres_page.dart';
-import 'package:path_provider/path_provider.dart';
-
-writeToFile(String text) async {
-  final Directory directory = await getApplicationDocumentsDirectory();
-  final File file = File('${directory.path}/log.txt');
-  await file.writeAsString(text);
-}
 
 /*
     -this class is responsible of the bottom nav bar of 2 elements for the sms auto page with images as icon
@@ -213,11 +204,6 @@ class _StateBottomNavigationBarSection
                 size: 50,
               ),
               onPressed: () {
-                try {
-                  writeToFile("test");
-                } catch (e) {
-                  debugPrint(e.toString());
-                }
                 Navigator.pop(context);
                 Navigator.push(
                   context,

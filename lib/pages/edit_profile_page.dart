@@ -120,7 +120,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   userDefined ? user!.email : "Example@example.com",
                   emailController,
                   1),
-              buildTextField(
+              buildTextFieldNumero(
                   'Téléphone',
                   userDefined ? user!.phoneNumber : "06060606",
                   numeroController,
@@ -252,6 +252,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               maxLines: nbLines,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
+                labelText: placeholder,
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -263,7 +264,76 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
                 contentPadding: EdgeInsets.all(8),
-                hintText: placeholder,
+                // hintText: placeholder,
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildTextFieldNumero(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
+          child: Padding(
+              padding: EdgeInsets.all(0),
+              child: Row(
+                children: [
+                  Text(
+                    labelText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                  )
+                ],
+              )),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(18),
+            ),
+          ),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Padding(
+            padding: const EdgeInsets.all(0),
+            child: TextField(
+              controller: controller,
+              onChanged: (String value) => {
+                setState(() {
+                  // set new state
+                })
+              },
+              minLines: 1,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              maxLines: nbLines,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                labelText: placeholder,
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                contentPadding: EdgeInsets.all(8),
+                // hintText: placeholder,
                 hintStyle: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,

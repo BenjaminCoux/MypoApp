@@ -31,7 +31,10 @@ class _HomePageState extends State<HomePage> {
       user = users[0];
     }
 
-    return Scaffold(
+    return
+        // new WillPopScope(
+        //   child:
+        Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: userDefined ? user!.name : "My Co'Laverie"),
       drawer: HamburgerMenu(),
@@ -43,6 +46,10 @@ class _HomePageState extends State<HomePage> {
       )),
       bottomNavigationBar: BottomNavigationBarSection(),
     );
+    // onWillPop: () async {
+    //   return false;
+    // },
+    // );
   }
 }
 

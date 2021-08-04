@@ -31,7 +31,10 @@ class _HomePageState extends State<HomePage> {
       user = users[0];
     }
 
-    return Scaffold(
+    return
+        // new WillPopScope(
+        //   child:
+        Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: userDefined ? user!.name : "My Co'Laverie"),
       drawer: HamburgerMenu(),
@@ -43,6 +46,10 @@ class _HomePageState extends State<HomePage> {
       )),
       bottomNavigationBar: BottomNavigationBarSection(),
     );
+    // onWillPop: () async {
+    //   return false;
+    // },
+    // );
   }
 }
 
@@ -68,10 +75,13 @@ class _ModeState extends State<Mode> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => new SmsProg()),
-                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (context) => new SmsProg()),
+                  );
+                },
                 child: Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),
@@ -119,10 +129,13 @@ class _ModeState extends State<Mode> {
                 ),
               ),
               InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => new SmsAuto()),
-                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (context) => new SmsAuto()),
+                  );
+                },
                 child: Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),

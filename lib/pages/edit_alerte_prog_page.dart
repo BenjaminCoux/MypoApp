@@ -60,7 +60,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   ];
   int index = 0;
   final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
+      RegExp(r'^[a-zA-Z0-9_\-@,.ãàâÀêëéÉèÈíîÍôóÓûúüÚçÇñÑ@ \.;]+$');
+
+  final phoneExpression = RegExp(r'^[0-9_\-+() \.,;]+$');
   @override
   void initState() {
     super.initState();
@@ -564,6 +566,11 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             {
                               showSnackBar(
                                   context, "Veuillez rentrer un numéro.")
+                            }
+                          else if (!phoneExpression.hasMatch(alertContact.text))
+                            {
+                              showSnackBar(context,
+                                  "Veuillez rentrer de(s) numéro(s) valide.")
                             }
                           else if (alertContent.text == '')
                             {

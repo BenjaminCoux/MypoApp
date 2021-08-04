@@ -9,7 +9,6 @@ import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 import 'package:telephony/telephony.dart';
 import 'formulaire_alerte_prog_page.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mypo/database/hive_database.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -26,6 +25,8 @@ class _SmsProgState extends State<SmsProg> {
   String txt = "";
   int i = 0;
   final telephony = Telephony.instance;
+  List<Scheduledmsg_hive> alerts =
+      Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
   @override
   void initState() {
     super.initState();
@@ -228,134 +229,104 @@ class _SmsProgState extends State<SmsProg> {
         });
   }
 
+  myList(List<Scheduledmsg_hive> alerts, int lenght, BuildContext context) {
+    return lenght > 0
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: alerts.length,
+            itemBuilder: (BuildContext context, int index) {
+              final alert = alerts[index];
+              return buildMsg(context, alert);
+            })
+        : const Text("Aucune alerte", style: TextStyle(fontSize: 24));
+  }
+
+  /*
+    -Function that creates a loading circle delay for the duration needed
+  */
+  Future<List> callAsyncFetch() =>
+      Future.delayed(Duration(milliseconds: 1), () => alerts);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBarRedirection(title: "My Co'Laverie", page: () => HomePage()),
+      appBar: TopBarRedirection(
+          title: "Messages programmés", page: () => HomePage()),
+
       body: Scrollbar(
+        thickness: 10,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
-        thickness: 10,
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height,
-                child: ValueListenableBuilder<Box<Scheduledmsg_hive>>(
-                  valueListenable: Boxes.getScheduledmsg().listenable(),
-                  builder: (context, box, _) {
-                    final messages =
-                        box.values.toList().cast<Scheduledmsg_hive>();
-
-                    return buildListOfMsg(messages);
-                  },
+                padding: EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 24),
+                      Text(
+                        'Mes alertes programmées',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Center(
+                        child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: d_darkgray,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 40),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20))),
+                            onPressed: () => {
+                                  Navigator.pop(context),
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => new ProgForm()))
+                                },
+                            child: Text(
+                              "+ Ajouter une alerte",
+                              style: TextStyle(
+                                  backgroundColor: d_darkgray,
+                                  fontSize: 16,
+                                  letterSpacing: 2.2,
+                                  color: Colors.white,
+                                  fontFamily: 'calibri'),
+                            )),
+                      ),
+                      SizedBox(height: 20),
+                      FutureBuilder(
+                          future: callAsyncFetch(),
+                          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                            if (snapshot.hasData) {
+                              return Container(
+                                  child:
+                                      myList(alerts, alerts.length, context));
+                            } else {
+                              return CircularProgressIndicator(
+                                color: d_green,
+                              );
+                            }
+                          }),
+                    ],
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),
       ),
+      // ),
       bottomNavigationBar: BottomNavigationBarSmsProgTwo(),
     );
-  }
-
-//HIVE
-  Widget buildListOfMsg(List<Scheduledmsg_hive> messages) {
-    if (messages.isEmpty) {
-      return Center(
-          child: Column(
-        children: [
-          SizedBox(height: 24),
-          Text(
-            'Mes alertes programmées',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 20),
-          OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                  backgroundColor: d_darkgray,
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
-              onPressed: () => {
-                    Navigator.pop(context),
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new ProgForm()))
-                  },
-              child: Text(
-                "+ Ajouter une alerte",
-                style: TextStyle(
-                    backgroundColor: d_darkgray,
-                    fontSize: 16,
-                    letterSpacing: 2.2,
-                    color: Colors.white,
-                    fontFamily: 'calibri'),
-              )),
-          SizedBox(height: 20),
-          Text(
-            'Aucune alerte',
-            style: TextStyle(fontSize: 24),
-          ),
-        ],
-      ));
-    } else {
-      return Column(
-        children: [
-          SizedBox(height: 24),
-          Text(
-            'Mes alertes programmées',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 20),
-          SizedBox(height: 20),
-          OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                  backgroundColor: d_darkgray,
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
-              onPressed: () => {
-                    Navigator.pop(context),
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new ProgForm()))
-                  },
-              child: Text(
-                "+ Ajouter une alerte",
-                style: TextStyle(
-                    backgroundColor: d_darkgray,
-                    fontSize: 16,
-                    letterSpacing: 2.2,
-                    color: Colors.white,
-                    fontFamily: 'calibri'),
-              )),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(8),
-              itemCount: messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                final message = messages[index];
-
-                return buildMsg(context, message);
-              },
-            ),
-          ),
-        ],
-      );
-    }
   }
 
   Widget buildMsg(BuildContext context, Scheduledmsg_hive message) {
@@ -445,8 +416,3 @@ class _SmsProgState extends State<SmsProg> {
     );
   }
 }
-
-
-// created time and time for the next execution
-
-// le message est envoyé avant la sauvegarde

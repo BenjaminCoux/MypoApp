@@ -22,6 +22,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
           onTap: () {
             Navigator.of(context).pop();
+            Navigator.of(context).pop();
             Navigator.push(
                 context,
                 new MaterialPageRoute(
@@ -34,6 +35,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
           title: new Text("Rapport", style: TextStyle(color: Colors.black)),
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
           onTap: () {
+            Navigator.of(context).pop();
             Navigator.of(context).pop();
             Navigator.push(
                 context,
@@ -48,6 +50,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
           onTap: () {
             Navigator.of(context).pop();
+            Navigator.of(context).pop();
             Navigator.push(
                 context,
                 new MaterialPageRoute(
@@ -61,6 +64,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
           title: new Text("Aide", style: TextStyle(color: Colors.black)),
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
           onTap: () {
+            Navigator.of(context).pop();
             Navigator.of(context).pop();
             Navigator.push(
                 context,

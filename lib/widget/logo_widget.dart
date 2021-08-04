@@ -39,11 +39,16 @@ class Logo extends StatelessWidget {
         SizedBox(height: 10),
         Container(
           height: MediaQuery.of(context).size.height * 0.25,
-          child: Ink.image(
-            image: img as ImageProvider,
-            fit: BoxFit.cover,
-            width: 250,
-            height: 10,
+          child: ClipOval(
+            child: Material(
+              color: Colors.transparent,
+              child: Ink.image(
+                image: img as ImageProvider,
+                fit: BoxFit.cover,
+                width: 250,
+                height: 10,
+              ),
+            ),
           ),
         ),
         SizedBox(height: 10)

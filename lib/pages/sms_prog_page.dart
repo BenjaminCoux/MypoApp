@@ -53,18 +53,18 @@ class _SmsProgState extends State<SmsProg> {
     box.add(messageToRapport);
   }
 
-  void send(Scheduledmsg_hive msg) async {
-    if (msg.groupContact.isEmpty) {
-      Telephony.instance.sendSms(to: msg.phoneNumber, message: msg.message);
-    } else {
-      for (int i = 0; i < msg.groupContact.length; i++) {
-        for (int j = 0; j < msg.groupContact[i].numbers.length; j++) {
-          Telephony.instance.sendSms(
-              to: msg.groupContact[i].numbers[j], message: msg.message);
-        }
-      }
-    }
-  }
+  // void send(Scheduledmsg_hive msg) async {
+  //   if (msg.groupContact.isEmpty) {
+  //     Telephony.instance.sendSms(to: msg.phoneNumber, message: msg.message);
+  //   } else {
+  //     for (int i = 0; i < msg.groupContact.length; i++) {
+  //       for (int j = 0; j < msg.groupContact[i].numbers.length; j++) {
+  //         Telephony.instance.sendSms(
+  //             to: msg.groupContact[i].numbers[j], message: msg.message);
+  //       }
+  //     }
+  //   }
+  // }
 
   void sendSms() async {
     List<Scheduledmsg_hive> messages =
@@ -75,7 +75,7 @@ class _SmsProgState extends State<SmsProg> {
           if (messages[i].confirm) {
             confirmSend(messages[i]);
           } else {
-            send(messages[i]);
+            // send(messages[i]);
             saveMsgToRapport(messages[i]);
 
             updateDate(messages[i]);
@@ -197,7 +197,7 @@ class _SmsProgState extends State<SmsProg> {
             actions: <Widget>[
               TextButton(
                   onPressed: () => {
-                        send(msg),
+                        // send(msg),
                         updateDate(msg),
                         if (notif)
                           {

@@ -98,8 +98,8 @@ class _ProgState extends State<ProgForm> {
         ..repeat = repeatinput
         ..countdown = rebours
         ..confirm = confirm
-        ..notification = notif
-        ..groupContact = grp;
+        ..notification = notif;
+      // ..groupContact = grp;
       //..status = MessageStatus.PENDING;
 
       final box = Boxes.getScheduledmsg();

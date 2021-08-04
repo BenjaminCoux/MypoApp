@@ -13,8 +13,13 @@ class GroupContactPage extends StatefulWidget {
 }
 
 class _GroupContactState extends State<GroupContactPage> {
-  List<GroupContact> groupContact =
-      Boxes.getGroupContact().values.toList().cast<GroupContact>();
+  late List<GroupContact> groupContact;
+
+  @override
+  void initState() {
+    super.initState();
+    groupContact = Boxes.getGroupContact().values.toList().cast<GroupContact>();
+  }
 
   buildGroup(BuildContext context, GroupContact contact) {
     return Card(
@@ -141,6 +146,7 @@ class _GroupContactState extends State<GroupContactPage> {
           onPressed: () {
             setState(() {
               contact.delete();
+              groupContact.remove(contact);
             });
             Navigator.of(context).pop();
           },

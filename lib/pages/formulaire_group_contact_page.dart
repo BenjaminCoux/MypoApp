@@ -114,6 +114,11 @@ class _GroupFormState extends State<GroupForm> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: TextField(
+                      onSubmitted: (String? val) => {
+                        setState(() {
+                          contactList.add(val!);
+                        })
+                      },
                       minLines: 1,
                       maxLines: 1,
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,

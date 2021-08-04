@@ -787,7 +787,7 @@ List<AlertKey> buildKeys(dynamic input) {
 bool isInGroup(Alert a, String? adress) {
   if (!a.cibles[4]) {
     return true;
-  } else {
+  } else if (a.groupcontats.length > 0) {
     for (int i = 0; i < a.groupcontats.length; i++) {
       for (int j = 0; j < a.groupcontats[i].numbers.length; j++) {
         String tmp = a.groupcontats[i].numbers[j]
@@ -801,6 +801,8 @@ bool isInGroup(Alert a, String? adress) {
       }
     }
     return false;
+  } else {
+    return true;
   }
 }
 

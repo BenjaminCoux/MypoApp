@@ -18,6 +18,7 @@ class _GroupFormState extends State<GroupForm> {
   TextEditingController descri = TextEditingController();
   final contactController = TextEditingController();
   List<String> contactList = <String>[];
+  List<String> nameList = <String>[];
 
   @override
   void dispose() {
@@ -28,7 +29,17 @@ class _GroupFormState extends State<GroupForm> {
     super.dispose();
   }
 
-  buildTile(String number) {
+  int findNumber(String name) {
+    for (int i = 0; i < nameList.length; i++) {
+      if (name == nameList[i]) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  buildTile(String name) {
+    int index = findNumber(name);
     return Container(
         decoration: BoxDecoration(
           color: Colors.grey.shade100,
@@ -45,11 +56,12 @@ class _GroupFormState extends State<GroupForm> {
             padding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
             child: Row(
               children: [
-                Text(number),
+                Text(name),
                 IconButton(
                     onPressed: () => {
                           setState(() {
-                            contactList.remove(number);
+                            contactList.removeAt(index);
+                            nameList.remove(name);
                           })
                         },
                     icon: Icon(Icons.delete))
@@ -74,9 +86,9 @@ class _GroupFormState extends State<GroupForm> {
     return contactList.length > 0
         ? ListView.builder(
             shrinkWrap: true,
-            itemCount: contactList.length,
+            itemCount: nameList.length,
             itemBuilder: (BuildContext context, int index) {
-              return buildTile(contactList[index]);
+              return buildTile(nameList[index]);
             },
           )
         : Text("Pas encore de contact dans le groupe");
@@ -114,6 +126,13 @@ class _GroupFormState extends State<GroupForm> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: TextField(
+                      onSubmitted: (String? val) => {
+                        setState(() {
+                          contactList.add(val!);
+                          nameList.add(val);
+                        }),
+                        contactController.text = "",
+                      },
                       minLines: 1,
                       maxLines: 1,
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -132,24 +151,18 @@ class _GroupFormState extends State<GroupForm> {
                                   final contact = await ContactsService
                                       .openDeviceContactPicker();
                                   if (contact != null) {
-                                    if (contactController.text.isEmpty) {
-                                      contactController.text = (contact.phones
-                                              ?.elementAt(0)
-                                              .value! ??
-                                          '');
-                                    } else {
-                                      contactController.text += ', ' +
-                                          (contact.phones
-                                                  ?.elementAt(0)
-                                                  .value! ??
-                                              '');
-                                      // contactList.add(
-                                      //     contact.phones?.elementAt(0).value ?? '');
-                                    }
                                     setState(() {
                                       contactList.add(
                                           contact.phones?.elementAt(0).value ??
                                               '');
+                                      if (contact.givenName == null) {
+                                        nameList.add(contact.phones
+                                                ?.elementAt(0)
+                                                .value ??
+                                            '');
+                                      } else {
+                                        nameList.add(contact.givenName!);
+                                      }
                                     });
                                   }
                                 } catch (e) {

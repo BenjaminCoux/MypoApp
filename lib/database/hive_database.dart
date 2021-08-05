@@ -23,6 +23,8 @@ class Scheduledmsg_hive extends HiveObject {
   late bool notification;
   @HiveField(8)
   late DateTime dateOfCreation;
+  @HiveField(9)
+  late List<GroupContact> groupContact;
 }
 
 @HiveType(typeId: 1)

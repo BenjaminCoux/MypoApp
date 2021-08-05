@@ -35,9 +35,11 @@ class Logo extends StatelessWidget {
         : FileImage(File(imgPath!));
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(height: 10),
         Container(
+          margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
           height: MediaQuery.of(context).size.height * 0.25,
           child: ClipOval(
             child: Material(
@@ -45,8 +47,8 @@ class Logo extends StatelessWidget {
               child: Ink.image(
                 image: img as ImageProvider,
                 fit: BoxFit.cover,
-                width: 250,
-                height: 10,
+                width: 200,
+                // height: 250,
               ),
             ),
           ),

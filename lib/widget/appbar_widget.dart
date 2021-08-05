@@ -25,6 +25,27 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+class TopBarNoRedirection extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String title;
+  Size get preferredSize => new Size.fromHeight(50);
+
+  const TopBarNoRedirection({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      elevation: 0,
+      title: Text(title, style: TextStyle(fontFamily: 'calibri')),
+      centerTitle: true,
+      backgroundColor: d_green,
+    );
+  }
+}
+
 class TopBarRedirection extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Widget Function() page;

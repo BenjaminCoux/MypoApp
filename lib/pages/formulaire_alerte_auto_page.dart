@@ -980,39 +980,39 @@ class _MyDialogState extends State<MyDialog> {
     return Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: d_gray, borderRadius: BorderRadius.all(Radius.circular(5))),
+            color: d_lightgray,
+            borderRadius: BorderRadius.all(Radius.circular(5))),
         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-        child: InkWell(
-            onTap: () => {
-                  setState(() {
-                    if (!widget.alertGroup.contains(contact)) {
-                      widget.alertGroup.add(contact);
-                      widget.boolCheckedGrp[index] = true;
-                    } else {
-                      widget.alertGroup.remove(contact);
-                      widget.boolCheckedGrp[index] = false;
-                    }
-                  })
-                },
-            child: Row(children: [
-              Text(contact.name,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Checkbox(
-                  value: widget.boolCheckedGrp[index],
-                  activeColor: d_green,
-                  onChanged: (bool? v) => {
-                        setState(() {
-                          widget.boolCheckedGrp[index] = v!;
-                          if (!widget.alertGroup.contains(contact)) {
-                            widget.alertGroup.add(contact);
-                          } else {
-                            widget.alertGroup.remove(contact);
-                          }
-                        })
-                      })
-            ])));
+        child: ListTile(
+          title: Text(contact.name,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.justify,
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          leading: Checkbox(
+              value: widget.boolCheckedGrp[index],
+              activeColor: d_green,
+              onChanged: (bool? v) => {
+                    setState(() {
+                      widget.boolCheckedGrp[index] = v!;
+                      if (!widget.alertGroup.contains(contact)) {
+                        widget.alertGroup.add(contact);
+                      } else {
+                        widget.alertGroup.remove(contact);
+                      }
+                    })
+                  }),
+          onTap: () => {
+            setState(() {
+              if (!widget.alertGroup.contains(contact)) {
+                widget.alertGroup.add(contact);
+                widget.boolCheckedGrp[index] = true;
+              } else {
+                widget.alertGroup.remove(contact);
+                widget.boolCheckedGrp[index] = false;
+              }
+            })
+          },
+        ));
   }
 
   buildGrpList(List<GroupContact> contactgroup) {
@@ -1043,17 +1043,17 @@ class _MyDialogState extends State<MyDialog> {
       actions: <Widget>[
         new TextButton(
           onPressed: () {
-            setState(() {});
-            Navigator.of(context).pop();
-          },
-          child: const Text('Valider', style: TextStyle(color: Colors.black)),
-        ),
-        new TextButton(
-          onPressed: () {
             Navigator.of(context).pop();
           },
           child: const Text('Retour', style: TextStyle(color: Colors.black)),
         ),
+        new TextButton(
+          onPressed: () {
+            setState(() {});
+            Navigator.of(context).pop();
+          },
+          child: const Text('Valider', style: TextStyle(color: Colors.black)),
+        )
       ],
     );
   }

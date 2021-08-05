@@ -4,10 +4,18 @@ import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 
 // import 'home_page.dart';
-
-class HelpScreen extends StatelessWidget {
+class HelpScreen extends StatefulWidget {
   final String value;
   HelpScreen({required this.value});
+  @override
+  _HelpScreenState createState() => new _HelpScreenState();
+}
+
+class _HelpScreenState extends State<HelpScreen> {
+  final nomController = TextEditingController();
+  final emailController = TextEditingController();
+  final messageController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +24,7 @@ class HelpScreen extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             SingleChildScrollView(
-              padding: EdgeInsets.all(18),
+              padding: EdgeInsets.all(0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -101,34 +109,7 @@ class HelpScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Center(
-                    child: Text(
-                      'Nous contacter',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: d_darkgray,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Numero :',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: d_darkgray,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Email :',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: d_darkgray,
-                    ),
-                  ),
+                  buildFormContact(),
                 ],
               ),
             ),
@@ -145,5 +126,89 @@ class HelpScreen extends StatelessWidget {
         width: double.infinity,
         height: 1,
         color: Colors.grey.shade400);
+  }
+
+  Widget buildFormContact() {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Column(children: <Widget>[
+          Center(
+              child: Text("Nous contacter",
+                  style: TextStyle(color: Colors.black, fontSize: 24))),
+          TextField(
+              controller: nomController,
+              decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: "Nom",
+                  border: InputBorder.none)),
+          SizedBox(height: 8),
+          TextField(
+              controller: emailController,
+              decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: "Email",
+                  border: InputBorder.none)),
+          SizedBox(height: 8),
+          TextField(
+              controller: messageController,
+              maxLines: 7,
+              decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: "Message",
+                  border: InputBorder.none)),
+          SizedBox(height: 8),
+          ElevatedButton(
+            style: OutlinedButton.styleFrom(
+              backgroundColor: d_green,
+              padding: EdgeInsets.symmetric(horizontal: 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            onPressed: () async => {
+              if (nomController.text == '')
+                {showSnackBar(context, "Veuillez rentrer un nom à l'alerte.")}
+              else if (emailController.text == '')
+                {showSnackBar(context, "Veuillez rentrer un email valide.")}
+              else if (messageController.text == '')
+                {showSnackBar(context, "Veuillez écrire un message.")}
+              else if (nomController.text != '' &&
+                  emailController != '' &&
+                  messageController != '')
+                {
+                  Navigator.pop(context),
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new HelpScreen(
+                              value: '',
+                            )),
+                  )
+                }
+              else
+                {showSnackBar(context, 'Veuillez completer tous les champs.')},
+            },
+            child: Text(
+              "Envoyer",
+              style: TextStyle(
+                fontSize: 14,
+                letterSpacing: 2.2,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ]));
+  }
+
+  void showSnackBar(BuildContext context, String s) {
+    final snackBar = SnackBar(
+      content: Text(s, style: TextStyle(fontSize: 20)),
+    );
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
   }
 }

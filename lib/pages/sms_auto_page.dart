@@ -260,7 +260,7 @@ class _AlertesState extends State<Alertes> {
    */
   void addToDB(Alert alert, String title) async {
     Alert tmp = Alert()
-      ..title = alert.title
+      ..title = title
       ..content = alert.content
       ..active = alert.active
       ..keys = alert.keys
@@ -365,8 +365,18 @@ class _AlertesState extends State<Alertes> {
               onPressed: () => {
                 setState(() {
                   String title = getNbAlerte(alert.title);
-                  widget.alerts.add(alert);
-                  addToDB(alert, title);
+                  Alert a = Alert()
+                    ..title = title
+                    ..content = alert.content
+                    ..active = alert.active
+                    ..notification = alert.notification
+                    ..keys = alert.keys
+                    ..groupcontats = alert.groupcontats
+                    ..days = alert.days
+                    ..cibles = alert.cibles;
+                  addToDB(a, title);
+                  widget.alerts =
+                      Boxes.getAutoAlert().values.toList().cast<Alert>();
                 }),
               },
             ),

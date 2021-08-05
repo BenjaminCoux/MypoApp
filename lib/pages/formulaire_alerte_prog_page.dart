@@ -78,7 +78,7 @@ class _ProgState extends State<ProgForm> {
   }
 
   saveToHive() {
-    if (contactController.text != '' &&
+    if ((contactController.text != '' || alertGroup.length > 0) &&
         alertContent.text != '' &&
         repeatinput != '') {
       List<GroupContact> grp = <GroupContact>[];
@@ -494,7 +494,8 @@ class _ProgState extends State<ProgForm> {
                                   "Veuillez rentrer un nom à l'alerte.")
                             }
                           }
-                        else if (contactController.text == '')
+                        else if (contactController.text == '' &&
+                            alertGroup.length == 0)
                           {showSnackBar(context, "Veuillez rentrer un numéro.")}
                         else if (alertContent.text == '')
                           {showSnackBar(context, "Veuillez écrire un message.")}
@@ -512,7 +513,8 @@ class _ProgState extends State<ProgForm> {
                                 "Characters invalides pour le nom de l'alerte.")
                           }
                         else if (nameController.text != '' &&
-                            contactController.text != '' &&
+                            (contactController.text != '' ||
+                                alertGroup.length > 0) &&
                             alertContent.text != '' &&
                             wordsLimit &&
                             await Permission.contacts.request().isGranted &&

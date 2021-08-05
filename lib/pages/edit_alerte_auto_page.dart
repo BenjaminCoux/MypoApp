@@ -511,7 +511,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                         title: Text(
                                           "Groupe de contact",
                                           style: TextStyle(
-                                              fontSize: 15, color: Colors.red),
+                                            fontSize: 15,
+                                          ),
                                         ),
                                         activeColor: d_green,
                                         value: widget.alerte.cibles[4],
@@ -545,7 +546,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                         title: Text(
                                           "Appel manqué",
                                           style: TextStyle(
-                                              fontSize: 15, color: Colors.red),
+                                            fontSize: 15,
+                                          ),
                                         ),
                                         activeColor: d_green,
                                         value: widget.alerte.cibles[5],

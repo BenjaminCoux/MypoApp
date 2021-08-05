@@ -465,7 +465,7 @@ class _FormState extends State<FormScreen> {
                   buildTextField(
                       'Titre', "Ajoutez un titre à l'alerte", alertName, 1),
                   buildTextFieldMessage(
-                      'Contenu', "Contenu du message", alertContent, 1),
+                      'Contenu', "Contenu du message", alertContent, 4),
                   Container(
                     margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
                     child: Padding(

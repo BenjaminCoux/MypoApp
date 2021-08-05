@@ -43,6 +43,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   bool notification = false;
   bool hasChanged = false;
   bool wordsLimit = true;
+  late List<GroupContact> alertgrp;
   String repeat = "";
   late DateTime timeUpdated;
   late DateTime timeAux;
@@ -69,15 +70,16 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     alertName = TextEditingController(text: widget.message.name);
     alertContact = TextEditingController(text: widget.message.phoneNumber);
     alertContent = TextEditingController(text: widget.message.message);
-    // groupcontactcontroller =
-    //     TextEditingController(text: getHintgrpCo(widget.message.groupContact));
+    alertgrp = widget.message.groupContact;
+    groupcontactcontroller =
+        TextEditingController(text: getHintgrpCo(widget.message.groupContact));
     countdown = widget.message.countdown;
     confirm = widget.message.confirm;
     notification = widget.message.notification;
     timeUpdated = widget.message.date;
     timeAux = widget.message.date;
-    // boolCheckedGrp =
-    //     buildboolListEdit(contactgroup, widget.message.groupContact);
+    boolCheckedGrp =
+        buildboolListEdit(contactgroup, widget.message.groupContact);
     alertName.addListener(() {
       changed;
     });
@@ -108,6 +110,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     widget.message.message = alertContent.text;
     widget.message.countdown = countdown;
     widget.message.confirm = confirm;
+    widget.message.groupContact = alertgrp;
     widget.message.date = new DateTime(timeUpdated.year, timeUpdated.month,
         timeUpdated.day, timeAux.hour, timeAux.minute, timeAux.second);
     widget.message.repeat = repeat;
@@ -203,7 +206,10 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     ),
                   ),
                 ),
-                Text("ou"),
+                Text(
+                  "ou",
+                  textAlign: TextAlign.center,
+                ),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -223,27 +229,26 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           labelText: "Groupes de contacts",
                           suffixIcon: IconButton(
                               onPressed: () => {
-                                    // showDialog(
-                                    //     context: context,
-                                    //     builder: (context) {
-                                    //       return MyDialog(
-                                    //           contactgroup: contactgroup,
-                                    //           alertGroup:
-                                    //               widget.message.groupContact,
-                                    //           boolCheckedGrp: boolCheckedGrp);
-                                    //     }),
-                                    // setState(() {
-                                    //   String tmp = "";
-                                    //   for (int i = 0;
-                                    //       i <
-                                    //           widget
-                                    //               .message.groupContact.length;
-                                    //       i++) {
-                                    //     tmp +=
-                                    //         widget.message.groupContact[i].name;
-                                    //   }
-                                    //   groupcontactcontroller.text = tmp;
-                                    // })
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return MyDialog(
+                                              contactgroup: contactgroup,
+                                              alertGroup: alertgrp,
+                                              boolCheckedGrp: boolCheckedGrp);
+                                        }),
+                                    setState(() {
+                                      String tmp = "";
+                                      for (int i = 0;
+                                          i <
+                                              widget
+                                                  .message.groupContact.length;
+                                          i++) {
+                                        tmp +=
+                                            widget.message.groupContact[i].name;
+                                      }
+                                      groupcontactcontroller.text = tmp;
+                                    })
                                   },
                               icon: Icon(
                                 Icons.group_add_rounded,

@@ -1,3 +1,4 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/pages/edit_groupcontact_page.dart';
@@ -53,12 +54,17 @@ class _GroupContactState extends State<GroupContactPage> {
               style: TextButton.styleFrom(primary: d_darkgray),
               label: Text('Modifier'),
               icon: Icon(Icons.edit),
-              onPressed: () => {
-                Navigator.pop(context),
+              onPressed: () async {
+                Iterable<Contact> list = await ContactsService.getContacts();
+
+                Navigator.pop(context);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => new EditGroup(grp: contact)))
+                        builder: (context) => new EditGroup(
+                              grp: contact,
+                              contacts: list,
+                            )));
               },
             ),
           ),

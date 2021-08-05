@@ -11,15 +11,33 @@ import 'package:permission_handler/permission_handler.dart';
 // ignore: must_be_immutable
 class EditGroup extends StatefulWidget {
   GroupContact grp;
-  EditGroup({required this.grp});
+  Iterable<Contact> contacts;
+  EditGroup({required this.grp, required this.contacts});
   @override
   _EditGroupState createState() => _EditGroupState();
+}
+
+String findName(String me, Iterable<Contact> contact) {
+  List<String> res = <String>[];
+  Iterator<Contact> it = contact.iterator;
+  while (it.moveNext()) {
+    if (it.current.phones?.first.value == me) {
+      if (it.current.givenName != null) {
+        return it.current.givenName!;
+      } else {
+        String res = it.current.phones?.elementAt(0).value! ?? "";
+        return res;
+      }
+    }
+  }
+  return me;
 }
 
 class _EditGroupState extends State<EditGroup> {
   late TextEditingController name;
   late TextEditingController descri;
   late List<String> contactList;
+  late List<String> nameList;
   final contactController = TextEditingController();
   bool hasChanged = false;
 
@@ -69,7 +87,7 @@ class _EditGroupState extends State<EditGroup> {
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Row(
             children: [
-              Text(number),
+              Text(findName(number, widget.contacts)),
               IconButton(
                   onPressed: () => {
                         setState(() {
@@ -127,6 +145,12 @@ class _EditGroupState extends State<EditGroup> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                 child: TextField(
+                  onSubmitted: (String? v) => {
+                    setState(() {
+                      contactList.add(v!);
+                    }),
+                    contactController.text = "",
+                  },
                   minLines: 1,
                   maxLines: 1,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -143,17 +167,6 @@ class _EditGroupState extends State<EditGroup> {
                               final contact = await ContactsService
                                   .openDeviceContactPicker();
                               if (contact != null) {
-                                if (contactController.text.isEmpty) {
-                                  contactController.text =
-                                      (contact.phones?.elementAt(0).value! ??
-                                          '');
-                                } else {
-                                  contactController.text += ', ' +
-                                      (contact.phones?.elementAt(0).value! ??
-                                          '');
-                                  contactList.add(
-                                      contact.phones?.elementAt(0).value ?? '');
-                                }
                                 setState(() {
                                   contactList.add(
                                       contact.phones?.elementAt(0).value ?? '');

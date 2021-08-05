@@ -131,9 +131,11 @@ class _EditGroupState extends State<EditGroup> {
       body: Center(
         child: Column(
           children: [
-            buildTextField(
-                'Nom', 'Donner un nom au groupe de contact', name, 1),
-            buildTextField('Description', 'Ajouter une description', descri, 1),
+            buildLabelText('Nom du groupe'),
+            buildTextField('Nom', name, 1),
+            buildLabelText('Description'),
+            buildTextField('Description', descri, 1),
+            buildLabelText('Numéro(s) de(s) contact(s)'),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -157,7 +159,6 @@ class _EditGroupState extends State<EditGroup> {
                   keyboardType: TextInputType.phone,
                   controller: contactController,
                   decoration: InputDecoration(
-                    labelText: 'Numero(s) de(s) contact(s)',
                     suffixIcon: IconButton(
                         icon: Icon(Icons.person_add,
                             size: 35, color: Colors.black),
@@ -188,7 +189,7 @@ class _EditGroupState extends State<EditGroup> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(color: Colors.transparent)),
-                    hintText: "Ajoutez un numero de telephone",
+                    hintText: "Numéro de téléphone",
                     hintStyle: TextStyle(
                       fontSize: 16,
                       fontStyle: FontStyle.italic,
@@ -223,6 +224,25 @@ class _EditGroupState extends State<EditGroup> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
+          )),
     );
   }
 }

@@ -25,7 +25,7 @@ class _RepportsPageState extends State<RepportsPage> {
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
-        thickness: 10,
+        thickness: 5,
         child: SingleChildScrollView(
           child: Column(
             children: [

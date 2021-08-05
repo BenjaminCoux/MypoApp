@@ -54,7 +54,7 @@ class _SmsAutoState extends State<SmsAuto> {
       appBar: TopBarRedirection(
           title: "Messages automatiques", page: () => HomePage()),
       body: Scrollbar(
-        thickness: 10,
+        thickness: 5,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,

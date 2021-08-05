@@ -114,134 +114,75 @@ class _ProgState extends State<ProgForm> {
       backgroundColor: Colors.grey.shade100,
       appBar:
           TopBarRedirection(title: 'Ajouter une alerte', page: () => SmsProg()),
-      body: SingleChildScrollView(
-        child: GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
+      body: Scrollbar(
+        thickness: 5,
+        interactive: true,
+        isAlwaysShown: true,
+        showTrackOnHover: true,
+        child: SingleChildScrollView(
+          child: GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
 
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                buildTextField("Nom de l'alerte", "Ajoutez un nom à l'alerte",
-                    nameController, 1),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                  ),
-                  margin: EdgeInsets.all(10),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                    child: TextField(
-                      minLines: 1,
-                      maxLines: 1,
-                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                      keyboardType: TextInputType.phone,
-                      controller: contactController,
-                      decoration: InputDecoration(
-                        labelText: 'Numero(s) de(s) contact(s)',
-                        suffixIcon: IconButton(
-                            icon: Icon(Icons.person_add,
-                                size: 35, color: Colors.black),
-                            onPressed: () async {
-                              if (await Permission.contacts
-                                  .request()
-                                  .isGranted) {
-                                try {
-                                  final contact = await ContactsService
-                                      .openDeviceContactPicker();
-                                  if (contact != null) {
-                                    if (contactController.text.isEmpty) {
-                                      contactController.text = (contact.phones
-                                              ?.elementAt(0)
-                                              .value! ??
-                                          '');
-                                    } else {
-                                      contactController.text += ', ' +
-                                          (contact.phones
-                                                  ?.elementAt(0)
-                                                  .value! ??
-                                              '');
-                                    }
-                                  }
-                                } catch (e) {
-                                  debugPrint(e.toString());
-                                }
-                              } else {
-                                showSnackBar(context,
-                                    "Veuillez activer les permissions d'accès aux contacts");
-                              }
-                            }),
-                        labelStyle: TextStyle(color: Colors.black),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.transparent)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.transparent)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.transparent)),
-                        hintText: "Ajoutez un numero de telephone",
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black,
-                        ),
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  buildLabelText("Nom de l'alerte"),
+                  buildTextField("Nom", nameController, 1),
+                  buildLabelText('Numéro(s) de(s) contact(s)'),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
                       ),
                     ),
-                  ),
-                ),
-                Text("ou"),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                    child: TextField(
-                      minLines: 1,
-                      maxLines: 1,
-                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                      keyboardType: TextInputType.phone,
-                      controller: groupcontactcontroller,
-                      decoration: InputDecoration(
-                          labelText: "Groupes de contacts",
+                    margin: EdgeInsets.all(10),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      child: TextField(
+                        minLines: 1,
+                        maxLines: 1,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                        keyboardType: TextInputType.phone,
+                        controller: contactController,
+                        decoration: InputDecoration(
                           suffixIcon: IconButton(
-                              onPressed: () => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return MyDialog(
-                                              contactgroup: contactgroup,
-                                              alertGroup: alertGroup,
-                                              boolCheckedGrp: boolCheckedGrp);
-                                        }),
-                                    setState(() {
-                                      String tmp = "";
-                                      for (int i = 0;
-                                          i < alertGroup.length;
-                                          i++) {
-                                        tmp += alertGroup[i].name;
+                              icon: Icon(Icons.person_add,
+                                  size: 35, color: Colors.black),
+                              onPressed: () async {
+                                if (await Permission.contacts
+                                    .request()
+                                    .isGranted) {
+                                  try {
+                                    final contact = await ContactsService
+                                        .openDeviceContactPicker();
+                                    if (contact != null) {
+                                      if (contactController.text.isEmpty) {
+                                        contactController.text = (contact.phones
+                                                ?.elementAt(0)
+                                                .value! ??
+                                            '');
+                                      } else {
+                                        contactController.text += ', ' +
+                                            (contact.phones
+                                                    ?.elementAt(0)
+                                                    .value! ??
+                                                '');
                                       }
-                                      groupcontactcontroller.text = tmp;
-                                    })
-                                  },
-                              icon: Icon(
-                                Icons.group_add_rounded,
-                                color: Colors.black,
-                                size: 35,
-                              )),
+                                    }
+                                  } catch (e) {
+                                    debugPrint(e.toString());
+                                  }
+                                } else {
+                                  showSnackBar(context,
+                                      "Veuillez activer les permissions d'accès aux contacts");
+                                }
+                              }),
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -255,317 +196,436 @@ class _ProgState extends State<ProgForm> {
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
                                   BorderSide(color: Colors.transparent)),
-                          hintText: "Ajoutez groupe de contact",
+                          hintText: "Numéro de téléphone",
                           hintStyle: TextStyle(
                             fontSize: 16,
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.w300,
                             color: Colors.black,
-                          )),
-                    ),
-                  ),
-                ),
-                buildTextFieldMessage(
-                    'Message', "Contenu du message", alertContent, 1),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                  ),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Column(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Date: ${DateFormat('dd/MM/yyyy').format(date)} ",
-                            style: TextStyle(fontSize: 16),
-                            //textAlign: TextAlign.start,
-                          ),
-                          Text(
-                            "Heure: ${DateFormat('HH:mm').format(date)} ",
-                            style: TextStyle(fontSize: 16),
-                            // textAlign: TextAlign.start,
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0),
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: OutlinedButton(
-                            // onPressed: null,
-                            onPressed: () => showSheet(context,
-                                child: buildDatePicker(), onClicked: () {
-                              final value =
-                                  DateFormat('dd/MM/yyyy HH:mm').format(date);
-                              showSnackBar(context, 'Date "$value"');
-                              Navigator.pop(context);
-                            }),
-
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: d_green,
-                              side: BorderSide(color: d_green, width: 2),
-                              padding: EdgeInsets.symmetric(horizontal: 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            child: Text(
-                              "Date ",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        child: Text("Récurrence: ${repeatinput} ",
-                            style: TextStyle(fontSize: 16)),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0),
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: OutlinedButton(
-                            onPressed: () => showSheet(context,
-                                child: buildRepeatOptions(), onClicked: () {
-                              repeatinput = repeatOptions[index];
-                              showSnackBar(context, 'Option "${repeatinput}"');
-                              Navigator.pop(context);
-                            }),
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: d_green,
-                              side: BorderSide(color: d_green, width: 2),
-                              padding: EdgeInsets.symmetric(horizontal: 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            child: Text(
-                              "Récurrence",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.79,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(Icons.timer_rounded),
-                              Container(
-                                  child: Text("Compte à rebours",
-                                      style: TextStyle(color: Colors.red)),
-                                  margin: EdgeInsets.all(5)),
-                            ],
-                          )),
-                      SizedBox(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Switch(
-                                activeColor: d_green,
-                                value: rebours,
-                                onChanged: (bool val) => {
+                  Text("ou"),
+                  buildLabelText("Groupes de contacts"),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
+                      ),
+                    ),
+                    margin: EdgeInsets.all(10),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      child: TextField(
+                        minLines: 1,
+                        maxLines: 1,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                        keyboardType: TextInputType.phone,
+                        controller: groupcontactcontroller,
+                        decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () => {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return MyDialog(
+                                                contactgroup: contactgroup,
+                                                alertGroup: alertGroup,
+                                                boolCheckedGrp: boolCheckedGrp);
+                                          }),
                                       setState(() {
-                                        rebours = val;
+                                        String tmp = "";
+                                        for (int i = 0;
+                                            i < alertGroup.length;
+                                            i++) {
+                                          tmp += alertGroup[i].name;
+                                        }
+                                        groupcontactcontroller.text = tmp;
                                       })
-                                    }),
-                          ],
-                        ),
+                                    },
+                                icon: Icon(
+                                  Icons.group_add_rounded,
+                                  color: Colors.black,
+                                  size: 35,
+                                )),
+                            labelStyle: TextStyle(color: Colors.black),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            hintText: "Groupe de contact",
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black,
+                            )),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.79,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(Icons.check_circle_rounded),
-                              Container(
-                                  child: Text("Confirmer avant envoi"),
-                                  margin: EdgeInsets.all(5)),
-                            ],
-                          )),
-                      SizedBox(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Switch(
-                                activeColor: d_green,
-                                value: confirm,
-                                onChanged: (bool val) => {
-                                      setState(() {
-                                        confirm = val;
-                                      })
-                                    }),
-                          ],
-                        ),
+                  buildLabelText('Message'),
+                  buildTextFieldMessage("Contenu du message", alertContent, 4),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.79,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(Icons.notifications),
-                              Container(
-                                  child: Text("Notification"),
-                                  margin: EdgeInsets.all(5)),
-                            ],
-                          )),
-                      SizedBox(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Switch(
-                                activeColor: d_green,
-                                value: notif,
-                                onChanged: (bool val) => {
-                                      setState(() {
-                                        notif = val;
-                                      })
-                                    }),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(0),
-                  child: Container(
                     margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: OutlinedButton(
-                      onPressed: () async => {
-                        if (nameController.text == '')
-                          {
+                    child: Column(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Date:  ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.black),
+                                  ),
+                                  Text(
+                                    "${DateFormat('dd/MM/yyyy').format(date)} ",
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Heure:  ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.black),
+                                  ),
+                                  Text(
+                                    "${DateFormat('HH:mm').format(date)}",
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(0),
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: OutlinedButton(
+                              // onPressed: null,
+                              onPressed: () => showSheet(context,
+                                  child: buildDatePicker(), onClicked: () {
+                                final value =
+                                    DateFormat('dd/MM/yyyy HH:mm').format(date);
+                                showSnackBar(context, 'Date "$value"');
+                                Navigator.pop(context);
+                              }),
+
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: d_green,
+                                side: BorderSide(color: d_green, width: 2),
+                                padding: EdgeInsets.symmetric(horizontal: 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              child: Text(
+                                "Date ",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Récurrence:  ",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                "${repeatinput} ",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(0),
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: OutlinedButton(
+                              onPressed: () => showSheet(context,
+                                  child: buildRepeatOptions(), onClicked: () {
+                                repeatinput = repeatOptions[index];
+                                showSnackBar(
+                                    context, 'Option "${repeatinput}"');
+                                Navigator.pop(context);
+                              }),
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: d_green,
+                                side: BorderSide(color: d_green, width: 2),
+                                padding: EdgeInsets.symmetric(horizontal: 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              child: Text(
+                                "Récurrence",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.79,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.timer_rounded),
+                                Container(
+                                    child: Text("Compte à rebours",
+                                        style: TextStyle(color: Colors.red)),
+                                    margin: EdgeInsets.all(5)),
+                              ],
+                            )),
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Switch(
+                                  activeColor: d_green,
+                                  value: rebours,
+                                  onChanged: (bool val) => {
+                                        setState(() {
+                                          rebours = val;
+                                        })
+                                      }),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.79,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.check_circle_rounded),
+                                Container(
+                                    child: Text("Confirmer avant envoi"),
+                                    margin: EdgeInsets.all(5)),
+                              ],
+                            )),
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Switch(
+                                  activeColor: d_green,
+                                  value: confirm,
+                                  onChanged: (bool val) => {
+                                        setState(() {
+                                          confirm = val;
+                                        })
+                                      }),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.79,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.notifications),
+                                Container(
+                                    child: Text("Notification"),
+                                    margin: EdgeInsets.all(5)),
+                              ],
+                            )),
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Switch(
+                                  activeColor: d_green,
+                                  value: notif,
+                                  onChanged: (bool val) => {
+                                        setState(() {
+                                          notif = val;
+                                        })
+                                      }),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(0),
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: OutlinedButton(
+                        onPressed: () async => {
+                          if (nameController.text == '')
                             {
-                              showSnackBar(context,
-                                  "Veuillez rentrer un nom à l'alerte.")
-                            }
-                          }
-                        else if (contactController.text == '' &&
-                            alertGroup.length == 0)
-                          {showSnackBar(context, "Veuillez rentrer un numéro.")}
-                        else if (alertContent.text == '')
-                          {showSnackBar(context, "Veuillez écrire un message.")}
-                        else if (wordsLimit == false)
-                          {
-                            {
-                              showSnackBar(context,
-                                  "Nombre de character maximal dépassé.")
-                            }
-                          }
-                        else if (!regularExpression
-                            .hasMatch(nameController.text))
-                          {
-                            showSnackBar(context,
-                                "Characters invalides pour le nom de l'alerte.")
-                          }
-                        else if (nameController.text != '' &&
-                            (contactController.text != '' ||
-                                alertGroup.length > 0) &&
-                            alertContent.text != '' &&
-                            wordsLimit &&
-                            await Permission.contacts.request().isGranted &&
-                            await Permission.sms.request().isGranted)
-                          {
-                            fieldsEmpty = false,
-                            saveToHive(),
-                            Navigator.pop(context),
-                            Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => new SmsProg()),
-                            )
-                          }
-                        else
-                          {
-                            if (!(await Permission.sms.isGranted) &&
-                                !(await Permission.contacts.isGranted))
-                              {
-                                {
-                                  showSnackBar(context,
-                                      'Veuillez activer les permissions (sms et contacts).')
-                                }
-                              }
-                            else
                               {
                                 showSnackBar(context,
-                                    'Veuillez completer tous les champs')
+                                    "Veuillez rentrer un nom à l'alerte.")
                               }
-                          }
-                      },
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: d_green,
-                        side: BorderSide(color: d_green, width: 2),
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                            }
+                          else if (contactController.text == '' &&
+                              alertGroup.length == 0)
+                            {
+                              showSnackBar(
+                                  context, "Veuillez rentrer un numéro.")
+                            }
+                          else if (alertContent.text == '')
+                            {
+                              showSnackBar(
+                                  context, "Veuillez écrire un message.")
+                            }
+                          else if (wordsLimit == false)
+                            {
+                              {
+                                showSnackBar(
+                                    context, "Veuillez rentrer un numéro.")
+                              }
+                            }
+                          else if (!regularExpression
+                              .hasMatch(nameController.text))
+                            {
+                              showSnackBar(context,
+                                  "Characters invalides pour le nom de l'alerte.")
+                            }
+                          else if (nameController.text != '' &&
+                              (contactController.text != '' ||
+                                  alertGroup.length > 0) &&
+                              alertContent.text != '' &&
+                              wordsLimit &&
+                              await Permission.contacts.request().isGranted &&
+                              await Permission.sms.request().isGranted)
+                            {
+                              fieldsEmpty = false,
+                              saveToHive(),
+                              Navigator.pop(context),
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new SmsProg()),
+                              )
+                            }
+                          else
+                            {
+                              if (!(await Permission.sms.isGranted) &&
+                                  !(await Permission.contacts.isGranted))
+                                {
+                                  {
+                                    showSnackBar(context,
+                                        'Veuillez activer les permissions (sms et contacts).')
+                                  }
+                                }
+                              else
+                                {
+                                  showSnackBar(context,
+                                      'Veuillez completer tous les champs')
+                                }
+                            }
+                        },
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: d_green,
+                          side: BorderSide(color: d_green, width: 2),
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        "Valider",
-                        style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.white,
+                        child: Text(
+                          "Valider",
+                          style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -573,8 +633,27 @@ class _ProgState extends State<ProgForm> {
     );
   }
 
-  Container buildTextField(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
+          )),
+    );
+  }
+
+  Container buildTextField(
+      String placeholder, TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -601,7 +680,6 @@ class _ProgState extends State<ProgForm> {
           maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-            labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -626,8 +704,8 @@ class _ProgState extends State<ProgForm> {
     );
   }
 
-  Container buildTextFieldMessage(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Container buildTextFieldMessage(
+      String placeholder, TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -655,7 +733,6 @@ class _ProgState extends State<ProgForm> {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             errorText: wordsLimit ? null : '${this.nbWords}/450',
-            labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),

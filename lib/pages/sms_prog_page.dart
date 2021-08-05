@@ -255,7 +255,7 @@ class _SmsProgState extends State<SmsProg> {
           title: "Messages programmés", page: () => HomePage()),
 
       body: Scrollbar(
-        thickness: 10,
+        thickness: 5,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,

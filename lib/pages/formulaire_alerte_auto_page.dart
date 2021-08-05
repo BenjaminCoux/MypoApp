@@ -450,7 +450,7 @@ class _FormState extends State<FormScreen> {
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(title: 'Ajouter une alerte'),
       body: Scrollbar(
-        thickness: 10,
+        thickness: 5,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -462,26 +462,11 @@ class _FormState extends State<FormScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildTextField(
-                      'Titre', "Ajoutez un titre à l'alerte", alertName, 1),
-                  buildTextFieldMessage(
-                      'Contenu', "Contenu du message", alertContent, 1),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
-                    child: Padding(
-                        padding: EdgeInsets.all(0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Cibles",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black),
-                            )
-                          ],
-                        )),
-                  ),
+                  buildLabelText("Titre"),
+                  buildTextField('Titre', alertName, 1),
+                  buildLabelText("Message"),
+                  buildTextFieldMessage('Contenu du message', alertContent, 4),
+                  buildLabelText("Cibles"),
                   Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -631,22 +616,7 @@ class _FormState extends State<FormScreen> {
                           ),
                         ],
                       )),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
-                    child: Padding(
-                        padding: EdgeInsets.all(0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Jours",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black),
-                            )
-                          ],
-                        )),
-                  ),
+                  buildLabelText("Jours"),
                   Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -667,22 +637,7 @@ class _FormState extends State<FormScreen> {
                           ),
                         ),
                       ])),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
-                    child: Padding(
-                        padding: EdgeInsets.all(0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Contenu du message entrant",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black),
-                            )
-                          ],
-                        )),
-                  ),
+                  buildLabelText("Contenu du message entrant"),
                   alertKeys(context),
                   SizedBox(height: 20),
                   Container(
@@ -860,8 +815,27 @@ class _FormState extends State<FormScreen> {
     );
   }
 
-  Container buildTextField(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
+          )),
+    );
+  }
+
+  Container buildTextField(
+      String placeholder, TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -882,7 +856,6 @@ class _FormState extends State<FormScreen> {
           maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-            labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -907,8 +880,8 @@ class _FormState extends State<FormScreen> {
     );
   }
 
-  Container buildTextFieldMessage(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Container buildTextFieldMessage(
+      String placeholder, TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -936,7 +909,6 @@ class _FormState extends State<FormScreen> {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             errorText: wordsLimit ? null : '${this.nbWords}/450',
-            labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),

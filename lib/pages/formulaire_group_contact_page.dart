@@ -106,15 +106,16 @@ class _GroupFormState extends State<GroupForm> {
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
-        thickness: 10,
+        thickness: 5,
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
-                buildTextField(
-                    'Nom', 'Donner un nom au groupe de contact', name, 1),
-                buildTextField(
-                    'Description', 'Ajouter une description', descri, 1),
+                buildLabelText('Nom'),
+                buildTextField('Donner un nom au groupe de contact', name, 1),
+                buildLabelText('Description'),
+                buildTextField('Ajouter une description', descri, 1),
+                buildLabelText('Numéro(s) de(s) contact(s)'),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -139,7 +140,6 @@ class _GroupFormState extends State<GroupForm> {
                       keyboardType: TextInputType.phone,
                       controller: contactController,
                       decoration: InputDecoration(
-                        labelText: 'Numero(s) de(s) contact(s)',
                         suffixIcon: IconButton(
                             icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.black),
@@ -180,7 +180,7 @@ class _GroupFormState extends State<GroupForm> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Colors.transparent)),
-                        hintText: "Ajoutez un numero de telephone",
+                        hintText: "Numéro de téléphone",
                         hintStyle: TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
@@ -224,8 +224,27 @@ class _GroupFormState extends State<GroupForm> {
   }
 }
 
-Container buildTextField(String labelText, String placeholder,
-    TextEditingController controller, int nbLines) {
+Widget buildLabelText(String input) {
+  return Container(
+    margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+    child: Padding(
+        padding: EdgeInsets.all(0),
+        child: Row(
+          children: [
+            Text(
+              input,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.black),
+            )
+          ],
+        )),
+  );
+}
+
+Container buildTextField(
+    String placeholder, TextEditingController controller, int nbLines) {
   return Container(
     decoration: BoxDecoration(
       color: Colors.white,
@@ -242,7 +261,6 @@ Container buildTextField(String labelText, String placeholder,
         maxLines: nbLines,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          labelText: labelText,
           labelStyle: TextStyle(color: Colors.black),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

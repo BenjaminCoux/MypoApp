@@ -360,7 +360,7 @@ class _AlertScreenState extends State<AlertScreen> {
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.alerte.title}', page: () => SmsAuto()),
       body: Scrollbar(
-        thickness: 10,
+        thickness: 5,
         interactive: true,
         showTrackOnHover: true,
         child: Container(
@@ -374,25 +374,12 @@ class _AlertScreenState extends State<AlertScreen> {
             },
             child: ListView(
               children: <Widget>[
-                buildTextField('Nom', '${widget.alerte.title}', alertName, 1),
+                buildLabelText("Nom"),
+                buildTextField('${widget.alerte.title}', alertName, 1),
+                buildLabelText("Message"),
                 buildTextFieldMessage(
-                    'Message', '${widget.alerte.content}', alertContent, 1),
-                Container(
-                  margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
-                  child: Padding(
-                      padding: EdgeInsets.all(0),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Cibles",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.black),
-                          )
-                        ],
-                      )),
-                ),
+                    '${widget.alerte.content}', alertContent, 4),
+                buildLabelText("Cibles"),
                 Container(
                     decoration: BoxDecoration(
                       color: Colors.transparent,
@@ -568,22 +555,7 @@ class _AlertScreenState extends State<AlertScreen> {
                         ),
                       ],
                     )),
-                Container(
-                  margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
-                  child: Padding(
-                      padding: EdgeInsets.all(0),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Jours",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.black),
-                          )
-                        ],
-                      )),
-                ),
+                buildLabelText("Jours"),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.transparent,
@@ -613,22 +585,7 @@ class _AlertScreenState extends State<AlertScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
-                  child: Padding(
-                      padding: EdgeInsets.all(0),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Contenu du message entrant",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.black),
-                          )
-                        ],
-                      )),
-                ),
+                buildLabelText("Contenu du message entrant"),
                 alertKeys(context),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -812,6 +769,25 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
+          )),
+    );
+  }
+
   buildPopupDialogCancel() {
     return new AlertDialog(
       title: Text("Voulez vous annuler ?"),
@@ -845,8 +821,8 @@ class _AlertScreenState extends State<AlertScreen> {
   function that crates a text field
 
   */
-  Container buildTextFieldMessage(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Container buildTextFieldMessage(
+      String placeholder, TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -874,7 +850,6 @@ class _AlertScreenState extends State<AlertScreen> {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             errorText: wordsLimit ? null : '${this.nbWords}/450',
-            labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -899,8 +874,8 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
-  Container buildTextField(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Container buildTextField(
+      String placeholder, TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -924,7 +899,6 @@ class _AlertScreenState extends State<AlertScreen> {
           maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-            labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),

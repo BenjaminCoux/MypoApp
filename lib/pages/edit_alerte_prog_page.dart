@@ -126,7 +126,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.message.name}', page: () => SmsProg()),
       body: Scrollbar(
-        thickness: 10,
+        thickness: 5,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -141,7 +141,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
             },
             child: ListView(
               children: <Widget>[
-                buildTextField('Nom', '${widget.message.name}', alertName, 1),
+                buildLabelText("Nom"),
+                buildTextField('${widget.message.name}', alertName, 1),
+                buildLabelText('Numéro(s) de(s) contact(s)'),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -162,7 +164,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       keyboardType: TextInputType.phone,
                       controller: alertContact,
                       decoration: InputDecoration(
-                        labelText: 'Numero(s) de(s) contact(s)',
                         suffixIcon: IconButton(
                             icon: Icon(Icons.person_add,
                                 size: 35, color: Colors.black),
@@ -195,7 +196,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Colors.transparent)),
-                        hintText: "Ajoutez un numero de telephone",
+                        hintText: "Numéro de téléphone",
                         hintStyle: TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
@@ -210,6 +211,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   "ou",
                   textAlign: TextAlign.center,
                 ),
+                buildLabelText("Groupes de contacts"),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -217,6 +219,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       Radius.circular(18),
                     ),
                   ),
+                  margin: EdgeInsets.all(10),
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: TextField(
@@ -226,7 +229,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       keyboardType: TextInputType.phone,
                       controller: groupcontactcontroller,
                       decoration: InputDecoration(
-                          labelText: "Groupes de contacts",
                           suffixIcon: IconButton(
                               onPressed: () => {
                                     showDialog(
@@ -268,7 +270,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
                                   BorderSide(color: Colors.transparent)),
-                          hintText: "Ajoutez groupe de contact",
+                          hintText: "Groupe de contact",
                           hintStyle: TextStyle(
                             fontSize: 16,
                             fontStyle: FontStyle.italic,
@@ -278,8 +280,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     ),
                   ),
                 ),
+                buildLabelText('Message'),
                 buildTextFieldMessage(
-                    'Message', '${widget.message.message}', alertContent, 1),
+                    '${widget.message.message}', alertContent, 4),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -301,7 +304,10 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               children: [
                                 Text(
                                   "Date de création ",
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.black),
                                   //textAlign: TextAlign.start,
                                 ),
                                 Text(
@@ -324,7 +330,10 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               children: [
                                 Text(
                                   "Date du prochain envoi ",
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.black),
                                 ),
                                 Text(
                                   "${DateFormat('dd/MM/yyyy').format(widget.message.date)} ",
@@ -368,8 +377,23 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                         ),
                       ),
                       Container(
-                        child: Text("Récurrence: ${widget.message.repeat} ",
-                            style: TextStyle(fontSize: 16)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Récurrence:  ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              "${widget.message.repeat} ",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.all(0),
@@ -653,6 +677,25 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     );
   }
 
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
+          )),
+    );
+  }
+
   buildPopupDialogCancel() {
     return new AlertDialog(
       title: Text("Voulez vous annuler ?"),
@@ -682,8 +725,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     );
   }
 
-  Container buildTextField(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Container buildTextField(
+      String placeholder, TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -704,7 +747,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           maxLines: nbLines,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-            labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -729,8 +771,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     );
   }
 
-  Container buildTextFieldMessage(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Container buildTextFieldMessage(
+      String placeholder, TextEditingController controller, int nbLines) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -759,7 +801,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             errorText: wordsLimit ? null : '${this.nbWords}/450',
-            labelText: labelText,
             labelStyle: TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),

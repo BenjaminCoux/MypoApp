@@ -110,6 +110,7 @@ class _EditGroupState extends State<EditGroup> {
   buildList() {
     return contactList.length > 0
         ? ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: contactList.length,
             itemBuilder: (BuildContext context, int index) {

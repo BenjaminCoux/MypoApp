@@ -232,6 +232,7 @@ class _SmsProgState extends State<SmsProg> {
   myList(List<Scheduledmsg_hive> alerts, int lenght, BuildContext context) {
     return lenght > 0
         ? ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: alerts.length,
             itemBuilder: (BuildContext context, int index) {

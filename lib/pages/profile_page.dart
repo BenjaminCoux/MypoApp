@@ -108,22 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildUserInfo(User_hive? user, bool userDefined) => Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
-            child: Padding(
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Text(
-                      "Nom",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black),
-                    )
-                  ],
-                )),
-          ),
+          buildLabelText("Nom"),
           Container(
             margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
             decoration: BoxDecoration(
@@ -146,22 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
-            child: Padding(
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Text(
-                      "Email",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black),
-                    )
-                  ],
-                )),
-          ),
+          buildLabelText("Email"),
           Container(
             margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
             decoration: BoxDecoration(
@@ -184,22 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
-            child: Padding(
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Text(
-                      "Téléphone",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black),
-                    )
-                  ],
-                )),
-          ),
+          buildLabelText("Téléphone"),
           Container(
             margin: EdgeInsets.fromLTRB(12, 10, 10, 10),
             decoration: BoxDecoration(
@@ -224,6 +179,24 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       );
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
+          )),
+    );
+  }
 
   Widget buildUpgradeButton() => ButtonWidget(
         text: "Upgrade to Premium",

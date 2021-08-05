@@ -87,6 +87,7 @@ class _GroupContactState extends State<GroupContactPage> {
   buildListofCOntact(int lenght, List<GroupContact> list) {
     return lenght > 0
         ? ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: list.length,
             itemBuilder: (BuildContext context, int index) {

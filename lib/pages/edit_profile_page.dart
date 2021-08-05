@@ -12,6 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'profile_page.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'dart:core';
+import 'package:email_validator/email_validator.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -25,6 +27,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final numeroController = TextEditingController();
   final imageController = TextEditingController();
   String pathOfImage = '';
+  final numeroExpression =
+      RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
+
   @override
   void initState() {
     super.initState();
@@ -117,7 +122,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           appBar: TopBarNoRedirection(title: "Edit profile"),
           body: GestureDetector(
             onTap: () {
-              //FocusScope.of(context).unfocus();
+              FocusScope.of(context).unfocus();
             },
             child: ListView(
               physics: BouncingScrollPhysics(),
@@ -156,12 +161,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   height: 30,
                 ),
                 buildTextField('Nom', userDefined ? user!.name : "Example",
-                    nomController, 1),
+                    nomController, 1, TextInputType.text),
                 buildTextField(
                     'Email',
                     userDefined ? user!.email : "Example@example.com",
                     emailController,
-                    1),
+                    1,
+                    TextInputType.emailAddress),
                 buildTextFieldNumero(
                     'Téléphone',
                     userDefined ? user!.phoneNumber : "06060606",
@@ -211,12 +217,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             showSnackBar(context, "Veuillez rentrer un nom.");
                           } else if (emailController.text == '') {
                             showSnackBar(context, "Veuillez rentrer un email.");
+                          } else if (!EmailValidator.validate(
+                              emailController.text)) {
+                            showSnackBar(
+                                context, "Veuillez rentrer un email valide.");
                           } else if (numeroController.text == '') {
                             showSnackBar(
                                 context, "Veuillez rentrer un numéro.");
+                          } else if (!numeroExpression
+                              .hasMatch(numeroController.text)) {
+                            showSnackBar(
+                                context, "Veuillez rentrer un numéro valide.");
                           } else if (nomController.text != '' &&
                               emailController.text != '' &&
-                              numeroController.text != '') {
+                              numeroController.text != '' &&
+                              EmailValidator.validate(emailController.text)) {
                             saveUserToHive(user);
                             Navigator.of(context).pop(context);
                             Navigator.of(context).push(
@@ -242,6 +257,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 )
               ],
             ),
+          )),
+    );
+  }
+
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
           )),
     );
   }
@@ -287,12 +321,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ..showSnackBar(snackBar);
   }
 
-  Widget buildTextField(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
+  Widget buildTextField(
+      String labelText,
+      String placeholder,
+      TextEditingController controller,
+      int nbLines,
+      TextInputType keyboardType) {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
+          margin: EdgeInsets.fromLTRB(16, 3, 5, 0),
           child: Padding(
               padding: EdgeInsets.all(0),
               child: Row(
@@ -301,7 +339,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     labelText,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 16,
                         color: Colors.black),
                   )
                 ],
@@ -327,7 +365,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               minLines: 1,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               maxLines: nbLines,
-              keyboardType: TextInputType.text,
+              keyboardType: keyboardType,
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
@@ -360,7 +398,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.fromLTRB(16, 5, 5, 5),
+          margin: EdgeInsets.fromLTRB(16, 3, 5, 0),
           child: Padding(
               padding: EdgeInsets.all(0),
               child: Row(
@@ -369,7 +407,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     labelText,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 16,
                         color: Colors.black),
                   )
                 ],

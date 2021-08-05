@@ -69,6 +69,8 @@ class _RapportState extends State<Rapport> {
       );
     } else {
       return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
         padding: EdgeInsets.all(8),
         itemCount: widget.rapportmsg.length,
         itemBuilder: (BuildContext context, int index) {
@@ -81,13 +83,18 @@ class _RapportState extends State<Rapport> {
     }
   }
 
-  Widget buildMessage(BuildContext context, Rapportmsg_hive message) {
-    late String preview = " ";
-    for (int i = 0; i < message.message.length && i < 20; i++) {
-      preview += message.message[i];
+  preview(String text) {
+    String preview = '';
+    for (int i = 0; i < text.length && i < 12; i++) {
+      preview += text[i];
     }
+
+    return preview;
+  }
+
+  Widget buildMessage(BuildContext context, Rapportmsg_hive message) {
     return Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(5),
         child: GestureDetector(
           onTap: () => {
             Navigator.pop(context),
@@ -110,7 +117,7 @@ class _RapportState extends State<Rapport> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(8),
                       child: Column(children: [
                         Row(children: [
                           Icon(Icons.access_time_filled, color: d_darkgray),
@@ -119,7 +126,13 @@ class _RapportState extends State<Rapport> {
                         ]),
                         Row(children: [
                           Icon(Icons.person, color: d_darkgray),
-                          Text(' Numéro: ${message.phoneNumber}'),
+                          message.phoneNumber.length < 20
+                              ? Text(' Numéro: ${message.phoneNumber}',
+                                  overflow: TextOverflow.ellipsis)
+                              : Text(
+                                  ' Numéro: ${preview(message.phoneNumber)}...',
+                                  overflow: TextOverflow.ellipsis),
+                          // Text(' Numéro: ${message.phoneNumber}'),
                         ]),
                         Row(children: [
                           Icon(Icons.notifications, color: d_darkgray),
@@ -131,7 +144,7 @@ class _RapportState extends State<Rapport> {
                           message.message.length < 20
                               ? Text(' Message: ${message.message}',
                                   overflow: TextOverflow.ellipsis)
-                              : Text(' Message: ${preview}...',
+                              : Text(' Message: ${preview(message.message)}...',
                                   overflow: TextOverflow.ellipsis),
                         ]),
                       ]),

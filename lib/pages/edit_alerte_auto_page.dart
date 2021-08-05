@@ -296,6 +296,7 @@ class _AlertScreenState extends State<AlertScreen> {
         //showing added keys
         widget.alerte.keys.length > 0
             ? ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: widget.alerte.keys.length,
                 itemBuilder: (BuildContext context, int index) {

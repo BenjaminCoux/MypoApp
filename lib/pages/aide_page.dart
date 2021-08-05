@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:mypo/model/couleurs.dart';
@@ -24,6 +25,9 @@ class _HelpScreenState extends State<HelpScreen> {
   late final email;
   List<String> attachments = [];
   bool isHTML = false;
+  int nbMaxWords = 450;
+  bool wordsLimit = true;
+  int nbWords = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +169,7 @@ class _HelpScreenState extends State<HelpScreen> {
           SizedBox(height: 8),
           TextField(
               controller: nomController,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                   fillColor: Colors.white,
                   filled: true,
@@ -172,6 +177,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   border: InputBorder.none)),
           SizedBox(height: 8),
           TextField(
+              keyboardType: TextInputType.emailAddress,
               controller: emailController,
               decoration: InputDecoration(
                   fillColor: Colors.white,
@@ -180,9 +186,22 @@ class _HelpScreenState extends State<HelpScreen> {
                   border: InputBorder.none)),
           SizedBox(height: 8),
           TextField(
+              keyboardType: TextInputType.text,
               controller: messageController,
               maxLines: 7,
+              onChanged: (String value) => {
+                    setState(() {
+                      this.nbWords = value.length;
+                      this.nbMaxWords = 450 - value.length;
+                      if (this.nbMaxWords < 0) {
+                        this.wordsLimit = false;
+                      } else {
+                        this.wordsLimit = true;
+                      }
+                    })
+                  },
               decoration: InputDecoration(
+                  errorText: wordsLimit ? null : '${this.nbWords}/450',
                   fillColor: Colors.white,
                   filled: true,
                   hintText: "Message",
@@ -200,12 +219,18 @@ class _HelpScreenState extends State<HelpScreen> {
               if (nomController.text == '')
                 {showSnackBar(context, "Veuillez rentrer votre nom.")}
               else if (emailController.text == '')
+                {showSnackBar(context, "Veuillez rentrer un email.")}
+              else if (!EmailValidator.validate(emailController.text))
                 {showSnackBar(context, "Veuillez rentrer un email valide.")}
               else if (messageController.text == '')
                 {showSnackBar(context, "Veuillez écrire un message.")}
+              else if (wordsLimit == false)
+                {showSnackBar(context, "Nombre de character maximal dépassé.")}
               else if (nomController.text != '' &&
                   emailController != '' &&
-                  messageController != '')
+                  messageController != '' &&
+                  wordsLimit == true &&
+                  EmailValidator.validate(emailController.text))
                 {
                   // send(),
                   // Navigator.pop(context),
@@ -216,6 +241,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   //             value: '',
                   //           )),
                   // ),
+                  showSnackBar(context, "Les informations sont correctes."),
                 }
               else
                 {showSnackBar(context, 'Veuillez completer tous les champs.')},

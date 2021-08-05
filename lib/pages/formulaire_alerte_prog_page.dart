@@ -50,6 +50,9 @@ class _ProgState extends State<ProgForm> {
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
   final regularExpression =
       RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
+  final numeroExpression =
+      RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
+  final phoneExpression = RegExp(r'^[0-9_\-+() \.,;]+$');
   int nbMaxWords = 450;
   bool wordsLimit = true;
   int nbWords = 0;
@@ -553,6 +556,12 @@ class _ProgState extends State<ProgForm> {
                               showSnackBar(
                                   context, "Veuillez rentrer un numéro.")
                             }
+                          else if (!phoneExpression
+                              .hasMatch(contactController.text))
+                            {
+                              showSnackBar(context,
+                                  "Veuillez rentrer de(s) numéro(s) valide.")
+                            }
                           else if (alertContent.text == '')
                             {
                               showSnackBar(
@@ -560,10 +569,8 @@ class _ProgState extends State<ProgForm> {
                             }
                           else if (wordsLimit == false)
                             {
-                              {
-                                showSnackBar(
-                                    context, "Veuillez rentrer un numéro.")
-                              }
+                              showSnackBar(context,
+                                  "Nombre de character maximal dépassé.")
                             }
                           else if (!regularExpression
                               .hasMatch(nameController.text))

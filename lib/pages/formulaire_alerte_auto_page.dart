@@ -387,6 +387,7 @@ class _FormState extends State<FormScreen> {
         // Showing added keys under the field
         keys.length > 0
             ? ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: keys.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -993,6 +994,8 @@ class _MyDialogState extends State<MyDialog> {
             height: 300,
             width: 350,
             child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               itemCount: contactgroup.length,
               itemBuilder: (BuildContext context, int index) {
                 return groupTile(contactgroup[index], index);

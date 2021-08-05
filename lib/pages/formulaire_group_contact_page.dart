@@ -85,6 +85,7 @@ class _GroupFormState extends State<GroupForm> {
   buildList() {
     return contactList.length > 0
         ? ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: nameList.length,
             itemBuilder: (BuildContext context, int index) {

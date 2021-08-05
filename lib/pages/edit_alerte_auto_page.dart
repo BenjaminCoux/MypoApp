@@ -355,7 +355,6 @@ class _AlertScreenState extends State<AlertScreen> {
   @override
   Widget build(BuildContext context) {
     final DateSymbols fr = dateTimeSymbolMap()['fr'];
-    // print(widget.alerte.days);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: TopBarRedirection(
@@ -658,11 +657,7 @@ class _AlertScreenState extends State<AlertScreen> {
                             Switch(
                                 activeColor: d_green,
                                 value: false,
-                                onChanged: (bool val) => {
-                                      setState(() {
-                                        // confirm = val;
-                                      })
-                                    }),
+                                onChanged: (bool val) => {setState(() {})}),
                           ],
                         ),
                       ),

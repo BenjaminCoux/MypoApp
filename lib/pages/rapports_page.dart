@@ -132,7 +132,6 @@ class _RapportState extends State<Rapport> {
                               : Text(
                                   ' Numéro: ${preview(message.phoneNumber)}...',
                                   overflow: TextOverflow.ellipsis),
-                          // Text(' Numéro: ${message.phoneNumber}'),
                         ]),
                         Row(children: [
                           Icon(Icons.notifications, color: d_darkgray),

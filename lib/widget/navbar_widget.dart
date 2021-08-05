@@ -56,7 +56,6 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
         ),
       ],
       onTap: (index) {
-        //print(index);
         if (index == 0) {}
         if (index == 1) {}
       },
@@ -114,7 +113,6 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
         ),
       ],
       onTap: (index) {
-        //print(index);
         if (index == 0) {}
         if (index == 1) {}
       },

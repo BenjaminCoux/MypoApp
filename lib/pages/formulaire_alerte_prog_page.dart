@@ -103,7 +103,6 @@ class _ProgState extends State<ProgForm> {
         ..confirm = confirm
         ..notification = notif
         ..groupContact = grp;
-      //..status = MessageStatus.PENDING;
 
       final box = Boxes.getScheduledmsg();
       box.add(msg); // automatically generates a autoincrement key
@@ -338,7 +337,6 @@ class _ProgState extends State<ProgForm> {
                           child: Container(
                             margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: OutlinedButton(
-                              // onPressed: null,
                               onPressed: () => showSheet(context,
                                   child: buildDatePicker(), onClicked: () {
                                 final value =
@@ -346,7 +344,6 @@ class _ProgState extends State<ProgForm> {
                                 showSnackBar(context, 'Date "$value"');
                                 Navigator.pop(context);
                               }),
-
                               style: OutlinedButton.styleFrom(
                                 backgroundColor: d_green,
                                 side: BorderSide(color: d_green, width: 2),
@@ -676,10 +673,6 @@ class _ProgState extends State<ProgForm> {
           onChanged: (String value) => {
             setState(() {
               // set new state
-
-              // this.contentchanged = true;
-              // this.titlechanged = true;
-              // this.hasChanged = true;
             })
           },
           minLines: 1,

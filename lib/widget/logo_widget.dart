@@ -48,7 +48,6 @@ class Logo extends StatelessWidget {
                 image: img as ImageProvider,
                 fit: BoxFit.cover,
                 width: 200,
-                // height: 250,
               ),
             ),
           ),

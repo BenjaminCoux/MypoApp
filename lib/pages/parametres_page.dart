@@ -19,7 +19,6 @@ class SettingsScreenOne extends StatelessWidget {
       userDefined = true;
 
       user = users[0];
-      // debugPrint('User is defined  ${user!.name} ,  ${user.imagePath}');
     }
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
@@ -38,9 +37,7 @@ class SettingsScreenOne extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   color: d_green,
                   child: ListTile(
-                    onTap: () {
-                      //Open edit profile
-                    },
+                    onTap: () {},
                     title: Text(userDefined ? user!.name : 'Username',
                         style: TextStyle(
                             color: Colors.white,

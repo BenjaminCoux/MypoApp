@@ -197,7 +197,6 @@ class _SmsProgState extends State<SmsProg> {
             actions: <Widget>[
               TextButton(
                   onPressed: () => {
-                        // send(msg),
                         updateDate(msg),
                         if (notif)
                           {
@@ -254,7 +253,6 @@ class _SmsProgState extends State<SmsProg> {
       backgroundColor: Colors.grey.shade100,
       appBar: TopBarRedirection(
           title: "Messages programmés", page: () => HomePage()),
-
       body: Scrollbar(
         thickness: 5,
         interactive: true,
@@ -325,7 +323,6 @@ class _SmsProgState extends State<SmsProg> {
           ),
         ),
       ),
-      // ),
       bottomNavigationBar: BottomNavigationBarSmsProgTwo(),
     );
   }

@@ -48,7 +48,6 @@ class _ProfilePageState extends State<ProfilePage> {
       userDefined = true;
 
       user = users[0];
-      // debugPrint('User is defined  ${user!.name} ,  ${user.imagePath}');
     }
     final imgPath = "https://picsum.photos/id/1005/200/300";
     return new WillPopScope(
@@ -80,23 +79,6 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(
                 height: 24,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Text(data,
-              //       style: TextStyle(fontSize: 25, color: Colors.black)),
-              // ),
-              // ElevatedButton(
-              //   style: ElevatedButton.styleFrom(
-              //       textStyle: TextStyle(fontFamily: 'calibri', fontSize: 18),
-              //       primary: d_green,
-              //       onPrimary: Colors.white,
-              //       shape: StadiumBorder(),
-              //       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 9)),
-              //   child: Text('test'),
-              //   onPressed: () {
-              //     // writeDataToFile('assets/log.txt', 'test');
-              //   },
-              // )
             ],
           )),
       onWillPop: () async {

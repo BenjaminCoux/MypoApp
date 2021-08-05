@@ -167,7 +167,6 @@ class _StateSwitchButton extends State<SwitchButton> {
           setState(() {
             state = s;
             widget.alerte.active = s;
-            //print(state);
             if (s == true) {
               initPlatformState();
             }
@@ -408,10 +407,6 @@ class _AlertesState extends State<Alertes> {
   */
   @override
   Widget build(BuildContext context) {
-    //print("hello");
-    // for (int i = 0; i < widget.alerts.length; i++) {
-    //   print(widget.alerts[i]);
-    // }
     return Container(
       padding: EdgeInsets.all(10),
       child: SingleChildScrollView(
@@ -451,7 +446,6 @@ class _AlertesState extends State<Alertes> {
                 builder: (context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasData) {
                     return Container(
-                        // margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
                         child: myList(
                             widget.alerts, widget.alerts.length, context));
                   } else {
@@ -610,13 +604,6 @@ bool isActive(String? body, Alert alert, bool isInContact) {
   if (!dayIsRight(alert, day)) {
     return res;
   }
-  // ignore: unused_local_variable
-  var where = {
-    1: "Contient",
-    2: "Ne Contient pas",
-    3: "Est au debut",
-    4: "Est à la fin"
-  };
   for (int i = 0; i < alert.keys.length; i++) {
     if (dontAllow(body, alert)) {
       return false;
@@ -662,10 +649,6 @@ onBackgroundMessage(SmsMessage message) async {
   debugPrint("onMessage called (background)");
 
   final alerts = await getAlerts();
-  // debugPrint(alerts.toString());
-  // for (int i = 0; i < alerts.length; i++) {
-  //   debugPrint(alerts[i].title);
-  // }
   Future<bool> test = isContactInContactList(message);
   int i = 0;
   while (i < alerts[i].keys.length) {
@@ -816,9 +799,3 @@ bool isInGroup(Alert a, String? adress) {
     return true;
   }
 }
-
-
-/////////////////////
-///erreur quand on essai de modifier une alerte
-///The following _TypeError was thrown building Builder(dirty): type '<Null>' is not a subtype of type 'String'
-///stack overflow: You are passing a function Future instead of Widget which is causing this error.

@@ -427,7 +427,6 @@ class _FormState extends State<FormScreen> {
                                             textAlign: TextAlign.justify,
                                           ),
                                           IconButton(
-                                              //
                                               alignment: Alignment(0, 10),
                                               onPressed: () => {
                                                     setState(() {
@@ -458,7 +457,6 @@ class _FormState extends State<FormScreen> {
         child: SingleChildScrollView(
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
-            // FocusManager.instance.primaryFocus?.unfocus(),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

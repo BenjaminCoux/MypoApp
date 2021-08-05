@@ -115,7 +115,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
         timeUpdated.day, timeAux.hour, timeAux.minute, timeAux.second);
     widget.message.repeat = repeat;
     widget.message.notification = notification;
-    // widget.message.status = MessageStatus.PENDING;
     widget.message.save();
   }
 
@@ -155,9 +154,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: TextField(
-                      onChanged: (text) {
-                        // final result = 450 - text.length;
-                      },
+                      onChanged: (text) {},
                       minLines: 1,
                       maxLines: 1,
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -308,17 +305,14 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                       color: Colors.black),
-                                  //textAlign: TextAlign.start,
                                 ),
                                 Text(
                                   "${DateFormat('dd/MM/yyyy').format(widget.message.dateOfCreation)} ",
                                   style: TextStyle(fontSize: 16),
-                                  //textAlign: TextAlign.start,
                                 ),
                                 Text(
                                   "Heure: ${DateFormat('HH:mm').format(widget.message.dateOfCreation)} ",
                                   style: TextStyle(fontSize: 16),
-                                  // textAlign: TextAlign.start,
                                 ),
                               ],
                             ),
@@ -649,13 +643,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                       'Veuillez completer tous les champs')
                                 }
                             }
-                          // // print('dont forget to save');
-                          // saveChanges();
-                          // Navigator.pop(context);
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => new SmsProg()));
                         },
                         child: Text(
                           "Sauvegarder",

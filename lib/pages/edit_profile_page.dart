@@ -146,7 +146,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         final imageFile = File('${directory.path}/${name}');
                         final newImage =
                             await File(image.path).copy(imageFile.path);
-                        // setState(() => pathOfImage = newImage.path);
                         setState(() => imageController.text = newImage.path);
                       } catch (e) {
                         debugPrint(e.toString());
@@ -378,7 +377,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
                 contentPadding: EdgeInsets.all(8),
-                // hintText: placeholder,
                 hintStyle: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
@@ -446,7 +444,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.transparent)),
                 contentPadding: EdgeInsets.all(8),
-                // hintText: placeholder,
                 hintStyle: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,

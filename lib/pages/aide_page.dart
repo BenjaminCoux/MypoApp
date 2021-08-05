@@ -5,7 +5,6 @@ import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 
-// import 'home_page.dart';
 class HelpScreen extends StatefulWidget {
   final String value;
   HelpScreen({required this.value});

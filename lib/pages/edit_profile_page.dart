@@ -23,6 +23,42 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final nomController = TextEditingController();
   final emailController = TextEditingController();
   final numeroController = TextEditingController();
+  final imageController = TextEditingController();
+  String pathOfImage = '';
+  @override
+  void initState() {
+    super.initState();
+    User_hive? user;
+    List users = Boxes.getUser().values.toList().cast<User_hive>();
+    if (!users.isEmpty) {
+      user = users[0];
+      nomController.text = user!.name;
+      emailController.text = user.email;
+      numeroController.text = user.phoneNumber;
+      imageController.text = user.imagePath;
+    } else {
+      user = User_hive()
+        ..name = ''
+        ..email = ''
+        ..phoneNumber = ''
+        ..imagePath = "https://picsum.photos/id/1005/200/300";
+      final box = Boxes.getUser();
+      box.add(user);
+      nomController.text = user.name;
+      emailController.text = user.email;
+      numeroController.text = user.phoneNumber;
+      imageController.text = user.imagePath;
+    }
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    nomController.dispose();
+    emailController.dispose();
+    numeroController.dispose();
+    super.dispose();
+  }
 
   saveUserToHive(User_hive? User) {
     if (nomController.text != '' &&
@@ -32,7 +68,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ..name = nomController.text
         ..email = emailController.text
         ..phoneNumber = numeroController.text
-        ..imagePath = User!.imagePath;
+        ..imagePath = imageController.text;
 
       final box = Boxes.getUser();
       if (box.isEmpty) {
@@ -72,133 +108,174 @@ class _EditProfilePageState extends State<EditProfilePage> {
       final box = Boxes.getUser();
       box.add(user);
     }
-    return Scaffold(
-        appBar:
-            TopBarRedirection(title: "Edit profile", page: () => ProfilePage()),
-        body: GestureDetector(
-          onTap: () {
-            //FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            physics: BouncingScrollPhysics(),
-            children: [
-              const SizedBox(
-                height: 15,
-              ),
-              ProfileWidget(
-                imagePath: userDefined ? user!.imagePath : profileImagePath,
-                isEdit: true,
-                onClicked: () async {
-                  if (await Permission.photos.request().isGranted) {
-                    try {
-                      final image = await ImagePicker()
-                          .getImage(source: ImageSource.gallery);
-                      if (image == null) return;
-                      final directory =
-                          await getApplicationDocumentsDirectory();
-                      final name = basename(image.path);
-                      final imageFile = File('${directory.path}/${name}');
-                      final newImage =
-                          await File(image.path).copy(imageFile.path);
-                      setState(() => user!.imagePath = newImage.path);
-                    } catch (e) {
-                      debugPrint(e.toString());
+
+    return new WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+          appBar: TopBarNoRedirection(title: "Edit profile"),
+          body: GestureDetector(
+            onTap: () {
+              //FocusScope.of(context).unfocus();
+            },
+            child: ListView(
+              physics: BouncingScrollPhysics(),
+              children: [
+                const SizedBox(
+                  height: 15,
+                ),
+                ProfileWidget(
+                  imagePath:
+                      userDefined ? imageController.text : profileImagePath,
+                  isEdit: true,
+                  onClicked: () async {
+                    if (await Permission.photos.request().isGranted) {
+                      try {
+                        final image = await ImagePicker()
+                            .getImage(source: ImageSource.gallery);
+                        if (image == null) return;
+                        final directory =
+                            await getApplicationDocumentsDirectory();
+                        final name = basename(image.path);
+                        final imageFile = File('${directory.path}/${name}');
+                        final newImage =
+                            await File(image.path).copy(imageFile.path);
+                        // setState(() => pathOfImage = newImage.path);
+                        setState(() => imageController.text = newImage.path);
+                      } catch (e) {
+                        debugPrint(e.toString());
+                      }
+                    } else {
+                      showSnackBar(context,
+                          "Veuillez activer les permissions d'accès aux photos");
                     }
-                  } else {
-                    showSnackBar(context,
-                        "Veuillez activer les permissions d'accès aux photos");
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              buildTextField('Nom', userDefined ? user!.name : "Example",
-                  nomController, 1),
-              buildTextField(
-                  'Email',
-                  userDefined ? user!.email : "Example@example.com",
-                  emailController,
-                  1),
-              buildTextFieldNumero(
-                  'Téléphone',
-                  userDefined ? user!.phoneNumber : "06060606",
-                  numeroController,
-                  1),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(12),
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                  },
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                buildTextField('Nom', userDefined ? user!.name : "Example",
+                    nomController, 1),
+                buildTextField(
+                    'Email',
+                    userDefined ? user!.email : "Example@example.com",
+                    emailController,
+                    1),
+                buildTextFieldNumero(
+                    'Téléphone',
+                    userDefined ? user!.phoneNumber : "06060606",
+                    numeroController,
+                    1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(12),
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                      ),
-                      onPressed: () => Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new ProfilePage()),
-                      ),
-                      child: Text(
-                        "Annuler",
-                        style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(12),
-                    child: ElevatedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: d_green,
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (nomController.text == '') {
-                          showSnackBar(context, "Veuillez rentrer un nom.");
-                        } else if (emailController.text == '') {
-                          showSnackBar(context, "Veuillez rentrer un email.");
-                        } else if (numeroController.text == '') {
-                          showSnackBar(context, "Veuillez rentrer un numéro.");
-                        } else if (nomController.text != '' &&
-                            emailController.text != '' &&
-                            numeroController.text != '') {
-                          saveUserToHive(user);
-                          Navigator.of(context).pop(context);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => ProfilePage()),
-                          );
-                        } else {
-                          showSnackBar(
-                              context, 'Veuillez completer tous les champs');
-                        }
-                      },
-                      child: Text(
-                        "Sauvegarder",
-                        style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.white,
+                        onPressed: () => {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  buildPopupDialogCancel(user!, userDefined))
+                        },
+                        child: Text(
+                          "Annuler",
+                          style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ));
+                    Container(
+                      margin: EdgeInsets.all(12),
+                      child: ElevatedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: d_green,
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (nomController.text == '') {
+                            showSnackBar(context, "Veuillez rentrer un nom.");
+                          } else if (emailController.text == '') {
+                            showSnackBar(context, "Veuillez rentrer un email.");
+                          } else if (numeroController.text == '') {
+                            showSnackBar(
+                                context, "Veuillez rentrer un numéro.");
+                          } else if (nomController.text != '' &&
+                              emailController.text != '' &&
+                              numeroController.text != '') {
+                            saveUserToHive(user);
+                            Navigator.of(context).pop(context);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => ProfilePage()),
+                            );
+                          } else {
+                            showSnackBar(
+                                context, 'Veuillez completer tous les champs');
+                          }
+                        },
+                        child: Text(
+                          "Sauvegarder",
+                          style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )),
+    );
+  }
+
+  buildPopupDialogCancel(User_hive user, bool userDefined) {
+    return new AlertDialog(
+      title: Text("Voulez vous annuler ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            setState(() {
+              userDefined ? '' : user.imagePath = profileImagePath;
+            });
+            Navigator.pop(this.context);
+            Navigator.push(
+              this.context,
+              new MaterialPageRoute(builder: (context) => new ProfilePage()),
+            );
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(this.context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
   }
 
   void showSnackBar(BuildContext context, String s) {
@@ -252,7 +329,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               maxLines: nbLines,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                labelText: placeholder,
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -321,7 +397,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               maxLines: nbLines,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                labelText: placeholder,
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),

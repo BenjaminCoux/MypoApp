@@ -21,7 +21,7 @@ class _DetailRepportsPageState extends State<DetailRepportsPage> {
         appBar: TopBarRedirection(
             title: "Details de l'alerte ${widget.message.name}",
             page: () => RepportsPage()),
-        body: Detail(message: widget.message));
+        body: SingleChildScrollView(child: Detail(message: widget.message)));
   }
 }
 

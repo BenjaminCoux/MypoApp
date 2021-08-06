@@ -554,7 +554,8 @@ class _ProgState extends State<ProgForm> {
                                   context, "Veuillez rentrer un numéro.")
                             }
                           else if (!phoneExpression
-                              .hasMatch(contactController.text))
+                                  .hasMatch(contactController.text) &&
+                              alertGroup.length == 0)
                             {
                               showSnackBar(context,
                                   "Veuillez rentrer de(s) numéro(s) valide.")

@@ -38,37 +38,18 @@ class _GroupFormState extends State<GroupForm> {
     return -1;
   }
 
-  buildTile(String name) {
-    int index = findNumber(name);
-    return Container(
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.all(
-            Radius.circular(18),
-          ),
-        ),
-        padding: EdgeInsets.all(0),
-        margin: EdgeInsets.all(0),
-        child: Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
-            child: Row(
-              children: [
-                Text(name),
-                IconButton(
-                    onPressed: () => {
-                          setState(() {
-                            contactList.removeAt(index);
-                            nameList.remove(name);
-                          })
-                        },
-                    icon: Icon(Icons.delete))
-              ],
-            ),
-          ),
-        ])));
+  buildTile(String number) {
+    return ListTile(
+      trailing: IconButton(
+          alignment: Alignment.centerRight,
+          onPressed: () => {
+                setState(() {
+                  contactList.remove(number);
+                })
+              },
+          icon: Icon(Icons.delete)),
+      title: Text(number),
+    );
   }
 
   void save() {
@@ -89,7 +70,7 @@ class _GroupFormState extends State<GroupForm> {
             shrinkWrap: true,
             itemCount: nameList.length,
             itemBuilder: (BuildContext context, int index) {
-              return buildTile(nameList[index]);
+              return Card(child: buildTile(nameList[index]));
             },
           )
         : Text("Pas encore de contact dans le groupe");

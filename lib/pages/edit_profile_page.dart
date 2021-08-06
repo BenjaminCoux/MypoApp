@@ -25,6 +25,7 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool hasChanged = false;
+  final prenomController = TextEditingController();
   final nomController = TextEditingController();
   final emailController = TextEditingController();
   final numeroController = TextEditingController();
@@ -37,6 +38,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool fieldsChanged = false;
   final numeroExpression =
       RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
+  final regularExpression =
+      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
 
   @override
   void initState() {
@@ -45,17 +48,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
     List users = Boxes.getUser().values.toList().cast<User_hive>();
     if (!users.isEmpty) {
       user = users[0];
+
       nomController.text = user!.name;
+      prenomController.text = user.firstname;
       emailController.text = user.email;
       numeroController.text = user.phoneNumber;
       numero = user.phoneNumber;
-
       imageController.text = user.imagePath;
       contryCodeController.text = user.contryCode;
       code = user.contryCode;
       isoCode = user.isoCode;
     } else {
       user = User_hive()
+        ..firstname = ''
         ..name = ''
         ..email = ''
         ..phoneNumber = ''
@@ -64,6 +69,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ..imagePath = "https://picsum.photos/id/1005/200/300";
       final box = Boxes.getUser();
       box.add(user);
+      prenomController.text = user.firstname;
       nomController.text = user.name;
       emailController.text = user.email;
       numeroController.text = user.phoneNumber;
@@ -80,14 +86,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
     emailController.dispose();
     numeroController.dispose();
     contryCodeController.dispose();
+    prenomController.dispose();
     super.dispose();
   }
 
   saveUserToHive(User_hive? User) {
-    if (nomController.text != '' &&
+    if (prenomController.text != '' &&
+        nomController.text != '' &&
         emailController != '' &&
         numeroController != '') {
       final user = User_hive()
+        ..firstname = prenomController.text
         ..name = nomController.text
         ..email = emailController.text
         ..phoneNumber = numero
@@ -126,6 +135,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       user = users[0];
     } else {
       user = User_hive()
+        ..firstname = ''
         ..name = ''
         ..email = ''
         ..phoneNumber = ''
@@ -189,6 +199,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 const SizedBox(
                   height: 10,
                 ),
+                buildTextField(
+                    'Prénom',
+                    userDefined ? user!.firstname : "Example",
+                    prenomController,
+                    1,
+                    TextInputType.text),
                 buildTextField('Nom', userDefined ? user!.name : "Example",
                     nomController, 1, TextInputType.text),
                 buildTextField(
@@ -228,18 +244,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       numero = phone.number!;
                       code = phone.countryCode!;
                       isoCode = phone.countryISOCode!;
-                      // print(phone.countryISOCode);
-                      // print(phone.number);
-                      // print('${phone.countryCode}${numeroController.text}');
-                      // print(numeroTelephone);
-                      // print(phone.completeNumber);
                     },
                     onCountryChanged: (phone) {
                       fieldsChanged = true;
                       isoCode = phone.countryISOCode!;
                       code = phone.countryCode!;
-                      // print(phone.countryISOCode);
-                      // print('Country code changed to: ' + phone.countryCode!);
                     },
                     onSubmitted: (phone) {},
                   ),
@@ -290,6 +299,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         onPressed: () {
                           if (nomController.text == '') {
                             showSnackBar(context, "Veuillez rentrer un nom.");
+                          } else if (prenomController.text == '') {
+                            showSnackBar(
+                                context, "Veuillez rentrer un prénom.");
                           } else if (emailController.text == '') {
                             showSnackBar(context, "Veuillez rentrer un email.");
                           } else if (!EmailValidator.validate(
@@ -304,7 +316,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             showSnackBar(
                                 context, "Veuillez rentrer un numéro valide.");
                           } else if (!fieldsChanged) {
-                          } else if (nomController.text != '' &&
+                          } else if (prenomController.text != '' &&
+                              nomController.text != '' &&
                               emailController.text != '' &&
                               numeroController.text != '' &&
                               fieldsChanged &&

@@ -84,12 +84,14 @@ class _ProgState extends State<ProgForm> {
     if ((contactController.text != '' || alertGroup.length > 0) &&
         alertContent.text != '' &&
         repeatinput != '') {
+      List<GroupContact> grpfromStr =
+          getGrpfromString(groupcontactcontroller.text);
       List<GroupContact> grp = <GroupContact>[];
-      for (int i = 0; i < alertGroup.length; i++) {
+      for (int i = 0; i < grpfromStr.length; i++) {
         final tmp = GroupContact()
-          ..name = alertGroup[i].name
-          ..description = alertGroup[i].description
-          ..numbers = alertGroup[i].numbers;
+          ..name = grpfromStr[i].name
+          ..description = grpfromStr[i].description
+          ..numbers = grpfromStr[i].numbers;
         grp.add(tmp);
       }
       final msg = Scheduledmsg_hive()
@@ -649,6 +651,19 @@ class _ProgState extends State<ProgForm> {
             ],
           )),
     );
+  }
+
+  List<GroupContact> getGrpfromString(String input) {
+    List<String> list = input.split(",");
+    List<GroupContact> res = <GroupContact>[];
+    for (int i = 0; i < list.length; i++) {
+      for (int j = 0; j < contactgroup.length; j++) {
+        if (list[i] == contactgroup[j].name) {
+          res.add(contactgroup[j]);
+        }
+      }
+    }
+    return res;
   }
 
   Container buildTextField(

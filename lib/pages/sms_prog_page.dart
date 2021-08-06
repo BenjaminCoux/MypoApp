@@ -351,6 +351,46 @@ class _SmsProgState extends State<SmsProg> {
     );
   }
 
+  void addToDB(Scheduledmsg_hive alert, String title) async {
+    Scheduledmsg_hive msg = Scheduledmsg_hive()
+      ..name = alert.name
+      ..confirm = alert.confirm
+      ..countdown = alert.countdown
+      ..date = alert.date
+      ..dateOfCreation = alert.dateOfCreation
+      ..message = alert.message
+      ..groupContact = alert.groupContact
+      ..phoneNumber = alert.phoneNumber
+      ..notification = alert.notification
+      ..repeat = alert.repeat;
+    final box = Boxes.getScheduledmsg();
+    box.add(msg);
+  }
+
+  String getNbAlerte(String title) {
+    if (title.contains("-")) {
+      String tmp = "";
+      bool stop = false;
+      int i = 0;
+      while (!stop && i < title.length) {
+        if (title[i] == "-") {
+          stop = true;
+        } else {
+          tmp = tmp + title[i];
+        }
+        i++;
+      }
+      title = tmp;
+    }
+    int count = 0;
+    for (int i = 0; i < alerts.length; i++) {
+      if (alerts[i].name.contains(title)) {
+        count++;
+      }
+    }
+    return title + "-" + count.toString();
+  }
+
   buildButtons(BuildContext context, Scheduledmsg_hive message) => Row(
         children: [
           Expanded(
@@ -367,6 +407,35 @@ class _SmsProgState extends State<SmsProg> {
                         ScheduledmsgDetailPage(message: message),
                   ),
                 ),
+              },
+            ),
+          ),
+          Expanded(
+            child: TextButton.icon(
+              style: TextButton.styleFrom(primary: d_darkgray),
+              label: Text('Dupliquer'),
+              icon: Icon(Icons.copy),
+              onPressed: () => {
+                setState(() {
+                  String title = getNbAlerte(message.name);
+                  Scheduledmsg_hive msg = Scheduledmsg_hive()
+                    ..name = title
+                    ..confirm = message.confirm
+                    ..countdown = message.countdown
+                    ..date = message.date
+                    ..dateOfCreation = message.dateOfCreation
+                    ..message = message.message
+                    ..groupContact = message.groupContact
+                    ..phoneNumber = message.phoneNumber
+                    ..notification = message.notification
+                    ..repeat = message.repeat;
+
+                  addToDB(msg, title);
+                  alerts = Boxes.getScheduledmsg()
+                      .values
+                      .toList()
+                      .cast<Scheduledmsg_hive>();
+                }),
               },
             ),
           ),

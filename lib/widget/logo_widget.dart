@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mypo/pages/edit_profile_page.dart';
 
 /*
     -that class creates the logo in the middle
@@ -41,13 +42,24 @@ class Logo extends StatelessWidget {
         Container(
           margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
           height: MediaQuery.of(context).size.height * 0.25,
-          child: ClipOval(
-            child: Material(
-              color: Colors.transparent,
-              child: Ink.image(
-                image: img as ImageProvider,
-                fit: BoxFit.cover,
-                width: 200,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(
+                context,
+              );
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => new EditProfilePage()));
+            },
+            child: ClipOval(
+              child: Material(
+                color: Colors.transparent,
+                child: Ink.image(
+                  image: img as ImageProvider,
+                  fit: BoxFit.cover,
+                  width: 200,
+                ),
               ),
             ),
           ),

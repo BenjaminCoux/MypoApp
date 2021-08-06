@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/model/couleurs.dart';
-import 'package:mypo/pages/profile_page.dart';
+import 'package:mypo/pages/edit_profile_page.dart';
 
 /*
   -that class creates the top app bar widget
@@ -101,7 +101,8 @@ class TopBarPremium extends StatelessWidget implements PreferredSizeWidget {
             Navigator.of(context).pop();
             Navigator.push(
               context,
-              new MaterialPageRoute(builder: (context) => new ProfilePage()),
+              new MaterialPageRoute(
+                  builder: (context) => new EditProfilePage()),
             );
           }),
     );

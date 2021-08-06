@@ -18,6 +18,7 @@ class EditGroup extends StatefulWidget {
 }
 
 String findName(String me, Iterable<Contact> contact) {
+  // ignore: unused_local_variable
   List<String> res = <String>[];
   Iterator<Contact> it = contact.iterator;
   while (it.moveNext()) {

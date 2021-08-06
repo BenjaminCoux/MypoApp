@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/pages/aide_page.dart';
-import 'package:mypo/pages/profile_page.dart';
+import 'package:mypo/pages/edit_profile_page.dart';
 import 'package:mypo/pages/rapports_page.dart';
 import 'package:mypo/pages/parametres_page.dart';
 
@@ -26,7 +26,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (BuildContext context) => new ProfilePage()));
+                    builder: (BuildContext context) => new EditProfilePage()));
           },
         ),
         _buildDivider(),

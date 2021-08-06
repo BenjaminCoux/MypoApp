@@ -3,14 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/pages/accueil_page.dart';
+import 'package:mypo/pages/premium_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/button_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'profile_page.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
@@ -26,7 +29,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final emailController = TextEditingController();
   final numeroController = TextEditingController();
   final imageController = TextEditingController();
+  final contryCodeController = TextEditingController();
   String pathOfImage = '';
+  String numero = '';
+  String code = '';
+  String isoCode = '';
+  bool fieldsChanged = false;
   final numeroExpression =
       RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
 
@@ -40,12 +48,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
       nomController.text = user!.name;
       emailController.text = user.email;
       numeroController.text = user.phoneNumber;
+      numero = user.phoneNumber;
+
       imageController.text = user.imagePath;
+      contryCodeController.text = user.contryCode;
+      code = user.contryCode;
+      isoCode = user.isoCode;
     } else {
       user = User_hive()
         ..name = ''
         ..email = ''
         ..phoneNumber = ''
+        ..contryCode = ''
+        ..isoCode = ''
         ..imagePath = "https://picsum.photos/id/1005/200/300";
       final box = Boxes.getUser();
       box.add(user);
@@ -53,6 +68,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       emailController.text = user.email;
       numeroController.text = user.phoneNumber;
       imageController.text = user.imagePath;
+      contryCodeController.text = user.contryCode;
+      isoCode = user.isoCode;
     }
   }
 
@@ -62,6 +79,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     nomController.dispose();
     emailController.dispose();
     numeroController.dispose();
+    contryCodeController.dispose();
     super.dispose();
   }
 
@@ -72,7 +90,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
       final user = User_hive()
         ..name = nomController.text
         ..email = emailController.text
-        ..phoneNumber = numeroController.text
+        ..phoneNumber = numero
+        ..contryCode = code
+        ..isoCode = isoCode
         ..imagePath = imageController.text;
 
       final box = Boxes.getUser();
@@ -109,6 +129,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ..name = ''
         ..email = ''
         ..phoneNumber = ''
+        ..contryCode = ''
+        ..isoCode = ''
         ..imagePath = "https://picsum.photos/id/1005/200/300";
       final box = Boxes.getUser();
       box.add(user);
@@ -119,7 +141,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         return false;
       },
       child: Scaffold(
-          appBar: TopBarNoRedirection(title: "Edit profile"),
+          appBar:
+              TopBarRedirection(title: "Edit profile", page: () => HomePage()),
           body: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
@@ -146,7 +169,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         final imageFile = File('${directory.path}/${name}');
                         final newImage =
                             await File(image.path).copy(imageFile.path);
-                        setState(() => imageController.text = newImage.path);
+                        setState(() {
+                          imageController.text = newImage.path;
+                          fieldsChanged = true;
+                        });
                       } catch (e) {
                         debugPrint(e.toString());
                       }
@@ -156,8 +182,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     }
                   },
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                Center(child: buildUpgradeButton()),
                 const SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 buildTextField('Nom', userDefined ? user!.name : "Example",
                     nomController, 1, TextInputType.text),
@@ -167,11 +197,57 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     emailController,
                     1,
                     TextInputType.emailAddress),
-                buildTextFieldNumero(
-                    'Téléphone',
-                    userDefined ? user!.phoneNumber : "06060606",
-                    numeroController,
-                    1),
+                // buildTextFieldNumero(
+                //     'Téléphone',
+                //     userDefined ? user!.phoneNumber : "06060606",
+                //     numeroController,
+                //     1),
+                buildLabelText('Téléphone'),
+                Container(
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: IntlPhoneField(
+                    searchText: 'Recherche par nom de pays',
+                    controller: numeroController,
+                    initialCountryCode: isoCode != '' ? isoCode : 'FR',
+                    decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: d_green,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        )),
+                    onChanged: (phone) {
+                      fieldsChanged = true;
+                      numero = phone.number!;
+                      code = phone.countryCode!;
+                      isoCode = phone.countryISOCode!;
+                      // print(phone.countryISOCode);
+                      // print(phone.number);
+                      // print('${phone.countryCode}${numeroController.text}');
+                      // print(numeroTelephone);
+                      // print(phone.completeNumber);
+                    },
+                    onCountryChanged: (phone) {
+                      fieldsChanged = true;
+                      isoCode = phone.countryISOCode!;
+                      code = phone.countryCode!;
+                      // print(phone.countryISOCode);
+                      // print('Country code changed to: ' + phone.countryCode!);
+                    },
+                    onSubmitted: (phone) {},
+                  ),
+                ),
+
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -227,16 +303,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               .hasMatch(numeroController.text)) {
                             showSnackBar(
                                 context, "Veuillez rentrer un numéro valide.");
+                          } else if (!fieldsChanged) {
                           } else if (nomController.text != '' &&
                               emailController.text != '' &&
                               numeroController.text != '' &&
+                              fieldsChanged &&
                               EmailValidator.validate(emailController.text)) {
                             saveUserToHive(user);
-                            Navigator.of(context).pop(context);
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => ProfilePage()),
+                            Navigator.pop(
+                              context,
                             );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        new EditProfilePage()));
                           } else {
                             showSnackBar(
                                 context, 'Veuillez completer tous les champs');
@@ -290,22 +371,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
       actions: <Widget>[
         new TextButton(
           onPressed: () {
-            setState(() {
-              userDefined ? '' : user.imagePath = profileImagePath;
-            });
-            Navigator.pop(this.context);
-            Navigator.pop(this.context);
-            Navigator.push(
-              this.context,
-              new MaterialPageRoute(builder: (context) => new ProfilePage()),
-            );
+            if (fieldsChanged) {
+              setState(() {
+                userDefined ? '' : user.imagePath = profileImagePath;
+              });
+              Navigator.pop(this.context);
+              Navigator.pop(this.context);
+              Navigator.push(
+                this.context,
+                new MaterialPageRoute(
+                    builder: (context) => new EditProfilePage()),
+              );
+            } else {
+              Navigator.pop(this.context);
+            }
           },
           child: const Text('Oui', style: TextStyle(color: Colors.black)),
         ),
         new TextButton(
           onPressed: () {
             Navigator.pop(this.context);
-            Navigator.of(this.context).pop();
           },
           child: const Text('Non', style: TextStyle(color: Colors.black)),
         ),
@@ -313,6 +398,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
+  Widget buildUpgradeButton() => ButtonWidget(
+        text: "Upgrade to Premium",
+        onClicked: () => {
+          Navigator.pop(this.context),
+          Navigator.push(this.context,
+              new MaterialPageRoute(builder: (context) => new PremiumPage()))
+        },
+      );
   void showSnackBar(BuildContext context, String s) {
     final snackBar = SnackBar(
       content: Text(s, style: TextStyle(fontSize: 20)),
@@ -360,7 +453,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               controller: controller,
               onChanged: (String value) => {
                 setState(() {
-                  // set new state
+                  fieldsChanged = true;
                 })
               },
               minLines: 1,
@@ -427,7 +520,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               controller: controller,
               onChanged: (String value) => {
                 setState(() {
-                  // set new state
+                  fieldsChanged = true;
                 })
               },
               minLines: 1,

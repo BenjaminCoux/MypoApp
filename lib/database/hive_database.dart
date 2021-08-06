@@ -50,6 +50,10 @@ class User_hive extends HiveObject {
   @HiveField(2)
   late String phoneNumber;
   @HiveField(3)
+  late String contryCode;
+  @HiveField(4)
+  late String isoCode;
+  @HiveField(5)
   late String imagePath;
 }
 

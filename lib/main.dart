@@ -99,8 +99,12 @@ class _MyappState extends State<MyApp> {
   late Timer _timer;
   int i = 0;
   @override
-  Future<void> initState() async {
+  initState() {
     super.initState();
+    askPermissions();
+  }
+
+  askPermissions() async {
     await Permission.contacts.request().isGranted;
     await Permission.sms.request().isGranted;
   }

@@ -25,6 +25,7 @@ class _AlertScreenState extends State<AlertScreen> {
   late var alertContent = TextEditingController();
   bool hasChanged = false;
   bool titlechanged = false;
+  TextEditingController contactController = TextEditingController();
   bool contentchanged = false;
   int _value = 1;
   bool _value2 = true;
@@ -517,13 +518,16 @@ class _AlertScreenState extends State<AlertScreen> {
                                                       context: context,
                                                       builder: (context) {
                                                         return MyDialog(
-                                                            contactgroup:
-                                                                contactgroup,
-                                                            alertGroup: widget
-                                                                .alerte
-                                                                .groupcontats,
-                                                            boolCheckedGrp:
-                                                                boolCheckedGrp);
+                                                          contactgroup:
+                                                              contactgroup,
+                                                          alertGroup: widget
+                                                              .alerte
+                                                              .groupcontats,
+                                                          boolCheckedGrp:
+                                                              boolCheckedGrp,
+                                                          controller:
+                                                              contactController,
+                                                        );
                                                       })
                                                 }
                                             }),

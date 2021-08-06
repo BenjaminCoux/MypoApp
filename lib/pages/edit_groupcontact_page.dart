@@ -18,7 +18,6 @@ class EditGroup extends StatefulWidget {
 }
 
 String findName(String me, Iterable<Contact> contact) {
-  List<String> res = <String>[];
   Iterator<Contact> it = contact.iterator;
   while (it.moveNext()) {
     if (it.current.phones?.first.value == me) {

@@ -74,6 +74,7 @@ class _FormState extends State<FormScreen> {
   int nbMaxWords = 450;
   int nbWords = 0;
   bool wordsLimit = true;
+  TextEditingController contactController = TextEditingController();
 
   @override
   void dispose() {
@@ -583,12 +584,15 @@ class _FormState extends State<FormScreen> {
                                                         context: context,
                                                         builder: (context) {
                                                           return MyDialog(
-                                                              contactgroup:
-                                                                  contactgroup,
-                                                              alertGroup:
-                                                                  alertGroup,
-                                                              boolCheckedGrp:
-                                                                  boolCheckedGrp);
+                                                            contactgroup:
+                                                                contactgroup,
+                                                            alertGroup:
+                                                                alertGroup,
+                                                            boolCheckedGrp:
+                                                                boolCheckedGrp,
+                                                            controller:
+                                                                contactController,
+                                                          );
                                                         })
                                                   }
                                               }),
@@ -938,10 +942,12 @@ class MyDialog extends StatefulWidget {
   List<GroupContact> alertGroup;
   List<GroupContact> contactgroup;
   List<bool> boolCheckedGrp;
+  TextEditingController controller;
   MyDialog(
       {required this.contactgroup,
       required this.alertGroup,
-      required this.boolCheckedGrp});
+      required this.boolCheckedGrp,
+      required this.controller});
   @override
   _MyDialogState createState() => new _MyDialogState();
 }
@@ -967,8 +973,16 @@ class _MyDialogState extends State<MyDialog> {
                       widget.boolCheckedGrp[index] = v!;
                       if (!widget.alertGroup.contains(contact)) {
                         widget.alertGroup.add(contact);
+                        if (widget.controller.text == "") {
+                          widget.controller.text = contact.name;
+                        } else {
+                          widget.controller.text =
+                              widget.controller.text + "," + contact.name;
+                        }
                       } else {
                         widget.alertGroup.remove(contact);
+                        widget.controller.text =
+                            deletegrp(widget.controller.text, contact);
                       }
                     })
                   }),
@@ -977,13 +991,39 @@ class _MyDialogState extends State<MyDialog> {
               if (!widget.alertGroup.contains(contact)) {
                 widget.alertGroup.add(contact);
                 widget.boolCheckedGrp[index] = true;
+                if (widget.controller.text == "") {
+                  widget.controller.text = contact.name;
+                } else {
+                  widget.controller.text =
+                      widget.controller.text + "," + contact.name;
+                }
               } else {
                 widget.alertGroup.remove(contact);
                 widget.boolCheckedGrp[index] = false;
+                widget.controller.text =
+                    deletegrp(widget.controller.text, contact);
               }
             })
           },
         ));
+  }
+
+  String deletegrp(String input, GroupContact contact) {
+    List<String> list = input.split(',');
+    for (int i = 0; i < list.length; i++) {
+      if (list[i] == contact.name) {
+        list.removeAt(i);
+      }
+    }
+    String res = "";
+    for (int i = 0; i < list.length; i++) {
+      if (i < list.length - 1) {
+        res += list[i] + ",";
+      } else {
+        res += list[i];
+      }
+    }
+    return res;
   }
 
   buildGrpList(List<GroupContact> contactgroup) {

@@ -15,10 +15,13 @@ class GroupContactPage extends StatefulWidget {
 
 class _GroupContactState extends State<GroupContactPage> {
   late List<GroupContact> groupContact;
+  late Iterable<Contact> list;
 
   @override
   void initState() {
     super.initState();
+    //to fix
+    list = new Iterable.empty();
     groupContact = Boxes.getGroupContact().values.toList().cast<GroupContact>();
   }
 
@@ -54,9 +57,7 @@ class _GroupContactState extends State<GroupContactPage> {
               style: TextButton.styleFrom(primary: d_darkgray),
               label: Text('Modifier'),
               icon: Icon(Icons.edit),
-              onPressed: () async {
-                Iterable<Contact> list = await ContactsService.getContacts();
-
+              onPressed: () {
                 Navigator.pop(context);
                 Navigator.push(
                     context,

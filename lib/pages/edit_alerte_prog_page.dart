@@ -232,9 +232,11 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                         context: context,
                                         builder: (context) {
                                           return MyDialog(
-                                              contactgroup: contactgroup,
-                                              alertGroup: alertgrp,
-                                              boolCheckedGrp: boolCheckedGrp);
+                                            contactgroup: contactgroup,
+                                            alertGroup: alertgrp,
+                                            boolCheckedGrp: boolCheckedGrp,
+                                            controller: groupcontactcontroller,
+                                          );
                                         }),
                                     setState(() {
                                       String tmp = "";

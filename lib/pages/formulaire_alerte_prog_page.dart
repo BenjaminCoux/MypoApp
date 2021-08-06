@@ -56,7 +56,7 @@ class _ProgState extends State<ProgForm> {
   int nbMaxWords = 450;
   bool wordsLimit = true;
   int nbWords = 0;
-  final groupcontactcontroller = TextEditingController();
+  TextEditingController groupcontactcontroller = TextEditingController();
 
   @override
   void initState() {
@@ -234,19 +234,13 @@ class _ProgState extends State<ProgForm> {
                                           context: context,
                                           builder: (context) {
                                             return MyDialog(
-                                                contactgroup: contactgroup,
-                                                alertGroup: alertGroup,
-                                                boolCheckedGrp: boolCheckedGrp);
+                                              contactgroup: contactgroup,
+                                              alertGroup: alertGroup,
+                                              boolCheckedGrp: boolCheckedGrp,
+                                              controller:
+                                                  groupcontactcontroller,
+                                            );
                                           }),
-                                      setState(() {
-                                        String tmp = "";
-                                        for (int i = 0;
-                                            i < alertGroup.length;
-                                            i++) {
-                                          tmp += alertGroup[i].name;
-                                        }
-                                        groupcontactcontroller.text = tmp;
-                                      })
                                     },
                                 icon: Icon(
                                   Icons.group_add_rounded,

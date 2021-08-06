@@ -294,6 +294,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               userDefined ? '' : user.imagePath = profileImagePath;
             });
             Navigator.pop(this.context);
+            Navigator.pop(this.context);
             Navigator.push(
               this.context,
               new MaterialPageRoute(builder: (context) => new ProfilePage()),
@@ -303,6 +304,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         new TextButton(
           onPressed: () {
+            Navigator.pop(this.context);
             Navigator.of(this.context).pop();
           },
           child: const Text('Non', style: TextStyle(color: Colors.black)),

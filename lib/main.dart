@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -98,8 +99,10 @@ class _MyappState extends State<MyApp> {
   late Timer _timer;
   int i = 0;
   @override
-  void initState() {
+  Future<void> initState() async {
     super.initState();
+    await Permission.contacts.request().isGranted;
+    await Permission.sms.request().isGranted;
   }
 
   @override

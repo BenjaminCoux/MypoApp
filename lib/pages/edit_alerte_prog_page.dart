@@ -223,7 +223,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       minLines: 1,
                       maxLines: 1,
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.text,
                       controller: groupcontactcontroller,
                       decoration: InputDecoration(
                           suffixIcon: IconButton(
@@ -382,7 +382,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                   color: Colors.black),
                             ),
                             Text(
-                              "${widget.message.repeat} ",
+                              "${repeat} ",
                               style:
                                   TextStyle(fontSize: 16, color: Colors.black),
                             ),

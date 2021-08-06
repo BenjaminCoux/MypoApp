@@ -225,7 +225,7 @@ class _ProgState extends State<ProgForm> {
                         minLines: 1,
                         maxLines: 1,
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.text,
                         controller: groupcontactcontroller,
                         decoration: InputDecoration(
                             suffixIcon: IconButton(

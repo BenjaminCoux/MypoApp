@@ -52,7 +52,7 @@ class _DetailState extends State<Detail> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 20.0),
-                        child: Text('Message Details',
+                        child: Text('Rapport',
                             style: TextStyle(
                                 fontSize: 20.0, fontWeight: FontWeight.bold)),
                       ),
@@ -86,70 +86,94 @@ class _DetailState extends State<Detail> {
                                 Text(
                                     '${DateFormat('HH:mm').format(widget.message.date)}')
                               ]),
-                              TableRow(children: [
-                                Text('Message :',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                Text('${widget.message.message}')
-                              ]),
                             ],
-                          ))
+                          )),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            buildLabelText('Message :'),
+                            SizedBox(height: 5),
+                            Text('${widget.message.message}')
+                          ],
+                        ),
+                      ),
                     ]),
               ),
             ),
           ),
-          Padding(
-              padding: EdgeInsets.only(
-                  left: 25.0, right: 20.0, top: 8.0, bottom: 8.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.person, size: 35.0, color: Colors.grey.shade900),
-                  Flexible(
-                      fit: FlexFit.tight,
-                      flex: 1,
-                      child: Card(
-                          color: d_green,
-                          child: Padding(
-                              padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 2.0),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      '${widget.message.message}',
-                                      maxLines: null,
-                                      style: TextStyle(
-                                          fontSize: 16.9, color: Colors.white),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    Divider(color: Colors.transparent),
-                                    Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: <Widget>[
-                                          Text(
-                                            'envoyé',
-                                            style: TextStyle(
-                                                fontSize: 13.5,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Icon(
-                                            Icons.check,
-                                            color: Colors.white,
-                                            size: 16.0,
-                                          )
-                                        ])
-                                  ]))))
-                ],
-              ))
+          // Padding(
+          //     padding: EdgeInsets.only(
+          //         left: 25.0, right: 20.0, top: 8.0, bottom: 8.0),
+          //     child: Row(
+          //       children: <Widget>[
+          //         Icon(Icons.person, size: 35.0, color: Colors.grey.shade900),
+          //         Flexible(
+          //             fit: FlexFit.tight,
+          //             flex: 1,
+          //             child: Card(
+          //                 color: d_green,
+          //                 child: Padding(
+          //                     padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 2.0),
+          //                     child: Column(
+          //                         crossAxisAlignment: CrossAxisAlignment.start,
+          //                         mainAxisSize: MainAxisSize.max,
+          //                         mainAxisAlignment:
+          //                             MainAxisAlignment.spaceBetween,
+          //                         children: <Widget>[
+          //                           Text(
+          //                             '${widget.message.message}',
+          //                             maxLines: null,
+          //                             style: TextStyle(
+          //                                 fontSize: 16.9, color: Colors.white),
+          //                             textAlign: TextAlign.left,
+          //                           ),
+          //                           Divider(color: Colors.transparent),
+          //                           Row(
+          //                               crossAxisAlignment:
+          //                                   CrossAxisAlignment.end,
+          //                               mainAxisAlignment:
+          //                                   MainAxisAlignment.spaceBetween,
+          //                               mainAxisSize: MainAxisSize.max,
+          //                               children: <Widget>[
+          //                                 Text(
+          //                                   'envoyé',
+          //                                   style: TextStyle(
+          //                                       fontSize: 13.5,
+          //                                       color: Colors.white,
+          //                                       fontWeight: FontWeight.bold),
+          //                                 ),
+          //                                 Icon(
+          //                                   Icons.check,
+          //                                   color: Colors.white,
+          //                                   size: 16.0,
+          //                                 )
+          //                               ])
+          //                         ]))))
+          //       ],
+          //     ))
         ],
       ),
+    );
+  }
+
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
+          )),
     );
   }
 }

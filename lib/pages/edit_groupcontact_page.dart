@@ -18,8 +18,6 @@ class EditGroup extends StatefulWidget {
 }
 
 String findName(String me, Iterable<Contact> contact) {
-  // ignore: unused_local_variable
-  List<String> res = <String>[];
   Iterator<Contact> it = contact.iterator;
   while (it.moveNext()) {
     if (it.current.phones?.first.value == me) {
@@ -39,14 +37,19 @@ class _EditGroupState extends State<EditGroup> {
   late TextEditingController descri;
   late List<String> contactList;
   late List<String> nameList;
+  Iterable<Contact> contacts = Iterable.empty();
   final contactController = TextEditingController();
   bool hasChanged = false;
+  void getContacts() async {
+    this.contacts = await ContactsService.getContacts();
+  }
 
   @override
   void initState() {
     name = TextEditingController(text: widget.grp.name);
     descri = TextEditingController(text: widget.grp.description);
     contactList = widget.grp.numbers;
+    getC();
     name.addListener(() {
       changed;
     });
@@ -87,6 +90,12 @@ class _EditGroupState extends State<EditGroup> {
     );
   }
 
+  Future<Iterable> getC() async {
+    Iterable<Contact> i = await ContactsService.getContacts();
+    contacts = i;
+    return i;
+  }
+
   void save() {
     widget.grp.name = name.text;
     widget.grp.description = descri.text;
@@ -94,19 +103,47 @@ class _EditGroupState extends State<EditGroup> {
     widget.grp.save();
   }
 
-  buildList() {
+/*Future listContact =
+        Future.delayed(const Duration(milliseconds: 100), () => getContacts());*/
+  buildList(Iterable<Contact> it) {
+    Iterator<Contact> c = it.iterator;
+    List<Contact> grp = <Contact>[];
+    List<String> names = <String>[];
+    int i = 0;
+    while (c.moveNext()) {
+      grp.add(c.current);
+    }
+    bool set = false;
+    for (int i = 0; i < contactList.length; i++) {
+      set = false;
+      for (int j = 0; j < grp.length; j++) {
+        String num = grp[j].phones?.elementAt(0).value! ?? "";
+        if (num == contactList[i]) {
+          names.add(grp[j].givenName!);
+          set = true;
+        }
+      }
+      if (!set) {
+        names.add(contactList[i]);
+        set = true;
+      }
+    }
     return contactList.length > 0
         ? ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: contactList.length,
             itemBuilder: (BuildContext context, int index) {
-              return Card(child: buildTile(contactList[index]));
+              return Card(child: buildTile(names[index]));
             },
           )
         : Text("Pas encore de contact dans le groupe");
   }
 
+  final Future<Iterable<Contact>> list = Future<Iterable<Contact>>.delayed(
+    const Duration(microseconds: 2),
+    () => ContactsService.getContacts(),
+  );
   @override
   Widget build(BuildContext context) {
     String title = widget.grp.name;
@@ -188,7 +225,32 @@ class _EditGroupState extends State<EditGroup> {
                 ),
               ),
             ),
-            buildList(),
+            FutureBuilder(
+                future: list,
+                builder: (BuildContext context,
+                    AsyncSnapshot<Iterable<Contact>> snapshot) {
+                  List<Widget> children;
+                  if (snapshot.hasData) {
+                    children = <Widget>[buildList(contacts)];
+                  } else {
+                    children = <Widget>[
+                      SizedBox(
+                        child: CircularProgressIndicator(
+                          color: d_green,
+                        ),
+                        width: 60,
+                        height: 60,
+                      ),
+                    ];
+                  }
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: children,
+                    ),
+                  );
+                }),
             ElevatedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: d_green,

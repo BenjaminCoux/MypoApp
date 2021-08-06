@@ -41,7 +41,7 @@ class Logo extends StatelessWidget {
         SizedBox(height: 10),
         Container(
           margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
-          height: MediaQuery.of(context).size.height * 0.25,
+          height: MediaQuery.of(context).size.height * 0.24,
           child: GestureDetector(
             onTap: () {
               Navigator.pop(
@@ -56,9 +56,10 @@ class Logo extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: Ink.image(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  width: MediaQuery.of(context).size.height * 0.25,
                   image: img as ImageProvider,
                   fit: BoxFit.cover,
-                  width: 200,
                 ),
               ),
             ),

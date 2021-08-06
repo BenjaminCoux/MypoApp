@@ -384,7 +384,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                   color: Colors.black),
                             ),
                             Text(
-                              "${repeat} ",
+                              repeat != ''
+                                  ? "${repeat} "
+                                  : "${widget.message.repeat}",
                               style:
                                   TextStyle(fontSize: 16, color: Colors.black),
                             ),
@@ -820,7 +822,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           Flexible(
             flex: 7,
             child: CupertinoDatePicker(
-                minimumYear: widget.message.date.year,
+                minimumYear: DateTime.now().year,
                 maximumYear: DateTime.now().year + 3,
                 initialDateTime: widget.message.date,
                 mode: CupertinoDatePickerMode.date,

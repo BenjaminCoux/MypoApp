@@ -44,7 +44,7 @@ class _PremiumPageState extends State<PremiumPage> {
               Column(
                 children: <Widget>[
                   ListTile(
-                      title: Text("Supprimmer les publicités",
+                      title: Text("Supprimer les publicités",
                           style: TextStyle(color: Colors.orange.shade300)),
                       trailing: Icon(
                         Icons.check_box_outlined,
@@ -83,7 +83,6 @@ class _PremiumPageState extends State<PremiumPage> {
                         "S'abonner maintenant",
                         style: TextStyle(
                             backgroundColor: d_green,
-                            fontSize: 16,
                             color: Colors.white,
                             fontFamily: 'calibri'),
                       )),

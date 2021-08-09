@@ -75,14 +75,20 @@ class LogoPremium extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColorFiltered(
-        colorFilter: ColorFilter.mode(
-            Colors.grey.shade800.withOpacity(0), BlendMode.srcOver),
+      colorFilter: ColorFilter.mode(
+          Colors.grey.shade800.withOpacity(0), BlendMode.srcOver),
+      child: Center(
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.25,
+          height: MediaQuery.of(context).size.height * 0.20,
+          width: MediaQuery.of(context).size.height * 0.20,
           decoration: BoxDecoration(
               color: Colors.transparent,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
               image: DecorationImage(
-                  image: AssetImage('assets/images/logopremium.png'))),
-        ));
+                image: AssetImage('assets/images/icon.png'),
+              )),
+        ),
+      ),
+    );
   }
 }

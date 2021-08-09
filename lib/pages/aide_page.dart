@@ -1,9 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:mailer/mailer.dart';
 import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpScreen extends StatefulWidget {
   final String value;
@@ -240,7 +242,9 @@ class _HelpScreenState extends State<HelpScreen> {
                   //             value: '',
                   //           )),
                   // ),
+
                   showSnackBar(context, "Les informations sont correctes."),
+                  sendMail(value, messageController.text),
                 }
               else
                 {showSnackBar(context, 'Veuillez completer tous les champs.')},
@@ -257,33 +261,52 @@ class _HelpScreenState extends State<HelpScreen> {
         ]));
   }
 
-  Future<void> send() async {
-    final Email email = Email(
-      body:
-          'Message de : ${nomController.text} \n email: ${emailController.text} \n\n ${messageController.text}',
-      subject: 'MyPoApp Email test',
-      recipients: [emailController.text],
-      attachmentPaths: attachments,
-      isHTML: isHTML,
-    );
-
-    String platformResponse;
-
-    try {
-      await FlutterEmailSender.send(email);
-      platformResponse = 'success';
-    } catch (error) {
-      platformResponse = error.toString();
+  sendMail(String subject, String message) {
+    String? encodeQueryParameters(Map<String, String> params) {
+      return params.entries
+          .map((e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+          .join('&');
     }
 
-    if (!mounted) return;
+    final Uri emailLauncherUri = Uri(
+        scheme: 'mailto',
+        path: 'example@domain.com',
+        query: encodeQueryParameters(<String, String>{
+          'subject': 'APP MOBILE: ${subject}',
+          'body': '${message}',
+        }));
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(platformResponse),
-      ),
-    );
+    launch(emailLauncherUri.toString());
   }
+
+  // Future<void> send() async {
+  //   final Email email = Email(
+  //     body:
+  //         'Message de : ${nomController.text} \n email: ${emailController.text} \n\n ${messageController.text}',
+  //     subject: 'MyPoApp Email test',
+  //     recipients: [emailController.text],
+  //     attachmentPaths: attachments,
+  //     isHTML: isHTML,
+  //   );
+
+  //   String platformResponse;
+
+  //   try {
+  //     await FlutterEmailSender.send(email);
+  //     platformResponse = 'success';
+  //   } catch (error) {
+  //     platformResponse = error.toString();
+  //   }
+
+  //   if (!mounted) return;
+
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text(platformResponse),
+  //     ),
+  //   );
+  // }
 
   void showSnackBar(BuildContext context, String s) {
     final snackBar = SnackBar(

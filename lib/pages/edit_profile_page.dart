@@ -191,7 +191,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     TextInputType.emailAddress),
                 buildLabelText('Téléphone'),
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
                   child: IntlPhoneField(
                     searchText: 'Recherche par nom de pays',
                     controller: numeroController,

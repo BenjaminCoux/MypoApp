@@ -92,6 +92,7 @@ class SettingsScreenOne extends StatelessWidget {
                     color: d_darkgray,
                   ),
                 ),
+                const SizedBox(height: 10),
                 SwitchListTile(
                   activeColor: d_green,
                   contentPadding: EdgeInsets.all(0),
@@ -107,6 +108,7 @@ class SettingsScreenOne extends StatelessWidget {
                     value: false,
                     title: Text('Recevoir les nouvelles offres'),
                     onChanged: (val) {}),
+                const SizedBox(height: 10),
                 SwitchListTile(
                     activeColor: d_green,
                     contentPadding: EdgeInsets.all(0),

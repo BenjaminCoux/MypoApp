@@ -46,6 +46,7 @@ class _ProgState extends State<ProgForm> {
   late TimeOfDay picked;
   DateTime date = DateTime.now();
   DateTime time = DateTime.now();
+
   bool fieldsEmpty = true;
   final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
   final regularExpression =
@@ -94,6 +95,9 @@ class _ProgState extends State<ProgForm> {
           ..numbers = grpfromStr[i].numbers;
         grp.add(tmp);
       }
+
+      final alertExists = false;
+
       final msg = Scheduledmsg_hive()
         ..name = nameController.text
         ..phoneNumber = contactController.text
@@ -107,6 +111,9 @@ class _ProgState extends State<ProgForm> {
         ..groupContact = grp;
 
       final box = Boxes.getScheduledmsg();
+      for (Scheduledmsg_hive b in box.values) {
+        if (b.name == nameController.text) b = msg;
+      }
       box.add(msg); // automatically generates a autoincrement key
       //box.put('mykey',msg); // if we want to put a particular key
     }
@@ -440,8 +447,9 @@ class _ProgState extends State<ProgForm> {
                               children: [
                                 Icon(Icons.timer_rounded),
                                 Container(
-                                    child: Text("Compte à rebours",
-                                        style: TextStyle(color: Colors.red)),
+                                    child: Text(
+                                      "Compte à rebours",
+                                    ),
                                     margin: EdgeInsets.all(5)),
                               ],
                             )),
@@ -785,14 +793,39 @@ class _ProgState extends State<ProgForm> {
 
   Widget buildDatePicker() => SizedBox(
         height: 150,
-        child: CupertinoDatePicker(
-            minimumYear: DateTime.now().year - 2,
-            maximumYear: DateTime.now().year + 3,
-            initialDateTime: date,
-            mode: CupertinoDatePickerMode.dateAndTime,
-            use24hFormat: true,
-            onDateTimeChanged: (dateTime) =>
-                setState(() => this.date = dateTime)),
+        child: Flex(direction: Axis.horizontal, children: [
+          Flexible(
+            flex: 7,
+            child: CupertinoDatePicker(
+              minimumYear: DateTime.now().year,
+              maximumYear: DateTime.now().year + 3,
+              initialDateTime: date,
+              mode: CupertinoDatePickerMode.date,
+              use24hFormat: true,
+              onDateTimeChanged: (dateTime) => setState(() => this.date =
+                  new DateTime(dateTime.year, dateTime.month, dateTime.day)),
+            ),
+          ),
+          Flexible(
+              flex: 3,
+              child: CupertinoDatePicker(
+                  minimumYear: DateTime.now().year - 3,
+                  maximumYear: DateTime.now().year + 3,
+                  initialDateTime: date,
+                  mode: CupertinoDatePickerMode.time,
+                  use24hFormat: true,
+                  onDateTimeChanged: (dateTime) => setState(() => this.date =
+                      new DateTime(dateTime.year, dateTime.month, dateTime.day,
+                          dateTime.hour, dateTime.minute, dateTime.second)))),
+        ]),
+        // child: CupertinoDatePicker(
+        //     minimumYear: DateTime.now().year - 2,
+        //     maximumYear: DateTime.now().year + 3,
+        //     initialDateTime: date,
+        //     mode: CupertinoDatePickerMode.dateAndTime,
+        //     use24hFormat: true,
+        //     onDateTimeChanged: (dateTime) =>
+        //         setState(() => this.date = dateTime)),
       );
 
   showSheet(BuildContext context,

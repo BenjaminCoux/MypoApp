@@ -122,7 +122,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     List<Scheduledmsg_hive> alerts =
         Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
     for (int i = 0; i < alerts.length; i++) {
-      if (alerts[i].name == n) {
+      if (alerts[i].name == n && widget.message.name != n) {
         return true;
       }
     }
@@ -611,7 +611,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               showSnackBar(context,
                                   "Veuillez rentrer de(s) numéro(s) valide.")
                             }
-                          else if (sameName(widget.message.name))
+                          else if (sameName(alertName.text))
                             {
                               showSnackBar(
                                   context, "Le nom de l'alerte existe déjà")

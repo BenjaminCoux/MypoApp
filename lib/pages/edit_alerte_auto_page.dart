@@ -725,7 +725,7 @@ class _AlertScreenState extends State<AlertScreen> {
                           } else if (!isWeekSet(widget.alerte.days)) {
                             showSnackBar(
                                 context, "Veuillez choisir le(s) jour(s).");
-                          } else if (sameName(widget.alerte.title)) {
+                          } else if (sameName(alertName.text)) {
                             showSnackBar(
                                 context, "Le nom de l'alerte existe déjà");
                           } else if (!regularExpression
@@ -823,7 +823,7 @@ class _AlertScreenState extends State<AlertScreen> {
   bool sameName(String n) {
     List<Alert> alerts = Boxes.getAutoAlert().values.toList().cast<Alert>();
     for (int i = 0; i < alerts.length; i++) {
-      if (alerts[i].title == n) {
+      if (alerts[i].title == n && widget.alerte.title != n) {
         return true;
       }
     }

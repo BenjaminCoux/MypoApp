@@ -112,6 +112,17 @@ class _ProgState extends State<ProgForm> {
     }
   }
 
+  bool sameName(String n) {
+    List<Scheduledmsg_hive> alerts =
+        Boxes.getScheduledmsg().values.toList().cast<Scheduledmsg_hive>();
+    for (int i = 0; i < alerts.length; i++) {
+      if (alerts[i].name == n) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -560,6 +571,11 @@ class _ProgState extends State<ProgForm> {
                             {
                               showSnackBar(
                                   context, "Veuillez écrire un message.")
+                            }
+                          else if (sameName(nameController.text))
+                            {
+                              showSnackBar(
+                                  context, "Le nom de l'alerte existe déjà")
                             }
                           else if (wordsLimit == false)
                             {

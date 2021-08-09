@@ -143,6 +143,16 @@ class _FormState extends State<FormScreen> {
     box.add(alert);
   }
 
+  bool sameName(String n) {
+    List<Alert> alerts = Boxes.getAutoAlert().values.toList().cast<Alert>();
+    for (int i = 0; i < alerts.length; i++) {
+      if (alerts[i].title == n) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
    * change the color of the container of a key depending on the allow value 
    */
@@ -746,6 +756,11 @@ class _FormState extends State<FormScreen> {
                             showSnackBar(
                                 context, "Nombre de character maximal dépassé.")
                           }
+                        }
+                      else if (sameName(alertName.text))
+                        {
+                          showSnackBar(
+                              context, "Le nom de l'alerte existe déjà")
                         }
                       else if (!isCiblesSet(cibles))
                         {showSnackBar(context, "Veuillez choisir une cible.")}

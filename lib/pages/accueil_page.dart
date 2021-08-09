@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: d_grey,
-      appBar: TopBar(title: userDefined ? user!.name : "My Co'Laverie"),
+      appBar: TopBar(title: userDefined ? user!.name : "My Po"),
       drawer: HamburgerMenu(),
       body: SingleChildScrollView(
           child: Column(

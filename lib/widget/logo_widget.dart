@@ -26,7 +26,7 @@ class Logo extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.grey.shade100,
                 image: DecorationImage(
-                    image: AssetImage('assets/images/logo.png'))),
+                    image: AssetImage('assets/images/icon.png'))),
           );
   }
 

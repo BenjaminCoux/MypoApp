@@ -155,8 +155,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             await File(image.path).copy(imageFile.path);
                         setState(() {
                           imageController.text = newImage.path;
-                          debugPrint(imageController.text);
-
                           fieldsChanged = true;
                         });
                       } catch (e) {
@@ -245,11 +243,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed: () => {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  buildPopupDialogCancel(user!, userDefined))
+                        onPressed: () {
+                          try {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    buildPopupDialogCancel(user, userDefined));
+                          } catch (e) {
+                            debugPrint(e.toString());
+                          }
                         },
                         child: Text(
                           "Annuler",
@@ -306,6 +308,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         new EditProfilePage()));
+                            showSnackBar(context, 'Profile enregistré');
                           } else {
                             showSnackBar(
                                 context, 'Veuillez completer tous les champs');
@@ -348,7 +351,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  buildPopupDialogCancel(User_hive user, bool userDefined) {
+  buildPopupDialogCancel(User_hive? user, bool userDefined) {
     return new AlertDialog(
       title: Text("Voulez vous annuler ?"),
       content: new Column(
@@ -361,7 +364,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           onPressed: () {
             if (fieldsChanged) {
               setState(() {
-                userDefined ? '' : user.imagePath = profileImagePath;
+                userDefined ? '' : user?.imagePath = profileImagePath;
               });
               Navigator.pop(this.context);
               Navigator.pop(this.context);

@@ -256,7 +256,7 @@ class _HelpScreenState extends State<HelpScreen> {
 
     final Uri emailLauncherUri = Uri(
         scheme: 'mailto',
-        path: 'example@domain.com',
+        path: 'contact@mypo.fr',
         query: encodeQueryParameters(<String, String>{
           'subject': 'APP MOBILE: ${subject}',
           'body': '${message}',

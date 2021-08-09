@@ -105,8 +105,12 @@ class _MyappState extends State<MyApp> {
   }
 
   askPermissions() async {
-    await Permission.contacts.request().isGranted;
-    await Permission.sms.request().isGranted;
+    try {
+      await Permission.contacts.request().isGranted;
+      await Permission.sms.request().isGranted;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override

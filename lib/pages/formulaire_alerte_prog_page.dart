@@ -96,8 +96,6 @@ class _ProgState extends State<ProgForm> {
         grp.add(tmp);
       }
 
-      final alertExists = false;
-
       final msg = Scheduledmsg_hive()
         ..name = nameController.text
         ..phoneNumber = contactController.text
@@ -111,9 +109,6 @@ class _ProgState extends State<ProgForm> {
         ..groupContact = grp;
 
       final box = Boxes.getScheduledmsg();
-      for (Scheduledmsg_hive b in box.values) {
-        if (b.name == nameController.text) b = msg;
-      }
       box.add(msg); // automatically generates a autoincrement key
       //box.put('mykey',msg); // if we want to put a particular key
     }

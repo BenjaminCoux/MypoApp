@@ -126,7 +126,7 @@ class _ProgState extends State<ProgForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar:
           TopBarRedirection(title: 'Ajouter une alerte', page: () => SmsProg()),
       body: Scrollbar(

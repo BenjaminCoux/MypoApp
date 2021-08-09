@@ -18,7 +18,7 @@ class _RepportsPageState extends State<RepportsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(
           title: "Rapport des alertes émises", page: () => HomePage()),
       body: Scrollbar(

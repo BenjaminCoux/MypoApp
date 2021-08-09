@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/hamburgermenu_widget.dart';
@@ -32,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBar(title: userDefined ? user!.name : "My Co'Laverie"),
       drawer: HamburgerMenu(),
       body: SingleChildScrollView(

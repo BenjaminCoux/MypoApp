@@ -357,7 +357,7 @@ class _AlertScreenState extends State<AlertScreen> {
   Widget build(BuildContext context) {
     final DateSymbols fr = dateTimeSymbolMap()['fr'];
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.alerte.title}', page: () => SmsAuto()),
       body: Scrollbar(

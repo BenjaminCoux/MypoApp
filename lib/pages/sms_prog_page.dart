@@ -267,7 +267,7 @@ class _SmsProgState extends State<SmsProg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(
           title: "Messages programmés", page: () => HomePage()),
       body: Scrollbar(

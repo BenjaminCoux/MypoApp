@@ -21,7 +21,7 @@ class SettingsScreenOne extends StatelessWidget {
       user = users[0];
     }
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(title: 'Parametres', page: () => HomePage()),
       body: Stack(
         fit: StackFit.expand,

@@ -50,7 +50,7 @@ class _SmsAutoState extends State<SmsAuto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(
           title: "Messages automatiques", page: () => HomePage()),
       body: Scrollbar(
@@ -489,6 +489,7 @@ class _AlertesState extends State<Alertes> {
                       }),
               _buildDivider(),
               ListTile(
+                  enabled: false,
                   leading: Icon(FontAwesomeIcons.whatsapp, color: d_darkgray),
                   title: Text('WhatsApp'),
                   onTap: () => {
@@ -501,6 +502,7 @@ class _AlertesState extends State<Alertes> {
                       }),
               _buildDivider(),
               ListTile(
+                enabled: false,
                 leading:
                     Icon(FontAwesomeIcons.facebookMessenger, color: d_darkgray),
                 title: Text('Messenger'),

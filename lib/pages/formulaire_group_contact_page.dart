@@ -91,7 +91,7 @@ class _GroupFormState extends State<GroupForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(
         title: "Créer un nouveau groupe de contact",
         page: () => GroupContactPage(),

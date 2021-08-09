@@ -1,7 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/accueil_page.dart';
+import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,7 +32,15 @@ class _HelpScreenState extends State<HelpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    User_hive? user;
+    List users = Boxes.getUser().values.toList().cast<User_hive>();
+    if (!users.isEmpty) {
+      user = users[0];
+      nomController.text = user!.firstname + ' ' + user.name;
+      emailController.text = user.email;
+    }
     return Scaffold(
+        backgroundColor: d_grey,
         appBar: TopBarRedirection(title: "Aide", page: () => HomePage()),
         body: Stack(
           fit: StackFit.expand,
@@ -148,24 +158,10 @@ class _HelpScreenState extends State<HelpScreen> {
               child: Text("Nous contacter",
                   style: TextStyle(color: Colors.black, fontSize: 24))),
           SizedBox(height: 8),
-          Container(
-            margin: EdgeInsets.fromLTRB(12, 5, 5, 5),
-            child: Padding(
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Text(
-                      "Motif",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black),
-                    )
-                  ],
-                )),
-          ),
+          buildLabelText('Motif'),
           buildDropDown(),
           SizedBox(height: 8),
+          buildLabelText('Nom complet'),
           TextField(
               controller: nomController,
               keyboardType: TextInputType.text,
@@ -175,6 +171,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   hintText: "Nom",
                   border: InputBorder.none)),
           SizedBox(height: 8),
+          buildLabelText('Email'),
           TextField(
               keyboardType: TextInputType.emailAddress,
               controller: emailController,
@@ -184,6 +181,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   hintText: "Email",
                   border: InputBorder.none)),
           SizedBox(height: 8),
+          buildLabelText('Message'),
           TextField(
               keyboardType: TextInputType.text,
               controller: messageController,
@@ -278,33 +276,24 @@ class _HelpScreenState extends State<HelpScreen> {
     launch(emailLauncherUri.toString());
   }
 
-  // Future<void> send() async {
-  //   final Email email = Email(
-  //     body:
-  //         'Message de : ${nomController.text} \n email: ${emailController.text} \n\n ${messageController.text}',
-  //     subject: 'MyPoApp Email test',
-  //     recipients: [emailController.text],
-  //     attachmentPaths: attachments,
-  //     isHTML: isHTML,
-  //   );
-
-  //   String platformResponse;
-
-  //   try {
-  //     await FlutterEmailSender.send(email);
-  //     platformResponse = 'success';
-  //   } catch (error) {
-  //     platformResponse = error.toString();
-  //   }
-
-  //   if (!mounted) return;
-
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text(platformResponse),
-  //     ),
-  //   );
-  // }
+  Widget buildLabelText(String input) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
+      child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Row(
+            children: [
+              Text(
+                input,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
+              )
+            ],
+          )),
+    );
+  }
 
   void showSnackBar(BuildContext context, String s) {
     final snackBar = SnackBar(

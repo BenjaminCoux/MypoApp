@@ -132,7 +132,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.message.name}', page: () => SmsProg()),
       body: Scrollbar(
@@ -452,8 +452,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             children: [
                               Icon(Icons.timer_rounded),
                               Container(
-                                  child: Text("Compte à rebours",
-                                      style: TextStyle(color: Colors.red)),
+                                  child: Text(
+                                    "Compte à rebours",
+                                  ),
                                   margin: EdgeInsets.all(5)),
                             ],
                           )),

@@ -151,6 +151,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         return false;
       },
       child: Scaffold(
+          backgroundColor: d_grey,
           appBar:
               TopBarRedirection(title: "Edit profile", page: () => HomePage()),
           body: GestureDetector(
@@ -213,11 +214,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     emailController,
                     1,
                     TextInputType.emailAddress),
-                // buildTextFieldNumero(
-                //     'Téléphone',
-                //     userDefined ? user!.phoneNumber : "06060606",
-                //     numeroController,
-                //     1),
                 buildLabelText('Téléphone'),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -226,14 +222,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     controller: numeroController,
                     initialCountryCode: isoCode != '' ? isoCode : 'FR',
                     decoration: InputDecoration(
+                        // color: Colors.red,
+                        filled: true,
+                        fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: d_green,
+                            color: Colors.transparent,
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: Colors.grey.shade300,
+                            color: Colors.transparent,
                           ),
                         ),
                         border: OutlineInputBorder(
@@ -253,7 +254,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     onSubmitted: (phone) {},
                   ),
                 ),
-
                 SizedBox(
                   height: 10,
                 ),

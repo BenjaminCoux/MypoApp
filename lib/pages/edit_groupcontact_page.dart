@@ -154,7 +154,7 @@ class _EditGroupState extends State<EditGroup> {
   Widget build(BuildContext context) {
     String title = widget.grp.name;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(
         title: "Editer le groupe $title",
         page: () => GroupContactPage(),

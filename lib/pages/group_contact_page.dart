@@ -102,7 +102,7 @@ class _GroupContactState extends State<GroupContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBarRedirection(
         title: "Groupes de contact",
         page: () => HomePage(),

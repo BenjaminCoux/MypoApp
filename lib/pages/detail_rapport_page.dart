@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/rapports_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
@@ -16,7 +17,7 @@ class _DetailRepportsPageState extends State<DetailRepportsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: d_grey,
         appBar: TopBarRedirection(
             title: "Details de l'alerte ${widget.message.name}",
             page: () => RepportsPage()),

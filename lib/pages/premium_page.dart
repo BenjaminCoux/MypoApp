@@ -14,7 +14,7 @@ class _PremiumPageState extends State<PremiumPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: d_grey,
       appBar: TopBarPremium(title: "Premium"),
       body: Container(
         height: MediaQuery.of(context).size.height,

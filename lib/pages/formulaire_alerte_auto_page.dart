@@ -458,7 +458,7 @@ class _FormState extends State<FormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: d_grey,
       appBar: TopBar(title: 'Ajouter une alerte'),
       body: Scrollbar(
         thickness: 5,

@@ -80,7 +80,8 @@ class _SmsProgState extends State<SmsProg> {
 
             updateDate(messages[i]);
             if (messages[i].notification) {
-              _showNotification(messages[i].phoneNumber, messages[i].message);
+              _showNotification(messages[i].phoneNumber,
+                  messages[i].groupContact, messages[i].message);
             }
           }
         } else if (fiveMinutesBeforeSend(messages[i]) &&
@@ -148,7 +149,8 @@ class _SmsProgState extends State<SmsProg> {
     }
   }
 
-  Future<void> _showNotification(String number, String body) async {
+  Future<void> _showNotification(
+      String number, List<GroupContact> list, String body) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
             'your channel id', 'your channel name', 'your channel description',
@@ -157,12 +159,25 @@ class _SmsProgState extends State<SmsProg> {
             ticker: 'ticker');
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        'Le message suivant à été envoyé à $number',
-        body,
-        platformChannelSpecifics,
-        payload: 'item x');
+    if (list == null || list.isEmpty) {
+      await flutterLocalNotificationsPlugin.show(
+          0,
+          'Le message suivant à été envoyé à $number',
+          body,
+          platformChannelSpecifics,
+          payload: 'item x');
+    } else {
+      String tmp = "";
+      for (int i = 0; i < list.length; i++) {
+        tmp += list[i].name + " ";
+      }
+      await flutterLocalNotificationsPlugin.show(
+          0,
+          'Le message suivant à été envoyé à $tmp',
+          body,
+          platformChannelSpecifics,
+          payload: 'item x');
+    }
   }
 
   Future<void> _showNotificationBis(String title, String body) async {
@@ -200,7 +215,8 @@ class _SmsProgState extends State<SmsProg> {
                         updateDate(msg),
                         if (notif)
                           {
-                            _showNotification(msg.phoneNumber, msg.message),
+                            _showNotification(
+                                msg.phoneNumber, msg.groupContact, msg.message),
                           },
                         this.timer = Timer.periodic(
                             Duration(seconds: 20),

@@ -38,13 +38,25 @@ class _GroupFormState extends State<GroupForm> {
     return -1;
   }
 
+  void remove(String name) {
+    if (nameList.contains(name)) {
+      int index = nameList.indexOf(name);
+      nameList.remove(name);
+      contactList.removeAt(index);
+    } else if (contactList.contains(name)) {
+      int index = contactList.indexOf(name);
+      nameList.removeAt(index);
+      contactList.remove(name);
+    }
+  }
+
   buildTile(String number) {
     return ListTile(
       trailing: IconButton(
           alignment: Alignment.centerRight,
           onPressed: () => {
                 setState(() {
-                  contactList.remove(number);
+                  remove(number);
                 })
               },
           icon: Icon(Icons.delete)),
@@ -142,6 +154,10 @@ class _GroupFormState extends State<GroupForm> {
                                                 ?.elementAt(0)
                                                 .value ??
                                             '');
+                                      } else if (contact.familyName != null) {
+                                        nameList.add(contact.givenName! +
+                                            " " +
+                                            contact.familyName!);
                                       } else {
                                         nameList.add(contact.givenName!);
                                       }

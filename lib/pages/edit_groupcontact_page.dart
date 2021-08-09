@@ -119,8 +119,14 @@ class _EditGroupState extends State<EditGroup> {
       for (int j = 0; j < grp.length; j++) {
         String num = grp[j].phones?.elementAt(0).value! ?? "";
         if (num == contactList[i]) {
-          names.add(grp[j].givenName!);
-          set = true;
+          if (grp[j].givenName != null && grp[j].familyName != null) {
+            names.add(grp[j].givenName! + " " + grp[j].familyName!);
+            set = true;
+          } else if (grp[j].givenName != null && grp[j].familyName == null) {
+            names.add(grp[j].givenName!);
+          } else {
+            names.add(grp[j].phones?.elementAt(0).value ?? '');
+          }
         }
       }
       if (!set) {

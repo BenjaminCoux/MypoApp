@@ -94,9 +94,12 @@ class _DetailState extends State<Detail> {
                           children: [
                             buildLabelText('Message :'),
                             SizedBox(height: 5),
-                            Text(
-                              '${widget.message.message}',
-                              textAlign: TextAlign.start,
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '${widget.message.message}',
+                                textAlign: TextAlign.start,
+                              ),
                             )
                           ],
                         ),

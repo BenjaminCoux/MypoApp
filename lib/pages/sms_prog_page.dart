@@ -159,6 +159,7 @@ class _SmsProgState extends State<SmsProg> {
             ticker: 'ticker');
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
+
     if (list == null || list.isEmpty) {
       await flutterLocalNotificationsPlugin.show(
           0,

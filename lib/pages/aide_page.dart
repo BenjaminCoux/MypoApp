@@ -1,7 +1,5 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:mailer/mailer.dart';
 import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/widget/appbar_widget.dart';

@@ -229,17 +229,6 @@ class _HelpScreenState extends State<HelpScreen> {
                   wordsLimit == true &&
                   EmailValidator.validate(emailController.text))
                 {
-                  // send(),
-                  // Navigator.pop(context),
-                  // Navigator.push(
-                  //   context,
-                  //   new MaterialPageRoute(
-                  //       builder: (context) => new HelpScreen(
-                  //             value: '',
-                  //           )),
-                  // ),
-
-                  showSnackBar(context, "Les informations sont correctes."),
                   sendMail(value, messageController.text),
                 }
               else

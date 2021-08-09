@@ -95,7 +95,7 @@ class SettingsScreenOne extends StatelessWidget {
                 SwitchListTile(
                   activeColor: d_green,
                   contentPadding: EdgeInsets.all(0),
-                  value: true,
+                  value: false,
                   title: Text('Recevoir des notifications'),
                   onChanged: (bool s) {
                     s = false;
@@ -104,7 +104,7 @@ class SettingsScreenOne extends StatelessWidget {
                 SwitchListTile(
                     activeColor: d_green,
                     contentPadding: EdgeInsets.all(0),
-                    value: true,
+                    value: false,
                     title: Text('Recevoir les nouvelles offres'),
                     onChanged: (val) {}),
                 SwitchListTile(

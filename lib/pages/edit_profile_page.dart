@@ -58,24 +58,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       contryCodeController.text = user.contryCode;
       code = user.contryCode;
       isoCode = user.isoCode;
-    } else {
-      user = User_hive()
-        ..firstname = ''
-        ..name = ''
-        ..email = ''
-        ..phoneNumber = ''
-        ..contryCode = ''
-        ..isoCode = ''
-        ..imagePath = "https://picsum.photos/id/1005/200/300";
-      final box = Boxes.getUser();
-      box.add(user);
-      prenomController.text = user.firstname;
-      nomController.text = user.name;
-      emailController.text = user.email;
-      numeroController.text = user.phoneNumber;
-      imageController.text = user.imagePath;
-      contryCodeController.text = user.contryCode;
-      isoCode = user.isoCode;
     }
   }
 
@@ -133,17 +115,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (!users.isEmpty) {
       userDefined = true;
       user = users[0];
-    } else {
-      user = User_hive()
-        ..firstname = ''
-        ..name = ''
-        ..email = ''
-        ..phoneNumber = ''
-        ..contryCode = ''
-        ..isoCode = ''
-        ..imagePath = "https://picsum.photos/id/1005/200/300";
-      final box = Boxes.getUser();
-      box.add(user);
+    }
+    if (imageController.text == '') {
+      imageController.text = profileImagePath;
     }
 
     return new WillPopScope(
@@ -165,8 +139,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   height: 15,
                 ),
                 ProfileWidget(
-                  imagePath:
-                      userDefined ? imageController.text : profileImagePath,
+                  imagePath: imageController.text,
                   isEdit: true,
                   onClicked: () async {
                     if (await Permission.photos.request().isGranted) {
@@ -182,6 +155,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             await File(image.path).copy(imageFile.path);
                         setState(() {
                           imageController.text = newImage.path;
+                          debugPrint(imageController.text);
+
                           fieldsChanged = true;
                         });
                       } catch (e) {
@@ -196,7 +171,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 SizedBox(
                   height: 10,
                 ),
-                Center(child: buildUpgradeButton()),
+                Center(child: buildUpgradeButton(userDefined)),
                 const SizedBox(
                   height: 10,
                 ),
@@ -411,14 +386,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget buildUpgradeButton() => ButtonWidget(
-        text: "Upgrade to Premium",
-        onClicked: () => {
-          Navigator.pop(this.context),
-          Navigator.push(this.context,
-              new MaterialPageRoute(builder: (context) => new PremiumPage()))
-        },
-      );
+  Widget buildUpgradeButton(bool userDefined) => ButtonWidget(
+      text: "Upgrade to Premium",
+      onClicked: () => {
+            if (userDefined)
+              {
+                Navigator.pop(this.context),
+                Navigator.push(
+                    this.context,
+                    new MaterialPageRoute(
+                        builder: (context) => new PremiumPage()))
+              }
+            else
+              {showSnackBar(this.context, 'Veuillez completer tous les champs')}
+          });
   void showSnackBar(BuildContext context, String s) {
     final snackBar = SnackBar(
       content: Text(s, style: TextStyle(fontSize: 20)),

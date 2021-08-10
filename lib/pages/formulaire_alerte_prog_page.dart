@@ -569,7 +569,7 @@ class _ProgState extends State<ProgForm> {
                               alertGroup.length == 0)
                             {
                               showSnackBar(context,
-                                  "Veuillez rentrer de(s) numéro(s) valide.")
+                                  "Veuillez rentrer de numéro(s) valide.")
                             }
                           else if (alertContent.text == '')
                             {
@@ -674,7 +674,7 @@ class _ProgState extends State<ProgForm> {
   }
 
   List<GroupContact> getGrpfromString(String input) {
-    List<String> list = input.split(", ");
+    List<String> list = input.split(",");
     List<GroupContact> res = <GroupContact>[];
     for (int i = 0; i < list.length; i++) {
       for (int j = 0; j < contactgroup.length; j++) {

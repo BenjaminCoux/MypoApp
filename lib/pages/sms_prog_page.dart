@@ -420,12 +420,15 @@ class _SmsProgState extends State<SmsProg> {
   }
 
   buildButtons(BuildContext context, Scheduledmsg_hive message) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Modifier'),
-              icon: Icon(Icons.edit),
+              label: Text('Modifier',
+                  style: TextStyle(fontSize: 12),
+                  overflow: TextOverflow.ellipsis),
+              icon: Icon(Icons.edit, size: 20),
               onPressed: () => {
                 Navigator.pop(context),
                 Navigator.push(
@@ -441,8 +444,10 @@ class _SmsProgState extends State<SmsProg> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Dupliquer'),
-              icon: Icon(Icons.copy),
+              label: Text('Dupliquer',
+                  style: TextStyle(fontSize: 12),
+                  overflow: TextOverflow.ellipsis),
+              icon: Icon(Icons.copy, size: 20),
               onPressed: () => {
                 setState(() {
                   String title = getNbAlerte(message.name);
@@ -470,8 +475,10 @@ class _SmsProgState extends State<SmsProg> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Supprimer'),
-              icon: Icon(Icons.delete),
+              label: Text('Supprimer',
+                  style: TextStyle(fontSize: 12),
+                  overflow: TextOverflow.ellipsis),
+              icon: Icon(Icons.delete, size: 20),
               onPressed: () => {
                 showDialog(
                     context: context,

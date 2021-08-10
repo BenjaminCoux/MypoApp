@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/couleurs.dart';
-import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -1055,7 +1054,7 @@ class _MyDialogState extends State<MyDialog> {
                 return groupTile(contactgroup[index], index);
               },
             ))
-        : Text("Pas de groupe de contacts éxistants");
+        : Text("Pas de groupe de contact existant");
   }
 
   @override
@@ -1077,13 +1076,7 @@ class _MyDialogState extends State<MyDialog> {
               new IconButton(
                 icon: Icon(Icons.group_add_rounded,
                     size: 30, color: Colors.black),
-                onPressed: () => {
-                  Navigator.pop(context),
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => new GroupContactPage())),
-                },
+                onPressed: () => {},
               ),
             ]),
             Column(children: [

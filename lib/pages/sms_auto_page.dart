@@ -341,12 +341,15 @@ class _AlertesState extends State<Alertes> {
   }
 
   buildButtons(BuildContext context, Alert alert) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Modifier'),
-              icon: Icon(Icons.edit),
+              label: Text('Modifier',
+                  style: TextStyle(fontSize: 12),
+                  overflow: TextOverflow.ellipsis),
+              icon: Icon(Icons.edit, size: 20),
               onPressed: () => {
                 Navigator.pop(context),
                 Navigator.push(
@@ -360,8 +363,10 @@ class _AlertesState extends State<Alertes> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Dupliquer'),
-              icon: Icon(Icons.copy),
+              label: Text('Dupliquer',
+                  style: TextStyle(fontSize: 12),
+                  overflow: TextOverflow.ellipsis),
+              icon: Icon(Icons.copy, size: 20),
               onPressed: () => {
                 setState(() {
                   String title = getNbAlerte(alert.title);
@@ -384,8 +389,10 @@ class _AlertesState extends State<Alertes> {
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
-              label: Text('Supprimer'),
-              icon: Icon(Icons.delete),
+              label: Text('Supprimer',
+                  style: TextStyle(fontSize: 12),
+                  overflow: TextOverflow.ellipsis),
+              icon: Icon(Icons.delete, size: 20),
               onPressed: () => {
                 showDialog(
                     context: context,

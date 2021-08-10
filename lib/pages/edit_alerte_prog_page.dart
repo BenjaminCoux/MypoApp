@@ -26,11 +26,7 @@ class ScheduledmsgDetailPage extends StatefulWidget {
 String getHintgrpCo(List<GroupContact> l) {
   String res = "";
   for (int i = 0; i < l.length; i++) {
-    if (i != l.length - 1) {
-      res += l[i].name + ', ';
-    } else {
-      res += l[i].name;
-    }
+    res += l[i].name + ',';
   }
   return res;
 }
@@ -158,7 +154,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
               children: <Widget>[
                 buildLabelText("Nom"),
                 buildTextField('${widget.message.name}', alertName, 1),
-                buildLabelText('Numéro(s) de(s) contact(s)'),
+                buildLabelText('Numéro(s) de contact(s)'),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -606,15 +602,12 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                     "Veuillez rentrer un nom à l'alerte.")
                               }
                             }
-                          else if (alertContact.text == '' &&
-                              widget.message.groupContact.length == 0)
+                          else if (alertContact.text == '')
                             {
                               showSnackBar(
                                   context, "Veuillez rentrer un numéro.")
                             }
-                          else if (!phoneExpression
-                                  .hasMatch(alertContact.text) &&
-                              widget.message.groupContact.length == 0)
+                          else if (!phoneExpression.hasMatch(alertContact.text))
                             {
                               showSnackBar(context,
                                   "Veuillez rentrer de(s) numéro(s) valide.")
@@ -642,8 +635,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                   "Characters invalides pour le nom de l'alerte.")
                             }
                           else if (alertName.text != '' &&
-                              (alertContact.text != '' ||
-                                  widget.message.groupContact.length > 0) &&
+                              alertContact.text != '' &&
                               alertContent.text != '' &&
                               wordsLimit &&
                               await Permission.contacts.request().isGranted &&

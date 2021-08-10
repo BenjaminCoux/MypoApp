@@ -375,6 +375,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               );
             } else {
               Navigator.pop(this.context);
+              Navigator.pop(this.context);
+              Navigator.push(this.context,
+                  new MaterialPageRoute(builder: (context) => new HomePage()));
             }
           },
           child: const Text('Oui', style: TextStyle(color: Colors.black)),

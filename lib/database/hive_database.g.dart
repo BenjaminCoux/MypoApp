@@ -26,13 +26,14 @@ class ScheduledmsghiveAdapter extends TypeAdapter<Scheduledmsg_hive> {
       ..confirm = fields[6] as bool
       ..notification = fields[7] as bool
       ..dateOfCreation = fields[8] as DateTime
-      ..groupContact = (fields[9] as List).cast<GroupContact>();
+      ..groupContact = (fields[9] as List).cast<GroupContact>()
+      ..status = fields[10] as bool;
   }
 
   @override
   void write(BinaryWriter writer, Scheduledmsg_hive obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -52,7 +53,9 @@ class ScheduledmsghiveAdapter extends TypeAdapter<Scheduledmsg_hive> {
       ..writeByte(8)
       ..write(obj.dateOfCreation)
       ..writeByte(9)
-      ..write(obj.groupContact);
+      ..write(obj.groupContact)
+      ..writeByte(10)
+      ..write(obj.status);
   }
 
   @override

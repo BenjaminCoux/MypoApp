@@ -25,6 +25,8 @@ class Scheduledmsg_hive extends HiveObject {
   late DateTime dateOfCreation;
   @HiveField(9)
   late List<GroupContact> groupContact;
+  @HiveField(10)
+  late bool status = true;
 }
 
 @HiveType(typeId: 1)

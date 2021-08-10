@@ -56,11 +56,17 @@ class _SmsProgState extends State<SmsProg> {
   void send(Scheduledmsg_hive msg) async {
     if (msg.groupContact.isEmpty) {
       Telephony.instance.sendSms(to: msg.phoneNumber, message: msg.message);
+      if (msg.repeat == 'Aucune récurrence') {
+        msg.status = false;
+      }
     } else {
       for (int i = 0; i < msg.groupContact.length; i++) {
         for (int j = 0; j < msg.groupContact[i].numbers.length; j++) {
           Telephony.instance.sendSms(
               to: msg.groupContact[i].numbers[j], message: msg.message);
+          if (msg.repeat == 'Aucune récurrence') {
+            msg.status = false;
+          }
         }
       }
     }
@@ -110,7 +116,8 @@ class _SmsProgState extends State<SmsProg> {
       'Tous les jours',
       'Toutes les semaines',
       'Tous les mois',
-      'Tous les ans'
+      'Tous les ans',
+      'Aucune récurrence'
     ];
     int hour = 3600000;
     if (msg.repeat == repeatOptions[0]) {
@@ -125,17 +132,17 @@ class _SmsProgState extends State<SmsProg> {
     } else if (msg.repeat == repeatOptions[3]) {
       msg.date = DateTime.fromMillisecondsSinceEpoch(
           DateTime.now().millisecondsSinceEpoch + 30 * 24 * hour);
-    } else {
+    } else if (msg.repeat == repeatOptions[4]) {
       msg.date = DateTime(msg.date.year + 1, msg.date.month, msg.date.day,
           msg.date.hour, msg.date.minute);
-    }
+    } else {}
     msg.save();
   }
 
   bool canbeSent(Scheduledmsg_hive msg) {
     int now = DateTime.now().millisecondsSinceEpoch;
     int msgdate = msg.date.millisecondsSinceEpoch;
-    if (now >= msgdate) {
+    if (now >= msgdate && msg.status == true) {
       return true;
     } else {
       return false;

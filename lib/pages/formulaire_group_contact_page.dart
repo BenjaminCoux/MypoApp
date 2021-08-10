@@ -19,7 +19,7 @@ class _GroupFormState extends State<GroupForm> {
   final contactController = TextEditingController();
   List<String> contactList = <String>[];
   List<String> nameList = <String>[];
-
+  late Iterable<Contact> itc;
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -88,6 +88,22 @@ class _GroupFormState extends State<GroupForm> {
         : Text("Pas encore de contact dans le groupe");
   }
 
+  String findName(String val) {
+    if (itc != null) {
+      Iterator<Contact> it = itc.iterator;
+      while (it.moveNext()) {
+        if (it.current.phones?.elementAt(0).value == val) {
+          if (it.current.givenName != null && it.current.familyName != null) {
+            return it.current.givenName! + " " + it.current.familyName!;
+          } else {
+            return val;
+          }
+        }
+      }
+    }
+    return val;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,10 +137,11 @@ class _GroupFormState extends State<GroupForm> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: TextField(
-                      onSubmitted: (String? val) => {
+                      onSubmitted: (String? val) async => {
+                        itc = await ContactsService.getContacts(),
                         setState(() {
                           contactList.add(val!);
-                          nameList.add(val);
+                          nameList.add(findName(val));
                         }),
                         contactController.text = "",
                       },
@@ -144,6 +161,7 @@ class _GroupFormState extends State<GroupForm> {
                                 try {
                                   final contact = await ContactsService
                                       .openDeviceContactPicker();
+                                  itc = await ContactsService.getContacts();
                                   if (contact != null) {
                                     setState(() {
                                       contactList.add(

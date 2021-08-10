@@ -37,6 +37,7 @@ class _EditGroupState extends State<EditGroup> {
   late TextEditingController descri;
   late List<String> contactList;
   late List<String> nameList;
+  List<String> names = <String>[];
   Iterable<Contact> contacts = Iterable.empty();
   final contactController = TextEditingController();
   bool hasChanged = false;
@@ -76,13 +77,22 @@ class _EditGroupState extends State<EditGroup> {
     super.dispose();
   }
 
+  void removefromName(String name) {
+    for (int i = 0; i < names.length; i++) {
+      if (names[i] == name) {
+        contactList.removeAt(i);
+      }
+    }
+  }
+
   buildTile(String number) {
     return ListTile(
       trailing: IconButton(
           alignment: Alignment.centerRight,
           onPressed: () => {
                 setState(() {
-                  contactList.remove(number);
+                  removefromName(number);
+                  names.remove(number);
                 })
               },
           icon: Icon(Icons.delete)),
@@ -96,6 +106,27 @@ class _EditGroupState extends State<EditGroup> {
     return i;
   }
 
+  String findName(String val, Iterator<Contact> it) {
+    while (it.moveNext()) {
+      if (it.current.phones?.elementAt(0).value == val) {
+        if (it.current.givenName != null && it.current.familyName != null) {
+          return it.current.givenName! + " " + it.current.familyName!;
+        } else {
+          return val;
+        }
+      }
+    }
+    return val;
+  }
+
+  void buildNames() {
+    names = <String>[];
+    for (int i = 0; i < contactList.length; i++) {
+      Iterator<Contact> tmp = contacts.iterator;
+      names.add(findName(contactList[i], tmp));
+    }
+  }
+
   void save() {
     widget.grp.name = name.text;
     widget.grp.description = descri.text;
@@ -106,34 +137,7 @@ class _EditGroupState extends State<EditGroup> {
 /*Future listContact =
         Future.delayed(const Duration(milliseconds: 100), () => getContacts());*/
   buildList(Iterable<Contact> it) {
-    Iterator<Contact> c = it.iterator;
-    List<Contact> grp = <Contact>[];
-    List<String> names = <String>[];
-    int i = 0;
-    while (c.moveNext()) {
-      grp.add(c.current);
-    }
-    bool set = false;
-    for (int i = 0; i < contactList.length; i++) {
-      set = false;
-      for (int j = 0; j < grp.length; j++) {
-        String num = grp[j].phones?.elementAt(0).value! ?? "";
-        if (num == contactList[i]) {
-          if (grp[j].givenName != null && grp[j].familyName != null) {
-            names.add(grp[j].givenName! + " " + grp[j].familyName!);
-            set = true;
-          } else if (grp[j].givenName != null && grp[j].familyName == null) {
-            names.add(grp[j].givenName!);
-          } else {
-            names.add(grp[j].phones?.elementAt(0).value ?? '');
-          }
-        }
-      }
-      if (!set) {
-        names.add(contactList[i]);
-        set = true;
-      }
-    }
+    buildNames();
     return contactList.length > 0
         ? ListView.builder(
             physics: NeverScrollableScrollPhysics(),

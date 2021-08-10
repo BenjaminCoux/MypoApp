@@ -273,14 +273,23 @@ class _EditGroupState extends State<EditGroup> {
                 ),
               ),
               onPressed: () => {
-                save(),
-                Navigator.pop(
-                  context,
-                ),
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => new GroupContactPage())),
+                if (name.text == "")
+                  {showSnackBar(context, "Veuillez ajouter un nom")}
+                else if (descri.text == "")
+                  {showSnackBar(context, "Veuillez ajouter une description")}
+                else if (contactList.length == 0)
+                  {showSnackBar(context, "Veuillez ajouter des contacts")}
+                else
+                  {
+                    save(),
+                    Navigator.pop(
+                      context,
+                    ),
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new GroupContactPage())),
+                  }
               },
               child: Text("Valider"),
             )

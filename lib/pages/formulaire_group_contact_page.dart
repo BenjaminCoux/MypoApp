@@ -220,14 +220,26 @@ class _GroupFormState extends State<GroupForm> {
                     ),
                   ),
                   onPressed: () => {
-                    save(),
-                    Navigator.pop(
-                      context,
-                    ),
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => new GroupContactPage())),
+                    if (name.text == "")
+                      {showSnackBar(context, "Veuillez ajouter un nom")}
+                    else if (descri.text == "")
+                      {
+                        showSnackBar(
+                            context, "Veuillez ajouter une description")
+                      }
+                    else if (contactList.length == 0)
+                      {showSnackBar(context, "Veuillez ajouter des contacts")}
+                    else
+                      {
+                        save(),
+                        Navigator.pop(
+                          context,
+                        ),
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => new GroupContactPage())),
+                      }
                   },
                   child: Text("Valider"),
                 )
@@ -238,6 +250,15 @@ class _GroupFormState extends State<GroupForm> {
       ),
     );
   }
+}
+
+void showSnackBar(BuildContext context, String s) {
+  final snackBar = SnackBar(
+    content: Text(s, style: TextStyle(fontSize: 20)),
+  );
+  ScaffoldMessenger.of(context)
+    ..removeCurrentSnackBar()
+    ..showSnackBar(snackBar);
 }
 
 Widget buildLabelText(String input) {

@@ -24,6 +24,7 @@ class Logo extends StatelessWidget {
           )
         : Center(
             child: Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
               height: MediaQuery.of(context).size.height * 0.23,
               width: MediaQuery.of(context).size.height * 0.23,
               decoration: BoxDecoration(
@@ -34,17 +35,6 @@ class Logo extends StatelessWidget {
                   )),
             ),
           );
-    // Center(
-    //     child: Container(
-    //       width: MediaQuery.of(context).size.height * 0.24,
-    //       height: MediaQuery.of(context).size.height * 0.24,
-    //       decoration: BoxDecoration(
-    //           color: Colors.red,
-    //           borderRadius: BorderRadius.all(Radius.circular(12)),
-    //           image: DecorationImage(
-    //               image: AssetImage('assets/images/icon.png'))),
-    //     ),
-    //   );
   }
 
   buildImage(BuildContext context) {

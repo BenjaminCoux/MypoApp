@@ -111,6 +111,9 @@ class _EditGroupState extends State<EditGroup> {
       if (it.current.phones?.elementAt(0).value == val) {
         if (it.current.givenName != null && it.current.familyName != null) {
           return it.current.givenName! + " " + it.current.familyName!;
+        } else if (it.current.givenName != null &&
+            it.current.familyName == null) {
+          return it.current.givenName!;
         } else {
           return val;
         }

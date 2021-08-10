@@ -173,7 +173,7 @@ class _EditGroupState extends State<EditGroup> {
             buildTextField('Nom', name, 1),
             buildLabelText('Description'),
             buildTextField('Description', descri, 1),
-            buildLabelText('Numéro(s) de(s) contact(s)'),
+            buildLabelText('Numéro(s) de contact(s)'),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,

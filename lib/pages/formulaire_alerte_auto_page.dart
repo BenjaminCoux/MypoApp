@@ -1077,7 +1077,13 @@ class _MyDialogState extends State<MyDialog> {
               new IconButton(
                 icon: Icon(Icons.group_add_rounded,
                     size: 30, color: Colors.black),
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.pop(context),
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => new GroupContactPage())),
+                },
               ),
             ]),
             Column(children: [

@@ -37,11 +37,6 @@ class _SmsProgState extends State<SmsProg> {
             });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   saveMsgToRapport(Scheduledmsg_hive message) {
     final messageToRapport = Rapportmsg_hive()
       ..name = message.name
@@ -206,7 +201,15 @@ class _SmsProgState extends State<SmsProg> {
     bool notif = msg.notification;
     int five_min = 300000 * 6;
     String content = msg.message;
-    String to = msg.phoneNumber;
+    String grp_name = "";
+    for (int i = 0; i < msg.groupContact.length; i++) {
+      if (i != msg.groupContact.length - 1) {
+        grp_name += msg.groupContact[i].name + ",";
+      } else {
+        grp_name += msg.groupContact[i].name;
+      }
+    }
+    String to = msg.phoneNumber.length == 0 ? msg.phoneNumber : grp_name;
     showDialog(
         context: context,
         builder: (BuildContext dialog) {

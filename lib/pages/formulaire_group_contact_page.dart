@@ -125,7 +125,7 @@ class _GroupFormState extends State<GroupForm> {
                 buildTextField('Donner un nom au groupe de contact', name, 1),
                 buildLabelText('Description'),
                 buildTextField('Ajouter une description', descri, 1),
-                buildLabelText('Numéro(s) de(s) contact(s)'),
+                buildLabelText('Numéro(s) de contact(s)'),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,

@@ -308,7 +308,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         new EditProfilePage()));
-                            showSnackBar(context, 'Profile enregistré');
+                            showSnackBar(context, 'Profil enregistré');
                           } else {
                             showSnackBar(
                                 context, 'Veuillez completer tous les champs');

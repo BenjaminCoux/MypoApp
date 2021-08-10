@@ -1055,7 +1055,7 @@ class _MyDialogState extends State<MyDialog> {
                 return groupTile(contactgroup[index], index);
               },
             ))
-        : Text("Pas de groupe de contact éxistants");
+        : Text("Pas de groupe de contacts éxistants");
   }
 
   @override

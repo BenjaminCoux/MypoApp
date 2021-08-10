@@ -26,7 +26,11 @@ class ScheduledmsgDetailPage extends StatefulWidget {
 String getHintgrpCo(List<GroupContact> l) {
   String res = "";
   for (int i = 0; i < l.length; i++) {
-    res += l[i].name + ',';
+    if (i != l.length - 1) {
+      res += l[i].name + ', ';
+    } else {
+      res += l[i].name;
+    }
   }
   return res;
 }
@@ -602,12 +606,15 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                     "Veuillez rentrer un nom à l'alerte.")
                               }
                             }
-                          else if (alertContact.text == '')
+                          else if (alertContact.text == '' &&
+                              widget.message.groupContact.length == 0)
                             {
                               showSnackBar(
                                   context, "Veuillez rentrer un numéro.")
                             }
-                          else if (!phoneExpression.hasMatch(alertContact.text))
+                          else if (!phoneExpression
+                                  .hasMatch(alertContact.text) &&
+                              widget.message.groupContact.length == 0)
                             {
                               showSnackBar(context,
                                   "Veuillez rentrer de(s) numéro(s) valide.")
@@ -635,7 +642,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                   "Characters invalides pour le nom de l'alerte.")
                             }
                           else if (alertName.text != '' &&
-                              alertContact.text != '' &&
+                              (alertContact.text != '' ||
+                                  widget.message.groupContact.length > 0) &&
                               alertContent.text != '' &&
                               wordsLimit &&
                               await Permission.contacts.request().isGranted &&

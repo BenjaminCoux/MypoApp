@@ -224,6 +224,7 @@ class _SmsProgState extends State<SmsProg> {
               TextButton(
                   onPressed: () => {
                         updateDate(msg),
+                        send(msg),
                         if (notif)
                           {
                             _showNotification(

@@ -57,7 +57,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     'Tous les jours',
     'Toutes les semaines',
     'Tous les mois',
-    'Tous les ans'
+    'Tous les ans',
+    'Aucune récurrence'
   ];
   int index = 0;
   final regularExpression =

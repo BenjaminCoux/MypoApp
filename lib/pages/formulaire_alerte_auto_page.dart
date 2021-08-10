@@ -992,7 +992,7 @@ class _MyDialogState extends State<MyDialog> {
                           widget.controller.text = contact.name;
                         } else {
                           widget.controller.text =
-                              widget.controller.text + "," + contact.name;
+                              widget.controller.text + ", " + contact.name;
                         }
                       } else {
                         widget.alertGroup.remove(contact);
@@ -1010,7 +1010,7 @@ class _MyDialogState extends State<MyDialog> {
                   widget.controller.text = contact.name;
                 } else {
                   widget.controller.text =
-                      widget.controller.text + "," + contact.name;
+                      widget.controller.text + ", " + contact.name;
                 }
               } else {
                 widget.alertGroup.remove(contact);
@@ -1069,18 +1069,36 @@ class _MyDialogState extends State<MyDialog> {
         ],
       ),
       actions: <Widget>[
-        new TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Retour', style: TextStyle(color: Colors.black)),
-        ),
-        new TextButton(
-          onPressed: () {
-            setState(() {});
-            Navigator.of(context).pop();
-          },
-          child: const Text('Valider', style: TextStyle(color: Colors.black)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(children: [
+              new IconButton(
+                icon: Icon(Icons.group_add_rounded,
+                    size: 30, color: Colors.black),
+                onPressed: () {},
+              ),
+            ]),
+            Column(children: [
+              new TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child:
+                    const Text('Retour', style: TextStyle(color: Colors.black)),
+              ),
+            ]),
+            Column(children: [
+              new TextButton(
+                onPressed: () {
+                  setState(() {});
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Valider',
+                    style: TextStyle(color: Colors.black)),
+              )
+            ])
+          ],
         )
       ],
     );

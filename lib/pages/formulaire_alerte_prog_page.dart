@@ -38,10 +38,11 @@ class _ProgState extends State<ProgForm> {
     'Tous les jours',
     'Toutes les semaines',
     'Tous les mois',
-    'Tous les ans'
+    'Tous les ans',
+    'Aucune récurrence'
   ];
   int index = 0;
-  var repeatinput = 'Tous les ans';
+  var repeatinput = 'Aucune récurrence';
   List<Contact> contacts = [];
   late TimeOfDay picked;
   DateTime date = DateTime.now();

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/edit_profile_page.dart';
 
 /*
@@ -21,13 +22,29 @@ class Logo extends StatelessWidget {
         ? Column(
             children: [buildImage(context)],
           )
-        : Container(
-            height: MediaQuery.of(context).size.height * 0.25,
-            decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/icon.png'))),
+        : Center(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.23,
+              width: MediaQuery.of(context).size.height * 0.23,
+              decoration: BoxDecoration(
+                  color: d_grey,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/icon.png'),
+                  )),
+            ),
           );
+    // Center(
+    //     child: Container(
+    //       width: MediaQuery.of(context).size.height * 0.24,
+    //       height: MediaQuery.of(context).size.height * 0.24,
+    //       decoration: BoxDecoration(
+    //           color: Colors.red,
+    //           borderRadius: BorderRadius.all(Radius.circular(12)),
+    //           image: DecorationImage(
+    //               image: AssetImage('assets/images/icon.png'))),
+    //     ),
+    //   );
   }
 
   buildImage(BuildContext context) {

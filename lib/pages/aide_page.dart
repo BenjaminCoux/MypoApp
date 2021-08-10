@@ -22,6 +22,15 @@ class _HelpScreenState extends State<HelpScreen> {
     'Remarques/Suggestions',
     'Questions'
   ];
+
+  List<String> questions = [
+    'Ceci est une questions qui peut être modifier par la suite',
+    'Ceci est une questions qui peut être modifier par la suite'
+  ];
+  List<String> reponses = [
+    'Voici la reponse a la question qui peut être modifier par la suite',
+    'Voici la reponse a la question 1 qui peut être modifier par la suite'
+  ];
   String value = items.first;
   late final email;
   List<String> attachments = [];
@@ -61,70 +70,8 @@ class _HelpScreenState extends State<HelpScreen> {
                         physics: BouncingScrollPhysics(),
                         child: Column(
                           children: <Widget>[
-                            Theme(
-                              data: Theme.of(context)
-                                  .copyWith(dividerColor: Colors.transparent),
-                              child: ExpansionTile(
-                                textColor: d_green,
-                                childrenPadding: EdgeInsets.all(16),
-                                title: Text(
-                                    "Question 1 : Ceci est une questions qui peut être modifier par la suite"),
-                                trailing: Icon(Icons.keyboard_arrow_right),
-                                children: [
-                                  Text(
-                                      "Voici la reponse a la question 1 qui peut être modifier par la suite")
-                                ],
-                              ),
-                            ),
-                            _buildDivider(),
-                            Theme(
-                              data: Theme.of(context)
-                                  .copyWith(dividerColor: Colors.transparent),
-                              child: ExpansionTile(
-                                textColor: d_green,
-                                childrenPadding: EdgeInsets.all(16),
-                                title: Text(
-                                    "Question 2 : Ceci est une questions qui peut être modifier par la suite"),
-                                trailing: Icon(Icons.keyboard_arrow_right),
-                                children: [
-                                  Text(
-                                      "Voici la reponse a la question 2 qui peut être modifier par la suite")
-                                ],
-                              ),
-                            ),
-                            _buildDivider(),
-                            Theme(
-                              data: Theme.of(context)
-                                  .copyWith(dividerColor: Colors.transparent),
-                              child: ExpansionTile(
-                                textColor: d_green,
-                                childrenPadding: EdgeInsets.all(16),
-                                title: Text(
-                                    "Question 3 : Ceci est une questions qui peut être modifier par la suite"),
-                                trailing: Icon(Icons.keyboard_arrow_right),
-                                children: [
-                                  Text(
-                                      "Voici la reponse a la question 3 qui peut être modifier par la suite")
-                                ],
-                              ),
-                            ),
-                            _buildDivider(),
-                            Theme(
-                              data: Theme.of(context)
-                                  .copyWith(dividerColor: Colors.transparent),
-                              child: ExpansionTile(
-                                textColor: d_green,
-                                childrenPadding: EdgeInsets.all(16),
-                                title: Text(
-                                    "Question 4 : Ceci est une questions qui peut être modifier par la suite"),
-                                trailing: Icon(Icons.keyboard_arrow_right),
-                                children: [
-                                  Text(
-                                      "Voici la reponse a la question 4 qui peut être modifier par la suite")
-                                ],
-                              ),
-                            ),
-                            _buildDivider(),
+                            myListAide(
+                                questions, questions.length, reponses, context),
                           ],
                         ),
                       ),
@@ -282,6 +229,36 @@ class _HelpScreenState extends State<HelpScreen> {
             ],
           )),
     );
+  }
+
+  myListAide(List<String> questions, int lenght, List<String> reponses,
+      BuildContext context) {
+    return lenght > 0
+        ? ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: questions.length,
+            itemBuilder: (BuildContext context, int index) {
+              final question = questions[index];
+              final reponse = reponses[index];
+              return Column(
+                children: [
+                  Theme(
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Colors.transparent),
+                    child: ExpansionTile(
+                      textColor: d_green,
+                      childrenPadding: EdgeInsets.all(16),
+                      title: Text("Question ${index + 1}: ${question}"),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                      children: [Text(reponse)],
+                    ),
+                  ),
+                  _buildDivider(),
+                ],
+              );
+            })
+        : const Text("Aucune question", style: TextStyle(fontSize: 24));
   }
 
   void showSnackBar(BuildContext context, String s) {

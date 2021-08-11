@@ -460,7 +460,8 @@ class _FormState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: d_grey,
-      appBar: TopBar(title: 'Ajouter une alerte'),
+      appBar:
+          TopBarRedirection(title: 'Ajouter une alerte', page: () => SmsAuto()),
       body: Scrollbar(
         thickness: 5,
         interactive: true,
@@ -550,6 +551,10 @@ class _FormState extends State<FormScreen> {
                               ),
                             ]),
                           ),
+
+                          ///TO-DO : Remember to discuss hidding the SMS recu checkbox
+
+                          //TO-DO remember to discuss to hide the checkbox button (default action)
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: Column(children: [
@@ -925,7 +930,8 @@ class _FormState extends State<FormScreen> {
             })
           },
           maxLines: nbLines,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
           decoration: InputDecoration(
             errorText: wordsLimit ? null : '${this.nbWords}/450',
             labelStyle: TextStyle(color: Colors.black),

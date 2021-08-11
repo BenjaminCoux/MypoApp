@@ -130,7 +130,8 @@ class _HelpScreenState extends State<HelpScreen> {
           SizedBox(height: 8),
           buildLabelText('Message'),
           TextField(
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.newline,
               controller: messageController,
               maxLines: 7,
               onChanged: (String value) => {

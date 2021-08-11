@@ -760,7 +760,8 @@ class _ProgState extends State<ProgForm> {
             })
           },
           maxLines: nbLines,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
           decoration: InputDecoration(
             errorText: wordsLimit ? null : '${this.nbWords}/450',
             labelStyle: TextStyle(color: Colors.black),

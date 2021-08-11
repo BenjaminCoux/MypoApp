@@ -295,15 +295,6 @@ class _SmsProgState extends State<SmsProg> {
                   child: Column(
                     children: [
                       SizedBox(height: 24),
-                      Text(
-                        'Mes alertes programmées',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 20),
                       Center(
                         child: OutlinedButton(
                             style: OutlinedButton.styleFrom(

@@ -24,9 +24,9 @@ class Logo extends StatelessWidget {
           )
         : Center(
             child: Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-              height: MediaQuery.of(context).size.height * 0.23,
-              width: MediaQuery.of(context).size.height * 0.23,
+              margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+              height: MediaQuery.of(context).size.height * 0.20,
+              width: MediaQuery.of(context).size.height * 0.20,
               decoration: BoxDecoration(
                   color: d_grey,
                   borderRadius: BorderRadius.all(Radius.circular(12)),

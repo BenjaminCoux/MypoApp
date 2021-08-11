@@ -434,15 +434,6 @@ class _AlertesState extends State<Alertes> {
         child: Column(
           children: [
             SizedBox(height: 24),
-            // Text(
-            //   'Mes alertes automatiques',
-            //   style: TextStyle(
-            //     fontWeight: FontWeight.bold,
-            //     fontSize: 16,
-            //     color: Colors.black,
-            //   ),
-            // ),
-            // SizedBox(height: 20),
             Center(
               child: OutlinedButton(
                   style: OutlinedButton.styleFrom(

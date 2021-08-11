@@ -275,27 +275,39 @@ class _AlertesState extends State<Alertes> {
    * fucntion that return a title for the alert duplication
    */
   String getNbAlerte(String title) {
-    if (title.contains("-")) {
-      String tmp = "";
-      bool stop = false;
-      int i = 0;
-      while (!stop && i < title.length) {
-        if (title[i] == "-") {
-          stop = true;
-        } else {
-          tmp = tmp + title[i];
-        }
-        i++;
-      }
-      title = tmp;
-    }
-    int count = 0;
+    int highest = 0;
     for (int i = 0; i < widget.alerts.length; i++) {
-      if (widget.alerts[i].title.contains(title)) {
-        count++;
+      String tt =
+          title.contains('-') ? title.substring(0, title.indexOf('-')) : title;
+      if (widget.alerts[i].title.contains(tt)) {
+        int j = 0;
+        String tmp = widget.alerts[i].title;
+        String nb = "";
+        bool after = false;
+        while (j < tmp.length) {
+          if (after) {
+            nb += tmp[j];
+          }
+          if (tmp[j] == "-") {
+            after = true;
+          }
+          j++;
+        }
+        if (nb == "") {
+          nb = "0";
+        }
+        if (int.parse(nb) > highest) {
+          highest = int.parse(nb);
+        }
+        nb = "";
       }
     }
-    return title + "-" + count.toString();
+    int tiret = title.indexOf('-');
+    if (title.contains('-')) {
+      return title.substring(0, tiret) + "-" + (highest + 1).toString();
+    } else {
+      return title + "-" + (highest + 1).toString();
+    }
   }
 
   /*

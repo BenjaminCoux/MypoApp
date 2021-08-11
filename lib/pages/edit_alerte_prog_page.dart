@@ -119,6 +119,13 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     widget.message.groupContact = alertgrp;
     widget.message.date = new DateTime(timeUpdated.year, timeUpdated.month,
         timeUpdated.day, timeAux.hour, timeAux.minute, timeAux.second);
+    widget.message.dateOfCreation = new DateTime(
+        timeUpdated.year,
+        timeUpdated.month,
+        timeUpdated.day,
+        timeAux.hour,
+        timeAux.minute,
+        timeAux.second);
     widget.message.repeat = repeat;
     widget.message.notification = notification;
     widget.message.save();
@@ -142,7 +149,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.message.name}', page: () => SmsProg()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: 10,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -326,11 +333,11 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                       color: Colors.black),
                                 ),
                                 Text(
-                                  "${DateFormat('dd/MM/yyyy').format(widget.message.dateOfCreation)} ",
+                                  "${DateFormat('dd/MM/yyyy').format(timeUpdated)} ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 Text(
-                                  "Heure: ${DateFormat('HH:mm').format(widget.message.dateOfCreation)} ",
+                                  "Heure: ${DateFormat('HH:mm').format(timeAux)} ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ],
@@ -349,11 +356,11 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                       color: Colors.black),
                                 ),
                                 Text(
-                                  "${DateFormat('dd/MM/yyyy').format(widget.message.date)} ",
+                                  "${DateFormat('dd/MM/yyyy').format(timeUpdated)} ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 Text(
-                                  "Heure: ${DateFormat('HH:mm').format(widget.message.date)} ",
+                                  "Heure: ${DateFormat('HH:mm').format(timeAux)} ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ],
@@ -369,6 +376,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             onPressed: () => showSheet(context,
                                 child: buildDatePicker(), onClicked: () {
                               Navigator.pop(context);
+                              showSnackBar(context,
+                                  'Date: ${DateFormat('dd/MM/yyyy').format(timeUpdated)} Heure: ${DateFormat('HH:mm').format(timeAux)}');
                             }),
                             style: OutlinedButton.styleFrom(
                               backgroundColor: d_green,

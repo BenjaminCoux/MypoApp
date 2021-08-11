@@ -387,27 +387,39 @@ class _SmsProgState extends State<SmsProg> {
   }
 
   String getNbAlerte(String title) {
-    if (title.contains("-")) {
-      String tmp = "";
-      bool stop = false;
-      int i = 0;
-      while (!stop && i < title.length) {
-        if (title[i] == "-") {
-          stop = true;
-        } else {
-          tmp = tmp + title[i];
+    int highest = 0;
+    for (int i = 0; i < this.alerts.length; i++) {
+      String tt =
+          title.contains('-') ? title.substring(0, title.indexOf('-')) : title;
+      if (alerts[i].name.contains(tt)) {
+        int j = 0;
+        String tmp = alerts[i].name;
+        String nb = "";
+        bool after = false;
+        while (j < tmp.length) {
+          if (after) {
+            nb += tmp[j];
+          }
+          if (tmp[j] == "-") {
+            after = true;
+          }
+          j++;
         }
-        i++;
+        if (nb == "") {
+          nb = "0";
+        }
+        if (int.parse(nb) > highest) {
+          highest = int.parse(nb);
+        }
+        nb = "";
       }
-      title = tmp;
     }
-    int count = 0;
-    for (int i = 0; i < alerts.length; i++) {
-      if (alerts[i].name.contains(title)) {
-        count++;
-      }
+    int tiret = title.indexOf('-');
+    if (title.contains('-')) {
+      return title.substring(0, tiret) + "-" + (highest + 1).toString();
+    } else {
+      return title + "-" + (highest + 1).toString();
     }
-    return title + "-" + count.toString();
   }
 
   buildButtons(BuildContext context, Scheduledmsg_hive message) => Row(

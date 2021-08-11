@@ -5,6 +5,8 @@ import 'package:mypo/pages/aide_page.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/rapports_page.dart';
 import 'package:mypo/pages/parametres_page.dart';
+import 'package:mypo/pages/sms_auto_page.dart';
+import 'package:mypo/pages/sms_prog_page.dart';
 
 /*
     -this class is responsible of the bottom nav bar of 2 elements for the sms auto page with images as icon
@@ -57,8 +59,21 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
         ),
       ],
       onTap: (index) {
-        if (index == 0) {}
-        if (index == 1) {}
+        if (index == 0) {
+          Navigator.of(context).pop();
+          Navigator.push(
+            context,
+            new MaterialPageRoute(builder: (context) => new SmsProg()),
+          );
+        }
+
+        if (index == 2) {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            new MaterialPageRoute(builder: (context) => new SmsAuto()),
+          );
+        }
       },
     );
   }
@@ -114,8 +129,21 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
         ),
       ],
       onTap: (index) {
-        if (index == 0) {}
-        if (index == 1) {}
+        if (index == 0) {
+          Navigator.of(context).pop();
+          Navigator.push(
+            context,
+            new MaterialPageRoute(builder: (context) => new SmsProg()),
+          );
+        }
+
+        if (index == 2) {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            new MaterialPageRoute(builder: (context) => new SmsAuto()),
+          );
+        }
       },
     );
   }

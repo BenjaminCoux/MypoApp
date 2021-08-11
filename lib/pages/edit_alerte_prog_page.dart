@@ -83,6 +83,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     notification = widget.message.notification;
     timeUpdated = widget.message.date;
     timeAux = widget.message.date;
+    repeat = widget.message.repeat;
     boolCheckedGrp =
         buildboolListEdit(contactgroup, widget.message.groupContact);
     alertName.addListener(() {
@@ -157,7 +158,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
             child: ListView(
               children: <Widget>[
                 buildLabelText("Nom"),
-                buildTextField('${widget.message.name}', alertName, 1),
+                buildTextFieldMessage('${widget.message.name}', alertName, 1),
                 buildLabelText('Numéro(s) de contact(s)'),
                 Container(
                   decoration: BoxDecoration(
@@ -815,7 +816,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
             })
           },
           maxLines: nbLines,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
           decoration: InputDecoration(
             errorText: wordsLimit ? null : '${this.nbWords}/450',
             labelStyle: TextStyle(color: Colors.black),

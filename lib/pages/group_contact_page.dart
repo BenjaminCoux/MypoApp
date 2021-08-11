@@ -92,7 +92,8 @@ class _GroupContactState extends State<GroupContactPage> {
             shrinkWrap: true,
             itemCount: list.length,
             itemBuilder: (BuildContext context, int index) {
-              return buildGroup(context, list[index]);
+              final groupe = list[index];
+              return buildGroup(context, groupe);
             })
         : Column(
             children: [Text("Aucun groupe de contacts enregistré")],

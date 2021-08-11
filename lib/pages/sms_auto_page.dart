@@ -360,6 +360,8 @@ class _AlertesState extends State<Alertes> {
               },
             ),
           ),
+          //TO-DO : When duplication alerttest-2 the duplicate should be named alerttest-2-1 (or alerttest-2-2 if the number 1 was already on the list, so we don't confuse it)
+
           Expanded(
             child: TextButton.icon(
               style: TextButton.styleFrom(primary: d_darkgray),
@@ -420,15 +422,15 @@ class _AlertesState extends State<Alertes> {
         child: Column(
           children: [
             SizedBox(height: 24),
-            Text(
-              'Mes alertes automatiques',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 20),
+            // Text(
+            //   'Mes alertes automatiques',
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 16,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            // SizedBox(height: 20),
             Center(
               child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
@@ -436,7 +438,14 @@ class _AlertesState extends State<Alertes> {
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20))),
-                  onPressed: _onButtonPressed,
+                  onPressed: () => {
+                        Navigator.pop(context),
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new FormScreen(nb: 0)),
+                        ),
+                      },
                   child: Text(
                     "+ Ajouter une alerte",
                     style: TextStyle(
@@ -470,6 +479,8 @@ class _AlertesState extends State<Alertes> {
   /*
     -Function that show the available aplications to send auto messages with
   */
+
+  //pop menu hidden
   void _onButtonPressed() {
     int nb = 0;
 

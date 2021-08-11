@@ -14,6 +14,7 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
   /*
     - Building the bottom navigation bar
   */
+  // TO-DO align vertically the navigation bar
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -22,9 +23,9 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: Image.asset(
-            'assets/images/smsauto_activated.png',
+            'assets/images/smsprog_disabled.png',
             width: 80,
-            height: 50,
+            height: 40,
           ),
           label: '',
         ),
@@ -48,9 +49,9 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Image.asset(
-            'assets/images/smsprog_disabled.png',
+            'assets/images/smsauto_activated.png',
             width: 80,
-            height: 50,
+            height: 40,
           ),
           label: '',
         ),
@@ -81,7 +82,7 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
           icon: Image.asset(
             'assets/images/smsprog_activated.png',
             width: 80,
-            height: 50,
+            height: 40,
           ),
           label: '',
         ),
@@ -107,7 +108,7 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
           icon: Image.asset(
             'assets/images/smsauto_disabled.png',
             width: 80,
-            height: 50,
+            height: 40,
           ),
           label: '',
         ),

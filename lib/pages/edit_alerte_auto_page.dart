@@ -28,11 +28,15 @@ class _AlertScreenState extends State<AlertScreen> {
   TextEditingController contactController = TextEditingController();
   bool contentchanged = false;
   int _value = 1;
+  int paramKeywordMaxchars = 40;
+  String ParamKeywordValidchars = 'a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;';
+
   bool _value2 = true;
   final keyName = TextEditingController();
   List<bool> boolWeek = <bool>[];
-  final alphanumeric = RegExp(r'^[a-zA-Z0-9.:#_-éàô]+$');
+  final alphanumeric = RegExp(r'^[a-zA-Z0-9.:#_-éàô ]+$');
   final regularExpression =
+      //  RegExp(r'^[ ${ParamKeywordValidchars}]+$');
       RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
 
   int nbMaxWords = 450;
@@ -98,8 +102,8 @@ class _AlertScreenState extends State<AlertScreen> {
   }
 
   bool verifieCle(String nom) {
-    if (nom.length > 10) {
-      showSnackBar(context, '10 characters maximum.');
+    if (nom.length > paramKeywordMaxchars) {
+      showSnackBar(context, '${paramKeywordMaxchars} characters maximum.');
       return false;
     }
     for (int i = 0; i < widget.alerte.keys.length; i++) {
@@ -850,6 +854,7 @@ class _AlertScreenState extends State<AlertScreen> {
           controller: controller,
           onChanged: (String value) => {
             setState(() {
+              hasChanged = true;
               this.nbWords = value.length;
               this.nbMaxWords = 450 - value.length;
               if (this.nbMaxWords < 0) {

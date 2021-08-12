@@ -9,6 +9,7 @@ import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/divider_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -509,7 +510,7 @@ class _AlertesState extends State<Alertes> {
                               builder: (context) => new FormScreen(nb: nb)),
                         ),
                       }),
-              _buildDivider(),
+              buildDivider(),
               ListTile(
                   enabled: false,
                   leading: Icon(FontAwesomeIcons.whatsapp, color: d_darkgray),
@@ -522,7 +523,7 @@ class _AlertesState extends State<Alertes> {
                               builder: (context) => new FormScreen(nb: nb)),
                         ),
                       }),
-              _buildDivider(),
+              buildDivider(),
               ListTile(
                 enabled: false,
                 leading:
@@ -541,14 +542,6 @@ class _AlertesState extends State<Alertes> {
           );
         });
   }
-}
-
-Container _buildDivider() {
-  return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      width: double.infinity,
-      height: 1,
-      color: Colors.grey.shade400);
 }
 
 /*

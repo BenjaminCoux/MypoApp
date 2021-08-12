@@ -73,13 +73,6 @@ class _ProgState extends State<ProgForm> {
     super.dispose();
   }
 
-  Color getColor(bool b) {
-    if (b) {
-      return d_green;
-    }
-    return d_darkgray;
-  }
-
   saveToHive() {
     if ((contactController.text != '' || alertGroup.length > 0) &&
         alertContent.text != '' &&

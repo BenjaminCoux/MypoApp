@@ -6,6 +6,7 @@ import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/divider_widget.dart';
 import 'package:mypo/widget/label_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -91,13 +92,6 @@ class _HelpScreenState extends State<HelpScreen> {
 /*
   - this function creates a little divider between the questions on the help page
 */
-  Container _buildDivider() {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
-        width: double.infinity,
-        height: 1,
-        color: Colors.grey.shade400);
-  }
 
   Widget buildFormContact() {
     return Padding(
@@ -238,7 +232,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       children: [Text(reponse)],
                     ),
                   ),
-                  _buildDivider(),
+                  buildDivider(),
                 ],
               );
             })

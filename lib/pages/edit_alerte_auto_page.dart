@@ -823,7 +823,6 @@ class _AlertScreenState extends State<AlertScreen> {
 
   /*
   function that crates a text field
-
   */
   Container buildTextFieldMessage(
       String placeholder, TextEditingController controller, int nbLines) {
@@ -929,9 +928,6 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
-  /*
-    -Function that saves the modifications of alerts in shared preferences
-  */
   void save() async {
     if (hasChanged) {
       widget.alerte.title = alertName.text;

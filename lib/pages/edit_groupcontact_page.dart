@@ -139,8 +139,6 @@ class _EditGroupState extends State<EditGroup> {
     widget.grp.save();
   }
 
-/*Future listContact =
-        Future.delayed(const Duration(milliseconds: 100), () => getContacts());*/
   buildList(Iterable<Contact> it) {
     buildNames();
     return contactList.length > 0

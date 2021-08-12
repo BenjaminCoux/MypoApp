@@ -27,7 +27,7 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Image.asset(
             'assets/images/smsprog_disabled.png',
-            width: 80,
+            width: bottomNavBarIconSize,
             height: bottomNavBarIconSize,
           ),
           label: '',
@@ -53,7 +53,7 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Image.asset(
             'assets/images/smsauto_activated.png',
-            width: 80,
+            width: bottomNavBarIconSize,
             height: bottomNavBarIconSize,
           ),
           label: '',
@@ -97,7 +97,7 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Image.asset(
             'assets/images/smsprog_activated.png',
-            width: 80,
+            width: bottomNavBarIconSize,
             height: bottomNavBarIconSize,
           ),
           label: '',
@@ -123,7 +123,7 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Image.asset(
             'assets/images/smsauto_disabled.png',
-            width: 80,
+            width: bottomNavBarIconSize,
             height: bottomNavBarIconSize,
           ),
           label: '',

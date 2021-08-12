@@ -3,6 +3,7 @@ import 'package:mypo/pages/aide_page.dart';
 import 'package:mypo/pages/edit_profile_page.dart';
 import 'package:mypo/pages/rapports_page.dart';
 import 'package:mypo/pages/parametres_page.dart';
+import 'package:mypo/widget/divider_widget.dart';
 
 class HamburgerMenu extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
                     builder: (BuildContext context) => new EditProfilePage()));
           },
         ),
-        _buildDivider(),
+        buildDividerTransparent(),
         new ListTile(
           leading: Icon(Icons.my_library_books_rounded, color: Colors.black),
           title: new Text("Rapport", style: TextStyle(color: Colors.black)),
@@ -43,7 +44,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
                     builder: (BuildContext context) => new RepportsPage()));
           },
         ),
-        _buildDivider(),
+        buildDividerTransparent(),
         new ListTile(
           leading: Icon(Icons.settings_rounded, color: Colors.black),
           title: new Text("Paramètres", style: TextStyle(color: Colors.black)),
@@ -58,7 +59,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
                         new SettingsScreenOne()));
           },
         ),
-        _buildDivider(),
+        buildDividerTransparent(),
         new ListTile(
           leading: Icon(Icons.help_rounded, color: Colors.black),
           title: new Text("Aide", style: TextStyle(color: Colors.black)),
@@ -73,16 +74,8 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
                         new HelpScreen(value: "TEST")));
           },
         ),
-        _buildDivider(),
+        buildDividerTransparent(),
       ]),
     ));
   }
-}
-
-Container _buildDivider() {
-  return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      width: double.infinity,
-      height: 1,
-      color: Colors.transparent);
 }

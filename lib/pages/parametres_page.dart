@@ -6,6 +6,7 @@ import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/edit_profile_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/divider_widget.dart';
 
 // ignore: must_be_immutable
 class SettingsScreenOne extends StatelessWidget {
@@ -72,7 +73,7 @@ class SettingsScreenOne extends StatelessWidget {
                           onTap: () {
                             //open change language
                           }),
-                      _buildDivider(),
+                      buildDivider(),
                       ListTile(
                           leading: Icon(Icons.location_on, color: d_green),
                           title: Text("Changer le thème"),
@@ -121,13 +122,5 @@ class SettingsScreenOne extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Container _buildDivider() {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
-        width: double.infinity,
-        height: 1,
-        color: Colors.grey.shade400);
   }
 }

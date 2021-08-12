@@ -1081,7 +1081,7 @@ class _MyDialogState extends State<MyDialog> {
           children: [
             Column(children: [
               new IconButton(
-                icon: Icon(Icons.group_add_rounded,
+                icon: Icon(Icons.group_add_outlined,
                     size: 30, color: Colors.black),
                 onPressed: () => {
                   Navigator.pop(context),

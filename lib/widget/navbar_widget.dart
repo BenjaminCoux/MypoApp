@@ -173,7 +173,7 @@ class _StateBottomNavigationBarSection
           tooltip: "Groupes de contacts",
           icon: IconButton(
               icon: Icon(
-                Icons.group,
+                Icons.group_outlined,
                 color: Colors.white,
                 size: 50,
               ),
@@ -190,7 +190,7 @@ class _StateBottomNavigationBarSection
           tooltip: 'Rapport',
           icon: IconButton(
               icon: Icon(
-                Icons.my_library_books_rounded,
+                Icons.my_library_books_outlined,
                 color: Colors.white,
                 size: 50,
               ),

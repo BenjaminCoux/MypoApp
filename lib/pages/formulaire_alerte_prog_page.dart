@@ -259,7 +259,7 @@ class _ProgState extends State<ProgForm> {
                                           }),
                                     },
                                 icon: Icon(
-                                  Icons.group_add_rounded,
+                                  Icons.group_add_outlined,
                                   color: Colors.black,
                                   size: 35,
                                 )),

@@ -189,7 +189,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       controller: alertContact,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                            icon: Icon(Icons.person_add,
+                            icon: Icon(Icons.person_add_outlined,
                                 size: 35, color: Colors.black),
                             onPressed: () async {
                               try {
@@ -279,7 +279,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                     })
                                   },
                               icon: Icon(
-                                Icons.group_add_rounded,
+                                Icons.group_add_outlined,
                                 color: Colors.black,
                                 size: 35,
                               )),
@@ -509,7 +509,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(Icons.check_circle_rounded),
+                              Icon(Icons.check_circle_outlined),
                               Container(
                                   child: Text("Confirmer avant envoi"),
                                   margin: EdgeInsets.all(5)),
@@ -548,7 +548,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(Icons.notifications),
+                              Icon(Icons.notifications_outlined),
                               Container(
                                   child: Text("Notification"),
                                   margin: EdgeInsets.all(5)),

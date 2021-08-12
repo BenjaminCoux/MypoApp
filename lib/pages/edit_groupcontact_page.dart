@@ -246,6 +246,11 @@ class _EditGroupState extends State<EditGroup> {
 
                   if (snapshot.hasData) {
                     children = <Widget>[buildList(contacts)];
+                  } else if (snapshot.hasError) {
+                    children = <Widget>[
+                      const Icon(Icons.error_outline,
+                          color: Colors.red, size: 60),
+                    ];
                   } else {
                     children = <Widget>[
                       SizedBox(

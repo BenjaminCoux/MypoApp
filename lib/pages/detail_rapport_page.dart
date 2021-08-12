@@ -73,7 +73,7 @@ class _DetailState extends State<Detail> {
                                 Text('${widget.message.phoneNumber}')
                               ]),
                               TableRow(children: [
-                                Text('Crée le :',
+                                Text('Créé le :',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
                                 Text(

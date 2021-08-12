@@ -126,8 +126,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       },
       child: Scaffold(
           backgroundColor: d_grey,
-          appBar:
-              TopBarRedirection(title: "Edit profile", page: () => HomePage()),
+          appBar: TopBarRedirection(
+              title: "Éditer votre profil", page: () => HomePage()),
           body: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
@@ -275,23 +275,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         onPressed: () {
                           if (nomController.text == '') {
-                            showSnackBar(context, "Veuillez rentrer un nom.");
+                            showSnackBar(context, "Veuillez rentrer un nom");
                           } else if (prenomController.text == '') {
-                            showSnackBar(
-                                context, "Veuillez rentrer un prénom.");
+                            showSnackBar(context, "Veuillez rentrer un prénom");
                           } else if (emailController.text == '') {
-                            showSnackBar(context, "Veuillez rentrer un email.");
+                            showSnackBar(context, "Veuillez rentrer un email");
                           } else if (!EmailValidator.validate(
                               emailController.text)) {
                             showSnackBar(
-                                context, "Veuillez rentrer un email valide.");
+                                context, "Veuillez rentrer un email valide");
                           } else if (numeroController.text == '') {
-                            showSnackBar(
-                                context, "Veuillez rentrer un numéro.");
+                            showSnackBar(context, "Veuillez rentrer un numéro");
                           } else if (!numeroExpression
                               .hasMatch(numeroController.text)) {
                             showSnackBar(
-                                context, "Veuillez rentrer un numéro valide.");
+                                context, "Veuillez rentrer un numéro valide");
                           } else if (!fieldsChanged) {
                           } else if (prenomController.text != '' &&
                               nomController.text != '' &&
@@ -311,7 +309,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             showSnackBar(context, 'Profil enregistré');
                           } else {
                             showSnackBar(
-                                context, 'Veuillez completer tous les champs');
+                                context, 'Veuillez compléter tous les champs');
                           }
                         },
                         child: Text(
@@ -393,7 +391,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Widget buildUpgradeButton(bool userDefined) => ButtonWidget(
-      text: "Upgrade to Premium",
+      text: "Passer à la version Premium",
       onClicked: () => {
             if (userDefined)
               {

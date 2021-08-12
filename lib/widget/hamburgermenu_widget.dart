@@ -45,7 +45,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
         ),
         _buildDivider(),
         new ListTile(
-          leading: Icon(Icons.settings, color: Colors.black),
+          leading: Icon(Icons.settings_rounded, color: Colors.black),
           title: new Text("Paramètres", style: TextStyle(color: Colors.black)),
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
           onTap: () {
@@ -60,7 +60,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
         ),
         _buildDivider(),
         new ListTile(
-          leading: Icon(Icons.help_outline, color: Colors.black),
+          leading: Icon(Icons.help_rounded, color: Colors.black),
           title: new Text("Aide", style: TextStyle(color: Colors.black)),
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
           onTap: () {

@@ -22,7 +22,7 @@ class SettingsScreenOne extends StatelessWidget {
     }
     return Scaffold(
       backgroundColor: d_grey,
-      appBar: TopBarRedirection(title: 'Parametres', page: () => HomePage()),
+      appBar: TopBarRedirection(title: 'Paramètres', page: () => HomePage()),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -75,7 +75,7 @@ class SettingsScreenOne extends StatelessWidget {
                       _buildDivider(),
                       ListTile(
                           leading: Icon(Icons.location_on, color: d_green),
-                          title: Text("Changer le theme"),
+                          title: Text("Changer le thème"),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             //open change theme
@@ -85,7 +85,7 @@ class SettingsScreenOne extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Parametres de notifications',
+                  'Paramètres de notifications',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

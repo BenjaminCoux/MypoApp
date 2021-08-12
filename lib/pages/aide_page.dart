@@ -20,7 +20,7 @@ class _HelpScreenState extends State<HelpScreen> {
   final messageController = TextEditingController();
   static final List<String> items = <String>[
     'Remarques/Suggestions',
-    'Questions'
+    'Questions/Informations'
   ];
 
   List<String> questions = [
@@ -29,7 +29,7 @@ class _HelpScreenState extends State<HelpScreen> {
   ];
   List<String> reponses = [
     'Voici la reponse a la question qui peut être modifier par la suite',
-    'Voici la reponse a la question 1 qui peut être modifier par la suite'
+    'Voici la reponse a la question qui peut être modifier par la suite'
   ];
   String value = items.first;
   late final email;
@@ -162,15 +162,15 @@ class _HelpScreenState extends State<HelpScreen> {
             ),
             onPressed: () async => {
               if (nomController.text == '')
-                {showSnackBar(context, "Veuillez rentrer votre nom.")}
+                {showSnackBar(context, "Veuillez rentrer votre nom")}
               else if (emailController.text == '')
-                {showSnackBar(context, "Veuillez rentrer un email.")}
+                {showSnackBar(context, "Veuillez rentrer un email")}
               else if (!EmailValidator.validate(emailController.text))
-                {showSnackBar(context, "Veuillez rentrer un email valide.")}
+                {showSnackBar(context, "Veuillez rentrer un email valide")}
               else if (messageController.text == '')
-                {showSnackBar(context, "Veuillez écrire un message.")}
+                {showSnackBar(context, "Veuillez écrire un message")}
               else if (wordsLimit == false)
-                {showSnackBar(context, "Nombre de character maximal dépassé.")}
+                {showSnackBar(context, "Nombre de caractère maximal dépassé")}
               else if (nomController.text != '' &&
                   emailController != '' &&
                   messageController != '' &&
@@ -180,7 +180,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   sendMail(value, messageController.text),
                 }
               else
-                {showSnackBar(context, 'Veuillez completer tous les champs.')},
+                {showSnackBar(context, 'Veuillez compléter tous les champs')},
             },
             child: Text(
               "Envoyer",

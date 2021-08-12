@@ -171,7 +171,7 @@ class _GroupContactState extends State<GroupContactPage> {
     return Scaffold(
       backgroundColor: d_grey,
       appBar: TopBarRedirection(
-        title: "Groupes de contact",
+        title: "Groupes de contacts",
         page: () => HomePage(),
       ),
       body: Center(
@@ -191,7 +191,7 @@ class _GroupContactState extends State<GroupContactPage> {
                             builder: (context) => new GroupForm()))
                   },
               child: Text(
-                "+ Ajouter un groupe de contact",
+                "+ Ajouter un groupe de contacts",
                 style: TextStyle(
                     backgroundColor: d_darkgray,
                     fontSize: 16,

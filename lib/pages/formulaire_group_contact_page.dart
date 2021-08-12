@@ -109,7 +109,7 @@ class _GroupFormState extends State<GroupForm> {
     return Scaffold(
       backgroundColor: d_grey,
       appBar: TopBarRedirection(
-        title: "Créer un nouveau groupe de contact",
+        title: "Créer un nouveau groupe de contacts",
         page: () => GroupContactPage(),
       ),
       body: Scrollbar(
@@ -122,7 +122,7 @@ class _GroupFormState extends State<GroupForm> {
             child: Column(
               children: [
                 buildLabelText('Nom'),
-                buildTextField('Donner un nom au groupe de contact', name, 1),
+                buildTextField('Donner un nom au groupe de contacts', name, 1),
                 buildLabelText('Description'),
                 buildTextField('Ajouter une description', descri, 1),
                 buildLabelText('Numéro(s) de contact(s)'),

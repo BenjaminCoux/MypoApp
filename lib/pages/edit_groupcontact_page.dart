@@ -243,6 +243,14 @@ class _EditGroupState extends State<EditGroup> {
                 builder: (BuildContext context,
                     AsyncSnapshot<Iterable<Contact>> snapshot) {
                   List<Widget> children;
+                  // for (int i = 0; i < 1000; i++) {
+                  //   // if (snapshot.hasData) {
+                  //   //   //populate the child object
+                  //   //   //break the for loop to continue the execution of code
+                  //   //   break;
+                  //   // }
+                  // }
+
                   if (snapshot.hasData) {
                     children = <Widget>[buildList(contacts)];
                   } else {
@@ -256,6 +264,7 @@ class _EditGroupState extends State<EditGroup> {
                       ),
                     ];
                   }
+
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

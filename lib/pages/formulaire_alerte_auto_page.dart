@@ -289,11 +289,11 @@ class _FormState extends State<FormScreen> {
                       value: 1,
                     ),
                     DropdownMenuItem(
-                      child: Text("Ne Contient pas"),
+                      child: Text("Ne contient pas"),
                       value: 2,
                     ),
                     DropdownMenuItem(
-                      child: Text("Est au debut"),
+                      child: Text("Est au début"),
                       value: 3,
                     ),
                     DropdownMenuItem(
@@ -478,7 +478,7 @@ class _FormState extends State<FormScreen> {
                   buildTextField('Titre', alertName, 1),
                   buildLabelText("Message"),
                   buildTextFieldMessage('Contenu du message', alertContent, 4),
-                  buildLabelText("Cibles"),
+                  buildLabelText("Cible"),
                   Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -582,10 +582,10 @@ class _FormState extends State<FormScreen> {
                                           controlAffinity:
                                               ListTileControlAffinity.leading,
                                           title: Text(
-                                            "Groupe de contact",
+                                            "Groupe(s) de contacts",
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.yellow),
+                                                color: Colors.black),
                                           ),
                                           activeColor: d_green,
                                           value: cibles[4],
@@ -715,7 +715,7 @@ class _FormState extends State<FormScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Icon(Icons.rule_outlined),
+                                Icon(Icons.rule_rounded),
                                 Container(
                                     child: Text("Règle de réponse"),
                                     margin: EdgeInsets.all(5)),
@@ -752,15 +752,15 @@ class _FormState extends State<FormScreen> {
                       if (alertName.text == '')
                         {
                           showSnackBar(
-                              context, "Veuillez rentrer un nom à l'alerte.")
+                              context, "Veuillez rentrer un nom à l'alerte")
                         }
                       else if (alertContent.text == '')
-                        {showSnackBar(context, "Veuillez écrire un message.")}
+                        {showSnackBar(context, "Veuillez écrire un message")}
                       else if (wordsLimit == false)
                         {
                           {
                             showSnackBar(
-                                context, "Nombre de character maximal dépassé.")
+                                context, "Nombre de caractères maximal dépassé")
                           }
                         }
                       else if (sameName(alertName.text))
@@ -769,19 +769,19 @@ class _FormState extends State<FormScreen> {
                               context, "Le nom de l'alerte existe déjà")
                         }
                       else if (!isCiblesSet(cibles))
-                        {showSnackBar(context, "Veuillez choisir une cible.")}
+                        {showSnackBar(context, "Veuillez choisir une cible")}
                       else if (!isWeekSet(week))
                         {
                           showSnackBar(
-                              context, "Veuillez choisir le(s) jour(s).")
+                              context, "Veuillez choisir le(s) jour(s)")
                         }
                       else if (!regularExpression.hasMatch(alertName.text))
                         {
                           showSnackBar(context,
-                              "Characters invalides pour le nom de l'alerte.")
+                              "Caractères invalides pour le nom de l'alerte")
                         }
                       else if (keys.isEmpty)
-                        {showSnackBar(context, 'Veuillez rentrer un mot-clé.')}
+                        {showSnackBar(context, 'Veuillez rentrer un mot-clé')}
                       else if (alertName.text != '' &&
                           alertContent != '' &&
                           !keys.isEmpty &&

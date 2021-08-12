@@ -235,7 +235,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   "ou",
                   textAlign: TextAlign.center,
                 ),
-                buildLabelText("Groupes de contacts"),
+                buildLabelText("Groupe(s) de contacts"),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -630,7 +630,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               widget.message.groupContact.length == 0)
                             {
                               showSnackBar(context,
-                                  "Veuillez rentrer de(s) numéro(s) valide.")
+                                  "Veuillez rentrer de(s) numéro(s) valide")
                             }
                           else if (sameName(alertName.text))
                             {
@@ -640,22 +640,22 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           else if (alertContent.text == '')
                             {
                               showSnackBar(
-                                  context, "Veuillez écrire un message.")
+                                  context, "Veuillez écrire un message")
                             }
                           else if (wordsLimit == false)
                             {
                               {
                                 showSnackBar(context,
-                                    "Nombre de character maximal dépassé.")
+                                    "Nombre de caractère maximal dépassé")
                               }
                             }
                           else if (!regularExpression.hasMatch(alertName.text))
                             {
                               showSnackBar(context,
-                                  "Characters invalides pour le nom de l'alerte.")
+                                  "Caractères invalides pour le nom de l'alerte")
                             }
                           else if (!hasChanged)
-                            {showSnackBar(context, "Aucune modification.")}
+                            {showSnackBar(context, "Aucune modification")}
                           else if (alertName.text != '' &&
                               (alertContact.text != '' ||
                                   widget.message.groupContact.length > 0) &&
@@ -680,13 +680,13 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                 {
                                   {
                                     showSnackBar(context,
-                                        'Veuillez activer les permissions (sms et contacts).')
+                                        'Veuillez activer les permissions (sms et contacts)')
                                   }
                                 }
                               else
                                 {
                                   showSnackBar(context,
-                                      'Veuillez completer tous les champs')
+                                      'Veuillez compléter tous les champs')
                                 }
                             }
                         },

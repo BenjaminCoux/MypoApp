@@ -103,7 +103,7 @@ class _AlertScreenState extends State<AlertScreen> {
 
   bool verifieCle(String nom) {
     if (nom.length > paramKeywordMaxchars) {
-      showSnackBar(context, '${paramKeywordMaxchars} characters maximum.');
+      showSnackBar(context, '${paramKeywordMaxchars} caractères maximum.');
       return false;
     }
     for (int i = 0; i < widget.alerte.keys.length; i++) {
@@ -113,7 +113,7 @@ class _AlertScreenState extends State<AlertScreen> {
       }
     }
     if (!alphanumeric.hasMatch(nom)) {
-      showSnackBar(context, 'Characters invalides.');
+      showSnackBar(context, 'caractères invalides.');
       return false;
     }
     return true;
@@ -400,7 +400,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 buildLabelText("Message"),
                 buildTextFieldMessage(
                     '${widget.alerte.content}', alertContent, 4),
-                buildLabelText("Cibles"),
+                buildLabelText("Cible"),
                 Container(
                     decoration: BoxDecoration(
                       color: Colors.transparent,
@@ -730,31 +730,30 @@ class _AlertScreenState extends State<AlertScreen> {
                         onPressed: () {
                           if (alertName.text == '') {
                             showSnackBar(
-                                context, "Veuillez rentrer un nom à l'alerte.");
+                                context, "Veuillez rentrer un nom à l'alerte");
                           } else if (alertContent.text == '') {
                             showSnackBar(
                                 context, "Veuillez écrire un message.");
                           } else if (wordsLimit == false) {
                             {
                               showSnackBar(context,
-                                  "Nombre de character maximal dépassé.");
+                                  "Nombre de caractère maximal dépassé");
                             }
                           } else if (!isCiblesSet(widget.alerte.cibles)) {
-                            showSnackBar(
-                                context, "Veuillez choisir une cible.");
+                            showSnackBar(context, "Veuillez choisir une cible");
                           } else if (!isWeekSet(widget.alerte.days)) {
                             showSnackBar(
-                                context, "Veuillez choisir le(s) jour(s).");
+                                context, "Veuillez choisir le(s) jour(s)");
                           } else if (sameName(alertName.text)) {
                             showSnackBar(
                                 context, "Le nom de l'alerte existe déjà");
                           } else if (!regularExpression
                               .hasMatch(alertName.text)) {
                             showSnackBar(context,
-                                "Characters invalides pour le nom de l'alerte.");
+                                "Caractères invalides pour le nom de l'alerte");
                           } else if (widget.alerte.keys.isEmpty) {
                             showSnackBar(
-                                context, 'Veuillez rentrer un mot-clé.');
+                                context, 'Veuillez rentrer un mot-clé');
                           } else if (alertName.text != '' &&
                               alertContent.text != '' &&
                               wordsLimit &&
@@ -769,7 +768,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                     builder: (context) => new SmsAuto()));
                           } else {
                             showSnackBar(
-                                context, 'Veuillez completer tous les champs.');
+                                context, 'Veuillez compléter tous les champs');
                           }
                         },
                         child: Text(

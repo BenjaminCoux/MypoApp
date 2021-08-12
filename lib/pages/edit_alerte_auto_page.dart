@@ -78,8 +78,8 @@ class _AlertScreenState extends State<AlertScreen> {
       "",
       "Contient",
       "Ne contient pas",
-      "est au debut",
-      "est à la fin",
+      "Est au début",
+      "Est à la fin",
     ];
     return contient[a.contient];
   }
@@ -326,29 +326,45 @@ class _AlertScreenState extends State<AlertScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                            margin: EdgeInsets.fromLTRB(
-                                                10, 0, 0, 0),
-                                            child: Text(
-                                              widget.alerte.keys[index].name,
-                                              textAlign: TextAlign.justify,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10, 0, 0, 0),
+                                                child: Text(
+                                                  widget
+                                                      .alerte.keys[index].name,
+                                                  textAlign: TextAlign.justify,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Text(getContient(
-                                              widget.alerte.keys[index])),
-                                          IconButton(
-                                              alignment: Alignment.topLeft,
-                                              onPressed: () => {
-                                                    setState(() {
-                                                      widget.alerte.keys.remove(
-                                                          widget.alerte
-                                                              .keys[index]);
-                                                      hasChanged = true;
-                                                    })
-                                                  },
-                                              icon: const Icon(Icons.delete))
+                                          Row(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 0, 10, 0),
+                                                child: Text(getContient(
+                                                    widget.alerte.keys[index])),
+                                              ),
+                                              IconButton(
+                                                  alignment: Alignment.topLeft,
+                                                  onPressed: () => {
+                                                        setState(() {
+                                                          widget.alerte.keys
+                                                              .remove(widget
+                                                                  .alerte
+                                                                  .keys[index]);
+                                                          hasChanged = true;
+                                                        })
+                                                      },
+                                                  icon:
+                                                      const Icon(Icons.delete))
+                                            ],
+                                          ),
                                         ]))))
                       ]);
                 })

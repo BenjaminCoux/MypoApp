@@ -95,6 +95,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     alertContent.addListener(() {
       changed;
     });
+    // debugPrint(widget.message.status.toString());
   }
 
   @override
@@ -119,8 +120,17 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     widget.message.groupContact = alertgrp;
     widget.message.date = new DateTime(timeUpdated.year, timeUpdated.month,
         timeUpdated.day, timeAux.hour, timeAux.minute, timeAux.second);
+    widget.message.dateOfCreation = new DateTime(
+        timeUpdated.year,
+        timeUpdated.month,
+        timeUpdated.day,
+        timeAux.hour,
+        timeAux.minute,
+        timeAux.second);
     widget.message.repeat = repeat;
+
     widget.message.notification = notification;
+    widget.message.status = true;
     widget.message.save();
   }
 
@@ -142,7 +152,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.message.name}', page: () => SmsProg()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: 10,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -326,11 +336,11 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                       color: Colors.black),
                                 ),
                                 Text(
-                                  "${DateFormat('dd/MM/yyyy').format(widget.message.dateOfCreation)} ",
+                                  "${DateFormat('dd/MM/yyyy').format(timeUpdated)} ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 Text(
-                                  "Heure: ${DateFormat('HH:mm').format(widget.message.dateOfCreation)} ",
+                                  "Heure: ${DateFormat('HH:mm').format(timeAux)} ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ],
@@ -349,11 +359,11 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                       color: Colors.black),
                                 ),
                                 Text(
-                                  "${DateFormat('dd/MM/yyyy').format(widget.message.date)} ",
+                                  "${DateFormat('dd/MM/yyyy').format(timeUpdated)} ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 Text(
-                                  "Heure: ${DateFormat('HH:mm').format(widget.message.date)} ",
+                                  "Heure: ${DateFormat('HH:mm').format(timeAux)} ",
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ],
@@ -369,6 +379,8 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                             onPressed: () => showSheet(context,
                                 child: buildDatePicker(), onClicked: () {
                               Navigator.pop(context);
+                              showSnackBar(context,
+                                  'Date: ${DateFormat('dd/MM/yyyy').format(timeUpdated)} Heure: ${DateFormat('HH:mm').format(timeAux)}');
                             }),
                             style: OutlinedButton.styleFrom(
                               backgroundColor: d_green,
@@ -642,11 +654,14 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               showSnackBar(context,
                                   "Characters invalides pour le nom de l'alerte.")
                             }
+                          else if (!hasChanged)
+                            {showSnackBar(context, "Aucune modification.")}
                           else if (alertName.text != '' &&
                               (alertContact.text != '' ||
                                   widget.message.groupContact.length > 0) &&
                               alertContent.text != '' &&
                               wordsLimit &&
+                              hasChanged &&
                               await Permission.contacts.request().isGranted &&
                               await Permission.sms.request().isGranted)
                             {
@@ -805,6 +820,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           controller: controller,
           onChanged: (String value) => {
             setState(() {
+              this.hasChanged = true;
               this.nbWords = value.length;
               this.hasChanged = true;
               this.nbMaxWords = 450 - value.length;
@@ -850,25 +866,33 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           Flexible(
             flex: 7,
             child: CupertinoDatePicker(
-                minimumYear: DateTime.now().year,
-                maximumYear: DateTime.now().year + 3,
-                initialDateTime: widget.message.date,
-                mode: CupertinoDatePickerMode.date,
-                use24hFormat: true,
-                onDateTimeChanged: (dateTime) =>
-                    setState(() => timeUpdated = dateTime)),
+              minimumYear: DateTime.now().year,
+              maximumYear: DateTime.now().year + 3,
+              initialDateTime: widget.message.date,
+              mode: CupertinoDatePickerMode.date,
+              use24hFormat: true,
+              onDateTimeChanged: (dateTime) {
+                setState(() {
+                  timeUpdated = dateTime;
+                  hasChanged = true;
+                });
+              },
+            ),
           ),
           Flexible(
               flex: 3,
               child: CupertinoDatePicker(
-                minimumYear: widget.message.date.year - 3,
-                maximumYear: DateTime.now().year + 3,
-                initialDateTime: widget.message.date,
-                mode: CupertinoDatePickerMode.time,
-                use24hFormat: true,
-                onDateTimeChanged: (dateTime) =>
-                    setState(() => timeAux = dateTime),
-              )),
+                  minimumYear: widget.message.date.year - 3,
+                  maximumYear: DateTime.now().year + 3,
+                  initialDateTime: widget.message.date,
+                  mode: CupertinoDatePickerMode.time,
+                  use24hFormat: true,
+                  onDateTimeChanged: (dateTime) {
+                    setState(() {
+                      timeAux = dateTime;
+                      hasChanged = true;
+                    });
+                  })),
         ]),
       );
 
@@ -903,6 +927,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
             looping: true,
             onSelectedItemChanged: (index) => setState(() {
                   repeat = repeatOptions[index];
+                  hasChanged = true;
                 }),
             children: modelBuilder<String>(repeatOptions, (index, option) {
               return Center(child: Text(option));

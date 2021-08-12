@@ -792,28 +792,29 @@ class _ProgState extends State<ProgForm> {
         height: 150,
         child: Flex(direction: Axis.horizontal, children: [
           Flexible(
-            flex: 7,
+            flex: 1,
             child: CupertinoDatePicker(
               minimumYear: DateTime.now().year,
               maximumYear: DateTime.now().year + 3,
               initialDateTime: date,
-              mode: CupertinoDatePickerMode.date,
+              mode: CupertinoDatePickerMode.dateAndTime,
               use24hFormat: true,
               onDateTimeChanged: (dateTime) => setState(() => this.date =
-                  new DateTime(dateTime.year, dateTime.month, dateTime.day)),
+                  new DateTime(dateTime.year, dateTime.month, dateTime.day,
+                      dateTime.hour, dateTime.minute, dateTime.second)),
             ),
           ),
-          Flexible(
-              flex: 3,
-              child: CupertinoDatePicker(
-                  minimumYear: DateTime.now().year - 3,
-                  maximumYear: DateTime.now().year + 3,
-                  initialDateTime: date,
-                  mode: CupertinoDatePickerMode.time,
-                  use24hFormat: true,
-                  onDateTimeChanged: (dateTime) => setState(() => this.date =
-                      new DateTime(dateTime.year, dateTime.month, dateTime.day,
-                          dateTime.hour, dateTime.minute, dateTime.second)))),
+          // Flexible(
+          //     flex: 3,
+          //     child: CupertinoDatePicker(
+          //         minimumYear: DateTime.now().year - 3,
+          //         maximumYear: DateTime.now().year + 3,
+          //         initialDateTime: date,
+          //         mode: CupertinoDatePickerMode.time,
+          //         use24hFormat: true,
+          //         onDateTimeChanged: (dateTime) => setState(() => this.date =
+          //             new DateTime(dateTime.year, dateTime.month, dateTime.day,
+          //                 dateTime.hour, dateTime.minute, dateTime.second)))),
         ]),
         // child: CupertinoDatePicker(
         //     minimumYear: DateTime.now().year - 2,

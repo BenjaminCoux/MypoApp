@@ -282,7 +282,7 @@ class _SmsProgState extends State<SmsProg> {
       appBar: TopBarRedirection(
           title: "Messages programmés", page: () => HomePage()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: 10,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,

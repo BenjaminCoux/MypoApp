@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:mypo/model/couleurs.dart';
-import 'package:mypo/model/expressions.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/premium_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/button_widget.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -185,7 +186,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     emailController,
                     1,
                     TextInputType.emailAddress),
-                buildLabelText('Téléphone'),
+                buildLabelText(input: 'Téléphone'),
                 Container(
                   margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
                   child: IntlPhoneField(
@@ -193,7 +194,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     controller: numeroController,
                     initialCountryCode: isoCode != '' ? isoCode : 'FR',
                     decoration: InputDecoration(
-                        // color: Colors.red,
                         filled: true,
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
@@ -324,25 +324,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 )
               ],
             ),
-          )),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
           )),
     );
   }

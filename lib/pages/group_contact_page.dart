@@ -6,7 +6,7 @@ import 'package:mypo/pages/formulaire_group_contact_page.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 
 class GroupContactPage extends StatefulWidget {
   @override

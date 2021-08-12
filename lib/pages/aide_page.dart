@@ -1,11 +1,12 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpScreen extends StatefulWidget {
@@ -100,16 +101,16 @@ class _HelpScreenState extends State<HelpScreen> {
 
   Widget buildFormContact() {
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         child: Column(children: <Widget>[
           Center(
               child: Text("Nous contacter",
                   style: TextStyle(color: Colors.black, fontSize: 24))),
           SizedBox(height: 8),
-          buildLabelText('Motif'),
+          buildLabelText(input: 'Motif'),
           buildDropDown(),
           SizedBox(height: 8),
-          buildLabelText('Nom complet'),
+          buildLabelText(input: 'Nom complet'),
           TextField(
               controller: nomController,
               keyboardType: TextInputType.text,
@@ -119,7 +120,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   hintText: "Nom",
                   border: InputBorder.none)),
           SizedBox(height: 8),
-          buildLabelText('Email'),
+          buildLabelText(input: 'Email'),
           TextField(
               keyboardType: TextInputType.emailAddress,
               controller: emailController,
@@ -129,7 +130,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   hintText: "Email",
                   border: InputBorder.none)),
           SizedBox(height: 8),
-          buildLabelText('Message'),
+          buildLabelText(input: 'Message'),
           TextField(
               keyboardType: TextInputType.multiline,
               textInputAction: TextInputAction.newline,
@@ -212,25 +213,6 @@ class _HelpScreenState extends State<HelpScreen> {
         }));
 
     launch(emailLauncherUri.toString());
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
-    );
   }
 
   myListAide(List<String> questions, int lenght, List<String> reponses,

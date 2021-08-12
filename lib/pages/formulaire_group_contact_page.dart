@@ -4,9 +4,11 @@ import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class GroupForm extends StatefulWidget {
@@ -117,16 +119,16 @@ class _GroupFormState extends State<GroupForm> {
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
-        thickness: 5,
+        thickness: scrollBarThickness,
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
-                buildLabelText('Nom'),
+                buildLabelText(input: 'Nom'),
                 buildTextField('Donner un nom au groupe de contacts', name, 1),
-                buildLabelText('Description'),
+                buildLabelText(input: 'Description'),
                 buildTextField('Ajouter une description', descri, 1),
-                buildLabelText('Numéro(s) de contact(s)'),
+                buildLabelText(input: 'Numéro(s) de contact(s)'),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -251,25 +253,6 @@ class _GroupFormState extends State<GroupForm> {
       ),
     );
   }
-}
-
-Widget buildLabelText(String input) {
-  return Container(
-    margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-    child: Padding(
-        padding: EdgeInsets.all(0),
-        child: Row(
-          children: [
-            Text(
-              input,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.black),
-            )
-          ],
-        )),
-  );
 }
 
 Container buildTextField(

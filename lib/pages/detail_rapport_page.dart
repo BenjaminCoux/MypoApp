@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:mypo/pages/rapports_page.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/widget/label_widget.dart';
 
 class DetailRepportsPage extends StatefulWidget {
   final Rapportmsg_hive message;
@@ -39,7 +41,7 @@ class _DetailState extends State<Detail> {
       interactive: true,
       isAlwaysShown: true,
       showTrackOnHover: true,
-      thickness: 5,
+      thickness: scrollBarThickness,
       child: ListView(
         children: <Widget>[
           Padding(
@@ -93,7 +95,7 @@ class _DetailState extends State<Detail> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            buildLabelText('Message :'),
+                            buildLabelText(input: 'Message :'),
                             SizedBox(height: 5),
                             Container(
                               alignment: Alignment.centerLeft,
@@ -111,25 +113,6 @@ class _DetailState extends State<Detail> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(0, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 }

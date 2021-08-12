@@ -3,13 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/couleurs.dart';
-import 'package:mypo/model/expressions.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'sms_prog_page.dart';
@@ -129,7 +131,7 @@ class _ProgState extends State<ProgForm> {
       appBar:
           TopBarRedirection(title: 'Ajouter une alerte', page: () => SmsProg()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: scrollBarThickness,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -145,9 +147,9 @@ class _ProgState extends State<ProgForm> {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  buildLabelText("Nom de l'alerte"),
+                  buildLabelText(input: "Nom de l'alerte"),
                   buildTextField("Nom", nameController, 1),
-                  buildLabelText('Numéro(s) de(s) contact(s)'),
+                  buildLabelText(input: 'Numéro(s) de(s) contact(s)'),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -222,7 +224,7 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                   Text("ou"),
-                  buildLabelText("Groupe(s) de contacts"),
+                  buildLabelText(input: "Groupe(s) de contacts"),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -282,7 +284,7 @@ class _ProgState extends State<ProgForm> {
                       ),
                     ),
                   ),
-                  buildLabelText('Message'),
+                  buildLabelText(input: 'Message'),
                   buildTextFieldMessage("Contenu du message", alertContent, 4),
                   Container(
                     width: double.infinity,
@@ -647,25 +649,6 @@ class _ProgState extends State<ProgForm> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 

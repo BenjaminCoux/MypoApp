@@ -3,12 +3,14 @@ import 'package:intl/date_symbols.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/couleurs.dart';
-import 'package:mypo/model/expressions.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'sms_auto_page.dart';
 import 'package:weekday_selector/weekday_selector.dart';
@@ -453,7 +455,7 @@ class _FormState extends State<FormScreen> {
       appBar:
           TopBarRedirection(title: 'Ajouter une alerte', page: () => SmsAuto()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: scrollBarThickness,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -464,11 +466,11 @@ class _FormState extends State<FormScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildLabelText("Titre"),
+                  buildLabelText(input: "Titre"),
                   buildTextField('Titre', alertName, 1),
-                  buildLabelText("Message"),
+                  buildLabelText(input: "Message"),
                   buildTextFieldMessage('Contenu du message', alertContent, 4),
-                  buildLabelText("Cible"),
+                  buildLabelText(input: "Cible"),
                   Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -625,7 +627,7 @@ class _FormState extends State<FormScreen> {
                           ),
                         ],
                       )),
-                  buildLabelText("Jours"),
+                  buildLabelText(input: "Jours"),
                   Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -646,7 +648,7 @@ class _FormState extends State<FormScreen> {
                           ),
                         ),
                       ])),
-                  buildLabelText("Contenu du message entrant"),
+                  buildLabelText(input: "Contenu du message entrant"),
                   alertKeys(context),
                   SizedBox(height: 20),
                   Container(
@@ -826,25 +828,6 @@ class _FormState extends State<FormScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 

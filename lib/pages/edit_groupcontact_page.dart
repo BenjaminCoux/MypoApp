@@ -5,8 +5,9 @@ import 'package:mypo/pages/formulaire_group_contact_page.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // ignore: must_be_immutable
@@ -170,11 +171,11 @@ class _EditGroupState extends State<EditGroup> {
       body: Center(
         child: Column(
           children: [
-            buildLabelText('Nom du groupe'),
+            buildLabelText(input: 'Nom du groupe'),
             buildTextField('Nom', name, 1),
-            buildLabelText('Description'),
+            buildLabelText(input: 'Description'),
             buildTextField('Description', descri, 1),
-            buildLabelText('Numéro(s) de contact(s)'),
+            buildLabelText(input: 'Numéro(s) de contact(s)'),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -244,13 +245,6 @@ class _EditGroupState extends State<EditGroup> {
                 builder: (BuildContext context,
                     AsyncSnapshot<Iterable<Contact>> snapshot) {
                   List<Widget> children;
-                  // for (int i = 0; i < 1000; i++) {
-                  //   // if (snapshot.hasData) {
-                  //   //   //populate the child object
-                  //   //   //break the for loop to continue the execution of code
-                  //   //   break;
-                  //   // }
-                  // }
 
                   if (snapshot.hasData) {
                     children = <Widget>[buildList(contacts)];
@@ -306,25 +300,6 @@ class _EditGroupState extends State<EditGroup> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 }

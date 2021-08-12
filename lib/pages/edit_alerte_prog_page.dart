@@ -3,15 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/couleurs.dart';
-import 'package:mypo/model/expressions.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/edit_alerte_auto_page.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // ignore: must_be_immutable
@@ -151,7 +153,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.message.name}', page: () => SmsProg()),
       body: Scrollbar(
-        thickness: 10,
+        thickness: scrollBarThickness,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -166,9 +168,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
             },
             child: ListView(
               children: <Widget>[
-                buildLabelText("Nom"),
+                buildLabelText(input: "Nom"),
                 buildTextFieldMessage('${widget.message.name}', alertName, 1),
-                buildLabelText('Numéro(s) de contact(s)'),
+                buildLabelText(input: 'Numéro(s) de contact(s)'),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -234,7 +236,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   "ou",
                   textAlign: TextAlign.center,
                 ),
-                buildLabelText("Groupe(s) de contacts"),
+                buildLabelText(input: "Groupe(s) de contacts"),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -305,7 +307,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     ),
                   ),
                 ),
-                buildLabelText('Message'),
+                buildLabelText(input: 'Message'),
                 buildTextFieldMessage(
                     '${widget.message.message}', alertContent, 4),
                 Container(
@@ -706,25 +708,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 

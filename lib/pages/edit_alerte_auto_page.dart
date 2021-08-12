@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/couleurs.dart';
-import 'package:mypo/model/expressions.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'sms_auto_page.dart';
 
@@ -370,7 +372,7 @@ class _AlertScreenState extends State<AlertScreen> {
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.alerte.title}', page: () => SmsAuto()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: scrollBarThickness,
         interactive: true,
         showTrackOnHover: true,
         child: Container(
@@ -384,12 +386,12 @@ class _AlertScreenState extends State<AlertScreen> {
             },
             child: ListView(
               children: <Widget>[
-                buildLabelText("Nom"),
+                buildLabelText(input: "Nom"),
                 buildTextField('${widget.alerte.title}', alertName, 1),
-                buildLabelText("Message"),
+                buildLabelText(input: "Message"),
                 buildTextFieldMessage(
                     '${widget.alerte.content}', alertContent, 4),
-                buildLabelText("Cible"),
+                buildLabelText(input: "Cible"),
                 Container(
                     decoration: BoxDecoration(
                       color: Colors.transparent,
@@ -568,7 +570,7 @@ class _AlertScreenState extends State<AlertScreen> {
                         ),
                       ],
                     )),
-                buildLabelText("Jours"),
+                buildLabelText(input: "Jours"),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.transparent,
@@ -598,7 +600,7 @@ class _AlertScreenState extends State<AlertScreen> {
                     ],
                   ),
                 ),
-                buildLabelText("Contenu du message entrant"),
+                buildLabelText(input: "Contenu du message entrant"),
                 alertKeys(context),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -777,25 +779,6 @@ class _AlertScreenState extends State<AlertScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 

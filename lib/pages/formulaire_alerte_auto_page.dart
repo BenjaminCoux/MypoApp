@@ -975,6 +975,24 @@ class MyDialog extends StatefulWidget {
 }
 
 class _MyDialogState extends State<MyDialog> {
+  void update() {
+    List<String> l = widget.controller.text.split(", ");
+    for (int i = 0; i < widget.contactgroup.length; i++) {
+      for (int j = 0; j < l.length; j++) {
+        if (l[j] == widget.contactgroup[i].name) {
+          widget.boolCheckedGrp[i] = true;
+          widget.alertGroup.add(widget.contactgroup[i]);
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    update();
+  }
+
   groupTile(GroupContact contact, int index) {
     return Container(
         alignment: Alignment.center,
@@ -1031,7 +1049,7 @@ class _MyDialogState extends State<MyDialog> {
   }
 
   String deletegrp(String input, GroupContact contact) {
-    List<String> list = input.split(',');
+    List<String> list = input.split(', ');
     for (int i = 0; i < list.length; i++) {
       if (list[i] == contact.name) {
         list.removeAt(i);

@@ -470,18 +470,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                             controller: groupcontactcontroller,
                                           );
                                         }),
-                                    setState(() {
-                                      String tmp = "";
-                                      for (int i = 0;
-                                          i <
-                                              widget
-                                                  .message.groupContact.length;
-                                          i++) {
-                                        tmp +=
-                                            widget.message.groupContact[i].name;
-                                      }
-                                      groupcontactcontroller.text = tmp;
-                                    })
                                   },
                               icon: Icon(
                                 Icons.group_add_outlined,

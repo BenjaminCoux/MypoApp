@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:mypo/pages/detail_rapport_page.dart';
 import 'package:mypo/pages/accueil_page.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/database/hive_database.dart';
@@ -25,7 +26,7 @@ class _RepportsPageState extends State<RepportsPage> {
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
-        thickness: 5,
+        thickness: scrollBarThickness,
         child: SingleChildScrollView(
           child: Column(
             children: [

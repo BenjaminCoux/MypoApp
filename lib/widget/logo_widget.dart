@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:mypo/pages/edit_profile_page.dart';
 
 /*
@@ -13,6 +13,7 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var heightOfScreen = MediaQuery.of(context).size.height * 0.20;
     bool isImgSet = false;
     if (imgPath != null) {
       isImgSet = true;
@@ -25,8 +26,8 @@ class Logo extends StatelessWidget {
         : Center(
             child: Container(
               margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-              height: MediaQuery.of(context).size.height * 0.20,
-              width: MediaQuery.of(context).size.height * 0.20,
+              height: heightOfScreen,
+              width: heightOfScreen,
               decoration: BoxDecoration(
                   color: d_grey,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -38,6 +39,7 @@ class Logo extends StatelessWidget {
   }
 
   buildImage(BuildContext context) {
+    var heightOfScreen = MediaQuery.of(context).size.height * 0.20;
     final img = imgPath!.contains('https://')
         ? NetworkImage(imgPath!)
         : FileImage(File(imgPath!));
@@ -48,7 +50,7 @@ class Logo extends StatelessWidget {
         SizedBox(height: 10),
         Container(
           margin: EdgeInsets.fromLTRB(8, 40, 0, 40),
-          height: MediaQuery.of(context).size.height * 0.20,
+          height: heightOfScreen,
           child: GestureDetector(
             onTap: () {
               Navigator.pop(
@@ -63,8 +65,8 @@ class Logo extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: Ink.image(
-                  height: MediaQuery.of(context).size.height * 0.20,
-                  width: MediaQuery.of(context).size.height * 0.20,
+                  height: heightOfScreen,
+                  width: heightOfScreen,
                   image: img as ImageProvider,
                   fit: BoxFit.cover,
                 ),
@@ -81,13 +83,14 @@ class Logo extends StatelessWidget {
 class LogoPremium extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var heightOfScreen = MediaQuery.of(context).size.height * 0.20;
     return ColorFiltered(
       colorFilter: ColorFilter.mode(
           Colors.grey.shade800.withOpacity(0), BlendMode.srcOver),
       child: Center(
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.20,
-          width: MediaQuery.of(context).size.height * 0.20,
+          height: heightOfScreen,
+          width: heightOfScreen,
           decoration: BoxDecoration(
               color: Colors.transparent,
               borderRadius: BorderRadius.all(Radius.circular(12)),

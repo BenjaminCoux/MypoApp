@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/pages/aide_page.dart';
 import 'package:mypo/pages/accueil_page.dart';
@@ -7,6 +7,7 @@ import 'package:mypo/pages/rapports_page.dart';
 import 'package:mypo/pages/parametres_page.dart';
 import 'package:mypo/pages/sms_auto_page.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
+import 'package:mypo/utils/variables.dart';
 
 /*
     -this class is responsible of the bottom nav bar of 2 elements for the sms auto page with images as icon
@@ -27,7 +28,7 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
           icon: Image.asset(
             'assets/images/smsprog_disabled.png',
             width: 80,
-            height: 40,
+            height: bottomNavBarIconSize,
           ),
           label: '',
         ),
@@ -36,7 +37,7 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
           icon: IconButton(
               icon: Icon(
                 Icons.home,
-                size: 40,
+                size: bottomNavBarIconSize,
                 color: Colors.white,
               ),
               onPressed: () => {
@@ -53,7 +54,7 @@ class BottomNavigationBarSmsAutoTwo extends StatelessWidget {
           icon: Image.asset(
             'assets/images/smsauto_activated.png',
             width: 80,
-            height: 40,
+            height: bottomNavBarIconSize,
           ),
           label: '',
         ),
@@ -97,7 +98,7 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
           icon: Image.asset(
             'assets/images/smsprog_activated.png',
             width: 80,
-            height: 40,
+            height: bottomNavBarIconSize,
           ),
           label: '',
         ),
@@ -106,7 +107,7 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
           icon: IconButton(
               icon: Icon(
                 Icons.home,
-                size: 40,
+                size: bottomNavBarIconSize,
                 color: Colors.white,
               ),
               onPressed: () => {
@@ -123,7 +124,7 @@ class BottomNavigationBarSmsProgTwo extends StatelessWidget {
           icon: Image.asset(
             'assets/images/smsauto_disabled.png',
             width: 80,
-            height: 40,
+            height: bottomNavBarIconSize,
           ),
           label: '',
         ),
@@ -173,9 +174,9 @@ class _StateBottomNavigationBarSection
           tooltip: "Groupes de contacts",
           icon: IconButton(
               icon: Icon(
-                Icons.group,
+                Icons.group_outlined,
                 color: Colors.white,
-                size: 50,
+                size: bottomNavBarIconSize,
               ),
               onPressed: () => {
                     Navigator.pop(context),
@@ -190,9 +191,9 @@ class _StateBottomNavigationBarSection
           tooltip: 'Rapport',
           icon: IconButton(
               icon: Icon(
-                Icons.my_library_books_rounded,
+                Icons.my_library_books_outlined,
                 color: Colors.white,
-                size: 50,
+                size: bottomNavBarIconSize,
               ),
               onPressed: () => {
                     Navigator.pop(context),
@@ -210,7 +211,7 @@ class _StateBottomNavigationBarSection
               icon: Icon(
                 Icons.help_outline,
                 color: Colors.white,
-                size: 50,
+                size: bottomNavBarIconSize,
               ),
               onPressed: () => {
                     Navigator.pop(context),
@@ -228,7 +229,7 @@ class _StateBottomNavigationBarSection
               icon: Icon(
                 Icons.settings_outlined,
                 color: Colors.white,
-                size: 50,
+                size: bottomNavBarIconSize,
               ),
               onPressed: () {
                 Navigator.pop(context);

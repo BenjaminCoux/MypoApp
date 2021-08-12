@@ -3,10 +3,14 @@ import 'package:intl/date_symbols.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'sms_auto_page.dart';
 import 'package:weekday_selector/weekday_selector.dart';
@@ -68,9 +72,6 @@ class _FormState extends State<FormScreen> {
   var db;
   bool notif = false;
   List<AlertKey> keys = <AlertKey>[];
-  final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
-  final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
   late List<bool> boolCheckedGrp;
   int nbMaxWords = 450;
   int nbWords = 0;
@@ -163,15 +164,6 @@ class _FormState extends State<FormScreen> {
     } else {
       return Colors.grey.shade300;
     }
-  }
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
   }
 
 // **************************************************************************
@@ -289,11 +281,11 @@ class _FormState extends State<FormScreen> {
                       value: 1,
                     ),
                     DropdownMenuItem(
-                      child: Text("Ne Contient pas"),
+                      child: Text("Ne contient pas"),
                       value: 2,
                     ),
                     DropdownMenuItem(
-                      child: Text("Est au debut"),
+                      child: Text("Est au début"),
                       value: 3,
                     ),
                     DropdownMenuItem(
@@ -463,7 +455,7 @@ class _FormState extends State<FormScreen> {
       appBar:
           TopBarRedirection(title: 'Ajouter une alerte', page: () => SmsAuto()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: scrollBarThickness,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -474,11 +466,11 @@ class _FormState extends State<FormScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildLabelText("Titre"),
+                  buildLabelText(input: "Titre"),
                   buildTextField('Titre', alertName, 1),
-                  buildLabelText("Message"),
+                  buildLabelText(input: "Message"),
                   buildTextFieldMessage('Contenu du message', alertContent, 4),
-                  buildLabelText("Cibles"),
+                  buildLabelText(input: "Cible"),
                   Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -582,10 +574,10 @@ class _FormState extends State<FormScreen> {
                                           controlAffinity:
                                               ListTileControlAffinity.leading,
                                           title: Text(
-                                            "Groupe de contact",
+                                            "Groupe(s) de contacts",
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.yellow),
+                                                color: Colors.black),
                                           ),
                                           activeColor: d_green,
                                           value: cibles[4],
@@ -635,7 +627,7 @@ class _FormState extends State<FormScreen> {
                           ),
                         ],
                       )),
-                  buildLabelText("Jours"),
+                  buildLabelText(input: "Jours"),
                   Container(
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -656,7 +648,7 @@ class _FormState extends State<FormScreen> {
                           ),
                         ),
                       ])),
-                  buildLabelText("Contenu du message entrant"),
+                  buildLabelText(input: "Contenu du message entrant"),
                   alertKeys(context),
                   SizedBox(height: 20),
                   Container(
@@ -715,7 +707,7 @@ class _FormState extends State<FormScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Icon(Icons.rule_outlined),
+                                Icon(Icons.rule_rounded),
                                 Container(
                                     child: Text("Règle de réponse"),
                                     margin: EdgeInsets.all(5)),
@@ -752,15 +744,15 @@ class _FormState extends State<FormScreen> {
                       if (alertName.text == '')
                         {
                           showSnackBar(
-                              context, "Veuillez rentrer un nom à l'alerte.")
+                              context, "Veuillez rentrer un nom à l'alerte")
                         }
                       else if (alertContent.text == '')
-                        {showSnackBar(context, "Veuillez écrire un message.")}
+                        {showSnackBar(context, "Veuillez écrire un message")}
                       else if (wordsLimit == false)
                         {
                           {
                             showSnackBar(
-                                context, "Nombre de character maximal dépassé.")
+                                context, "Nombre de caractères maximal dépassé")
                           }
                         }
                       else if (sameName(alertName.text))
@@ -769,19 +761,19 @@ class _FormState extends State<FormScreen> {
                               context, "Le nom de l'alerte existe déjà")
                         }
                       else if (!isCiblesSet(cibles))
-                        {showSnackBar(context, "Veuillez choisir une cible.")}
+                        {showSnackBar(context, "Veuillez choisir une cible")}
                       else if (!isWeekSet(week))
                         {
                           showSnackBar(
-                              context, "Veuillez choisir le(s) jour(s).")
+                              context, "Veuillez choisir le(s) jour(s)")
                         }
                       else if (!regularExpression.hasMatch(alertName.text))
                         {
                           showSnackBar(context,
-                              "Characters invalides pour le nom de l'alerte.")
+                              "Caractères invalides pour le nom de l'alerte")
                         }
                       else if (keys.isEmpty)
-                        {showSnackBar(context, 'Veuillez rentrer un mot-clé.')}
+                        {showSnackBar(context, 'Veuillez rentrer un mot-clé')}
                       else if (alertName.text != '' &&
                           alertContent != '' &&
                           !keys.isEmpty &&
@@ -836,25 +828,6 @@ class _FormState extends State<FormScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 
@@ -1099,7 +1072,7 @@ class _MyDialogState extends State<MyDialog> {
           children: [
             Column(children: [
               new IconButton(
-                icon: Icon(Icons.group_add_rounded,
+                icon: Icon(Icons.group_add_outlined,
                     size: 30, color: Colors.black),
                 onPressed: () => {
                   Navigator.pop(context),

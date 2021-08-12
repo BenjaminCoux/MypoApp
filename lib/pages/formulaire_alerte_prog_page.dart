@@ -3,11 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
+import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'sms_prog_page.dart';
@@ -49,12 +53,6 @@ class _ProgState extends State<ProgForm> {
   DateTime time = DateTime.now();
 
   bool fieldsEmpty = true;
-  final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
-  final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
-  final numeroExpression =
-      RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
-  final phoneExpression = RegExp(r'^[0-9_\-+() \.,;]+$');
   int nbMaxWords = 450;
   bool wordsLimit = true;
   int nbWords = 0;
@@ -133,7 +131,7 @@ class _ProgState extends State<ProgForm> {
       appBar:
           TopBarRedirection(title: 'Ajouter une alerte', page: () => SmsProg()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: scrollBarThickness,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -149,9 +147,9 @@ class _ProgState extends State<ProgForm> {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  buildLabelText("Nom de l'alerte"),
+                  buildLabelText(input: "Nom de l'alerte"),
                   buildTextField("Nom", nameController, 1),
-                  buildLabelText('Numéro(s) de(s) contact(s)'),
+                  buildLabelText(input: 'Numéro(s) de(s) contact(s)'),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -226,7 +224,7 @@ class _ProgState extends State<ProgForm> {
                     ),
                   ),
                   Text("ou"),
-                  buildLabelText("Groupes de contacts"),
+                  buildLabelText(input: "Groupe(s) de contacts"),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -259,7 +257,7 @@ class _ProgState extends State<ProgForm> {
                                           }),
                                     },
                                 icon: Icon(
-                                  Icons.group_add_rounded,
+                                  Icons.group_add_outlined,
                                   color: Colors.black,
                                   size: 35,
                                 )),
@@ -276,7 +274,7 @@ class _ProgState extends State<ProgForm> {
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide:
                                     BorderSide(color: Colors.transparent)),
-                            hintText: "Groupe de contact",
+                            hintText: "Groupe(s) de contacts",
                             hintStyle: TextStyle(
                               fontSize: 16,
                               fontStyle: FontStyle.italic,
@@ -286,7 +284,7 @@ class _ProgState extends State<ProgForm> {
                       ),
                     ),
                   ),
-                  buildLabelText('Message'),
+                  buildLabelText(input: 'Message'),
                   buildTextFieldMessage("Contenu du message", alertContent, 4),
                   Container(
                     width: double.infinity,
@@ -482,7 +480,7 @@ class _ProgState extends State<ProgForm> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Icon(Icons.check_circle_rounded),
+                                Icon(Icons.check_circle_outline),
                                 Container(
                                     child: Text("Confirmer avant envoi"),
                                     margin: EdgeInsets.all(5)),
@@ -521,7 +519,7 @@ class _ProgState extends State<ProgForm> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Icon(Icons.notifications),
+                                Icon(Icons.notifications_outlined),
                                 Container(
                                     child: Text("Notification"),
                                     margin: EdgeInsets.all(5)),
@@ -555,26 +553,26 @@ class _ProgState extends State<ProgForm> {
                             {
                               {
                                 showSnackBar(context,
-                                    "Veuillez rentrer un nom à l'alerte.")
+                                    "Veuillez rentrer un nom à l'alerte")
                               }
                             }
                           else if (contactController.text == '' &&
                               alertGroup.length == 0)
                             {
                               showSnackBar(
-                                  context, "Veuillez rentrer un numéro.")
+                                  context, "Veuillez rentrer un numéro")
                             }
                           else if (!phoneExpression
                                   .hasMatch(contactController.text) &&
                               alertGroup.length == 0)
                             {
-                              showSnackBar(context,
-                                  "Veuillez rentrer de numéro(s) valide.")
+                              showSnackBar(
+                                  context, "Veuillez rentrer un numéro valide")
                             }
                           else if (alertContent.text == '')
                             {
                               showSnackBar(
-                                  context, "Veuillez écrire un message.")
+                                  context, "Veuillez écrire un message")
                             }
                           else if (sameName(nameController.text))
                             {
@@ -584,13 +582,13 @@ class _ProgState extends State<ProgForm> {
                           else if (wordsLimit == false)
                             {
                               showSnackBar(context,
-                                  "Nombre de character maximal dépassé.")
+                                  "Nombre de caractères maximal dépassé")
                             }
                           else if (!regularExpression
                               .hasMatch(nameController.text))
                             {
                               showSnackBar(context,
-                                  "Characters invalides pour le nom de l'alerte.")
+                                  "Caractères invalides pour le nom de l'alerte")
                             }
                           else if (nameController.text != '' &&
                               (contactController.text != '' ||
@@ -651,25 +649,6 @@ class _ProgState extends State<ProgForm> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 
@@ -804,26 +783,7 @@ class _ProgState extends State<ProgForm> {
                       dateTime.hour, dateTime.minute, dateTime.second)),
             ),
           ),
-          // Flexible(
-          //     flex: 3,
-          //     child: CupertinoDatePicker(
-          //         minimumYear: DateTime.now().year - 3,
-          //         maximumYear: DateTime.now().year + 3,
-          //         initialDateTime: date,
-          //         mode: CupertinoDatePickerMode.time,
-          //         use24hFormat: true,
-          //         onDateTimeChanged: (dateTime) => setState(() => this.date =
-          //             new DateTime(dateTime.year, dateTime.month, dateTime.day,
-          //                 dateTime.hour, dateTime.minute, dateTime.second)))),
         ]),
-        // child: CupertinoDatePicker(
-        //     minimumYear: DateTime.now().year - 2,
-        //     maximumYear: DateTime.now().year + 3,
-        //     initialDateTime: date,
-        //     mode: CupertinoDatePickerMode.dateAndTime,
-        //     use24hFormat: true,
-        //     onDateTimeChanged: (dateTime) =>
-        //         setState(() => this.date = dateTime)),
       );
 
   showSheet(BuildContext context,
@@ -839,15 +799,6 @@ class _ProgState extends State<ProgForm> {
                   onPressed: onClicked,
                 ),
               ));
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
-  }
 
   Widget buildRepeatOptions() => SizedBox(
         height: 200,

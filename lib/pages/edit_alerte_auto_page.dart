@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'sms_auto_page.dart';
 
@@ -34,10 +38,6 @@ class _AlertScreenState extends State<AlertScreen> {
   bool _value2 = true;
   final keyName = TextEditingController();
   List<bool> boolWeek = <bool>[];
-  final alphanumeric = RegExp(r'^[a-zA-Z0-9.:#_-éàô ]+$');
-  final regularExpression =
-      //  RegExp(r'^[ ${ParamKeywordValidchars}]+$');
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
 
   int nbMaxWords = 450;
   bool wordsLimit = true;
@@ -92,18 +92,9 @@ class _AlertScreenState extends State<AlertScreen> {
     }
   }
 
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
-  }
-
   bool verifieCle(String nom) {
     if (nom.length > paramKeywordMaxchars) {
-      showSnackBar(context, '${paramKeywordMaxchars} characters maximum.');
+      showSnackBar(context, '${paramKeywordMaxchars} caractères maximum.');
       return false;
     }
     for (int i = 0; i < widget.alerte.keys.length; i++) {
@@ -113,7 +104,7 @@ class _AlertScreenState extends State<AlertScreen> {
       }
     }
     if (!alphanumeric.hasMatch(nom)) {
-      showSnackBar(context, 'Characters invalides.');
+      showSnackBar(context, 'caractères invalides.');
       return false;
     }
     return true;
@@ -381,7 +372,7 @@ class _AlertScreenState extends State<AlertScreen> {
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.alerte.title}', page: () => SmsAuto()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: scrollBarThickness,
         interactive: true,
         showTrackOnHover: true,
         child: Container(
@@ -395,12 +386,12 @@ class _AlertScreenState extends State<AlertScreen> {
             },
             child: ListView(
               children: <Widget>[
-                buildLabelText("Nom"),
+                buildLabelText(input: "Nom"),
                 buildTextField('${widget.alerte.title}', alertName, 1),
-                buildLabelText("Message"),
+                buildLabelText(input: "Message"),
                 buildTextFieldMessage(
                     '${widget.alerte.content}', alertContent, 4),
-                buildLabelText("Cibles"),
+                buildLabelText(input: "Cible"),
                 Container(
                     decoration: BoxDecoration(
                       color: Colors.transparent,
@@ -579,7 +570,7 @@ class _AlertScreenState extends State<AlertScreen> {
                         ),
                       ],
                     )),
-                buildLabelText("Jours"),
+                buildLabelText(input: "Jours"),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.transparent,
@@ -609,7 +600,7 @@ class _AlertScreenState extends State<AlertScreen> {
                     ],
                   ),
                 ),
-                buildLabelText("Contenu du message entrant"),
+                buildLabelText(input: "Contenu du message entrant"),
                 alertKeys(context),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -730,31 +721,30 @@ class _AlertScreenState extends State<AlertScreen> {
                         onPressed: () {
                           if (alertName.text == '') {
                             showSnackBar(
-                                context, "Veuillez rentrer un nom à l'alerte.");
+                                context, "Veuillez rentrer un nom à l'alerte");
                           } else if (alertContent.text == '') {
                             showSnackBar(
                                 context, "Veuillez écrire un message.");
                           } else if (wordsLimit == false) {
                             {
                               showSnackBar(context,
-                                  "Nombre de character maximal dépassé.");
+                                  "Nombre de caractère maximal dépassé");
                             }
                           } else if (!isCiblesSet(widget.alerte.cibles)) {
-                            showSnackBar(
-                                context, "Veuillez choisir une cible.");
+                            showSnackBar(context, "Veuillez choisir une cible");
                           } else if (!isWeekSet(widget.alerte.days)) {
                             showSnackBar(
-                                context, "Veuillez choisir le(s) jour(s).");
+                                context, "Veuillez choisir le(s) jour(s)");
                           } else if (sameName(alertName.text)) {
                             showSnackBar(
                                 context, "Le nom de l'alerte existe déjà");
                           } else if (!regularExpression
                               .hasMatch(alertName.text)) {
                             showSnackBar(context,
-                                "Characters invalides pour le nom de l'alerte.");
+                                "Caractères invalides pour le nom de l'alerte");
                           } else if (widget.alerte.keys.isEmpty) {
                             showSnackBar(
-                                context, 'Veuillez rentrer un mot-clé.');
+                                context, 'Veuillez rentrer un mot-clé');
                           } else if (alertName.text != '' &&
                               alertContent.text != '' &&
                               wordsLimit &&
@@ -769,7 +759,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                     builder: (context) => new SmsAuto()));
                           } else {
                             showSnackBar(
-                                context, 'Veuillez completer tous les champs.');
+                                context, 'Veuillez compléter tous les champs');
                           }
                         },
                         child: Text(
@@ -789,25 +779,6 @@ class _AlertScreenState extends State<AlertScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 

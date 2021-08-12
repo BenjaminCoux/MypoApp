@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:mypo/pages/edit_alerte_prog_page.dart';
 import 'package:mypo/pages/accueil_page.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/widget/navbar_widget.dart';
@@ -282,7 +283,7 @@ class _SmsProgState extends State<SmsProg> {
       appBar: TopBarRedirection(
           title: "Messages programmés", page: () => HomePage()),
       body: Scrollbar(
-        thickness: 10,
+        thickness: scrollBarThickness,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,

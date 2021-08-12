@@ -3,10 +3,11 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:mypo/pages/edit_alerte_auto_page.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/navbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -54,7 +55,7 @@ class _SmsAutoState extends State<SmsAuto> {
       appBar: TopBarRedirection(
           title: "Messages automatiques", page: () => HomePage()),
       body: Scrollbar(
-        thickness: 5,
+        thickness: scrollBarThickness,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,

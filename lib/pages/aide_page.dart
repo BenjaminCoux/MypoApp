@@ -1,10 +1,12 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:mypo/database/hive_database.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpScreen extends StatefulWidget {
@@ -20,7 +22,7 @@ class _HelpScreenState extends State<HelpScreen> {
   final messageController = TextEditingController();
   static final List<String> items = <String>[
     'Remarques/Suggestions',
-    'Questions'
+    'Questions/Informations'
   ];
 
   List<String> questions = [
@@ -29,7 +31,7 @@ class _HelpScreenState extends State<HelpScreen> {
   ];
   List<String> reponses = [
     'Voici la reponse a la question qui peut être modifier par la suite',
-    'Voici la reponse a la question 1 qui peut être modifier par la suite'
+    'Voici la reponse a la question qui peut être modifier par la suite'
   ];
   String value = items.first;
   late final email;
@@ -99,16 +101,16 @@ class _HelpScreenState extends State<HelpScreen> {
 
   Widget buildFormContact() {
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         child: Column(children: <Widget>[
           Center(
               child: Text("Nous contacter",
                   style: TextStyle(color: Colors.black, fontSize: 24))),
           SizedBox(height: 8),
-          buildLabelText('Motif'),
+          buildLabelText(input: 'Motif'),
           buildDropDown(),
           SizedBox(height: 8),
-          buildLabelText('Nom complet'),
+          buildLabelText(input: 'Nom complet'),
           TextField(
               controller: nomController,
               keyboardType: TextInputType.text,
@@ -118,7 +120,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   hintText: "Nom",
                   border: InputBorder.none)),
           SizedBox(height: 8),
-          buildLabelText('Email'),
+          buildLabelText(input: 'Email'),
           TextField(
               keyboardType: TextInputType.emailAddress,
               controller: emailController,
@@ -128,7 +130,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   hintText: "Email",
                   border: InputBorder.none)),
           SizedBox(height: 8),
-          buildLabelText('Message'),
+          buildLabelText(input: 'Message'),
           TextField(
               keyboardType: TextInputType.multiline,
               textInputAction: TextInputAction.newline,
@@ -162,15 +164,15 @@ class _HelpScreenState extends State<HelpScreen> {
             ),
             onPressed: () async => {
               if (nomController.text == '')
-                {showSnackBar(context, "Veuillez rentrer votre nom.")}
+                {showSnackBar(context, "Veuillez rentrer votre nom")}
               else if (emailController.text == '')
-                {showSnackBar(context, "Veuillez rentrer un email.")}
+                {showSnackBar(context, "Veuillez rentrer un email")}
               else if (!EmailValidator.validate(emailController.text))
-                {showSnackBar(context, "Veuillez rentrer un email valide.")}
+                {showSnackBar(context, "Veuillez rentrer un email valide")}
               else if (messageController.text == '')
-                {showSnackBar(context, "Veuillez écrire un message.")}
+                {showSnackBar(context, "Veuillez écrire un message")}
               else if (wordsLimit == false)
-                {showSnackBar(context, "Nombre de character maximal dépassé.")}
+                {showSnackBar(context, "Nombre de caractère maximal dépassé")}
               else if (nomController.text != '' &&
                   emailController != '' &&
                   messageController != '' &&
@@ -180,7 +182,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   sendMail(value, messageController.text),
                 }
               else
-                {showSnackBar(context, 'Veuillez completer tous les champs.')},
+                {showSnackBar(context, 'Veuillez compléter tous les champs')},
             },
             child: Text(
               "Envoyer",
@@ -213,25 +215,6 @@ class _HelpScreenState extends State<HelpScreen> {
     launch(emailLauncherUri.toString());
   }
 
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
-    );
-  }
-
   myListAide(List<String> questions, int lenght, List<String> reponses,
       BuildContext context) {
     return lenght > 0
@@ -260,15 +243,6 @@ class _HelpScreenState extends State<HelpScreen> {
               );
             })
         : const Text("Aucune question", style: TextStyle(fontSize: 24));
-  }
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
   }
 
   Widget buildDropDown() {

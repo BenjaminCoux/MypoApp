@@ -3,13 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/edit_alerte_auto_page.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
+import 'package:mypo/utils/variables.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // ignore: must_be_immutable
@@ -65,10 +69,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     'Aucune récurrence'
   ];
   int index = 0;
-  final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàâÀêëéÉèÈíîÍôóÓûúüÚçÇñÑ@ \.;]+$');
 
-  final phoneExpression = RegExp(r'^[0-9_\-+() \.,;]+$');
   @override
   void initState() {
     super.initState();
@@ -152,7 +153,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
       appBar: TopBarRedirection(
           title: 'Alerte : ${widget.message.name}', page: () => SmsProg()),
       body: Scrollbar(
-        thickness: 10,
+        thickness: scrollBarThickness,
         interactive: true,
         isAlwaysShown: true,
         showTrackOnHover: true,
@@ -167,9 +168,9 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
             },
             child: ListView(
               children: <Widget>[
-                buildLabelText("Nom"),
+                buildLabelText(input: "Nom"),
                 buildTextFieldMessage('${widget.message.name}', alertName, 1),
-                buildLabelText('Numéro(s) de contact(s)'),
+                buildLabelText(input: 'Numéro(s) de contact(s)'),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -189,7 +190,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                       controller: alertContact,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                            icon: Icon(Icons.person_add,
+                            icon: Icon(Icons.person_add_outlined,
                                 size: 35, color: Colors.black),
                             onPressed: () async {
                               try {
@@ -235,7 +236,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   "ou",
                   textAlign: TextAlign.center,
                 ),
-                buildLabelText("Groupes de contacts"),
+                buildLabelText(input: "Groupe(s) de contacts"),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -279,7 +280,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                     })
                                   },
                               icon: Icon(
-                                Icons.group_add_rounded,
+                                Icons.group_add_outlined,
                                 color: Colors.black,
                                 size: 35,
                               )),
@@ -306,7 +307,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                     ),
                   ),
                 ),
-                buildLabelText('Message'),
+                buildLabelText(input: 'Message'),
                 buildTextFieldMessage(
                     '${widget.message.message}', alertContent, 4),
                 Container(
@@ -509,7 +510,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(Icons.check_circle_rounded),
+                              Icon(Icons.check_circle_outlined),
                               Container(
                                   child: Text("Confirmer avant envoi"),
                                   margin: EdgeInsets.all(5)),
@@ -548,7 +549,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(Icons.notifications),
+                              Icon(Icons.notifications_outlined),
                               Container(
                                   child: Text("Notification"),
                                   margin: EdgeInsets.all(5)),
@@ -630,7 +631,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                               widget.message.groupContact.length == 0)
                             {
                               showSnackBar(context,
-                                  "Veuillez rentrer de(s) numéro(s) valide.")
+                                  "Veuillez rentrer de(s) numéro(s) valide")
                             }
                           else if (sameName(alertName.text))
                             {
@@ -640,22 +641,22 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                           else if (alertContent.text == '')
                             {
                               showSnackBar(
-                                  context, "Veuillez écrire un message.")
+                                  context, "Veuillez écrire un message")
                             }
                           else if (wordsLimit == false)
                             {
                               {
                                 showSnackBar(context,
-                                    "Nombre de character maximal dépassé.")
+                                    "Nombre de caractère maximal dépassé")
                               }
                             }
                           else if (!regularExpression.hasMatch(alertName.text))
                             {
                               showSnackBar(context,
-                                  "Characters invalides pour le nom de l'alerte.")
+                                  "Caractères invalides pour le nom de l'alerte")
                             }
                           else if (!hasChanged)
-                            {showSnackBar(context, "Aucune modification.")}
+                            {showSnackBar(context, "Aucune modification")}
                           else if (alertName.text != '' &&
                               (alertContact.text != '' ||
                                   widget.message.groupContact.length > 0) &&
@@ -680,13 +681,13 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                                 {
                                   {
                                     showSnackBar(context,
-                                        'Veuillez activer les permissions (sms et contacts).')
+                                        'Veuillez activer les permissions (sms et contacts)')
                                   }
                                 }
                               else
                                 {
                                   showSnackBar(context,
-                                      'Veuillez completer tous les champs')
+                                      'Veuillez compléter tous les champs')
                                 }
                             }
                         },
@@ -707,25 +708,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
-          )),
     );
   }
 
@@ -909,15 +891,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   onPressed: onClicked,
                 ),
               ));
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
-  }
 
   Widget buildRepeatOptions() => SizedBox(
         height: 200,

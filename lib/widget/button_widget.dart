@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String text;

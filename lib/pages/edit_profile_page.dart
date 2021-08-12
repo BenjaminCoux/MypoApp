@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/utils/couleurs.dart';
+import 'package:mypo/utils/expressions.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/premium_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/button_widget.dart';
+import 'package:mypo/widget/label_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,10 +39,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String code = '';
   String isoCode = '';
   bool fieldsChanged = false;
-  final numeroExpression =
-      RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
-  final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
 
   @override
   void initState() {
@@ -126,8 +125,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       },
       child: Scaffold(
           backgroundColor: d_grey,
-          appBar:
-              TopBarRedirection(title: "Edit profile", page: () => HomePage()),
+          appBar: TopBarRedirection(
+              title: "Éditer votre profil", page: () => HomePage()),
           body: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
@@ -187,7 +186,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     emailController,
                     1,
                     TextInputType.emailAddress),
-                buildLabelText('Téléphone'),
+                buildLabelText(input: 'Téléphone'),
                 Container(
                   margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
                   child: IntlPhoneField(
@@ -195,7 +194,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     controller: numeroController,
                     initialCountryCode: isoCode != '' ? isoCode : 'FR',
                     decoration: InputDecoration(
-                        // color: Colors.red,
                         filled: true,
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
@@ -275,23 +273,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         onPressed: () {
                           if (nomController.text == '') {
-                            showSnackBar(context, "Veuillez rentrer un nom.");
+                            showSnackBar(context, "Veuillez rentrer un nom");
                           } else if (prenomController.text == '') {
-                            showSnackBar(
-                                context, "Veuillez rentrer un prénom.");
+                            showSnackBar(context, "Veuillez rentrer un prénom");
                           } else if (emailController.text == '') {
-                            showSnackBar(context, "Veuillez rentrer un email.");
+                            showSnackBar(context, "Veuillez rentrer un email");
                           } else if (!EmailValidator.validate(
                               emailController.text)) {
                             showSnackBar(
-                                context, "Veuillez rentrer un email valide.");
+                                context, "Veuillez rentrer un email valide");
                           } else if (numeroController.text == '') {
-                            showSnackBar(
-                                context, "Veuillez rentrer un numéro.");
+                            showSnackBar(context, "Veuillez rentrer un numéro");
                           } else if (!numeroExpression
                               .hasMatch(numeroController.text)) {
                             showSnackBar(
-                                context, "Veuillez rentrer un numéro valide.");
+                                context, "Veuillez rentrer un numéro valide");
                           } else if (!fieldsChanged) {
                           } else if (prenomController.text != '' &&
                               nomController.text != '' &&
@@ -311,7 +307,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             showSnackBar(context, 'Profil enregistré');
                           } else {
                             showSnackBar(
-                                context, 'Veuillez completer tous les champs');
+                                context, 'Veuillez compléter tous les champs');
                           }
                         },
                         child: Text(
@@ -328,25 +324,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 )
               ],
             ),
-          )),
-    );
-  }
-
-  Widget buildLabelText(String input) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 3, 5, 0),
-      child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Text(
-                input,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black),
-              )
-            ],
           )),
     );
   }
@@ -393,7 +370,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Widget buildUpgradeButton(bool userDefined) => ButtonWidget(
-      text: "Upgrade to Premium",
+      text: "Passer à la version Premium",
       onClicked: () => {
             if (userDefined)
               {
@@ -406,14 +383,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             else
               {showSnackBar(this.context, 'Veuillez completer tous les champs')}
           });
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
-  }
 
   Widget buildTextField(
       String labelText,

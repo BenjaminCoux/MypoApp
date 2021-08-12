@@ -117,6 +117,177 @@ class _ProgState extends State<ProgForm> {
     return false;
   }
 
+  List<GroupContact> getGrpfromString(String input) {
+    List<String> list = input.split(", ");
+    List<GroupContact> res = <GroupContact>[];
+    for (int i = 0; i < list.length; i++) {
+      for (int j = 0; j < contactgroup.length; j++) {
+        if (list[i] == contactgroup[j].name) {
+          res.add(contactgroup[j]);
+        }
+      }
+    }
+    return res;
+  }
+
+  Container buildTextField(
+      String placeholder, TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              // set new state
+            })
+          },
+          minLines: 1,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildTextFieldMessage(
+      String placeholder, TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.nbWords = value.length;
+              this.nbMaxWords = 450 - value.length;
+              if (this.nbMaxWords < 0) {
+                this.wordsLimit = false;
+              } else {
+                this.wordsLimit = true;
+              }
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
+          decoration: InputDecoration(
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildDatePicker() => SizedBox(
+        height: 150,
+        child: Flex(direction: Axis.horizontal, children: [
+          Flexible(
+            flex: 1,
+            child: CupertinoDatePicker(
+              minimumYear: DateTime.now().year,
+              maximumYear: DateTime.now().year + 3,
+              initialDateTime: date,
+              mode: CupertinoDatePickerMode.dateAndTime,
+              use24hFormat: true,
+              onDateTimeChanged: (dateTime) => setState(() => this.date =
+                  new DateTime(dateTime.year, dateTime.month, dateTime.day,
+                      dateTime.hour, dateTime.minute, dateTime.second)),
+            ),
+          ),
+        ]),
+      );
+
+  showSheet(BuildContext context,
+          {required Widget child, required VoidCallback onClicked}) =>
+      showCupertinoModalPopup(
+          context: context,
+          builder: (context) => CupertinoActionSheet(
+                actions: [
+                  child,
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  child: Text('Valider', style: TextStyle(color: d_green)),
+                  onPressed: onClicked,
+                ),
+              ));
+
+  Widget buildRepeatOptions() => SizedBox(
+        height: 200,
+        child: CupertinoPicker(
+            diameterRatio: 0.8,
+            itemExtent: 50,
+            looping: true,
+            onSelectedItemChanged: (index) => setState(() {
+                  this.index = index;
+                  repeatinput = repeatOptions[index];
+                }),
+            children: modelBuilder<String>(repeatOptions, (index, option) {
+              return Center(child: Text(option));
+            })),
+      );
+  List<Widget> modelBuilder<M>(
+          List<M> models, Widget Function(int index, M model) builder) =>
+      models
+          .asMap()
+          .map<int, Widget>(
+              (index, model) => MapEntry(index, builder(index, model)))
+          .values
+          .toList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -644,175 +815,4 @@ class _ProgState extends State<ProgForm> {
       ),
     );
   }
-
-  List<GroupContact> getGrpfromString(String input) {
-    List<String> list = input.split(", ");
-    List<GroupContact> res = <GroupContact>[];
-    for (int i = 0; i < list.length; i++) {
-      for (int j = 0; j < contactgroup.length; j++) {
-        if (list[i] == contactgroup[j].name) {
-          res.add(contactgroup[j]);
-        }
-      }
-    }
-    return res;
-  }
-
-  Container buildTextField(
-      String placeholder, TextEditingController controller, int nbLines) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(18),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: TextField(
-          controller: controller,
-          onChanged: (String value) => {
-            setState(() {
-              // set new state
-            })
-          },
-          minLines: 1,
-          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-          maxLines: nbLines,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            contentPadding: EdgeInsets.all(8),
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container buildTextFieldMessage(
-      String placeholder, TextEditingController controller, int nbLines) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(18),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: TextField(
-          controller: controller,
-          onChanged: (String value) => {
-            setState(() {
-              this.nbWords = value.length;
-              this.nbMaxWords = 450 - value.length;
-              if (this.nbMaxWords < 0) {
-                this.wordsLimit = false;
-              } else {
-                this.wordsLimit = true;
-              }
-            })
-          },
-          maxLines: nbLines,
-          keyboardType: TextInputType.multiline,
-          textInputAction: TextInputAction.newline,
-          decoration: InputDecoration(
-            errorText: wordsLimit ? null : '${this.nbWords}/450',
-            labelStyle: TextStyle(color: Colors.black),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            contentPadding: EdgeInsets.all(8),
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildDatePicker() => SizedBox(
-        height: 150,
-        child: Flex(direction: Axis.horizontal, children: [
-          Flexible(
-            flex: 1,
-            child: CupertinoDatePicker(
-              minimumYear: DateTime.now().year,
-              maximumYear: DateTime.now().year + 3,
-              initialDateTime: date,
-              mode: CupertinoDatePickerMode.dateAndTime,
-              use24hFormat: true,
-              onDateTimeChanged: (dateTime) => setState(() => this.date =
-                  new DateTime(dateTime.year, dateTime.month, dateTime.day,
-                      dateTime.hour, dateTime.minute, dateTime.second)),
-            ),
-          ),
-        ]),
-      );
-
-  showSheet(BuildContext context,
-          {required Widget child, required VoidCallback onClicked}) =>
-      showCupertinoModalPopup(
-          context: context,
-          builder: (context) => CupertinoActionSheet(
-                actions: [
-                  child,
-                ],
-                cancelButton: CupertinoActionSheetAction(
-                  child: Text('Valider', style: TextStyle(color: d_green)),
-                  onPressed: onClicked,
-                ),
-              ));
-
-  Widget buildRepeatOptions() => SizedBox(
-        height: 200,
-        child: CupertinoPicker(
-            diameterRatio: 0.8,
-            itemExtent: 50,
-            looping: true,
-            onSelectedItemChanged: (index) => setState(() {
-                  this.index = index;
-                  repeatinput = repeatOptions[index];
-                }),
-            children: modelBuilder<String>(repeatOptions, (index, option) {
-              return Center(child: Text(option));
-            })),
-      );
-  List<Widget> modelBuilder<M>(
-          List<M> models, Widget Function(int index, M model) builder) =>
-      models
-          .asMap()
-          .map<int, Widget>(
-              (index, model) => MapEntry(index, builder(index, model)))
-          .values
-          .toList();
 }

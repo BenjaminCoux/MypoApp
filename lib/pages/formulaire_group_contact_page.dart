@@ -9,6 +9,7 @@ import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/couleurs.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:mypo/widget/label_widget.dart';
+import 'package:mypo/widget/textfield_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class GroupForm extends StatefulWidget {
@@ -112,7 +113,7 @@ class _GroupFormState extends State<GroupForm> {
     return Scaffold(
       backgroundColor: d_grey,
       appBar: TopBarRedirection(
-        title: "Créer un nouveau groupe de contacts",
+        title: "Créer un groupe de contacts",
         page: () => GroupContactPage(),
       ),
       body: Scrollbar(
@@ -125,9 +126,9 @@ class _GroupFormState extends State<GroupForm> {
             child: Column(
               children: [
                 buildLabelText(input: 'Nom'),
-                buildTextField('Donner un nom au groupe de contacts', name, 1),
+                textField('Donner un nom au groupe de contacts', name, 1),
                 buildLabelText(input: 'Description'),
-                buildTextField('Ajouter une description', descri, 1),
+                textField('Ajouter une description', descri, 1),
                 buildLabelText(input: 'Numéro(s) de contact(s)'),
                 Container(
                   decoration: BoxDecoration(
@@ -155,7 +156,7 @@ class _GroupFormState extends State<GroupForm> {
                       controller: contactController,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                            icon: Icon(Icons.person_add,
+                            icon: Icon(Icons.person_add_outlined,
                                 size: 35, color: Colors.black),
                             onPressed: () async {
                               if (await Permission.contacts
@@ -253,46 +254,4 @@ class _GroupFormState extends State<GroupForm> {
       ),
     );
   }
-}
-
-Container buildTextField(
-    String placeholder, TextEditingController controller, int nbLines) {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.all(
-        Radius.circular(18),
-      ),
-    ),
-    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-    child: Padding(
-      padding: const EdgeInsets.all(0),
-      child: TextField(
-        controller: controller,
-        onChanged: (String value) => {},
-        maxLines: nbLines,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          labelStyle: TextStyle(color: Colors.black),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.transparent)),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.transparent)),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.transparent)),
-          contentPadding: EdgeInsets.all(8),
-          hintText: placeholder,
-          hintStyle: TextStyle(
-            fontSize: 16,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.w300,
-            color: Colors.black,
-          ),
-        ),
-      ),
-    ),
-  );
 }

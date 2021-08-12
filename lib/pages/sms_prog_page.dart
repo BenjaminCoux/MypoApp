@@ -270,82 +270,8 @@ class _SmsProgState extends State<SmsProg> {
         : const Text("Aucune alerte", style: TextStyle(fontSize: 24));
   }
 
-  /*
-    -Function that creates a loading circle delay for the duration needed
-  */
   Future<List> callAsyncFetch() =>
       Future.delayed(Duration(milliseconds: 1), () => alerts);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: d_grey,
-      appBar: TopBarRedirection(
-          title: "Messages programmés", page: () => HomePage()),
-      body: Scrollbar(
-        thickness: scrollBarThickness,
-        interactive: true,
-        isAlwaysShown: true,
-        showTrackOnHover: true,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 24),
-                      Center(
-                        child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: d_darkgray,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 40),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            onPressed: () => {
-                                  Navigator.pop(context),
-                                  Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) => new ProgForm()))
-                                },
-                            child: Text(
-                              "+ Ajouter une alerte",
-                              style: TextStyle(
-                                  backgroundColor: d_darkgray,
-                                  fontSize: 16,
-                                  letterSpacing: 2.2,
-                                  color: Colors.white,
-                                  fontFamily: 'calibri'),
-                            )),
-                      ),
-                      SizedBox(height: 20),
-                      FutureBuilder(
-                          future: callAsyncFetch(),
-                          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                            if (snapshot.hasData) {
-                              return Container(
-                                  child:
-                                      myList(alerts, alerts.length, context));
-                            } else {
-                              return CircularProgressIndicator(
-                                color: d_green,
-                              );
-                            }
-                          }),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBarSmsProgTwo(),
-    );
-  }
 
   Widget buildMsg(BuildContext context, Scheduledmsg_hive message) {
     return Card(
@@ -523,6 +449,77 @@ class _SmsProgState extends State<SmsProg> {
           child: const Text('Non', style: TextStyle(color: Colors.black)),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: d_grey,
+      appBar: TopBarRedirection(
+          title: "Messages programmés", page: () => HomePage()),
+      body: Scrollbar(
+        thickness: scrollBarThickness,
+        interactive: true,
+        isAlwaysShown: true,
+        showTrackOnHover: true,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 24),
+                      Center(
+                        child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: d_darkgray,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 40),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20))),
+                            onPressed: () => {
+                                  Navigator.pop(context),
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => new ProgForm()))
+                                },
+                            child: Text(
+                              "+ Ajouter une alerte",
+                              style: TextStyle(
+                                  backgroundColor: d_darkgray,
+                                  fontSize: 16,
+                                  letterSpacing: 2.2,
+                                  color: Colors.white,
+                                  fontFamily: 'calibri'),
+                            )),
+                      ),
+                      SizedBox(height: 20),
+                      FutureBuilder(
+                          future: callAsyncFetch(),
+                          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                            if (snapshot.hasData) {
+                              return Container(
+                                  child:
+                                      myList(alerts, alerts.length, context));
+                            } else {
+                              return CircularProgressIndicator(
+                                color: d_green,
+                              );
+                            }
+                          }),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBarSmsProgTwo(),
     );
   }
 }

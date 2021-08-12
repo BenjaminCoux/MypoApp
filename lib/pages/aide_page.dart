@@ -42,57 +42,6 @@ class _HelpScreenState extends State<HelpScreen> {
   bool wordsLimit = true;
   int nbWords = 0;
 
-  @override
-  Widget build(BuildContext context) {
-    User_hive? user;
-    List users = Boxes.getUser().values.toList().cast<User_hive>();
-    if (!users.isEmpty) {
-      user = users[0];
-      nomController.text = user!.firstname + ' ' + user.name;
-      emailController.text = user.email;
-    }
-    return Scaffold(
-        backgroundColor: d_grey,
-        appBar: TopBarRedirection(title: "Aide", page: () => HomePage()),
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            SingleChildScrollView(
-              padding: EdgeInsets.all(0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Card(
-                    elevation: 4,
-                    margin: EdgeInsets.fromLTRB(32, 8, 32, 16),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          children: <Widget>[
-                            myListAide(
-                                questions, questions.length, reponses, context),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  buildFormContact(),
-                ],
-              ),
-            ),
-          ],
-        ));
-  }
-
-/*
-  - this function creates a little divider between the questions on the help page
-*/
-
   Widget buildFormContact() {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -260,5 +209,52 @@ class _HelpScreenState extends State<HelpScreen> {
         }),
       )),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    User_hive? user;
+    List users = Boxes.getUser().values.toList().cast<User_hive>();
+    if (!users.isEmpty) {
+      user = users[0];
+      nomController.text = user!.firstname + ' ' + user.name;
+      emailController.text = user.email;
+    }
+    return Scaffold(
+        backgroundColor: d_grey,
+        appBar: TopBarRedirection(title: "Aide", page: () => HomePage()),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.all(0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Card(
+                    elevation: 4,
+                    margin: EdgeInsets.fromLTRB(32, 8, 32, 16),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          children: <Widget>[
+                            myListAide(
+                                questions, questions.length, reponses, context),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  buildFormContact(),
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }

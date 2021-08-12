@@ -364,6 +364,160 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
+  buildPopupDialogCancel() {
+    return new AlertDialog(
+      title: Text("Voulez vous annuler ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new SmsAuto()),
+            );
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
+  }
+
+  bool sameName(String n) {
+    List<Alert> alerts = Boxes.getAutoAlert().values.toList().cast<Alert>();
+    for (int i = 0; i < alerts.length; i++) {
+      if (alerts[i].title == n && widget.alerte.title != n) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /*
+  function that crates a text field
+  */
+  Container buildTextFieldMessage(
+      String placeholder, TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              hasChanged = true;
+              this.nbWords = value.length;
+              this.nbMaxWords = 450 - value.length;
+              if (this.nbMaxWords < 0) {
+                this.wordsLimit = false;
+              } else {
+                this.wordsLimit = true;
+              }
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
+          decoration: InputDecoration(
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildTextField(
+      String placeholder, TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          autofocus: false,
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.contentchanged = true;
+              this.titlechanged = true;
+              this.hasChanged = true;
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void save() async {
+    if (hasChanged) {
+      widget.alerte.title = alertName.text;
+      widget.alerte.content = alertContent.text;
+      widget.alerte.save();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final DateSymbols fr = dateTimeSymbolMap()['fr'];
@@ -780,160 +934,6 @@ class _AlertScreenState extends State<AlertScreen> {
         ),
       ),
     );
-  }
-
-  buildPopupDialogCancel() {
-    return new AlertDialog(
-      title: Text("Voulez vous annuler ?"),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[],
-      ),
-      actions: <Widget>[
-        new TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new SmsAuto()),
-            );
-          },
-          child: const Text('Oui', style: TextStyle(color: Colors.black)),
-        ),
-        new TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Non', style: TextStyle(color: Colors.black)),
-        ),
-      ],
-    );
-  }
-
-  bool sameName(String n) {
-    List<Alert> alerts = Boxes.getAutoAlert().values.toList().cast<Alert>();
-    for (int i = 0; i < alerts.length; i++) {
-      if (alerts[i].title == n && widget.alerte.title != n) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /*
-  function that crates a text field
-  */
-  Container buildTextFieldMessage(
-      String placeholder, TextEditingController controller, int nbLines) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(18),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: TextField(
-          controller: controller,
-          onChanged: (String value) => {
-            setState(() {
-              hasChanged = true;
-              this.nbWords = value.length;
-              this.nbMaxWords = 450 - value.length;
-              if (this.nbMaxWords < 0) {
-                this.wordsLimit = false;
-              } else {
-                this.wordsLimit = true;
-              }
-            })
-          },
-          maxLines: nbLines,
-          keyboardType: TextInputType.multiline,
-          textInputAction: TextInputAction.newline,
-          decoration: InputDecoration(
-            errorText: wordsLimit ? null : '${this.nbWords}/450',
-            labelStyle: TextStyle(color: Colors.black),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            contentPadding: EdgeInsets.all(8),
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container buildTextField(
-      String placeholder, TextEditingController controller, int nbLines) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(18),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: TextField(
-          autofocus: false,
-          controller: controller,
-          onChanged: (String value) => {
-            setState(() {
-              this.contentchanged = true;
-              this.titlechanged = true;
-              this.hasChanged = true;
-            })
-          },
-          maxLines: nbLines,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            contentPadding: EdgeInsets.all(8),
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void save() async {
-    if (hasChanged) {
-      widget.alerte.title = alertName.text;
-      widget.alerte.content = alertContent.text;
-      widget.alerte.save();
-    }
   }
 }
 

@@ -146,6 +146,210 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     return false;
   }
 
+  buildPopupDialogCancel() {
+    return new AlertDialog(
+      title: Text("Voulez vous annuler ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new SmsProg()),
+            );
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
+  }
+
+  Container buildTextField(
+      String placeholder, TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.hasChanged = true;
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildTextFieldMessage(
+      String placeholder, TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.hasChanged = true;
+              this.nbWords = value.length;
+              this.hasChanged = true;
+              this.nbMaxWords = 450 - value.length;
+              if (this.nbMaxWords < 0) {
+                this.wordsLimit = false;
+              } else {
+                this.wordsLimit = true;
+              }
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
+          decoration: InputDecoration(
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildDatePicker() => SizedBox(
+        height: 150,
+        child: Flex(direction: Axis.horizontal, children: [
+          Flexible(
+            flex: 7,
+            child: CupertinoDatePicker(
+              minimumYear: DateTime.now().year,
+              maximumYear: DateTime.now().year + 3,
+              initialDateTime: widget.message.date,
+              mode: CupertinoDatePickerMode.date,
+              use24hFormat: true,
+              onDateTimeChanged: (dateTime) {
+                setState(() {
+                  timeUpdated = dateTime;
+                  hasChanged = true;
+                });
+              },
+            ),
+          ),
+          Flexible(
+              flex: 3,
+              child: CupertinoDatePicker(
+                  minimumYear: widget.message.date.year - 3,
+                  maximumYear: DateTime.now().year + 3,
+                  initialDateTime: widget.message.date,
+                  mode: CupertinoDatePickerMode.time,
+                  use24hFormat: true,
+                  onDateTimeChanged: (dateTime) {
+                    setState(() {
+                      timeAux = dateTime;
+                      hasChanged = true;
+                    });
+                  })),
+        ]),
+      );
+
+  showSheet(BuildContext context,
+          {required Widget child, required VoidCallback onClicked}) =>
+      showCupertinoModalPopup(
+          context: context,
+          builder: (context) => CupertinoActionSheet(
+                actions: [
+                  child,
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  child: Text('Valider', style: TextStyle(color: d_green)),
+                  onPressed: onClicked,
+                ),
+              ));
+
+  Widget buildRepeatOptions() => SizedBox(
+        height: 200,
+        child: CupertinoPicker(
+            diameterRatio: 0.8,
+            itemExtent: 50,
+            looping: true,
+            onSelectedItemChanged: (index) => setState(() {
+                  repeat = repeatOptions[index];
+                  hasChanged = true;
+                }),
+            children: modelBuilder<String>(repeatOptions, (index, option) {
+              return Center(child: Text(option));
+            })),
+      );
+  List<Widget> modelBuilder<M>(
+          List<M> models, Widget Function(int index, M model) builder) =>
+      models
+          .asMap()
+          .map<int, Widget>(
+              (index, model) => MapEntry(index, builder(index, model)))
+          .values
+          .toList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -710,208 +914,4 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
       ),
     );
   }
-
-  buildPopupDialogCancel() {
-    return new AlertDialog(
-      title: Text("Voulez vous annuler ?"),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[],
-      ),
-      actions: <Widget>[
-        new TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new SmsProg()),
-            );
-          },
-          child: const Text('Oui', style: TextStyle(color: Colors.black)),
-        ),
-        new TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Non', style: TextStyle(color: Colors.black)),
-        ),
-      ],
-    );
-  }
-
-  Container buildTextField(
-      String placeholder, TextEditingController controller, int nbLines) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(18),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: TextField(
-          controller: controller,
-          onChanged: (String value) => {
-            setState(() {
-              this.hasChanged = true;
-            })
-          },
-          maxLines: nbLines,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            contentPadding: EdgeInsets.all(8),
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container buildTextFieldMessage(
-      String placeholder, TextEditingController controller, int nbLines) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(18),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: TextField(
-          controller: controller,
-          onChanged: (String value) => {
-            setState(() {
-              this.hasChanged = true;
-              this.nbWords = value.length;
-              this.hasChanged = true;
-              this.nbMaxWords = 450 - value.length;
-              if (this.nbMaxWords < 0) {
-                this.wordsLimit = false;
-              } else {
-                this.wordsLimit = true;
-              }
-            })
-          },
-          maxLines: nbLines,
-          keyboardType: TextInputType.multiline,
-          textInputAction: TextInputAction.newline,
-          decoration: InputDecoration(
-            errorText: wordsLimit ? null : '${this.nbWords}/450',
-            labelStyle: TextStyle(color: Colors.black),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            contentPadding: EdgeInsets.all(8),
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildDatePicker() => SizedBox(
-        height: 150,
-        child: Flex(direction: Axis.horizontal, children: [
-          Flexible(
-            flex: 7,
-            child: CupertinoDatePicker(
-              minimumYear: DateTime.now().year,
-              maximumYear: DateTime.now().year + 3,
-              initialDateTime: widget.message.date,
-              mode: CupertinoDatePickerMode.date,
-              use24hFormat: true,
-              onDateTimeChanged: (dateTime) {
-                setState(() {
-                  timeUpdated = dateTime;
-                  hasChanged = true;
-                });
-              },
-            ),
-          ),
-          Flexible(
-              flex: 3,
-              child: CupertinoDatePicker(
-                  minimumYear: widget.message.date.year - 3,
-                  maximumYear: DateTime.now().year + 3,
-                  initialDateTime: widget.message.date,
-                  mode: CupertinoDatePickerMode.time,
-                  use24hFormat: true,
-                  onDateTimeChanged: (dateTime) {
-                    setState(() {
-                      timeAux = dateTime;
-                      hasChanged = true;
-                    });
-                  })),
-        ]),
-      );
-
-  showSheet(BuildContext context,
-          {required Widget child, required VoidCallback onClicked}) =>
-      showCupertinoModalPopup(
-          context: context,
-          builder: (context) => CupertinoActionSheet(
-                actions: [
-                  child,
-                ],
-                cancelButton: CupertinoActionSheetAction(
-                  child: Text('Valider', style: TextStyle(color: d_green)),
-                  onPressed: onClicked,
-                ),
-              ));
-
-  Widget buildRepeatOptions() => SizedBox(
-        height: 200,
-        child: CupertinoPicker(
-            diameterRatio: 0.8,
-            itemExtent: 50,
-            looping: true,
-            onSelectedItemChanged: (index) => setState(() {
-                  repeat = repeatOptions[index];
-                  hasChanged = true;
-                }),
-            children: modelBuilder<String>(repeatOptions, (index, option) {
-              return Center(child: Text(option));
-            })),
-      );
-  List<Widget> modelBuilder<M>(
-          List<M> models, Widget Function(int index, M model) builder) =>
-      models
-          .asMap()
-          .map<int, Widget>(
-              (index, model) => MapEntry(index, builder(index, model)))
-          .values
-          .toList();
 }

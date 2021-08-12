@@ -34,6 +34,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final numeroController = TextEditingController();
   final imageController = TextEditingController();
   final contryCodeController = TextEditingController();
+  final profileImagePath = "https://picsum.photos/id/1005/200/300";
   String pathOfImage = '';
   String numero = '';
   String code = '';
@@ -104,7 +105,199 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return file;
   }
 
-  final profileImagePath = "https://picsum.photos/id/1005/200/300";
+  buildPopupDialogCancel(User_hive? user, bool userDefined) {
+    return new AlertDialog(
+      title: Text("Voulez vous annuler ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            if (fieldsChanged) {
+              setState(() {
+                userDefined ? '' : user?.imagePath = profileImagePath;
+              });
+              Navigator.pop(this.context);
+              Navigator.pop(this.context);
+              Navigator.push(
+                this.context,
+                new MaterialPageRoute(
+                    builder: (context) => new EditProfilePage()),
+              );
+            } else {
+              Navigator.pop(this.context);
+              Navigator.pop(this.context);
+              Navigator.push(this.context,
+                  new MaterialPageRoute(builder: (context) => new HomePage()));
+            }
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.pop(this.context);
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
+  }
+
+  Widget buildUpgradeButton(bool userDefined) => ButtonWidget(
+      text: "Passer à la version Premium",
+      onClicked: () => {
+            if (userDefined)
+              {
+                Navigator.pop(this.context),
+                Navigator.push(
+                    this.context,
+                    new MaterialPageRoute(
+                        builder: (context) => new PremiumPage()))
+              }
+            else
+              {showSnackBar(this.context, 'Veuillez completer tous les champs')}
+          });
+
+  Widget buildTextField(
+      String labelText,
+      String placeholder,
+      TextEditingController controller,
+      int nbLines,
+      TextInputType keyboardType) {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(16, 3, 5, 0),
+          child: Padding(
+              padding: EdgeInsets.all(0),
+              child: Row(
+                children: [
+                  Text(
+                    labelText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black),
+                  )
+                ],
+              )),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(18),
+            ),
+          ),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Padding(
+            padding: const EdgeInsets.all(0),
+            child: TextField(
+              controller: controller,
+              onChanged: (String value) => {
+                setState(() {
+                  fieldsChanged = true;
+                })
+              },
+              minLines: 1,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              maxLines: nbLines,
+              keyboardType: keyboardType,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                contentPadding: EdgeInsets.all(8),
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildTextFieldNumero(String labelText, String placeholder,
+      TextEditingController controller, int nbLines) {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(16, 3, 5, 0),
+          child: Padding(
+              padding: EdgeInsets.all(0),
+              child: Row(
+                children: [
+                  Text(
+                    labelText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black),
+                  )
+                ],
+              )),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(18),
+            ),
+          ),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Padding(
+            padding: const EdgeInsets.all(0),
+            child: TextField(
+              controller: controller,
+              onChanged: (String value) => {
+                setState(() {
+                  fieldsChanged = true;
+                })
+              },
+              minLines: 1,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              maxLines: nbLines,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
+                contentPadding: EdgeInsets.all(8),
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -325,200 +518,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ],
             ),
           )),
-    );
-  }
-
-  buildPopupDialogCancel(User_hive? user, bool userDefined) {
-    return new AlertDialog(
-      title: Text("Voulez vous annuler ?"),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[],
-      ),
-      actions: <Widget>[
-        new TextButton(
-          onPressed: () {
-            if (fieldsChanged) {
-              setState(() {
-                userDefined ? '' : user?.imagePath = profileImagePath;
-              });
-              Navigator.pop(this.context);
-              Navigator.pop(this.context);
-              Navigator.push(
-                this.context,
-                new MaterialPageRoute(
-                    builder: (context) => new EditProfilePage()),
-              );
-            } else {
-              Navigator.pop(this.context);
-              Navigator.pop(this.context);
-              Navigator.push(this.context,
-                  new MaterialPageRoute(builder: (context) => new HomePage()));
-            }
-          },
-          child: const Text('Oui', style: TextStyle(color: Colors.black)),
-        ),
-        new TextButton(
-          onPressed: () {
-            Navigator.pop(this.context);
-          },
-          child: const Text('Non', style: TextStyle(color: Colors.black)),
-        ),
-      ],
-    );
-  }
-
-  Widget buildUpgradeButton(bool userDefined) => ButtonWidget(
-      text: "Passer à la version Premium",
-      onClicked: () => {
-            if (userDefined)
-              {
-                Navigator.pop(this.context),
-                Navigator.push(
-                    this.context,
-                    new MaterialPageRoute(
-                        builder: (context) => new PremiumPage()))
-              }
-            else
-              {showSnackBar(this.context, 'Veuillez completer tous les champs')}
-          });
-
-  Widget buildTextField(
-      String labelText,
-      String placeholder,
-      TextEditingController controller,
-      int nbLines,
-      TextInputType keyboardType) {
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.fromLTRB(16, 3, 5, 0),
-          child: Padding(
-              padding: EdgeInsets.all(0),
-              child: Row(
-                children: [
-                  Text(
-                    labelText,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black),
-                  )
-                ],
-              )),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(18),
-            ),
-          ),
-          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: TextField(
-              controller: controller,
-              onChanged: (String value) => {
-                setState(() {
-                  fieldsChanged = true;
-                })
-              },
-              minLines: 1,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              maxLines: nbLines,
-              keyboardType: keyboardType,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.black),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.transparent)),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.transparent)),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.transparent)),
-                contentPadding: EdgeInsets.all(8),
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildTextFieldNumero(String labelText, String placeholder,
-      TextEditingController controller, int nbLines) {
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.fromLTRB(16, 3, 5, 0),
-          child: Padding(
-              padding: EdgeInsets.all(0),
-              child: Row(
-                children: [
-                  Text(
-                    labelText,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black),
-                  )
-                ],
-              )),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(18),
-            ),
-          ),
-          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: TextField(
-              controller: controller,
-              onChanged: (String value) => {
-                setState(() {
-                  fieldsChanged = true;
-                })
-              },
-              minLines: 1,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              maxLines: nbLines,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.black),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.transparent)),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.transparent)),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.transparent)),
-                contentPadding: EdgeInsets.all(8),
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

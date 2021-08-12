@@ -8,6 +8,7 @@ import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/couleurs.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:mypo/widget/label_widget.dart';
+import 'package:mypo/widget/textfield_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // ignore: must_be_immutable
@@ -65,18 +66,18 @@ class _EditGroupState extends State<EditGroup> {
     super.initState();
   }
 
-  void changed() {
-    setState(() {
-      hasChanged = true;
-    });
-  }
-
   @override
   void dispose() {
     name.dispose();
     descri.dispose();
     contactController.dispose();
     super.dispose();
+  }
+
+  void changed() {
+    setState(() {
+      hasChanged = true;
+    });
   }
 
   void removefromName(String name) {
@@ -170,9 +171,9 @@ class _EditGroupState extends State<EditGroup> {
         child: Column(
           children: [
             buildLabelText(input: 'Nom du groupe'),
-            buildTextField('Nom', name, 1),
+            textField('Nom', name, 1),
             buildLabelText(input: 'Description'),
-            buildTextField('Description', descri, 1),
+            textField('Description', descri, 1),
             buildLabelText(input: 'Numéro(s) de contact(s)'),
             Container(
               decoration: BoxDecoration(
@@ -198,7 +199,7 @@ class _EditGroupState extends State<EditGroup> {
                   controller: contactController,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
-                        icon: Icon(Icons.person_add,
+                        icon: Icon(Icons.person_add_outlined,
                             size: 35, color: Colors.black),
                         onPressed: () async {
                           if (await Permission.contacts.request().isGranted) {

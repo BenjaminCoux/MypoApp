@@ -166,6 +166,37 @@ class _GroupContactState extends State<GroupContactPage> {
           );
   }
 
+  buildPopupDialog(GroupContact contact) {
+    String title = "";
+    title = contact.name;
+    return new AlertDialog(
+      title: Text("Voulez vous supprimer $title ?"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[],
+      ),
+      actions: <Widget>[
+        new TextButton(
+          onPressed: () {
+            setState(() {
+              contact.delete();
+              groupContact.remove(contact);
+            });
+            Navigator.of(context).pop();
+          },
+          child: const Text('Oui', style: TextStyle(color: Colors.black)),
+        ),
+        new TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Non', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,37 +234,6 @@ class _GroupContactState extends State<GroupContactPage> {
           buildListofCOntact(groupContact.length, groupContact),
         ]),
       ),
-    );
-  }
-
-  buildPopupDialog(GroupContact contact) {
-    String title = "";
-    title = contact.name;
-    return new AlertDialog(
-      title: Text("Voulez vous supprimer $title ?"),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[],
-      ),
-      actions: <Widget>[
-        new TextButton(
-          onPressed: () {
-            setState(() {
-              contact.delete();
-              groupContact.remove(contact);
-            });
-            Navigator.of(context).pop();
-          },
-          child: const Text('Oui', style: TextStyle(color: Colors.black)),
-        ),
-        new TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Non', style: TextStyle(color: Colors.black)),
-        ),
-      ],
     );
   }
 }

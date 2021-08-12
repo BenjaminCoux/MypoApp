@@ -79,6 +79,12 @@ class _FormState extends State<FormScreen> {
   TextEditingController contactController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    boolCheckedGrp = buildboolList(contactgroup);
+  }
+
+  @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     alertContent.dispose();
@@ -94,12 +100,6 @@ class _FormState extends State<FormScreen> {
     form!.save();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    boolCheckedGrp = buildboolList(contactgroup);
-  }
-
   String getContient(AlertKey a) {
     List<String> contient = [
       "",
@@ -111,9 +111,6 @@ class _FormState extends State<FormScreen> {
     return contient[a.contient];
   }
 
-  /**
-   * save the alert in the shared prefrences
-   */
   void saveAlert(String title, String content, var days, var cibles, bool notif,
       List<AlertKey> keys) async {
     List<AlertKey> hivekey = <AlertKey>[];
@@ -155,9 +152,6 @@ class _FormState extends State<FormScreen> {
     return false;
   }
 
-  /**
-   * change the color of the container of a key depending on the allow value 
-   */
   Color getColorDropDown(AlertKey a) {
     if (a.allow) {
       return d_green;
@@ -245,10 +239,6 @@ class _FormState extends State<FormScreen> {
     );
   }
 
-  /**
-   * build the list and the dropdown for the alert key
-   * 
-   */
   Widget alertKeys(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -445,6 +435,106 @@ class _FormState extends State<FormScreen> {
                 })
             : Text("Pas encore de clé pour cette alerte"),
       ]),
+    );
+  }
+
+  Container buildTextField(
+      String placeholder, TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              // set new state
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildTextFieldMessage(
+      String placeholder, TextEditingController controller, int nbLines) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(18),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: TextField(
+          controller: controller,
+          onChanged: (String value) => {
+            setState(() {
+              this.nbWords = value.length;
+              this.nbMaxWords = 450 - value.length;
+              if (this.nbMaxWords < 0) {
+                this.wordsLimit = false;
+              } else {
+                this.wordsLimit = true;
+              }
+            })
+          },
+          maxLines: nbLines,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
+          decoration: InputDecoration(
+            errorText: wordsLimit ? null : '${this.nbWords}/450',
+            labelStyle: TextStyle(color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.transparent)),
+            contentPadding: EdgeInsets.all(8),
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -824,106 +914,6 @@ class _FormState extends State<FormScreen> {
                   SizedBox(height: 20),
                 ],
               ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container buildTextField(
-      String placeholder, TextEditingController controller, int nbLines) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(18),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: TextField(
-          controller: controller,
-          onChanged: (String value) => {
-            setState(() {
-              // set new state
-            })
-          },
-          maxLines: nbLines,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            contentPadding: EdgeInsets.all(8),
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container buildTextFieldMessage(
-      String placeholder, TextEditingController controller, int nbLines) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(18),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: TextField(
-          controller: controller,
-          onChanged: (String value) => {
-            setState(() {
-              this.nbWords = value.length;
-              this.nbMaxWords = 450 - value.length;
-              if (this.nbMaxWords < 0) {
-                this.wordsLimit = false;
-              } else {
-                this.wordsLimit = true;
-              }
-            })
-          },
-          maxLines: nbLines,
-          keyboardType: TextInputType.multiline,
-          textInputAction: TextInputAction.newline,
-          decoration: InputDecoration(
-            errorText: wordsLimit ? null : '${this.nbWords}/450',
-            labelStyle: TextStyle(color: Colors.black),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.transparent)),
-            contentPadding: EdgeInsets.all(8),
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              color: Colors.black,
             ),
           ),
         ),

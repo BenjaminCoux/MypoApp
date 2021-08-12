@@ -59,31 +59,6 @@ class Rapport extends StatefulWidget {
 }
 
 class _RapportState extends State<Rapport> {
-  @override
-  Widget build(BuildContext context) {
-    if (widget.rapportmsg.isEmpty) {
-      return Center(
-        child: Text(
-          'Aucun message',
-          style: TextStyle(fontSize: 24),
-        ),
-      );
-    } else {
-      return ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        padding: EdgeInsets.all(8),
-        itemCount: widget.rapportmsg.length,
-        itemBuilder: (BuildContext context, int index) {
-          final message =
-              widget.rapportmsg[widget.rapportmsg.length - 1 - index];
-
-          return buildMessage(context, message);
-        },
-      );
-    }
-  }
-
   preview(String text) {
     String preview = '';
     for (int i = 0; i < text.length && i < 12; i++) {
@@ -212,6 +187,31 @@ class _RapportState extends State<Rapport> {
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.rapportmsg.isEmpty) {
+      return Center(
+        child: Text(
+          'Aucun message',
+          style: TextStyle(fontSize: 24),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        padding: EdgeInsets.all(8),
+        itemCount: widget.rapportmsg.length,
+        itemBuilder: (BuildContext context, int index) {
+          final message =
+              widget.rapportmsg[widget.rapportmsg.length - 1 - index];
+
+          return buildMessage(context, message);
+        },
+      );
+    }
   }
 }
 

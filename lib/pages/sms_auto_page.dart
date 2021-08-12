@@ -71,10 +71,6 @@ class _SmsAutoState extends State<SmsAuto> {
   }
 }
 
-/*
-  -Function that handle the switch button of an alert
-*/
-
 // ignore: must_be_immutable
 class SwitchButton extends StatefulWidget {
   Alert alerte;
@@ -160,6 +156,14 @@ class _StateSwitchButton extends State<SwitchButton> {
     if (!mounted) return;
   }
 
+/**
+   * change the active value of an alert both in the alert list and in the sharedPreferences
+   */
+  changeActive(Alert alerte, bool s) async {
+    alerte.active = s;
+    alerte.save();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Switch(
@@ -176,18 +180,7 @@ class _StateSwitchButton extends State<SwitchButton> {
           changeActive(widget.alerte, s);
         });
   }
-
-  /**
-   * change the active value of an alert both in the alert list and in the sharedPreferences
-   */
-  changeActive(Alert alerte, bool s) async {
-    alerte.active = s;
-    alerte.save();
-  }
 }
-/*  
-  -That class handles the whole alert screen
-*/
 
 // ignore: must_be_immutable
 class Alertes extends StatefulWidget {
@@ -199,7 +192,6 @@ class Alertes extends StatefulWidget {
 
 class _AlertesState extends State<Alertes> {
   // ignore: unused_field
-
   @override
   void initState() {
     super.initState();
@@ -217,10 +209,6 @@ class _AlertesState extends State<Alertes> {
   void delete(Alert alert) async {
     alert.delete();
   }
-
-  /*
-    - Function that get the number of alerts saved, 0 by default
-  */
 
   /*
     -Function that creates a pop up for asking a yes no question
@@ -256,9 +244,6 @@ class _AlertesState extends State<Alertes> {
     );
   }
 
-  /**
-   * store the duplicated alert in the sharedPreferences
-   */
   void addToDB(Alert alert, String title) async {
     Alert tmp = Alert()
       ..title = title
@@ -481,10 +466,6 @@ class _AlertesState extends State<Alertes> {
     );
   }
 
-  /*
-    -Function that show the available aplications to send auto messages with
-  */
-
   //pop menu hidden
   void _onButtonPressed() {
     int nb = 0;
@@ -543,12 +524,6 @@ class _AlertesState extends State<Alertes> {
         });
   }
 }
-
-/*
-  This Function gets incomming messages in the back ground
-  Check if it contains any of the keys of activated alerts
-  Send back the alert message to the person
-*/
 
 /**
  * return the last word in the message body

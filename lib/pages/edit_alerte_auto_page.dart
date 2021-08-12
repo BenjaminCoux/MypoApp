@@ -3,8 +3,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/date_symbols.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/model/expressions.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'sms_auto_page.dart';
@@ -34,10 +36,6 @@ class _AlertScreenState extends State<AlertScreen> {
   bool _value2 = true;
   final keyName = TextEditingController();
   List<bool> boolWeek = <bool>[];
-  final alphanumeric = RegExp(r'^[a-zA-Z0-9.:#_-éàô ]+$');
-  final regularExpression =
-      //  RegExp(r'^[ ${ParamKeywordValidchars}]+$');
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
 
   int nbMaxWords = 450;
   bool wordsLimit = true;
@@ -90,15 +88,6 @@ class _AlertScreenState extends State<AlertScreen> {
     } else {
       return Colors.grey.shade300;
     }
-  }
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
   }
 
   bool verifieCle(String nom) {

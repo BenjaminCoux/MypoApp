@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/model/expressions.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/utils/boxes.dart';
 import 'package:mypo/database/hive_database.dart';
@@ -49,12 +51,6 @@ class _ProgState extends State<ProgForm> {
   DateTime time = DateTime.now();
 
   bool fieldsEmpty = true;
-  final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
-  final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
-  final numeroExpression =
-      RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
-  final phoneExpression = RegExp(r'^[0-9_\-+() \.,;]+$');
   int nbMaxWords = 450;
   bool wordsLimit = true;
   int nbWords = 0;
@@ -820,15 +816,6 @@ class _ProgState extends State<ProgForm> {
                   onPressed: onClicked,
                 ),
               ));
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
-  }
 
   Widget buildRepeatOptions() => SizedBox(
         height: 200,

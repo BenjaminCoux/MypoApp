@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/model/expressions.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/pages/premium_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/widget/button_widget.dart';
 import 'package:mypo/widget/profile_widget.dart';
@@ -36,10 +38,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String code = '';
   String isoCode = '';
   bool fieldsChanged = false;
-  final numeroExpression =
-      RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
-  final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
 
   @override
   void initState() {
@@ -404,14 +402,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             else
               {showSnackBar(this.context, 'Veuillez completer tous les champs')}
           });
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
-  }
 
   Widget buildTextField(
       String labelText,

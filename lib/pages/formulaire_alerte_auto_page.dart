@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/model/expressions.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'sms_auto_page.dart';
@@ -68,9 +70,6 @@ class _FormState extends State<FormScreen> {
   var db;
   bool notif = false;
   List<AlertKey> keys = <AlertKey>[];
-  final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
-  final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàÀéÉèÈíÍôóÓúüÚçÇñÑ@ \.;]+$');
   late List<bool> boolCheckedGrp;
   int nbMaxWords = 450;
   int nbWords = 0;
@@ -163,15 +162,6 @@ class _FormState extends State<FormScreen> {
     } else {
       return Colors.grey.shade300;
     }
-  }
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
   }
 
 // **************************************************************************

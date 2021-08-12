@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/pages/group_contact_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/model/couleurs.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -250,15 +251,6 @@ class _GroupFormState extends State<GroupForm> {
       ),
     );
   }
-}
-
-void showSnackBar(BuildContext context, String s) {
-  final snackBar = SnackBar(
-    content: Text(s, style: TextStyle(fontSize: 20)),
-  );
-  ScaffoldMessenger.of(context)
-    ..removeCurrentSnackBar()
-    ..showSnackBar(snackBar);
 }
 
 Widget buildLabelText(String input) {

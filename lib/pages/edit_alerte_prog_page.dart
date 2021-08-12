@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mypo/model/couleurs.dart';
+import 'package:mypo/model/expressions.dart';
 import 'package:mypo/pages/edit_alerte_auto_page.dart';
 import 'package:mypo/pages/formulaire_alerte_auto_page.dart';
 import 'package:mypo/pages/sms_prog_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -65,10 +67,7 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
     'Aucune récurrence'
   ];
   int index = 0;
-  final regularExpression =
-      RegExp(r'^[a-zA-Z0-9_\-@,.ãàâÀêëéÉèÈíîÍôóÓûúüÚçÇñÑ@ \.;]+$');
 
-  final phoneExpression = RegExp(r'^[0-9_\-+() \.,;]+$');
   @override
   void initState() {
     super.initState();
@@ -909,15 +908,6 @@ class _ScheduledmsgDetailPageState extends State<ScheduledmsgDetailPage> {
                   onPressed: onClicked,
                 ),
               ));
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
-  }
 
   Widget buildRepeatOptions() => SizedBox(
         height: 200,

@@ -4,6 +4,7 @@ import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/model/couleurs.dart';
 import 'package:mypo/pages/accueil_page.dart';
 import 'package:mypo/utils/boxes.dart';
+import 'package:mypo/utils/fonctions.dart';
 import 'package:mypo/widget/appbar_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -260,15 +261,6 @@ class _HelpScreenState extends State<HelpScreen> {
               );
             })
         : const Text("Aucune question", style: TextStyle(fontSize: 24));
-  }
-
-  void showSnackBar(BuildContext context, String s) {
-    final snackBar = SnackBar(
-      content: Text(s, style: TextStyle(fontSize: 20)),
-    );
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackBar);
   }
 
   Widget buildDropDown() {

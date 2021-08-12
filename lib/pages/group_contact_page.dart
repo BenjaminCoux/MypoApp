@@ -50,7 +50,52 @@ class _GroupContactState extends State<GroupContactPage> {
     );
   }
 
-  buildButtons(BuildContext context, var contact) => Row(
+  String getNbAlerte(String title) {
+    int highest = 0;
+    for (int i = 0; i < groupContact.length; i++) {
+      String tt =
+          title.contains('-') ? title.substring(0, title.indexOf('-')) : title;
+      if (groupContact[i].name.contains(tt)) {
+        int j = 0;
+        String tmp = groupContact[i].name;
+        String nb = "";
+        bool after = false;
+        while (j < tmp.length) {
+          if (after) {
+            nb += tmp[j];
+          }
+          if (tmp[j] == "-") {
+            after = true;
+          }
+          j++;
+        }
+        if (nb == "") {
+          nb = "0";
+        }
+        if (int.parse(nb) > highest) {
+          highest = int.parse(nb);
+        }
+        nb = "";
+      }
+    }
+    int tiret = title.indexOf('-');
+    if (title.contains('-')) {
+      return title.substring(0, tiret) + "-" + (highest + 1).toString();
+    } else {
+      return title + "-" + (highest + 1).toString();
+    }
+  }
+
+  void addToDB(GroupContact g) async {
+    GroupContact a = GroupContact()
+      ..name = g.name
+      ..description = g.description
+      ..numbers = g.numbers;
+    final box = Boxes.getGroupContact();
+    box.add(a);
+  }
+
+  buildButtons(BuildContext context, GroupContact contact) => Row(
         children: [
           Expanded(
             child: TextButton.icon(
@@ -66,6 +111,27 @@ class _GroupContactState extends State<GroupContactPage> {
                               grp: contact,
                               contacts: list,
                             )));
+              },
+            ),
+          ),
+          Expanded(
+            child: TextButton.icon(
+              style: TextButton.styleFrom(primary: d_darkgray),
+              label: Text('Dupliquer'),
+              icon: Icon(Icons.copy),
+              onPressed: () => {
+                setState(() {
+                  String title = getNbAlerte(contact.name);
+                  GroupContact g = GroupContact()
+                    ..name = title
+                    ..description = contact.description
+                    ..numbers = contact.numbers;
+                  addToDB(g);
+                  groupContact = Boxes.getGroupContact()
+                      .values
+                      .toList()
+                      .cast<GroupContact>();
+                }),
               },
             ),
           ),

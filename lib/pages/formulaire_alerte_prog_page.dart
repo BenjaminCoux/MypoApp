@@ -332,7 +332,7 @@ class _ProgState extends State<ProgForm> {
                         controller: contactController,
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
-                              icon: Icon(Icons.person_add,
+                              icon: Icon(Icons.person_add_outlined,
                                   size: 35, color: Colors.black),
                               onPressed: () async {
                                 if (await Permission.contacts

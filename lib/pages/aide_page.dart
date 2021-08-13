@@ -10,6 +10,12 @@ import 'package:mypo/widget/divider_widget.dart';
 import 'package:mypo/widget/label_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// **************************************************************************
+// This class creates the help page screen
+// input :
+// output : scaffold widget with the components/widgets of help page
+// **************************************************************************
+
 class HelpScreen extends StatefulWidget {
   final String value;
   HelpScreen({required this.value});
@@ -21,7 +27,7 @@ class _HelpScreenState extends State<HelpScreen> {
   final nomController = TextEditingController();
   final emailController = TextEditingController();
   final messageController = TextEditingController();
-  static final List<String> items = <String>[
+  static final List<String> motifs = <String>[
     'Remarques/Suggestions',
     'Questions/Informations'
   ];
@@ -34,13 +40,18 @@ class _HelpScreenState extends State<HelpScreen> {
     'Voici la reponse a la question qui peut être modifier par la suite',
     'Voici la reponse a la question qui peut être modifier par la suite'
   ];
-  String value = items.first;
+  String value = motifs.first;
   late final email;
   List<String> attachments = [];
   bool isHTML = false;
   int nbMaxWords = 450;
   bool wordsLimit = true;
   int nbWords = 0;
+// **************************************************************************
+// This function creates the home page screen
+// input :
+// output : column widget with the components/widgets of contact form page
+// **************************************************************************
 
   Widget buildFormContact() {
     return Padding(
@@ -139,6 +150,12 @@ class _HelpScreenState extends State<HelpScreen> {
         ]));
   }
 
+// **************************************************************************
+// This function sends email
+// input : the subject and the message
+// output : open the email application with filled content
+// **************************************************************************
+
   sendMail(String subject, String message) {
     String? encodeQueryParameters(Map<String, String> params) {
       return params.entries
@@ -158,6 +175,11 @@ class _HelpScreenState extends State<HelpScreen> {
     launch(emailLauncherUri.toString());
   }
 
+// **************************************************************************
+// This function build the list of frequently asked questions and its answers
+// input : the list of questions, the length of the list, the answers and the context
+// output : build a list of questions wich expands to show the answer when clicked
+// **************************************************************************
   myListAide(List<String> questions, int lenght, List<String> reponses,
       BuildContext context) {
     return lenght > 0
@@ -188,6 +210,11 @@ class _HelpScreenState extends State<HelpScreen> {
         : const Text("Aucune question", style: TextStyle(fontSize: 24));
   }
 
+// **************************************************************************
+// This function build a drop down menu to show the reasons of contact
+// input :
+// output : drop down menu with different reasons
+// **************************************************************************
   Widget buildDropDown() {
     return Container(
       color: Colors.white,
@@ -196,7 +223,7 @@ class _HelpScreenState extends State<HelpScreen> {
       child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
         value: value,
-        items: items
+        items: motifs
             .map((item) => DropdownMenuItem<String>(
                 child: Text(item,
                     style: TextStyle(

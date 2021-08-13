@@ -7,6 +7,12 @@ import 'package:mypo/widget/appbar_widget.dart';
 import 'package:mypo/database/hive_database.dart';
 import 'package:mypo/widget/label_widget.dart';
 
+// **************************************************************************
+// This class creates the page for the deatils about a particular repport
+// input :
+// output : scaffold widget with the information of the msg sent
+// **************************************************************************
+
 class DetailRepportsPage extends StatefulWidget {
   final Rapportmsg_hive message;
   const DetailRepportsPage({Key? key, required this.message}) : super(key: key);
@@ -26,6 +32,11 @@ class _DetailRepportsPageState extends State<DetailRepportsPage> {
         body: Detail(message: widget.message));
   }
 }
+// **************************************************************************
+// This class creates the details to
+// input :
+// output : scaffold widget with the components/widgets of home page
+// **************************************************************************
 
 class Detail extends StatefulWidget {
   final Rapportmsg_hive message;

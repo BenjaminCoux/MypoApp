@@ -583,38 +583,38 @@ String getFirstWord(String str) {
  * function that check if an alert should respond to a received message on the phone
  */
 bool isActive(String? body, Alert alert, bool isInContact) {
-  bool res = false;
+  bool res = true;
   if (!alert.active) {
-    return res;
+    return false;
   }
   if (((alert.cibles[3] && !isInContact) || (alert.cibles[1] && isInContact)) &&
       (!alert.cibles[3] || !alert.cibles[1])) {
-    return res;
+    return false;
   }
   DateTime now = DateTime.now();
   String day = DateFormat('EEEE').format(now);
   if (!dayIsRight(alert, day)) {
-    return res;
+    return false;
   }
   for (int i = 0; i < alert.keys.length; i++) {
     if (dontAllow(body, alert)) {
       return false;
-    } else if (body!.contains(alert.keys[i].name) &&
+    } else if (!body!.contains(alert.keys[i].name) &&
         (alert.keys[i].contient == 1) &&
         alert.keys[i].allow) {
-      res = true;
-    } else if (!body.contains(alert.keys[i].name) &&
+      res = false;
+    } else if (body.contains(alert.keys[i].name) &&
         (alert.keys[i].contient == 2) &&
         alert.keys[i].allow) {
-      res = true;
-    } else if (getFirstWord(body) == alert.keys[i].name &&
+      res = false;
+    } else if (!(getFirstWord(body) == alert.keys[i].name) &&
         (alert.keys[i].contient == 3) &&
         alert.keys[i].allow) {
-      res = true;
-    } else if (getLastWord(body) == alert.keys[i].name &&
+      res = false;
+    } else if (!(getLastWord(body) == alert.keys[i].name) &&
         (alert.keys[i].contient == 4) &&
         alert.keys[i].allow) {
-      res = true;
+      res = false;
     }
   }
   return res;
